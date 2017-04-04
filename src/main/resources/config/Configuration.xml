@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+	<typeAliases>
+		<typeAlias type="kr.co.foot.board.vo.CommentVO" alias="CommentVO" />
+		<typeAlias type="kr.co.foot.board.vo.MemberVO" alias="MemberVO" />
+		<typeAlias type="kr.co.foot.board.vo.MymapVO" alias="MymapVO" />
+		<typeAlias type="kr.co.foot.board.vo.RegMapVO" alias="RegMapVO" />
+	</typeAliases>
+
+	<!-- <mappers>
+		<mapper resource="config/sqlmap/mysql/BoardMapper.xml" />
+		<mapper resource="config/sqlmap/mysql/UserMapper.xml" />
+	</mappers> -->
+</configuration>
