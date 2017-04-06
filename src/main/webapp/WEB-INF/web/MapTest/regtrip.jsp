@@ -1,39 +1,112 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
+<%@include file="/WEB-INF/share.jsp"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>MY MAP ^_^</title>
-<script language="javascript"
+<script
 	src="https://apis.skplanetx.com/tmap/js?version=1&format=javascript&appKey=bac4f916-3297-3be4-93ff-e37ae88b8f42"></script>
 <script
 	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD6x6lwLmHlSpovbF0nM-fPIPpjfv4D9IM&libraries=places"></script>
-<!-- fa폰트 아이콘 -->
-<link
-	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"
-	rel="stylesheet">
-<!-- bootstrap CSS -->
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-<!-- bootstrap 테마 -->
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
-<!-- moment. -->
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>	
-<!-- jquery -->
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <!-- 판넬 드래그에 필요함 -->
 <script type='text/javascript'
 	src="https://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
-<!-- bootstrap js -->
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 
+<script type="text/javascript">
+
+	$(document).ready(function(){
+		var form = document.inputform;
+		form.title.value = "${title}";
+		form.content.value = "${content}";
+		form.hashtag.value = "${hashtag}";
+		
+		
+		$("#mapAgain").click(function(){
+			$.ajax({
+			    type: 'POST' , 
+			    url: '${ pageContext.request.contextPath }/map/mapAgain.do',
+			    dataType : 'json',
+			    data : {
+					start : $('#start').val(),
+					end : $('#end').val()
+			    },
+			    success: function(data) {
+					listLonLat = new Array();
+					for(var i=0; i<data.length; i++){
+					    listLonLat.push({lat:Number(data[i].lat),lng:Number(data[i].lon)});
+					}
+					initLonLat = listLonLat[listLonLat.length-1];
+					initialize();
+		        }
+			});	
+		})	
+	});
+       
+   $(function() {
+      /* datetimepicker부분 */
+      $('#datetimepicker1').datetimepicker({
+         useCurrent : false,
+         sideBySide : true,
+         maxDate : moment(),
+         defaultDate : '${start}',
+         format : 'YYYY-MM-DD HH:mm'
+      });
+      $('#datetimepicker2').datetimepicker({
+         useCurrent : false,
+         sideBySide : true,
+         maxDate : moment(),
+         minDate : '${start}',
+         defaultDate : '${end}',
+         format : 'YYYY-MM-DD HH:mm'
+      });
+      $("#datetimepicker1").on("dp.show", function(e) {
+         $('#datetimepicker1').data("DateTimePicker").maxDate($('#end').val());
+      });
+      $("#datetimepicker2").on("dp.show", function(e) {
+         $('#datetimepicker2').data("DateTimePicker").minDate($('#start').val());
+      });
+      
+      var sortIndex;	// 선택된 div index의 listLonLat 좌표값
+      var sortNum;		// 타임라인 div index 번호
+	      /* 타임라인 판넬 드래그 */
+		jQuery(function($) {
+			var panelList = $('#draggablePanelList');
+			panelList.sortable({
+        		start: function(event, ui) { 
+        		      sortIndex = listLonLat[ui.item.index()];
+        		      sortNum = ui.item.index();
+       			},
+       			stop: function(event, ui) { 
+       			    if(sortNum != ui.item.index()){
+			      		   for(var i=0; i<listLonLat.length; i++){
+								if(listLonLat[i].lat == sortIndex.lat && listLonLat[i].lng == sortIndex.lng){
+								    sortNum = i;
+								}
+							}
+	      		     	    listLonLat.splice(sortNum, 1);
+	      		     	    sortNum = ui.item.index();
+	      		     		listLonLat.splice(sortNum,0,sortIndex);
+	      		     		initialize();
+       			    }
+     			},
+				handle : '.panel-heading',
+				update : function() {
+					$('.panel', panelList).each(function(index, elem) {
+						var $listItem = $(elem), newIndex = $listItem.index();
+						//판넬 리스트 번호 관련
+						// Persist the new indices.
+					});
+				}
+			});
+		});
+   });
+   
+
+</script>
+</head>
 <style>
 #rightside {
 	float: none;
@@ -82,6 +155,11 @@
 #draggablePanelList .panel-heading {
 	cursor: move;
 }
+
+body {
+	padding-top: 55px;
+}
+
 /* 검색바 네비바에서 가운데 정렬을 위한 css */
 .navbar .navbar-nav {
 	display: inline-block;
@@ -102,188 +180,21 @@
 	margin-right: auto;
 	margin-left: auto;
 }
-/* 판넬헤더 클릭 드래그 */
+
 #draggablePanelList .panel-heading {
 	cursor: move;
 }
-
-
-/* 좌 메뉴 */
-#leftmenu{
-	float: left;
-}
-
-.animate {
-	-webkit-transition: all 0.3s ease-in-out;
-	-moz-transition: all 0.3s ease-in-out;
-	-o-transition: all 0.3s ease-in-out;
-	-ms-transition: all 0.3s ease-in-out;
-	transition: all 0.3s ease-in-out;
-}
-
-.navbar-minimal {
-	width: 60px;
-	min-height: 60px;
-	max-height: 100%;
-	background-color: rgb(51, 51, 51);
-	background-color: rgba(51, 51, 51, 0.8);
-	border-width: 0px;
-	z-index: 1000;
-}
-
-.navbar-minimal>.navbar-toggler {
-	position: relative;
-	min-height: 60px;
-	border-bottom: 1px solid rgb(81, 81, 81);
-	z-index: 100;
-	cursor: pointer;
-}
-
-.navbar-minimal.open>.navbar-toggler, .navbar-minimal>.navbar-toggler:hover
-	{
-	background-color: rgb(158, 202, 59);
-}
-
-.navbar-minimal>.navbar-toggler>span {
-	position: absolute;
-	top: 50%;
-	right: 50%;
-	margin: -8px -8px 0 0;
-	width: 16px;
-	height: 16px;
-	background-image:
-		url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDE2LjIuMSwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPgo8IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9HcmFwaGljcy9TVkcvMS4xL0RURC9zdmcxMS5kdGQiPgo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IgoJIHdpZHRoPSIxNnB4IiBoZWlnaHQ9IjMycHgiIHZpZXdCb3g9IjAgMCAxNiAzMiIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyAwIDAgMTYgMzIiIHhtbDpzcGFjZT0icHJlc2VydmUiPgo8cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZmlsbD0iI0ZGRkZGRiIgZD0iTTEsN2gxNGMwLjU1MiwwLDEsMC40NDgsMSwxcy0wLjQ0OCwxLTEsMUgxQzAuNDQ4LDksMCw4LjU1MiwwLDgKCVMwLjQ0OCw3LDEsN3oiLz4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGZpbGw9IiNGRkZGRkYiIGQ9Ik0xLDEyaDE0YzAuNTUyLDAsMSwwLjQ0OCwxLDFzLTAuNDQ4LDEtMSwxSDFjLTAuNTUyLDAtMS0wLjQ0OC0xLTEKCVMwLjQ0OCwxMiwxLDEyeiIvPgo8cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZmlsbD0iI0ZGRkZGRiIgZD0iTTEsMmgxNGMwLjU1MiwwLDEsMC40NDgsMSwxcy0wLjQ0OCwxLTEsMUgxQzAuNDQ4LDQsMCwzLjU1MiwwLDMKCVMwLjQ0OCwyLDEsMnoiLz4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGZpbGw9IiNGRkZGRkYiIGQ9Ik0xLjMzLDI4Ljk3bDExLjY0LTExLjY0YzAuNDU5LTAuNDU5LDEuMjA0LTAuNDU5LDEuNjYzLDAKCWMwLjQ1OSwwLjQ1OSwwLjQ1OSwxLjIwNCwwLDEuNjYzTDIuOTkzLDMwLjYzM2MtMC40NTksMC40NTktMS4yMDQsMC40NTktMS42NjMsMEMwLjg3MSwzMC4xNzQsMC44NzEsMjkuNDMsMS4zMywyOC45N3oiLz4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGZpbGw9IiNGRkZGRkYiIGQ9Ik0yLjk5MywxNy4zM2wxMS42NDEsMTEuNjRjMC40NTksMC40NTksMC40NTksMS4yMDQsMCwxLjY2MwoJcy0xLjIwNCwwLjQ1OS0xLjY2MywwTDEuMzMsMTguOTkzYy0wLjQ1OS0wLjQ1OS0wLjQ1OS0xLjIwNCwwLTEuNjYzQzEuNzg5LDE2Ljg3MSwyLjUzNCwxNi44NzEsMi45OTMsMTcuMzN6Ii8+Cjwvc3ZnPgo=);
-	background-repeat: no-repeat;
-	background-position: 0 0;
-	-webkit-transition: -webkit-transform .3s ease-out 0s;
-	-moz-transition: -moz-transform .3s ease-out 0s;
-	-o-transition: -moz-transform .3s ease-out 0s;
-	-ms-transition: -ms-transform .3s ease-out 0s;
-	transition: transform .3s ease-out 0s;
-	-webkit-transform: rotate(0deg);
-	-moz-transform: rotate(0deg);
-	-o-transform: rotate(0deg);
-	-ms-transform: rotate(0deg);
-	transform: rotate(0deg);
-}
-
-.navbar-minimal>.navbar-menu {
-	position: absolute;
-	top: -1000px;
-	left: 0px;
-	margin: 0px;
-	padding: 0px;
-	list-style: none;
-	z-index: 50;
-	background-color: rgb(51, 51, 51);
-	background-color: rgba(51, 51, 51, 0.8);
-}
-
-.navbar-minimal>.navbar-menu>li {
-	margin: 0px;
-	padding: 0px;
-	border-width: 0px;
-	height: 54px;
-}
-
-.navbar-minimal>.navbar-menu>li>div {
-	position: relative;
-	display: inline-block;
-	color: rgb(255, 255, 255);
-	padding: 20px 23px;
-	text-align: left;
-	cursor: pointer;
-	border-bottom: 1px solid rgb(81, 81, 81);
-	width: 100%;
-	text-decoration: none;
-	margin: 0px;
-}
-
-.navbar-minimal>.navbar-menu>li>div:last-child {
-	border-bottom-width: 0px;
-}
-
-.navbar-minimal>.navbar-menu>li>div:hover {
-	background-color: rgb(158, 202, 59);
-}
-
-.navbar-minimal>.navbar-menu>li>div>.glyphicon {
-	float: right;
-}
-
-.navbar-minimal.open {
-	width: 320px;
-}
-
-.navbar-minimal.open>.navbar-toggler>span {
-	background-position: 0 -16px;
-	-webkit-transform: rotate(-180deg);
-	-moz-transform: rotate(-180deg);
-	-o-transform: rotate(-180deg);
-	-ms-transform: rotate(-180deg);
-	transform: rotate(-180deg);
-}
-
-.navbar-minimal.open>.navbar-menu {
-	top: 60px;
-	width: 100%;
-	min-height: 100%;
-}
-
-@media ( min-width : 768px) {
-	.navbar-minimal.open {
-		width: 60px;
-	}
-	.navbar-minimal.open>.navbar-menu {
-		overflow: visible;
-	}
-	.navbar-minimal>.navbar-menu>li>div>.desc {
-		position: absolute;
-		display: inline-block;
-		top: 50%;
-		left: 130px;
-		margin-top: -20px;
-		/* ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss마진 */
-		margin-left: 2px;
-		text-align: left;
-		white-space: nowrap;
-		padding: 10px 13px;
-		border-width: 0px !important;
-		background-color: rgb(51, 51, 51);
-		background-color: rgba(51, 51, 51, 0.8);
-		opacity: 0;
-	}
-	.navbar-minimal>.navbar-menu>li>div>.desc:after {
-		z-index: -1;
-		position: absolute;
-		top: 50%;
-		left: -10px;
-		margin-top: -10px;
-		content: '';
-		width: 0;
-		height: 0;
-		border-top: 10px solid transparent;
-		border-bottom: 10px solid transparent;
-		border-right: 10px solid rgb(51, 51, 51);
-		border-right-color: rgba(51, 51, 51, 0.8);
-	}
-	.navbar-minimal>.navbar-menu>li>div:hover>.desc {
-		left: 60px;
-		opacity: 1;
-	}
-}
-
 </style>
-<script src="">
 
-<<<<<<< HEAD
-</head>
-=======
 <script type="text/javascript">
  
     // 시간별 좌표 불러오기
     var listLonLat = new Array();
-	var change = true;
+    <c:forEach items="${list}" var="list">
+    	listLonLat.push({lat:${list.lat},lng:${list.lon}});
+    </c:forEach>
+
+    var initLonLat = listLonLat[listLonLat.length-1];
     var zoom = 13;
     
 	var routeLayer, routeLayerWalk, tmap, map;
@@ -303,59 +214,37 @@
 	
 	var directionsDisplay;
 	var directionsService;
-	var center = {lat : 37.56461982743129, lng : 126.9823439963945};
 	
 	function initialize() {
 		// 좌표 등록
 		tmap = new Tmap.Map({div:'map_div', width:'0px', height:'0px'});
+		var center = initLonLat;
 		map = new google.maps.Map(document.getElementById('map'), {
 			zoom : zoom,
 			mapTypeId: google.maps.MapTypeId.ROADMAP,
-			center : center,
-			mapTypeControl: false,
-			zoomControl: false,
-			streetViewControl: false
+			center : center
 		});
-
 		
-		if(listLonLat.length != 0){
-			var initflightPlanCoordinates = listLonLat;
-				var initflightPath = new google.maps.Polyline({
-					path : initflightPlanCoordinates,
-					geodesic : true,
-					strokeColor : '#000000',
-					strokeOpacity : 1.0,
-					strokeWeight : 2
-				});
-				initflightPath.setMap(null);
-				
-				if(checkMarker.length != 0){	// 라인 마커가 있으면
-					for (var i = 0; i < checkMarker.length; i++) {
-						checkMarker[i].setMap(null);
-					  }
-					checkMarker = [];
-					startLocation = null;
-					endLocation = null;
-				}
-				
-				initflightPath.setMap(map);
-			}	
-			addLineMarker();
+		var initflightPlanCoordinates = listLonLat;
+			var initflightPath = new google.maps.Polyline({
+				path : initflightPlanCoordinates,
+				geodesic : true,
+				strokeColor : '#000000',
+				strokeOpacity : 1.0,
+				strokeWeight : 2
+			});
+			initflightPath.setMap(null);
 			
-			if(mymapLonLatList.length != 0){
-				for(var i=0; i<mymapLonLatList.length; i++){    
-					var mymapCoordinates = mymapLonLatList[i].mymapLonLat;
-						var mymapPath = new google.maps.Polyline({
-							path : mymapCoordinates,
-							geodesic : true,
-							strokeColor : '#FF0000',
-							strokeOpacity : 1.0,
-							strokeWeight : 3
-						});
-						mymapPath.setMap(null);
-						mymapPath.setMap(map);
-				}
+			if(checkMarker.length != 0){	// 라인 마커가 있으면
+				for (var i = 0; i < checkMarker.length; i++) {
+					checkMarker[i].setMap(null);
+				  }
+				checkMarker = [];
+				startLocation = null;
+				endLocation = null;
 			}
+			
+			initflightPath.setMap(map);
 			
 			var input = document.getElementById('pac-input');
 			var searchBox = new google.maps.places.SearchBox(input);
@@ -363,28 +252,30 @@
 				searchBox.setBounds(map.getBounds());
 			});
 			
+			
 			var listener3 = google.maps.event.addListener(map, 'click', function(){
 				if(infowindow != null){
 					  infowindow.close();
 				  }
 			  });
 			
-			 
+			addLineMarker();
+			
 			// 주소로 검색해서 마커 표시
 			var markers = [];
 			searchBox.addListener('places_changed', function() {
 				var places = searchBox.getPlaces();
-		
+
 				if (places.length == 0) {
 					return;
 				}
-		 
+
 				// Clear out the old markers.
 				markers.forEach(function(marker) {
 					marker.setMap(null);
 				});
 				markers = [];
-		
+
 				// For each place, get the icon, name and location.
 				var bounds = new google.maps.LatLngBounds();
 				places.forEach(function(place) {
@@ -394,7 +285,7 @@
 						origin : new google.maps.Point(0, 0),
 						anchor : new google.maps.Point(17, 34)
 					};
-		
+
 					// Create a marker for each place.
 					markers.push(new google.maps.Marker({
 						map : map,
@@ -402,7 +293,7 @@
 						title : place.name,
 						position : place.geometry.location
 					}));
-					 
+					
 					if (place.geometry.viewport) {
 						// Only geocodes have viewport.
 						bounds.union(place.geometry.viewport);
@@ -413,50 +304,31 @@
 				map.fitBounds(bounds);
 			});
 			
-			if(listLonLat.length != 0 && change == true){
-				addTimeLine();	
+			addTimeLine();	
+			
+			if(listLonLat.length == 0){
+				alert("날짜가 잘못되었거나 해당기간에 데이터가 없습니다.");	
 			}
-			change = true;
 	}
-	
-	
+	 
 	// 타임라인 div 클릭시 센터좌표 이동
 	function goZoomIn(lat, lng){
-		center = new google.maps.LatLng(lat, lng);
+		var center = new google.maps.LatLng(lat, lng);
 		map.setCenter(center);
 	}
- 
+
 	//타임라인에 내용 추가 
-	var address;
-	var count = 0;
 	function addTimeLine(){
-	    count = listLonLat.length-1;
-//		$('#draggablePanelList').children().remove();
-	    var geocoder = new google.maps.Geocoder;
-		
-		geocoder.geocode({'location': listLonLat[count]}, (function(count){return function(results, status) {
-				if (status === google.maps.GeocoderStatus.OK) {
-			        address = results[0].formatted_address;
-			        address = address.substring(5, address.length);
-					$('#draggablePanelList').append('<div id="addTimeInfo" class="panel panel-info" onClick="goZoomIn('+listLonLat[count].lat+", "+listLonLat[count].lng
-						+')"><div class="panel-heading"><input class="form-control" type="text" style="font-size:8pt;" value="'+address
-						+'"/></div><div class="panel-body"><textarea class="form-control" style="overflow:hidden" placeholder="내용"/></div></div>');
-			    } 
-			}
-		})(count)
-		);
+		$('#draggablePanelList').children().remove();
+		for(var i=0; i<checkMarker.length; i++){
+			$('#draggablePanelList').append('<div id="addTimeInfo" class="panel panel-info" onClick="goZoomIn('+checkMarker[i].position.lat()+", "+checkMarker[i].position.lng()+')"><div class="panel-heading"><input class="form-control" type="text" value="'+(i+1)+'번"/></div><div class="panel-body"><input type="text" class="form-control" value="위도:'+listLonLat[i].lat+',경도:'+listLonLat[i].lng+'"/></div></div>');
+		} 
 	}    
-	
-	 
 	var checkMarker = new Array();
 	var num;
 	var infowindow;
 	function addLineMarker(){
 		
-	    if(listLonLat.length == 0){
-			return;
-	    }
-	    
 		if(checkMarker != null){
 			for(var i=0; i<checkMarker.length; i++){
 				checkMarker[i].setMap(map);
@@ -472,7 +344,7 @@
 		    num :i
 		
 		}));
-		  
+ 		   
 		  var listener3 = google.maps.event.addListener(map, 'click', function(){
 			if(infowindow != null){
 				  infowindow.close();
@@ -506,11 +378,9 @@
 		listLonLat.splice(index,1);
 		initLonLat = {lat:lat,lng:lng};
 		zoom = map.getZoom();
- 	  	$('.panel-heading').eq(index).parent().remove();
-		change = false;
 		initialize();	
 	}
-	  
+	
 	function startCheck(lat, lng){
 		var checkLonLat = new Array();
 		checkLonLat.push({lat:lat, lng:lng});
@@ -820,7 +690,7 @@
 			label : "도착",
 			draggable : true,
 			map : map
-		}); 
+		});
 		endMarker.addListener('dragend', endResetPlace);
 		endLocation = location;
 		endMarkers.push(endMarker);
@@ -831,15 +701,14 @@
 		
 	// 마커 추가 설정
 	function addExtraMarker(lat, lng){
-		var insertMarker = {lat:Number(lat),lng:Number(lng)};
-		listLonLat.push(insertMarker);
+		var index = $('#extra').val();
+		var insertMarker = {lat:lat,lng:lng};
+		listLonLat.splice(index-1,0,insertMarker);
 		initLonLat = {lat:lat,lng:lng};
 		zoom = map.getZoom();
-		center = new google.maps.LatLng(lat, lng);
-		map.setCenter(center);
 		initialize();
 	}
-	  
+	
 	// 직접 마커 설정
 	function locationExtra(location, map){
 		if(extraflag!=1){
@@ -852,9 +721,64 @@
 			map : map
 		});
 		
-		addExtraMarker((location.lat).toFixed(7).toString(),(location.lng).toFixed(7).toString());
+		var listener1 = google.maps.event.addListener(extraMarker, 'click', function(){
+			if(infowindow != null){
+				  infowindow.close();
+			  }
+			  infowindow = new google.maps.InfoWindow({
+				    content: '<br/>번호입력<input type="text" id="extra" size="3"/><input type="button" value="완료" onclick="addExtraMarker('+
+				    (this.position.lat()).toFixed(7).toString()+", "+(this.position.lng()).toFixed(7).toString()+')"/>'
+				  }); 
+			  infowindow.open(map, this);
+		});
+		// 가까운 좌표 선잇기
+		/* var lat1 = (location.lat).toFixed(7);
+		lat1 *= 1;
+		var lng1 = (location.lng).toFixed(7);
+		lng1 *= 1;
+		var insertLatLng = {lat:lat1,lng:lng1};
+		var minDistance = 999;
+		var minLat;
+		var minLng;
 		
+		for(var i=0; i<listLonLat.length; i++){
+			var lat2 = listLonLat[i].lat;
+			lat2 *= 1;
+			var lng2 = listLonLat[i].lng;
+			lng1 *= 1;
+			var distance = calculateDistance(lat1, lng1, lat2, lng2);
+			if(minDistance > distance){
+				minDistance = distance;
+				minLat = lat2;
+				minLng = lng2;
+			}
+		}
+		
+		for(var i=0; i<listLonLat.length; i++){
+			if(listLonLat[i].lat == minLat && listLonLat[i].lng == minLng){
+				index = i;
+			}
+		}
+		listLonLat.splice(index-1,0,insertLatLng);
+		initialize(); */
 	}
+	 
+	/* function toRad(Value) {
+	    return Value * Math.PI / 180;
+	} */
+	
+	// 좌표 거리계산km
+	/* function calculateDistance(lat1, lon1, lat2, lon2) {
+	      var R = 6371;
+	      var dLat = toRad(lat2-lat1);
+	      var dLon = toRad(lon2-lon1); 
+	      var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+	              Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * 
+	              Math.sin(dLon/2) * Math.sin(dLon/2); 
+	      var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+	      var d = R * c;
+	      return d;
+	} */
 	 
 	function dragStart(event) {
 		event.dataTransfer.effectAllowed = 'move';
@@ -942,6 +866,15 @@
 		endLocation = null;
 		f=0;
 	}
+	
+	function goAgain(){
+		var form = document.inputform;
+		
+		form.action = "${ pageContext.request.contextPath }/map/mapcheck.do";
+		form.method = "POST";
+		form.submit();
+	}
+
 
 	// 대중교통 길찾기
 	function calculateAndDisplayRoute() {
@@ -963,7 +896,7 @@
 				window.alert('Directions request failed due to ' + status);
 			}
 		});
-		 directionsDisplay.setMap(map);
+		directionsDisplay.setMap(map);
 		 directionsDisplay.setPanel(document.getElementById('addinfo'));
 	}
 		
@@ -978,8 +911,7 @@
 		lineReset();
 		searchRouteWalking(startLocation, endLocation);
 	}
-		
-
+	
 	// submit 할때 lonlat, marker lonlat, city, theme 값 controller로 전달
 	function goSubmit(){
 	    // listLonLat 좌표
@@ -1020,301 +952,83 @@
 		}
 		$('#map_div').append("<input type='hidden' value='"+rightTitle+"' name='paneltitle'/>");
 		$('#map_div').append("<input type='hidden' value='"+rightContent+"' name='panelcontent'/>");
-
-		console.log(tag1);
-		console.log(tag2);
-		console.log(checkpoint1);
-		console.log(checkpoint2);
-		console.log(rightTitle);
-		console.log(rightContent);
+		
+	    $('#map_div').append("<input type='hidden' value='${city}' name='city'/>");
+	    $('#map_div').append("<input type='hidden' value='${theme}' name='theme'/>");
 	    document.inputform.submit();
 	}
+	
 	
 	function goSearch(){
 	    location.href = "${ pageContext.request.contextPath }/map/search.do?searchtext="+$('#searchtext').val();
 	}
-	</script>
+</script>
 
-	<script>
-	var favoritePlaceLonLat;
-	var favoriteMapLonLat = new Array();
-	
-		function getMyplace(checkpointidx){
-		    
-		    $.ajax({
-			    type: 'POST' , 
-			    url: '${ pageContext.request.contextPath }/map/getMyplace.do',
-			    dataType : 'json',
-			    data : {
-					checkpointidx : checkpointidx
-			    },
-			    success: function(data) {
-					var Fplace = {lat:Number(data.lat),lng:Number(data.lon)};
-					if(favoritePlaceLonLat != null){
-						favoritePlaceLonLat.setMap(null);
-						if(favoritePlaceLonLat.position.lat().toFixed(7) == Fplace.lat && favoritePlaceLonLat.position.lng().toFixed(7) == Fplace.lng){
-							return;
-						}
-					}
-					goZoomIn(data.lat, data.lon);
-					favoritePlaceLonLat = new google.maps.Marker({
-						map : map,
-						position : Fplace
-					});
-					var listener3 = google.maps.event.addListener(map, 'click', function(){
-						if(infowindow != null){
-							  infowindow.close();
-						  }
-					  });
-					  var listener1 = google.maps.event.addListener(favoritePlaceLonLat, 'click', function(){
-						  if(infowindow != null){
-							  infowindow.close();
-						  } 
-						  infowindow = new google.maps.InfoWindow({
-							    content: (this.position.lat()).toFixed(7).toString()+", "+(this.position.lng()).toFixed(7).toString()+
-							    '<br/><input type="button" value="위치추가" onClick="addFavoriteMarker('+
-							    		(this.position.lat()).toFixed(7)+", "+(this.position.lng()).toFixed(7)+')"/>'
-							  }); 
-						  infowindow.open(map, this);
-					  });  
-		        }
-			});	
-		    
-		}
-		
-		function addFavoriteMarker(lat, lon){
-		    console.log(lat+", "+lon);
-		    listLonLat.push({lat:lat, lng:lon});
-		    favoritePlaceLonLat = null;
-		    goZoomIn(lat, lon);
-		    initialize();
-		}
-	</script>
-	
-	<script>
-		var mymapLonLatList = new Array();
-		var mymapCheckpointList = new Array();
-		var mymapCoordinates;
-		function getMymap(mymapidx){
-		    
-		    $.ajax({
-			    type: 'POST' , 
-			    url: '${ pageContext.request.contextPath }/map/getMymap.do',
-			    dataType : 'json',
-			    data : {
-					mymapidx : mymapidx
-			    },
-			    success: function(data) {
-					var mymapLonLat = new Array();
-					var mymapCheckpoint = new Array();
-					for(var i=0; i<data[0].length; i++){
-					    mymapLonLat.push({lat:Number(data[0][i].lat), lng:Number(data[0][i].lon)});
-					    for(var j=0; j<data[1].length; j++){
-							if(data[0][i].idx == data[1][j].regcoordinatesidx){
-							    mymapCheckpoint.push({lat:Number(data[0][i].lat), lng:Number(data[0][i].lon), title:data[1][j].title, content:data[1][j].content});
-							}
-					    }
-					}
-					goZoomIn(Number(data[0][0].lat), Number(data[0][0].lon));
-					
-					// mymapLonLatList의 데이터가 있을때 새로들어온 데이터와 비교해서 동일하면 삭제하기
-					if(mymapLonLatList.length != 0){
-					    for(var i=0; i<mymapLonLatList.length; i++){
-							if(mymapLonLatList[i].mymapidx == data[0][0].mymapidx){
-							    mymapLonLatList.splice(i,1);
-							    mymapCheckpointList.splice(i,1);
-							    drawFavoriteMap();
-							    return;
-							}
-					    }
-					}
-					 
-					mymapLonLatList.push({mymapLonLat:mymapLonLat, mymapidx:data[0][0].mymapidx});
-					mymapCheckpointList.push({mymapCheckpoint:mymapCheckpoint, mymapidx:data[0][0].mymapidx});
-					console.log(mymapLonLatList);
-					console.log(mymapCheckpointList);
-					drawFavoriteMap();
-		        }
-			});	
-		}
-		
-		function drawFavoriteMap(){
-		    
-		    map = new google.maps.Map(document.getElementById('map'), {
-				zoom : zoom,
-				mapTypeId: google.maps.MapTypeId.ROADMAP,
-				center : center,
-				mapTypeControl: false,
-				zoomControl: false,
-				streetViewControl: false
-			});
-		    
-		    for(var i=0; i<mymapLonLatList.length; i++){    
-				var mymapCoordinates = mymapLonLatList[i].mymapLonLat;
-					var mymapPath = new google.maps.Polyline({
-						path : mymapCoordinates,
-						geodesic : true,
-						strokeColor : '#FF0000',
-						strokeOpacity : 1.0,
-						strokeWeight : 3
-					});
-					mymapPath.setMap(null);
-					mymapPath.setMap(map);
-			}
-		    console.log(mymapCheckpointList.length);
-			/////////////////////		    
-			for(var i=0; i<mymapCheckpointList.length; i++){
-			    console.log(mymapCheckpointList[i].mymapCheckpoint.length); 
-			    for(var j=0; j<mymapCheckpointList[i].mymapCheckpoint.length; j++){
-					console.log(mymapCheckpointList[i].mymapCheckpoint[j]);
-						
-					checkMarker.push(new google.maps.Marker({
-				   	 	position: mymapCheckpointList[i].mymapCheckpoint[j],
-				    	map: map
-					}));
-				  
-				  var listener3 = google.maps.event.addListener(map, 'click', function(){
-					if(infowindow != null){
-						  infowindow.close();
-					  }
-				  });
-				  var listener1 = google.maps.event.addListener(checkMarker[i], 'click', function(){
-					  if(infowindow != null){
-						  infowindow.close();
-					  }
-					  infowindow = new google.maps.InfoWindow({
-						    content: (this.position.lat()).toFixed(7).toString()+", "+(this.position.lng()).toFixed(7).toString()+
-						    '<br/><input type="button" value="출발설정" onClick="startCheck('+
-						    		this.position.lat().toString()+", "+this.position.lng().toString()+')"/><input type="button" value="도착설정" onClick="endCheck('+
-						    		this.position.lat().toString()+", "+this.position.lng().toString()+')"/><input type="button" value="위치삭제" onClick="removeSpot('+
-						    		(this.position.lat()).toFixed(7).toString()+", "+(this.position.lng()).toFixed(7).toString()+')"/>'
-						  }); 
-					  infowindow.open(map, this);
-				  });  
-			    }
-			}
-		    
-		    
-		    
-		    if(listLonLat.length != 0){
-			var initflightPlanCoordinates = listLonLat;
-				var initflightPath = new google.maps.Polyline({
-					path : initflightPlanCoordinates,
-					geodesic : true,
-					strokeColor : '#000000',
-					strokeOpacity : 1.0,
-					strokeWeight : 2
-				});
-				initflightPath.setMap(null);
-				
-				if(checkMarker.length != 0){	// 라인 마커가 있으면
-					for (var i = 0; i < checkMarker.length; i++) {
-						checkMarker[i].setMap(null);
-					  }
-					checkMarker = [];
-					startLocation = null;
-					endLocation = null;
-				}
-				
-				initflightPath.setMap(map);
-			}
-		    addLineMarker();
-		    
-		}
-	
-	</script> 
 
->>>>>>> 7bf3fad5dab103956d9e6e903e4494f69e9d9870
-<body> 
-	<div>상단바 자리</div>
-	<form name="inputform" action="${ pageContext.request.contextPath }/map/planMymap.do">
-	<!-- 상단 바 -->
-	<nav class="navbar navbar-default navbar-fixed-top">
-		<div class="container-fluid">
-			<div class="navbar-header">
-				<!-- 로고, 이미지로 바꿀것 -->
-				<a class="navbar-brand" href="#">나만의 지도</a>
-				<button class="navbar-toggle collapsed" data-toggle="collapse"
-					data-target="#target">
-					<!-- 메뉴 최소화시 =버튼 -->
-					<span class="sr-only">Toggle navigation</span> <span
-						class="icon-bar"></span> <span class="icon-bar"></span> <span
-						class="icon-bar"></span> <span class="icon-bar"></span>
-				</button>
-			</div>
+<body>
+	<header>
+		<jsp:include page="/top.do" />
+	</header>
+	<section>
+		<form name="inputform"
+			action="${ pageContext.request.contextPath }/map/regMymap.do">
+			<div class="row">
+				<div class="col-md-1"></div>
+				<div class="col-md-10">
+					<div class="col-md-12">
+						<input name="title" type="text" class="form-control title-text"
+							placeholder="제목">
+					</div>
+					<br /> <br />
+					<div class="col-md-12">
+						<input name="content" type="text" class="form-control title-text"
+							placeholder="설명">
+					</div>
+					<br /> <br />
+					<div class='col-md-5'>
+						<div class="form-group">
+							<div class='input-group date' id='datetimepicker1'>
+								<input type='text' class="form-control" name="start" id="start" />
+								<span class="input-group-addon"> <i
+									class="fa fa-calendar" aria-hidden="true"></i>
+								</span>
+							</div>
+						</div>
+					</div>
+					<div class='col-md-5'>
+						<div class="form-group">
+							<div class='input-group date' id='datetimepicker2'>
+								<input type='text' class="form-control" name="end" id="end" />
+								<span class="input-group-addon"> <i
+									class="fa fa-calendar" aria-hidden="true"></i></span>
+							</div>
+						</div>
+					</div>
+					<div class='col-md-2'>
+						<div class="form-group">
+							<div class="col-md-12">
+								<input id="mapAgain" type="button" value="재선택"
+									class="btn btn-secondary col-md-12" />
+							</div>
+						</div>
+					</div>
 
-			<div class="collapse navbar-collapse" id="target">
-				<!-- 검색바 -->
-				<div class="navbar-form navbar-nav">
-					<input type="text" class="form-control" placeholder="Search" id="searchtext" size="50%" style="text-align: center;" />&nbsp;&nbsp; 
-					<a href="javascript:goSearch()"><i class="fa fa-search fa-2x" aria-hidden="true"></i></a>
+					<div class="col-md-12">
+						<input name="hashtag" type="text" class="form-control title-text"
+							placeholder="#해쉬태그">
+					</div>
+					<div class="col-md-12">
+						해쉬태그 출력될곳<br /> <br />
+					</div>
+
 				</div>
-				<ul class="nav navbar-nav navbar-right">
-					<!-- 우상단 드롭 메뉴 -->
-					<li class="dropdown"><a href="#" class="dropdown-toggle"
-						data-toggle="dropdown" aria-expanded="false"><span>메뉴</span> <span
-							class="caret"></span> </a>
-						<ul class="dropdown-menu">
-							<li><a data-toggle="modal" data-target="#loginModal"
-								data-backdrop="static" data-keyboard="false">로그인</a></li>
-							<li><a href="#">마이페이지</a></li>
-							<li class="divider"></li>
-							<li><a href="#">로그아웃</a></li>
-						</ul></li>
-				</ul>
+				<div class="col-md-1"></div>
 			</div>
-		</div>
-	</nav>
-	<!-- 상단바 끝 -->
-	<br/><br/> 
-			 	 	   
-		<div class="row">
-				<div id="map" class="col-md-10" style="height: 850px; position: absolute;"
+			<div class="row">
+				<div id="map" class="col-md-10" style="height: 756px"
 					ondragenter="return dragEnter(event)"
-					ondrop="return dragDrop(event)" ondragover="return dragOver(event)">
-				</div>
-				
-				<nav id="leftmenu" class="navbar navbar-minimal animate" role="navigation">
-					<div class="navbar-toggler animate">
-						<span class="menu-icon"></span>
-					</div>
-					<ul class="navbar-menu animate">
-						<li><div class="animate">
-								<div class="desc animate" style="overflow: auto; height: 600px; width: 300px;">
-									내여행<br />내여행<br />내여행<br />내여행<br />내여행<br />내여행<br />
-								</div>
-								<i class="fa fa-map-o" aria-hidden="true"></i>
-							</div></li>
-						<li><div class="animate">
-								<div class="desc animate" style="overflow: auto; height: 600px; width: 300px;">내여행계획</div>
-								<i class="fa fa-calendar" aria-hidden="true"></i>
-							</div></li>
-						<li><div class="animate">
-								<div class="desc animate" style="overflow: auto; height: 600px; width: 300px;">
-									<c:forEach var="mymapList" items="${ mymapList }">
-										<a href="javascript:getMymap('${ mymapList.idx }')" style="text-decoration: none; color: white;">${ mymapList.title }</a><br/>
-									</c:forEach> 
-								</div> 
-								<i class="fa fa-star-o" aria-hidden="true"></i>
-							</div></li>
-						<li><div class="animate">
-								<div class="desc animate" style="overflow: auto; height: 600px; width: 300px;">
-									<c:forEach var="favoriteplaceList" items="${ favoriteplaceList }">
-										<a href="javascript:getMyplace('${ favoriteplaceList.checkpointidx }')" style="text-decoration: none; color: white;">${ favoriteplaceList.placename }</a><br/>
-									</c:forEach>
-								</div>
-								<i class="fa fa-map-marker" aria-hidden="true"></i>
-							</div></li>
-					</ul>
-				</nav>  
-				
-				<div class="col-md-2"  style="border: solid; float: right; margin-left: 0">
-					<div>
-						<input type="text" name="title" placeholder="제목" class="form-control"/>
-					</div>
-					<div>
-						<input type="text" name="content" placeholder="내용" class="form-control"/>
-					</div>
+					ondrop="return dragDrop(event)" ondragover="return dragOver(event)"></div>
+				<div class="col-md-2">
 					<span class="col-md-2" draggable="true"
 						ondragstart="return dragStart(event)"
 						ondragend="return dragextramarker(event)"><img
@@ -1326,39 +1040,52 @@
 					<br /> <br />
 					<div class="col-md-12"
 						style="height: 696px; overflow: auto; border: solid;">
+						<br />--------------------------------------------
 						<div id="draggablePanelList" class="list-unstyled"></div>
 					</div>
-	
+
 					<div class="col-md-12">
-						<button type="button" class="btn btn-secondary col-md-6" onclick="goSubmit()">등록</button>
+						<button type="button" class="btn btn-secondary col-md-6"
+							onclick="goSubmit()">등록</button>
 						<button type="button" class="btn btn-secondary col-md-6">취소</button>
 					</div>
 				</div>
-   
-		</div><br/>
-		<div class="row"> 
-			<div class="col-md-10" style="border:solid; overflow: auto;">
-				<h3>길찾기</h3>
-				<span id="dragStart" draggable="true"
-					ondragstart="return dragStart(event)"
-					ondragend="return startDragEnd(event)"> 
-					<img src="https://developers.skplanetx.com/upload/tmap/marker/pin_b_m_a.png" />출발
-				</span> 
-				<span id="dragEnd" draggable="true"
-					ondragstart="return dragStart(event)"
-					ondragend="return endDragEnd(event)"> 
-					<img src="https://developers.skplanetx.com/upload/tmap/marker/pin_b_m_a.png" />도착
-				</span> 
-				<span><input type="button" value="자가용" onclick="findLoadAgain()" /></span> 
-				<span><input type="button" value="대중교통" onclick="calculateAndDisplayRoute()" /></span> 
-				<span><input type="button" value="도보" onclick="forWalk()" /></span>
-				<input type="button" value=" 길찾기 종료 " onclick="closeSearch()" class="btn btn-secondary col-md-2" /> 
-				<div id="addinfo"></div><br/>
+
 			</div>
-			<br/>
-		</div>
-		<br /> <br /> <br />
-		<div id="map_div"></div>	
+			<br /> <br /> <br />
+			<div class="row">
+				<div class="col-md-1"></div>
+				<div class="col-md-8"
+					style="border: solid; overflow: auto; width: 800px">
+					<h3>길찾기</h3>
+					<span id="dragStart" draggable="true"
+						ondragstart="return dragStart(event)"
+						ondragend="return startDragEnd(event)"> <img
+						src="https://developers.skplanetx.com/upload/tmap/marker/pin_b_m_a.png" />출발
+					</span> <span id="dragEnd" draggable="true"
+						ondragstart="return dragStart(event)"
+						ondragend="return endDragEnd(event)"> <img
+						src="https://developers.skplanetx.com/upload/tmap/marker/pin_b_m_a.png" />도착
+					</span> <span><input type="button" value="자가용"
+						onclick="findLoadAgain()" /></span> <span><input type="button"
+						value="대중교통" onclick="calculateAndDisplayRoute()" /></span> <span><input
+						type="button" value="도보" onclick="forWalk()" /></span>
+					<div class="col-md-12">
+						<input type="button" value=" 길찾기 종료 " onclick="closeSearch()"
+							class="btn btn-secondary col-md-6" />
+					</div>
+					<br />--------------------------------------------
+					<div id="addinfo"></div>
+				</div>
+				<div class="col-md-1"></div>
+			</div>
+			<br /> <br /> <br />
+			<div id="map_div"></div>
 		</form>
+
+	</section>
+	<footer>
+		<jsp:include page="/bottom.do" />
+	</footer>
 </body>
 </html>

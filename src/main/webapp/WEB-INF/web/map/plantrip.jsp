@@ -1,39 +1,69 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
+<%@include file="/WEB-INF/share.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>MY MAP ^_^</title>
-<script language="javascript"
+<script
 	src="https://apis.skplanetx.com/tmap/js?version=1&format=javascript&appKey=bac4f916-3297-3be4-93ff-e37ae88b8f42"></script>
 <script
 	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD6x6lwLmHlSpovbF0nM-fPIPpjfv4D9IM&libraries=places"></script>
-<!-- fa폰트 아이콘 -->
-<link
-	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"
-	rel="stylesheet">
-<!-- bootstrap CSS -->
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-<!-- bootstrap 테마 -->
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
-<!-- moment. -->
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>	
-<!-- jquery -->
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+
 <!-- 판넬 드래그에 필요함 -->
 <script type='text/javascript'
 	src="https://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
-<!-- bootstrap js -->
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 
+<script type="text/javascript">
+
+   $(function() { 
+      var sortIndex;	// 선택된 div index의 listLonLat 좌표값
+      var sortNum;		// 타임라인 div index 번호
+	      /* 타임라인 판넬 드래그 */
+		jQuery(function($) {
+			var panelList = $('#draggablePanelList');
+			panelList.sortable({
+        		start: function(event, ui) { 
+        		      sortIndex = listLonLat[ui.item.index()];
+        		      sortNum = ui.item.index();
+       			},
+       			stop: function(event, ui) { 
+       			    if(sortNum != ui.item.index()){
+			      		   for(var i=0; i<listLonLat.length; i++){
+								if(listLonLat[i].lat == sortIndex.lat && listLonLat[i].lng == sortIndex.lng){
+								    sortNum = i;
+								}
+							}
+	      		     	    listLonLat.splice(sortNum, 1);
+	      		     	    sortNum = ui.item.index();
+	      		     		listLonLat.splice(sortNum,0,sortIndex);
+	      		     		change = false;
+	      		     	initialize();
+       			    }
+     			},
+				handle : '.panel-heading',
+				update : function() {
+					$('.panel', panelList).each(function(index, elem) {
+						var $listItem = $(elem), newIndex = $listItem.index();
+						//판넬 리스트 번호 관련
+						// Persist the new indices.
+					});
+				}
+			});
+		});
+     
+      //leftmenu 토글
+		$('.navbar-toggler').on('click', function(event) {
+			event.preventDefault();
+			$(this).closest('.navbar-minimal').toggleClass('open');
+		})
+   });
+   
+ 
+</script>
+</head>
 <style>
 #rightside {
 	float: none;
@@ -274,11 +304,7 @@
 }
 
 </style>
-<script src="">
 
-<<<<<<< HEAD
-</head>
-=======
 <script type="text/javascript">
  
     // 시간별 좌표 불러오기
@@ -1093,7 +1119,6 @@
 	
 	<script>
 		var mymapLonLatList = new Array();
-		var mymapCheckpointList = new Array();
 		var mymapCoordinates;
 		function getMymap(mymapidx){
 		    
@@ -1105,34 +1130,27 @@
 					mymapidx : mymapidx
 			    },
 			    success: function(data) {
+					console.log(data);
 					var mymapLonLat = new Array();
-					var mymapCheckpoint = new Array();
-					for(var i=0; i<data[0].length; i++){
-					    mymapLonLat.push({lat:Number(data[0][i].lat), lng:Number(data[0][i].lon)});
-					    for(var j=0; j<data[1].length; j++){
-							if(data[0][i].idx == data[1][j].regcoordinatesidx){
-							    mymapCheckpoint.push({lat:Number(data[0][i].lat), lng:Number(data[0][i].lon), title:data[1][j].title, content:data[1][j].content});
-							}
-					    }
+					for(var i=0; i<data.length; i++){
+					    mymapLonLat.push({lat:Number(data[i].lat), lng:Number(data[i].lon)});
 					}
-					goZoomIn(Number(data[0][0].lat), Number(data[0][0].lon));
-					
-					// mymapLonLatList의 데이터가 있을때 새로들어온 데이터와 비교해서 동일하면 삭제하기
+					goZoomIn(Number(data[0].lat), Number(data[0].lon));
 					if(mymapLonLatList.length != 0){
 					    for(var i=0; i<mymapLonLatList.length; i++){
-							if(mymapLonLatList[i].mymapidx == data[0][0].mymapidx){
+							console.log(mymapLonLatList[i].mymapidx);
+							console.log(data[0].mymapidx);
+							if(mymapLonLatList[i].mymapidx == data[0].mymapidx){
 							    mymapLonLatList.splice(i,1);
-							    mymapCheckpointList.splice(i,1);
+							    console.log(mymapLonLatList);
 							    drawFavoriteMap();
 							    return;
 							}
 					    }
 					}
 					 
-					mymapLonLatList.push({mymapLonLat:mymapLonLat, mymapidx:data[0][0].mymapidx});
-					mymapCheckpointList.push({mymapCheckpoint:mymapCheckpoint, mymapidx:data[0][0].mymapidx});
+					mymapLonLatList.push({mymapLonLat:mymapLonLat, mymapidx:data[0].mymapidx});
 					console.log(mymapLonLatList);
-					console.log(mymapCheckpointList);
 					drawFavoriteMap();
 		        }
 			});	
@@ -1161,40 +1179,6 @@
 					mymapPath.setMap(null);
 					mymapPath.setMap(map);
 			}
-		    console.log(mymapCheckpointList.length);
-			/////////////////////		    
-			for(var i=0; i<mymapCheckpointList.length; i++){
-			    console.log(mymapCheckpointList[i].mymapCheckpoint.length); 
-			    for(var j=0; j<mymapCheckpointList[i].mymapCheckpoint.length; j++){
-					console.log(mymapCheckpointList[i].mymapCheckpoint[j]);
-						
-					checkMarker.push(new google.maps.Marker({
-				   	 	position: mymapCheckpointList[i].mymapCheckpoint[j],
-				    	map: map
-					}));
-				  
-				  var listener3 = google.maps.event.addListener(map, 'click', function(){
-					if(infowindow != null){
-						  infowindow.close();
-					  }
-				  });
-				  var listener1 = google.maps.event.addListener(checkMarker[i], 'click', function(){
-					  if(infowindow != null){
-						  infowindow.close();
-					  }
-					  infowindow = new google.maps.InfoWindow({
-						    content: (this.position.lat()).toFixed(7).toString()+", "+(this.position.lng()).toFixed(7).toString()+
-						    '<br/><input type="button" value="출발설정" onClick="startCheck('+
-						    		this.position.lat().toString()+", "+this.position.lng().toString()+')"/><input type="button" value="도착설정" onClick="endCheck('+
-						    		this.position.lat().toString()+", "+this.position.lng().toString()+')"/><input type="button" value="위치삭제" onClick="removeSpot('+
-						    		(this.position.lat()).toFixed(7).toString()+", "+(this.position.lng()).toFixed(7).toString()+')"/>'
-						  }); 
-					  infowindow.open(map, this);
-				  });  
-			    }
-			}
-		    
-		    
 		    
 		    if(listLonLat.length != 0){
 			var initflightPlanCoordinates = listLonLat;
@@ -1224,48 +1208,12 @@
 	
 	</script> 
 
->>>>>>> 7bf3fad5dab103956d9e6e903e4494f69e9d9870
 <body> 
-	<div>상단바 자리</div>
+		<header>
+		<jsp:include page="/top.do" />
+	</header>
+	<section>
 	<form name="inputform" action="${ pageContext.request.contextPath }/map/planMymap.do">
-	<!-- 상단 바 -->
-	<nav class="navbar navbar-default navbar-fixed-top">
-		<div class="container-fluid">
-			<div class="navbar-header">
-				<!-- 로고, 이미지로 바꿀것 -->
-				<a class="navbar-brand" href="#">나만의 지도</a>
-				<button class="navbar-toggle collapsed" data-toggle="collapse"
-					data-target="#target">
-					<!-- 메뉴 최소화시 =버튼 -->
-					<span class="sr-only">Toggle navigation</span> <span
-						class="icon-bar"></span> <span class="icon-bar"></span> <span
-						class="icon-bar"></span> <span class="icon-bar"></span>
-				</button>
-			</div>
-
-			<div class="collapse navbar-collapse" id="target">
-				<!-- 검색바 -->
-				<div class="navbar-form navbar-nav">
-					<input type="text" class="form-control" placeholder="Search" id="searchtext" size="50%" style="text-align: center;" />&nbsp;&nbsp; 
-					<a href="javascript:goSearch()"><i class="fa fa-search fa-2x" aria-hidden="true"></i></a>
-				</div>
-				<ul class="nav navbar-nav navbar-right">
-					<!-- 우상단 드롭 메뉴 -->
-					<li class="dropdown"><a href="#" class="dropdown-toggle"
-						data-toggle="dropdown" aria-expanded="false"><span>메뉴</span> <span
-							class="caret"></span> </a>
-						<ul class="dropdown-menu">
-							<li><a data-toggle="modal" data-target="#loginModal"
-								data-backdrop="static" data-keyboard="false">로그인</a></li>
-							<li><a href="#">마이페이지</a></li>
-							<li class="divider"></li>
-							<li><a href="#">로그아웃</a></li>
-						</ul></li>
-				</ul>
-			</div>
-		</div>
-	</nav>
-	<!-- 상단바 끝 -->
 	<br/><br/> 
 			 	 	   
 		<div class="row">
@@ -1358,7 +1306,12 @@
 			<br/>
 		</div>
 		<br /> <br /> <br />
-		<div id="map_div"></div>	
+		<div id="map_div"></div>
 		</form>
+		
+			</section>
+	<footer>
+		<jsp:include page="/bottom.do" />
+	</footer>
 </body>
 </html>
