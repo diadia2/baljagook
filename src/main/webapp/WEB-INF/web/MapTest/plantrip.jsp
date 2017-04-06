@@ -1157,6 +1157,7 @@
 					mymapidx : mymapidx
 			    },
 			    success: function(data) {
+					console.log(data);
 					var mymapLonLat = new Array();
 					for(var i=0; i<data.length; i++){
 					    mymapLonLat.push({lat:Number(data[i].lat), lng:Number(data[i].lon)});

@@ -10,12 +10,9 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -23,8 +20,6 @@ import kr.co.foot.checkpoint.CheckpointVO;
 import kr.co.foot.favoritemap.FavoritemapVO;
 import kr.co.foot.favoriteplace.FavoriteplaceVO;
 import kr.co.foot.hashtag.HashtagVO;
-import kr.co.foot.like.LikeDTO;
-import kr.co.foot.like.LikeVO;
 import kr.co.foot.regcoordinates.RegcoordinatesVO;
 import kr.co.foot.regmap.RegmapVO;
 
@@ -232,7 +227,6 @@ public class MymapController {
 		
 		List<MymapVO> mymapList = mymapService.selectMymapList(searchtext);
 		List<HashtagVO> hashtagList = new ArrayList<HashtagVO>();
-		int likeCnt=0;
 		
 		for(int i=0; i<mymapList.size(); i++){
 			
@@ -251,21 +245,8 @@ public class MymapController {
 			regmapList.add(getRegmap);
 		}
 		
-		//Like
-		List<String> userList = new ArrayList<String>();
-		for(int i=0; i<mymapList.size(); i++) {
-			
-			userList = mymapService.getLikeCnt(mymapList.get(i).getIdx());
-			if(userList == null) {
-				likeCnt = 0;
-			} else {
-				likeCnt = userList.size();
-			}
-		}		
-		
 		model.addAttribute("mymapList", mymapList);
 		model.addAttribute("hashtagList", hashtagList);
-		model.addAttribute("likeCnt", likeCnt);
 		
 		return "search/search";
 	}
@@ -316,6 +297,7 @@ public class MymapController {
 		return "search/detail";
 	}
 	
+<<<<<<< HEAD
 //	Like
 	@RequestMapping(value="/like.do", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
@@ -380,6 +362,8 @@ public class MymapController {
 		return likeCnt;
 	}	
 	
+=======
+>>>>>>> 3c4c62b076471bbef8e6896d2c7258c462411b7a
 	/**
 	 * ��� ���ã�� �߰�
 	 * @param idx
@@ -476,13 +460,25 @@ public class MymapController {
 	
 	@RequestMapping("/map/getMymap.do")
 	@ResponseBody
-	public List<RegcoordinatesVO> getMymap(@RequestParam("mymapidx") String mymapidxstr){
+	public Object[] getMymap(@RequestParam("mymapidx") String mymapidxstr){
 		
 		int mymapidx = Integer.parseInt(mymapidxstr);
 		
 		List<RegcoordinatesVO> regcoordinatesVO = mymapService.getRegcoordinatesInfo(mymapidx);
+		List<CheckpointVO> checkpointList = new ArrayList<CheckpointVO>();
 		
-		return regcoordinatesVO;
+		for(int i=0; i<regcoordinatesVO.size(); i++){
+			CheckpointVO checkpointVO = mymapService.selectCheckPoint(regcoordinatesVO.get(i).getIdx());
+			checkpointList.add(checkpointVO);
+		}
+		
+		for(CheckpointVO vo : checkpointList){
+			System.out.println(vo);
+		}
+		
+		Object[] object = {regcoordinatesVO, checkpointList};
+		
+		return object;
 	}
 	
 	
