@@ -186,7 +186,7 @@ body {
 		<div class="container-fluid">
 			<div class="navbar-header">
 				<!-- 로고, 이미지로 바꿀것 -->
-				<a class="navbar-brand" href="main.do">나만의 지도</a>
+				<a class="navbar-brand" href="${pageContext.request.contextPath }/main.do">나만의 지도</a>
 				<button class="navbar-toggle collapsed" data-toggle="collapse"
 					data-target="#target">
 					<!-- 메뉴 최소화시 =버튼 -->
