@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.foot.mymap.MymapDAO">
+   
+   <insert id="regMymap" parameterType="kr.co.foot.mymap.MymapVO">
+      INSERT INTO t_myMap(title, content, userid, regdate, type) VALUES (#{title}, #{content}, #{userid}, #{regdate}, #{type})
+   </insert>
+   
+   <select id="getIndex" parameterType="String" resultType="int">
+       select idx from t_myMap where regdate = #{redate}
+   </select>
+   
+   <insert id="insertLonLat" parameterType="kr.co.foot.regcoordinates.RegcoordinatesVO">
+       insert into t_regcoordinates(lon, lat, mymapidx) values (#{lon}, #{lat}, #{mymapidx})
+   </insert>
+   
+   <insert id="insertRegMap" parameterType="kr.co.foot.regmap.RegmapVO">
+       insert into t_regmap(sdate, edate, city, theme, mymapidx) values (#{sdate}, #{edate}, #{city}, #{theme}, #{mymapidx})
+   </insert>
+   
+   <insert id="insertHashtag">
+       insert into t_hashtag(name, mymapidx) values (#{name}, #{mymapidx})
+   </insert>
+   
+   <select id="selectRegcoordinatesInfo" parameterType="int" resultType="kr.co.foot.regcoordinates.RegcoordinatesVO">
+	   select idx, lon, lat, mymapidx from t_regcoordinates where mymapidx = #{mymapidx}
+   </select>
+   
+   <insert id="insertCheckpoint">
+       insert into t_checkpoint (coordinatesidx, regcoordinatesidx, content, title) values (0, #{regcoordinatesidx}, #{content}, #{title})
+   </insert>
+   
+   <select id="selectMymapList" parameterType="String" resultType="kr.co.foot.mymap.MymapVO">
+       select idx, title, content, userid, regdate, type from t_myMap 
+       where title like CONCAT('%',#{searchtext},'%') or content like CONCAT('%',#{searchtext},'%') and type = 1
+   </select>
+   
+   <select id="getHashtagList" parameterType="int" resultType="kr.co.foot.hashtag.HashtagVO">
+       select idx, name, mymapidx from t_hashtag where mymapidx = #{idx}
+   </select>
+   
+   <select id="getRegmapList" parameterType="int" resultType="kr.co.foot.regmap.RegmapVO">
+       select idx, sdate, edate, viewcnt, blind, city, theme, mymapidx from t_regmap where mymapidx = #{idx}
+   </select>
+   
+   <select id="selectMymap" parameterType="int" resultType="kr.co.foot.mymap.MymapVO">
+       select idx, title, content, userid, regdate, type from t_myMap where idx = #{mymapidx}
+   </select>
+   
+   <select id="getRegmapsList" parameterType="int" resultType="kr.co.foot.regcoordinates.RegcoordinatesVO">
+	   select idx, lon, lat, mymapidx from t_regcoordinates where mymapidx = #{mymapidx}
+   </select>
+   
+   <select id="selectCheckPoint" parameterType="int" resultType="kr.co.foot.checkpoint.CheckpointVO">
+       select idx, coordinatesidx, regcoordinatesidx, content, title from t_checkpoint where regcoordinatesidx = #{idx}
+   </select>
+   
+   <insert id="insertFavoritePlace" parameterType="kr.co.foot.favoriteplace.FavoriteplaceVO">
+       insert into t_favoriteplace (userid, checkpointidx, placename) values (#{userid}, #{checkpointidx}, #{placename})
+   </insert>
+   
+   <select id="selectcheckpoint" parameterType="String" resultType="kr.co.foot.favoriteplace.FavoriteplaceVO">
+       select idx, userid, checkpointidx, placename from t_favoriteplace where userid = #{userid}
+   </select>
+   
+   <insert id="insertFavoriteMap" parameterType="kr.co.foot.favoritemap.FavoritemapVO">
+       insert into t_favoritemap (userid, regmapidx) values (#{userid}, #{regmapidx})
+   </insert>
+   
+   <select id="selectRegmapidx" parameterType="String" resultType="kr.co.foot.favoritemap.FavoritemapVO">
+       select idx, userid, regmapidx from t_favoritemap where userid = #{userid}
+   </select>
+   
+   <select id="selectCheckPointByIdx" parameterType="int" resultType="kr.co.foot.checkpoint.CheckpointVO">
+       select idx, coordinatesidx, regcoordinatesidx, content, title from t_checkpoint where idx = #{checkpointidx}
+   </select>
+   
+   <select id="getRegcoordinatesInfoByIdx" parameterType="int" resultType="kr.co.foot.regcoordinates.RegcoordinatesVO">
+       select idx, lon, lat, mymapidx from t_regcoordinates where idx = #{idx}
+   </select>
+   
+   <select id="selectMymapByRegmapIdx" parameterType="int" resultType="kr.co.foot.mymap.MymapVO">
+       select idx, title, content, userid, regdate, type from t_myMap where idx=(select mymapidx from t_regmap where idx=#{regmapidx})
+   </select>
+</mapper>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.foot.coordinates.CoordinatesDAO">
+   
+   <insert id="setCoordinates" parameterType="kr.co.foot.coordinates.CoordinatesVO">
+      INSERT INTO coordinates(lat, lon, email, timestamp, accuracy) VALUES (#{lat}, #{lon}, #{email}, #{timestamp}, #{accuracy})
+   </insert>
+   
+   <select id="getLonLat" parameterType="kr.co.foot.coordinates.TimeStampVO" resultType="kr.co.foot.coordinates.CoordinatesVO">
+       select lon, lat, timestamp, accuracy, email from t_coordinates where accuracy <![CDATA[<]]> 50 and email = #{id} and timestamp between #{startTime} and #{endTime} group by lon order by idk DESC
+   </select>
+</mapper>
