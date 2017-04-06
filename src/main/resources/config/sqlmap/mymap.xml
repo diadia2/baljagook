@@ -31,8 +31,15 @@
    </insert>
    
    <select id="selectMymapList" parameterType="String" resultType="kr.co.foot.mymap.MymapVO">
-       select idx, title, content, userid, regdate, type from t_myMap 
-       where title like CONCAT('%',#{searchtext},'%') or content like CONCAT('%',#{searchtext},'%') and type = 1
+       select a.idx as idx, a.title as title, a.content as content, a.userid as userid, a.regdate as regdate, a.type as type from t_myMap a 
+       inner join t_hashtag b on a.idx = b.mymapidx 
+       where 
+       	a.title like CONCAT('%',#{searchtext},'%') 
+       	or 
+       	a.content like CONCAT('%',#{searchtext},'%')
+       	or 
+       	b.name like CONCAT('%',#{searchtext},'%') 
+       	and a.type=1
    </select>
    
    <select id="getHashtagList" parameterType="int" resultType="kr.co.foot.hashtag.HashtagVO">
@@ -82,4 +89,17 @@
    <select id="selectMymapByRegmapIdx" parameterType="int" resultType="kr.co.foot.mymap.MymapVO">
        select idx, title, content, userid, regdate, type from t_myMap where idx=(select mymapidx from t_regmap where idx=#{regmapidx})
    </select>
+   
+   <select id="getLikeCnt" parameterType="int" resultType="String">
+       select userid from t_like where regmapidx = #{idx}
+   </select>
+   
+   <select id="getRegmapIdx" parameterType="int" resultType="int">
+   	   select idx from t_regmap where mymapidx = #{mymapidx}
+   </select>
+   
+   <insert id="insertLikeInfo" parameterType="kr.co.foot.like.LikeVO">
+       insert into t_like(userid, regmapidx) values(#{userid}, #{regmapidx}) 
+   </insert>
+   
 </mapper>

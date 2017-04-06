@@ -6,6 +6,7 @@ import kr.co.foot.checkpoint.CheckpointVO;
 import kr.co.foot.favoritemap.FavoritemapVO;
 import kr.co.foot.favoriteplace.FavoriteplaceVO;
 import kr.co.foot.hashtag.HashtagVO;
+import kr.co.foot.like.LikeVO;
 import kr.co.foot.regcoordinates.RegcoordinatesVO;
 import kr.co.foot.regmap.RegmapVO;
 
@@ -31,5 +32,8 @@ public interface MymapService {
 	public CheckpointVO selectCheckPointByIdx(String checkpointidx);
 	public RegcoordinatesVO getRegcoordinatesInfoByIdx(int regcoordinatesidx);
 	public MymapVO selectMymapByRegmapIdx(int regmapidx);
+	public List<String> getLikeCnt(int idx);
+	public int getRegmapIdx(int mymapidx);
+	public void insertLikeInfo(LikeVO likeVO);
 
 }
