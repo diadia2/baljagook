@@ -5,7 +5,6 @@
 	<typeAliases>
 		<typeAlias type="kr.co.foot.board.vo.CommentVO" alias="CommentVO" />
 		<typeAlias type="kr.co.foot.board.vo.MemberVO" alias="MemberVO" />
-		<typeAlias type="kr.co.foot.board.vo.MymapVO" alias="MymapVO" />
 		<typeAlias type="kr.co.foot.board.vo.RegMapVO" alias="RegMapVO" />
 	</typeAliases>
 

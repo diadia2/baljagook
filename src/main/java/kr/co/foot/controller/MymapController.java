@@ -234,6 +234,7 @@ public class MymapController {
 		
 		List<MymapVO> mymapList = mymapService.selectMymapList(searchtext);
 		List<HashtagVO> hashtagList = new ArrayList<HashtagVO>();
+		int likeCnt=0;
 		
 		for(int i=0; i<mymapList.size(); i++){
 			
@@ -252,8 +253,21 @@ public class MymapController {
 			regmapList.add(getRegmap);
 		}
 		
+		//Like
+		List<String> userList = new ArrayList<String>();
+		for(int i=0; i<mymapList.size(); i++) {
+			
+			userList = mymapService.getLikeCnt(mymapList.get(i).getIdx());
+			if(userList == null) {
+				likeCnt = 0;
+			} else {
+				likeCnt = userList.size();
+			}
+		}	
+		
 		model.addAttribute("mymapList", mymapList);
 		model.addAttribute("hashtagList", hashtagList);
+		model.addAttribute("likeCnt", likeCnt);
 		
 		return "search/search";
 	}
