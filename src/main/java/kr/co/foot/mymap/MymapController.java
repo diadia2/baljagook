@@ -316,10 +316,10 @@ public class MymapController {
 		return "search/detail";
 	}
 	
-//	Like 버튼
+//	Like
 	@RequestMapping(value="/like.do", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public int handleLike(@RequestBody LikeDTO likeDTO, HttpServletRequest request) throws Exception {
+	public int like(@RequestBody LikeDTO likeDTO, HttpServletRequest request) throws Exception {
 		
 		System.out.println("like 컨트롤러로 들어옴");
 		System.out.println(likeDTO);
@@ -336,6 +336,38 @@ public class MymapController {
 		mymapService.insertLikeInfo(likeVO);
 		
 		//사용자가 like 클릭 시 업데이트된 likeCnt 데이터 전송
+		List<String> userList = new ArrayList<String>();
+		int likeCnt;
+		userList = mymapService.getLikeCnt(mymapidx);
+		if(userList == null) {
+			likeCnt = 0;
+		} else {
+			likeCnt = userList.size();
+		}
+		
+		return likeCnt;
+	}
+	
+//	Unlike	
+	@RequestMapping(value="/unlike.do", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public int unlike(@RequestBody LikeDTO likeDTO, HttpServletRequest request) throws Exception {
+		
+		System.out.println("like 컨트롤러로 들어옴");
+		System.out.println(likeDTO);
+		
+		//검색페이지에 나온 mymapidx를 통해 해당 게시물의 regmapidx 추출
+		String userid = likeDTO.getUserid();
+		int mymapidx = likeDTO.getMymapidxRef();
+		int regmapidx = mymapService.getRegmapIdx(mymapidx);
+	
+		LikeVO likeVO = new LikeVO();
+		likeVO.setUserid(userid);
+		likeVO.setRegmapidx(regmapidx);
+		
+		mymapService.deleteLikeInfo(likeVO);
+		
+		//사용자가 unlike 클릭 시 업데이트된 likeCnt 데이터 전송
 		List<String> userList = new ArrayList<String>();
 		int likeCnt;
 		userList = mymapService.getLikeCnt(mymapidx);

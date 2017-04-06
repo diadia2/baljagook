@@ -91,7 +91,9 @@
    </select>
    
    <select id="getLikeCnt" parameterType="int" resultType="String">
-       select userid from t_like where regmapidx = #{idx}
+       select a.userid from t_like a 
+       inner join t_regmap b on a.regmapidx = b.idx
+       where b.mymapidx = #{idx}
    </select>
    
    <select id="getRegmapIdx" parameterType="int" resultType="int">
@@ -101,5 +103,9 @@
    <insert id="insertLikeInfo" parameterType="kr.co.foot.like.LikeVO">
        insert into t_like(userid, regmapidx) values(#{userid}, #{regmapidx}) 
    </insert>
+   
+   <delete id="deleteLikeInfo" parameterType="kr.co.foot.like.LikeVO">
+       delete from t_like where userid = #{userid} and regmapidx = #{regmapidx}
+   </delete>
    
 </mapper>

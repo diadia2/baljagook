@@ -103,27 +103,47 @@ a.no-uline {
 	}
 	
 	/* Like 버튼  */
-	function handleLike(mymapidxRef) {
+	function handleLike(check, mymapidxRef) {
 		console.log(mymapidxRef);
+		console.log(check.checked);
 		
 		var dataObj = {"userid":"test@test.com", "mymapidxRef":mymapidxRef};
 		var dataJSON = JSON.stringify(dataObj);
 		
-		$.ajax({
-			type: "POST",
-			data: dataJSON, 
-			url: "http://localhost:8080/LBJSupport/like.do",
-			contentType: "application/json",
- 			dataType: "json",
-			beforeSend: function() {
-				console.log("ajax post로 보내는중");
-			},
-			success: function(data) {
-				console.log("ajax post 통신 성공");
-				console.log(data);
-				$("#likeCnt").html(data);
-			}
-		});
+		if(check.checked == true) {		
+			$.ajax({
+				type: "POST",
+				data: dataJSON, 
+				url: "${ pageContext.request.contextPath }/like.do",
+				contentType: "application/json",
+	 			dataType: "json",
+				beforeSend: function() {
+					console.log("ajax post로 보내는중");
+				},
+				success: function(data) {
+					console.log("ajax post 통신 성공");
+					console.log(data);
+					$("#likeCnt").html(data);
+				}
+			});
+		}
+		else if(check.checked == false) {
+			$.ajax({
+				type: "POST",
+				data: dataJSON, 
+				url: "${ pageContext.request.contextPath }/unlike.do",
+				contentType: "application/json",
+	 			dataType: "json",
+				beforeSend: function() {
+					console.log("ajax post로 보내는중");
+				},
+				success: function(data) {
+					console.log("ajax post 통신 성공");
+					console.log(data);
+					$("#likeCnt").html(data);
+				}
+			});
+		}
 	}
 </script>
 </head>
@@ -256,14 +276,13 @@ a.no-uline {
 	                                    </c:forEach>
 	                                    </span>
 	                                    <div class="views">
-	                                        <i class="fa fa-heart" aria-hidden="true"></i><span>20</span>
+	                                    	<input type="checkbox" onclick="handleLike(this, ${ mymapList.idx });">
+	                                        <i class="fa fa-heart" aria-hidden="true"></i><div id="likeCnt">${ likeCnt }</div>
 	                                        <i class="fa fa-eye" aria-hidden="true"></i><span>3,014</span>
 	                                    </div>
 	                                </div>
 	                            </div>
 	                        </a>
-	                       	<button type="button" onclick="handleLike(${ mymapList.idx })">Like</button>
-	                        <div id="likeCnt">${ likeCnt }</div>
 	                    </li>
 	                </c:forEach>
 	                
