@@ -1,44 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
+<%@include file="/WEB-INF/share.jsp"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>MY MAP ^_^</title>
-<script language="javascript"
+<script
 	src="https://apis.skplanetx.com/tmap/js?version=1&format=javascript&appKey=bac4f916-3297-3be4-93ff-e37ae88b8f42"></script>
 <script
 	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD6x6lwLmHlSpovbF0nM-fPIPpjfv4D9IM&libraries=places"></script>
-<!-- fa폰트 아이콘 -->
-<link
-	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"
-	rel="stylesheet">
-<!-- bootstrap CSS -->
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-<!-- bootstrap 테마 -->
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
-<!-- 데이트피커 -->
-<link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css" />
-<!-- moment. -->
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>	
-<!-- jquery -->
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <!-- 판넬 드래그에 필요함 -->
 <script type='text/javascript'
 	src="https://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
-<!-- bootstrap js -->
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-<!-- 데이트피커 -->
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
 
 <script type="text/javascript">
 
@@ -71,13 +46,6 @@
 	});
        
    $(function() {
-      /* 화면폭 */
-      
-      var $info = $("#info");
-      window.onresize = function() {
-         $info.html("화면 폭 : " + window.innerWidth + "px");
-
-      }
       /* datetimepicker부분 */
       $('#datetimepicker1').datetimepicker({
          useCurrent : false,
@@ -197,7 +165,7 @@ body {
 	display: inline-block;
 	float: none;
 }
- 
+
 .navbar .navbar-collapse {
 	text-align: center;
 }
@@ -995,159 +963,129 @@ body {
 	    location.href = "${ pageContext.request.contextPath }/map/search.do?searchtext="+$('#searchtext').val();
 	}
 </script>
- 
-  
+
+
 <body>
-	<div>상단바 자리</div>
-	<form name="inputform" action="${ pageContext.request.contextPath }/map/regMymap.do">
-	<!-- 상단 바 -->
-	
-	<nav class="navbar navbar-default navbar-fixed-top">
-		<div class="container-fluid">
-			<div class="navbar-header">
-				<!-- 로고, 이미지로 바꿀것 -->
-				<a class="navbar-brand" href="#">나만의 지도</a>
-				<button class="navbar-toggle collapsed" data-toggle="collapse"
-					data-target="#target">
-					<!-- 메뉴 최소화시 =버튼 -->
-					<span class="sr-only">Toggle navigation</span> <span
-						class="icon-bar"></span> <span class="icon-bar"></span> <span
-						class="icon-bar"></span> <span class="icon-bar"></span>
-				</button>
-			</div>
-
-			<div class="collapse navbar-collapse" id="target">
-				<!-- 검색바 -->
-				<div class="navbar-form navbar-nav">
-					<input type="text" class="form-control" id="searchtext" placeholder="Search" size="50%" style="text-align: center;" />&nbsp;&nbsp; 
-					<a href="javascript:goSearch()"><i class="fa fa-search fa-2x" aria-hidden="true"></i></a>
-				</div>
-				<ul class="nav navbar-nav navbar-right">
-					<!-- 우상단 드롭 메뉴 -->
-					<li class="dropdown"><a href="#" class="dropdown-toggle"
-						data-toggle="dropdown" aria-expanded="false"><span>메뉴</span> <span
-							class="caret"></span> </a>
-						<ul class="dropdown-menu">
-							<li><a data-toggle="modal" data-target="#loginModal"
-								data-backdrop="static" data-keyboard="false">로그인</a></li>
-							<li><a href="#">마이페이지</a></li>
-							<li class="divider"></li>
-							<li><a href="#">로그아웃</a></li>
-						</ul></li>
-				</ul>
-			</div>
-		</div>
-	</nav><br/><br/><br/><br/>
-	<!-- 상단바 끝 -->
-	
-	
-		<div class="row">
-			<div class="col-md-1"></div>
-			<div class="col-md-10">
-				<div class="col-md-12">
-					<input name="title" type="text" class="form-control title-text"
-						placeholder="제목">
-				</div>
-				<br /> <br />
-				<div class="col-md-12">
-					<input name="content" type="text" class="form-control title-text"
-						placeholder="설명">
-				</div>
-				<br /> <br />
-				<div class='col-md-5'>
-					<div class="form-group">
-						<div class='input-group date' id='datetimepicker1'>
-							<input type='text' class="form-control" name="start" id="start" />
-							<span class="input-group-addon"> <i class="fa fa-calendar"
-								aria-hidden="true"></i>
-							</span>
-						</div>
-					</div>
-				</div>
-				<div class='col-md-5'>
-					<div class="form-group">
-						<div class='input-group date' id='datetimepicker2'>
-							<input type='text' class="form-control" name="end" id="end" /> <span
-								class="input-group-addon"> <i class="fa fa-calendar"
-								aria-hidden="true"></i></span>
-						</div>
-					</div>
-				</div>
-				<div class='col-md-2'>
-					<div class="form-group">
-						<div class="col-md-12">
-							<input id="mapAgain" type="button" value="재선택" class="btn btn-secondary col-md-12" />
-						</div>
-					</div>
-				</div>
-
-				<div class="col-md-12">
-					<input name="hashtag" type="text" class="form-control title-text"
-						placeholder="#해쉬태그">
-				</div>
-				<div class="col-md-12">
-					해쉬태그 출력될곳<br /> <br />
-				</div>
-
-			</div>
-			<div class="col-md-1"></div>
-		</div>
-		<div class="row">
-			<div id="map" class="col-md-10" style="height: 756px"
-				ondragenter="return dragEnter(event)"
-				ondrop="return dragDrop(event)" ondragover="return dragOver(event)"></div>
-			<div class="col-md-2">
-				<span class="col-md-2" draggable="true"
-					ondragstart="return dragStart(event)"
-					ondragend="return dragextramarker(event)"><img
-					src="https://developers.skplanetx.com/upload/tmap/marker/pin_b_m_a.png" /></span>
+	<header>
+		<jsp:include page="/top.do" />
+	</header>
+	<section>
+		<form name="inputform"
+			action="${ pageContext.request.contextPath }/map/regMymap.do">
+			<div class="row">
+				<div class="col-md-1"></div>
 				<div class="col-md-10">
-					<input id="pac-input" class="form-control title-text" type="text"
-						placeholder="Search Box">
+					<div class="col-md-12">
+						<input name="title" type="text" class="form-control title-text"
+							placeholder="제목">
+					</div>
+					<br /> <br />
+					<div class="col-md-12">
+						<input name="content" type="text" class="form-control title-text"
+							placeholder="설명">
+					</div>
+					<br /> <br />
+					<div class='col-md-5'>
+						<div class="form-group">
+							<div class='input-group date' id='datetimepicker1'>
+								<input type='text' class="form-control" name="start" id="start" />
+								<span class="input-group-addon"> <i
+									class="fa fa-calendar" aria-hidden="true"></i>
+								</span>
+							</div>
+						</div>
+					</div>
+					<div class='col-md-5'>
+						<div class="form-group">
+							<div class='input-group date' id='datetimepicker2'>
+								<input type='text' class="form-control" name="end" id="end" />
+								<span class="input-group-addon"> <i
+									class="fa fa-calendar" aria-hidden="true"></i></span>
+							</div>
+						</div>
+					</div>
+					<div class='col-md-2'>
+						<div class="form-group">
+							<div class="col-md-12">
+								<input id="mapAgain" type="button" value="재선택"
+									class="btn btn-secondary col-md-12" />
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-12">
+						<input name="hashtag" type="text" class="form-control title-text"
+							placeholder="#해쉬태그">
+					</div>
+					<div class="col-md-12">
+						해쉬태그 출력될곳<br /> <br />
+					</div>
+
 				</div>
-				<br /> <br />
-				<div class="col-md-12"
-					style="height: 696px; overflow: auto; border: solid;">
-					<br />--------------------------------------------
-					<div id="draggablePanelList" class="list-unstyled"></div>
+				<div class="col-md-1"></div>
+			</div>
+			<div class="row">
+				<div id="map" class="col-md-10" style="height: 756px"
+					ondragenter="return dragEnter(event)"
+					ondrop="return dragDrop(event)" ondragover="return dragOver(event)"></div>
+				<div class="col-md-2">
+					<span class="col-md-2" draggable="true"
+						ondragstart="return dragStart(event)"
+						ondragend="return dragextramarker(event)"><img
+						src="https://developers.skplanetx.com/upload/tmap/marker/pin_b_m_a.png" /></span>
+					<div class="col-md-10">
+						<input id="pac-input" class="form-control title-text" type="text"
+							placeholder="Search Box">
+					</div>
+					<br /> <br />
+					<div class="col-md-12"
+						style="height: 696px; overflow: auto; border: solid;">
+						<br />--------------------------------------------
+						<div id="draggablePanelList" class="list-unstyled"></div>
+					</div>
+
+					<div class="col-md-12">
+						<button type="button" class="btn btn-secondary col-md-6"
+							onclick="goSubmit()">등록</button>
+						<button type="button" class="btn btn-secondary col-md-6">취소</button>
+					</div>
 				</div>
 
-				<div class="col-md-12">
-					<button type="button" class="btn btn-secondary col-md-6" onclick="goSubmit()">등록</button>
-					<button type="button" class="btn btn-secondary col-md-6">취소</button>
-				</div>
 			</div>
-  
-		</div>
-		<br /> <br /> <br />
-		<div class="row">
-			<div class="col-md-1"></div>
-			<div class="col-md-8"
-				style="border: solid; overflow: auto; width: 800px">
-				<h3>길찾기</h3>
-				<span id="dragStart" draggable="true"
-					ondragstart="return dragStart(event)"
-					ondragend="return startDragEnd(event)"> <img
-					src="https://developers.skplanetx.com/upload/tmap/marker/pin_b_m_a.png" />출발
-				</span> <span id="dragEnd" draggable="true"
-					ondragstart="return dragStart(event)"
-					ondragend="return endDragEnd(event)"> <img
-					src="https://developers.skplanetx.com/upload/tmap/marker/pin_b_m_a.png" />도착
-				</span> <span><input type="button" value="자가용"
-					onclick="findLoadAgain()" /></span> <span><input type="button"
-					value="대중교통" onclick="calculateAndDisplayRoute()" /></span> <span><input
-					type="button" value="도보" onclick="forWalk()" /></span>
-				<div class="col-md-12">
-					<input type="button" value=" 길찾기 종료 " onclick="closeSearch()"
-						class="btn btn-secondary col-md-6" />
+			<br /> <br /> <br />
+			<div class="row">
+				<div class="col-md-1"></div>
+				<div class="col-md-8"
+					style="border: solid; overflow: auto; width: 800px">
+					<h3>길찾기</h3>
+					<span id="dragStart" draggable="true"
+						ondragstart="return dragStart(event)"
+						ondragend="return startDragEnd(event)"> <img
+						src="https://developers.skplanetx.com/upload/tmap/marker/pin_b_m_a.png" />출발
+					</span> <span id="dragEnd" draggable="true"
+						ondragstart="return dragStart(event)"
+						ondragend="return endDragEnd(event)"> <img
+						src="https://developers.skplanetx.com/upload/tmap/marker/pin_b_m_a.png" />도착
+					</span> <span><input type="button" value="자가용"
+						onclick="findLoadAgain()" /></span> <span><input type="button"
+						value="대중교통" onclick="calculateAndDisplayRoute()" /></span> <span><input
+						type="button" value="도보" onclick="forWalk()" /></span>
+					<div class="col-md-12">
+						<input type="button" value=" 길찾기 종료 " onclick="closeSearch()"
+							class="btn btn-secondary col-md-6" />
+					</div>
+					<br />--------------------------------------------
+					<div id="addinfo"></div>
 				</div>
-				<br />--------------------------------------------
-				<div id="addinfo"></div>
+				<div class="col-md-1"></div>
 			</div>
-			<div class="col-md-1"></div>
-		</div>
-		<br /> <br /> <br />
-		<div id="map_div"></div>
-	</form>
+			<br /> <br /> <br />
+			<div id="map_div"></div>
+		</form>
+
+	</section>
+	<footer>
+		<jsp:include page="/bottom.do" />
+	</footer>
 </body>
 </html>
