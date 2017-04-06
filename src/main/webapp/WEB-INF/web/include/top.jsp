@@ -211,7 +211,7 @@ body {
 						<ul class="dropdown-menu">
 							<li><a data-toggle="modal" data-target="#loginModal"
 								data-backdrop="static" data-keyboard="false">로그인</a></li>
-							<li><a href="mypage.do">마이페이지</a></li>
+							<li><a href="member/mypage.do">마이페이지</a></li>
 							<li class="divider"></li>
 							<li><a href="#">로그아웃</a></li>
 						</ul></li>

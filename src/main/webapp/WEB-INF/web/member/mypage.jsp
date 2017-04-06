@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@include file="/WEB-INF/share.jsp" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,8 +24,34 @@
 		$(".menus > span").click(function() {
 			$(".menus  span").removeClass("on");
 			$(this).addClass("on");
+			var header = $(this).text();
+			
+			if($(this).text()=='내여행' || $(this).text()=='내계획'){
+			    alert(header);
+			    $.ajax({
+				    type: 'POST' , 
+				    url: '${ pageContext.request.contextPath }/member/resetMypage.do',
+				    dataType : 'json',
+				    data : {
+						header : header
+				    },
+				    success: function(data) {
+						console.log(data);
+						$('#myInfo > li').remove();
+			        }
+				});
+			}
+			 
+			if($(this).text()=='MAP'){
+			    alert('MAP');
+			}
+			
+			if($(this).text()=='장소'){
+			    alert('장소');
+			}
+			
 		});
-		$(".btns").click(function() {
+		$(".btns").click(function() { 
 			$(".lpop").show();
 		});
 		$("#reg").click(function() {
@@ -66,23 +93,20 @@
 			</div>
 			<div class="div_main">
 				<div class="menus">
-					<span class="">장소</span> <span class="">MAP</span> <span class="">내계획</span>
-					<span class="on">내여행</span>
+					<span class="">장소</span> <span class="">MAP</span> <span class="">내계획</span> <span class="on">내여행</span>
 				</div>
 				<div class="btns">등록</div>
 				<div class="div_board">
 					<!-- 여기에 ajax를 통한 데이터 넣으면 됨 -->
-					<ul>
-						<li class="top"><a href="#!">순일이의 모험</a><span>×</span></li>
-						<li>순일이의 모험<span>×</span></li>
-						<li>순일이의 모험<span>×</span></li>
-						<li>순일이의 모험<span>×</span></li>
-						<li>순일이의 모험<span>×</span></li>
-						<li>순일이의 모험<span>×</span></li>
-						<li>순일이의 모험<span>×</span></li>
-						<li>순일이의 모험<span>×</span></li>
-						<li>순일이의 모험<span>×</span></li>
-						<li>순일이의 모험<span>×</span></li>
+					<ul id="myInfo">
+						<c:forEach var="mymapList" items="${ mymapList }" varStatus="idx">
+							<c:if test="${ idx.index == 0 }">
+								<li class="top"><a href="#!">${ mymapList.title }</a><span>×</span></li>
+							</c:if>
+							<c:if test="${ idx.index != 0 }">
+								<li><a href="#!">${ mymapList.title }</a><span>×</span></li>
+							</c:if>
+						</c:forEach> 
 					</ul>
 					<div class="paging">
 						<span>〈</span><span class="on">1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>〉</span>
