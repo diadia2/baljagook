@@ -9,6 +9,7 @@ import kr.co.foot.checkpoint.CheckpointVO;
 import kr.co.foot.favoritemap.FavoritemapVO;
 import kr.co.foot.favoriteplace.FavoriteplaceVO;
 import kr.co.foot.hashtag.HashtagVO;
+import kr.co.foot.like.LikeVO;
 import kr.co.foot.regcoordinates.RegcoordinatesVO;
 import kr.co.foot.regmap.RegmapVO;
 
@@ -170,5 +171,31 @@ public class MymapServiceImp implements MymapService {
 			
 		return mymapVO;
 	}
+	
+	//해당 게시물에 대한 like 정보 추출
+	@Override
+	public List<String> getLikeCnt(int idx) {
+		
+		List<String> userList = mymapDAO.getLikeCnt(idx);
+		
+		return userList;
+	}
+	
+	//해당 게시물의 regmapidx 정보 추출
+	@Override
+	public int getRegmapIdx(int mymapidx) {
+		
+		int regmapidx = mymapDAO.getRegmapIdx(mymapidx);
+		
+		return regmapidx;
+	}
+	
+	//like한 정보 입력
+	@Override
+	public void insertLikeInfo(LikeVO likeVO) {
+		
+		mymapDAO.insertLikeInfo(likeVO);
+	}
+	
 
 }

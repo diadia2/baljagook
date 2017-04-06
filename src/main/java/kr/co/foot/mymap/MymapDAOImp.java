@@ -10,6 +10,7 @@ import kr.co.foot.checkpoint.CheckpointVO;
 import kr.co.foot.favoritemap.FavoritemapVO;
 import kr.co.foot.favoriteplace.FavoriteplaceVO;
 import kr.co.foot.hashtag.HashtagVO;
+import kr.co.foot.like.LikeVO;
 import kr.co.foot.regcoordinates.RegcoordinatesVO;
 import kr.co.foot.regmap.RegmapVO;
 
@@ -171,5 +172,29 @@ public class MymapDAOImp implements MymapDAO {
 		
 		return mymapVO;
 	}
-
+	
+	@Override
+	public List<String> getLikeCnt(int idx) {
+		
+		List<String> userList = sqlSessionTemplate.selectList("kr.co.foot.mymap.MymapDAO.getLikeCnt", idx);
+		
+		return userList;
+	}
+	
+	@Override
+	public int getRegmapIdx(int mymapidx) {
+		
+		int regmapidx = sqlSessionTemplate.selectOne("kr.co.foot.mymap.MymapDAO.getRegmapIdx", mymapidx);
+		
+		return regmapidx;
+	}
+	
+	
+	@Override
+	public void insertLikeInfo(LikeVO likeVO) {
+		
+		sqlSessionTemplate.insert("kr.co.foot.mymap.MymapDAO.insertLikeInfo", likeVO);
+		
+	}
+	
 }

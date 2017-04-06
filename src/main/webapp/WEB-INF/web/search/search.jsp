@@ -101,6 +101,30 @@ a.no-uline {
 	function goSearch(){
 	    location.href = "${ pageContext.request.contextPath }/map/search.do?searchtext="+$('#searchtext').val();
 	}
+	
+	/* Like 버튼  */
+	function handleLike(mymapidxRef) {
+		console.log(mymapidxRef);
+		
+		var dataObj = {"userid":"test@test.com", "mymapidxRef":mymapidxRef};
+		var dataJSON = JSON.stringify(dataObj);
+		
+		$.ajax({
+			type: "POST",
+			data: dataJSON, 
+			url: "http://localhost:8080/LBJSupport/like.do",
+			contentType: "application/json",
+ 			dataType: "json",
+			beforeSend: function() {
+				console.log("ajax post로 보내는중");
+			},
+			success: function(data) {
+				console.log("ajax post 통신 성공");
+				console.log(data);
+				$("#likeCnt").html(data);
+			}
+		});
+	}
 </script>
 </head>
 <body>
@@ -238,6 +262,8 @@ a.no-uline {
 	                                </div>
 	                            </div>
 	                        </a>
+	                       	<button type="button" onclick="handleLike(${ mymapList.idx })">Like</button>
+	                        <div id="likeCnt">${ likeCnt }</div>
 	                    </li>
 	                </c:forEach>
 	                
