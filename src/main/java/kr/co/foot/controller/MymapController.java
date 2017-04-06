@@ -612,6 +612,127 @@ public class MymapController {
       return "MapTest/plantrip";
 >>>>>>> 2f5dcd05ee491e602954d0fa959fce0461204d4d
 
+<<<<<<< HEAD
+	/**
+	 * ��� ���ã�� �߰�
+	 * @param idx
+	 * @return
+	 */
+	@RequestMapping("/map/getFavoritePlace.do")
+	@ResponseBody
+	public String getFavoritePlace(@RequestParam("idx") String idx,
+								   @RequestParam("placename") String placename){
+		
+		// ������ ��Ŀ
+		int checkpointidx = Integer.parseInt(idx);
+		// �������̵�
+		String userid = "test@test.com";
+		// ���� ���̵�� ������ ����ߴ� ��Ŀ�� ��ȸ
+		List<FavoriteplaceVO> compareCheckPointidx = mymapService.selectcheckpoint(userid);
+		// ������ ����� ��Ŀ�� ���� ����� ��Ŀ�� ���� ���� üũ
+		if(compareCheckPointidx != null){
+			for(int i=0; i<compareCheckPointidx.size(); i++){
+				if(checkpointidx == compareCheckPointidx.get(i).getCheckpointidx()){
+					return "already registration";
+				}
+			}
+		}
+		// �����Ѱ� ������ ���
+		FavoriteplaceVO favoriteplaceVO = new FavoriteplaceVO();
+		favoriteplaceVO.setCheckpointidx(checkpointidx);
+		favoriteplaceVO.setUserid(userid);
+		favoriteplaceVO.setPlacename(placename);
+		
+		mymapService.insertFavoritePlace(favoriteplaceVO);
+		return "done";
+	}
+	
+	@RequestMapping("/map/getFavoriteMap.do")
+	@ResponseBody
+	public String getFavoriteMap(@RequestParam("mymapidx") String mymapidxstr){
+		
+		// ���� ���̵�
+		String userid = "test1@test.com";
+		// ������ �� mymapidx ��
+		int mymapidx = Integer.parseInt(mymapidxstr);
+		// mymapidx������ regmapidx �ҷ�����
+		RegmapVO getRegmap = mymapService.getRegmapList(mymapidx);
+		List<FavoritemapVO> compareRegmapidx = mymapService.selectRegmapidx(userid);
+		
+		if(compareRegmapidx != null){
+			for(int i=0; i<compareRegmapidx.size(); i++){
+				if(getRegmap.getIdx() == compareRegmapidx.get(i).getRegmapidx()){
+					return "already registration";
+				}
+			}
+		}
+		FavoritemapVO favoritemapVO = new FavoritemapVO();
+		favoritemapVO.setRegmapidx(getRegmap.getIdx());
+		favoritemapVO.setUserid(userid);
+		mymapService.insertFavoriteMap(favoritemapVO);
+		
+		return "done";
+	}
+	
+	
+	@RequestMapping("/map/plantrip.do")
+	public String plantrip(Model model){
+		
+		String userid = "test1@test.com";
+		List<FavoriteplaceVO> favoriteplaceList = mymapService.selectcheckpoint(userid);
+		List<FavoritemapVO> favoritemapList = mymapService.selectRegmapidx(userid);
+		
+		List<MymapVO> mymapList = new ArrayList<MymapVO>();
+		
+		for(int i=0; i<favoritemapList.size(); i++){
+			MymapVO mymapVO = mymapService.selectMymapByRegmapIdx(favoritemapList.get(i).getRegmapidx());
+			mymapList.add(mymapVO);
+		}
+		
+		model.addAttribute("favoriteplaceList", favoriteplaceList);
+		model.addAttribute("favoritemapList", favoritemapList);
+		model.addAttribute("mymapList", mymapList);
+		
+		return "MapTest/plantrip";
+
+	}
+	
+	@RequestMapping("/map/getMyplace.do")
+	@ResponseBody
+	public RegcoordinatesVO getMyplace(@RequestParam("checkpointidx") String checkpointidx){
+		
+		CheckpointVO checkpointVO = mymapService.selectCheckPointByIdx(checkpointidx);
+		RegcoordinatesVO regcoordinateVO = mymapService.getRegcoordinatesInfoByIdx(checkpointVO.getRegcoordinatesidx());
+		
+		return regcoordinateVO;
+	}
+	
+	@RequestMapping("/map/getMymap.do")
+	@ResponseBody
+	public Object[] getMymap(@RequestParam("mymapidx") String mymapidxstr){
+		
+		int mymapidx = Integer.parseInt(mymapidxstr);
+		
+		List<RegcoordinatesVO> regcoordinatesVO = mymapService.getRegcoordinatesInfo(mymapidx);
+		List<CheckpointVO> checkpointList = new ArrayList<CheckpointVO>();
+		
+		for(int i=0; i<regcoordinatesVO.size(); i++){
+			CheckpointVO checkpointVO = mymapService.selectCheckPoint(regcoordinatesVO.get(i).getIdx());
+			checkpointList.add(checkpointVO);
+		}
+		
+		for(CheckpointVO vo : checkpointList){
+			System.out.println(vo);
+		}
+		
+		Object[] object = {regcoordinatesVO, checkpointList};
+		
+		return object;
+	}
+	
+	
+}
+=======
    }
    
    @RequestMapping("/map/getMyplace.do")
@@ -649,3 +770,4 @@ public class MymapController {
    
    
 }
+>>>>>>> 2f5dcd05ee491e602954d0fa959fce0461204d4d
