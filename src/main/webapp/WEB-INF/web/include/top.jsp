@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8" session="true"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -203,6 +204,8 @@ body {
 						size="50%" style="text-align: center;" />&nbsp;&nbsp; <a href="searchList.do"><i
 						class="fa fa-search fa-2x" aria-hidden="true"></i></a>
 				</form>
+<!--  sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss-->
+				<label>ID : ${sessionScope.user} </label>
 				<ul class="nav navbar-nav navbar-right">
 					<!-- 우상단 드롭 메뉴 -->
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
