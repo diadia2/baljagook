@@ -53,7 +53,7 @@
 	<!-- 출력 -->
 	<div id="cmt"></div>
 
-	<!-- 입력 -->
+	<!-- 입력 aaas-->
 	<div>
 		<div class="form">
 		<input type="hidden" value="1" id="regmapidx">
