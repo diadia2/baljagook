@@ -197,5 +197,12 @@ public class MymapServiceImp implements MymapService {
 		mymapDAO.insertLikeInfo(likeVO);
 	}
 	
+	//like 취소
+	@Override
+	public void deleteLikeInfo(LikeVO likeVO) {
+		
+		mymapDAO.deleteLikeInfo(likeVO);
+	}
+	
 
 }
