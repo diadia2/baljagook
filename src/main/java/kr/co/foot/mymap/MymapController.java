@@ -40,7 +40,7 @@ public class MymapController {
 		
 		
 		String userid = "test@test.com";
-		int type = 1;  //µî·Ï=1, °èÈ¹=2
+		int type = 1;  //ï¿½ï¿½ï¿½=1, ï¿½ï¿½È¹=2
 		
 		Calendar cal = Calendar.getInstance();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -54,13 +54,13 @@ public class MymapController {
 		mymapVO.setType(type);
 		mymapVO.setRegdate(regdate);
 		
-		// t_myMap¿¡ µ¥ÀÌÅÍ »ðÀÔ
+		// t_myMapï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		mymapService.regMyMap(mymapVO);
 		
-		// t_myMap index°ª ºÒ·¯¿À±â
+		// t_myMap indexï¿½ï¿½ ï¿½Ò·ï¿½ï¿½ï¿½ï¿½ï¿½
 		int mymapidx = mymapService.getIndex(regdate); 
 		
-		// t_regcoordinates¿¡ ÁÂÇ¥ µ¥ÀÌÅÍµé »ðÀÔ		
+		// t_regcoordinatesï¿½ï¿½ ï¿½ï¿½Ç¥ ï¿½ï¿½ï¿½ï¿½ï¿½Íµï¿½ ï¿½ï¿½ï¿½ï¿½		
 		String getlat = request.getParameter("lat");
 		String getlon = request.getParameter("lng");
 		String[] latArr = getlat.split("/");
@@ -76,7 +76,7 @@ public class MymapController {
 			mymapService.insertLonLat(regcoordinatesVO);
 		}
 		
-		// t_regmap¿¡ µ¥ÀÌÅÍ »ðÀÔ
+		// t_regmapï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		RegmapVO regmapVO = new RegmapVO();
 //		String city = request.getParameter("city");
 //		String theme = request.getParameter("theme");
@@ -87,10 +87,10 @@ public class MymapController {
 		start += ":00";
 		end += ":00";
 		
-		//Ãâ¹ßÀÏ
+		//ï¿½ï¿½ï¿½ï¿½ï¿½
 		SimpleDateFormat time1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String sdate = String.valueOf(time1.parse(start).getTime()/1000);
-		//µµÂøÀÏ
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		SimpleDateFormat time2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String edate = String.valueOf(time2.parse(end).getTime()/1000);
 		
@@ -102,7 +102,7 @@ public class MymapController {
 		
 		mymapService.insertRegMap(regmapVO);
 		
-		// t_hashtag¿¡ µ¥ÀÌÅÍ »ðÀÔ
+		// t_hashtagï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		String hashtag = request.getParameter("hashtag").trim();
 		String[] nameArr = hashtag.split("#");
 		
@@ -114,7 +114,7 @@ public class MymapController {
 			mymapService.insertHashtag(hashtagVO);
 		}
 		
-		// t_checkpoint µ¥ÀÌÅÍµé »ðÀÔ
+		// t_checkpoint ï¿½ï¿½ï¿½ï¿½ï¿½Íµï¿½ ï¿½ï¿½ï¿½ï¿½
 		List<RegcoordinatesVO> regList = mymapService.getRegcoordinatesInfo(mymapidx);
 		
 		String markerlat = request.getParameter("markerlat");
@@ -127,14 +127,14 @@ public class MymapController {
 		String[] ptitleArr = getpaneltitle.split("/");
 		String[] pcontentArr = getpanelcontent.split("/");
 		
-		// ¸¶Ä¿ °¹¼ö¸¸Å­ for¹®
+		// ï¿½ï¿½Ä¿ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å­ forï¿½ï¿½
 		for(int i=0; i<markerlatArr.length; i++){
 			String checkPointLat = markerlatArr[i];
 			String checkPointLon = markerlonArr[i];
 			String paneltitle = ptitleArr[i];
 			String panelcontent = pcontentArr[i];
 			
-			// ÇØ´ç ¸¶Ä¿ÀÇ ÁÂÇ¥°¡ regcoordinatesÀÇ ÁÂÇ¥¿Í ÀÏÄ¡ÇÏ¸é regcoordinatesidx¸¦ °¡Á®¿Í¼­ t_checkpoint¿¡ »ðÀÔ
+			// ï¿½Ø´ï¿½ ï¿½ï¿½Ä¿ï¿½ï¿½ ï¿½ï¿½Ç¥ï¿½ï¿½ regcoordinatesï¿½ï¿½ ï¿½ï¿½Ç¥ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½Ï¸ï¿½ regcoordinatesidxï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ t_checkpointï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 			for(int j=0; j<regList.size(); j++){
 				if(regList.get(j).getLat().equals(checkPointLat) && regList.get(j).getLon().equals(checkPointLon)){
 					CheckpointVO checkpointVO = new CheckpointVO();
@@ -157,7 +157,7 @@ public class MymapController {
 		
 		String userid = "plan@makeplan.com";
 		
-		// t_mymap¿¡ ¿©Çà°èÈ¹ µ¥ÀÌÅÍ »ðÀÔ
+		// t_mymapï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½È¹ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		Calendar cal = Calendar.getInstance();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String today = sdf.format(cal.getTime());
@@ -171,10 +171,10 @@ public class MymapController {
 		mymapVO.setRegdate(regdate);
 		mymapService.regMyMap(mymapVO);
 		
-		// t_myMap index°ª ºÒ·¯¿À±â
+		// t_myMap indexï¿½ï¿½ ï¿½Ò·ï¿½ï¿½ï¿½ï¿½ï¿½
 		int mymapidx = mymapService.getIndex(regdate);
 		
-		// t_regcoordinates¿¡ ÁÂÇ¥ µ¥ÀÌÅÍµé »ðÀÔ		
+		// t_regcoordinatesï¿½ï¿½ ï¿½ï¿½Ç¥ ï¿½ï¿½ï¿½ï¿½ï¿½Íµï¿½ ï¿½ï¿½ï¿½ï¿½		
 		String getlat = request.getParameter("lat");
 		String getlon = request.getParameter("lng");
 		String[] latArr = getlat.split("/");
@@ -190,7 +190,7 @@ public class MymapController {
 			mymapService.insertLonLat(regcoordinatesVO);
 		}
 		
-		// t_checkpoint µ¥ÀÌÅÍµé »ðÀÔ
+		// t_checkpoint ï¿½ï¿½ï¿½ï¿½ï¿½Íµï¿½ ï¿½ï¿½ï¿½ï¿½
 		List<RegcoordinatesVO> regList = mymapService.getRegcoordinatesInfo(mymapidx);
 		
 		String markerlat = request.getParameter("markerlat");
@@ -230,15 +230,15 @@ public class MymapController {
 		
 		for(int i=0; i<mymapList.size(); i++){
 			
-			// °Ë»ö³»¿ë¿¡ ¸Â´Â mymapidx ºÒ·¯¿À±â
+			// ï¿½Ë»ï¿½ï¿½ï¿½ï¿½ë¿¡ ï¿½Â´ï¿½ mymapidx ï¿½Ò·ï¿½ï¿½ï¿½ï¿½ï¿½
 			List<HashtagVO> eachHashtagList = mymapService.getHashtagList(mymapList.get(i).getIdx());
-			// °¢ mymapidx¿¡ ¸Â´Â t_hashtag ºÒ·¯¿À±â
+			// ï¿½ï¿½ mymapidxï¿½ï¿½ ï¿½Â´ï¿½ t_hashtag ï¿½Ò·ï¿½ï¿½ï¿½ï¿½ï¿½
 			for(int j=0; j<eachHashtagList.size(); j++){
 				hashtagList.add(eachHashtagList.get(j));
 			}
 		}
 	
-		// mymapidx¿¡ ¸Â´Â t_regmap ºÒ·¯¿À±â
+		// mymapidxï¿½ï¿½ ï¿½Â´ï¿½ t_regmap ï¿½Ò·ï¿½ï¿½ï¿½ï¿½ï¿½
 		List<RegmapVO> regmapList = new ArrayList<RegmapVO>();
 		for(int i=0; i<mymapList.size(); i++){
 			RegmapVO getRegmap = mymapService.getRegmapList(mymapList.get(i).getIdx());
@@ -257,9 +257,9 @@ public class MymapController {
 		int mymapidx = Integer.parseInt(request.getParameter("mymapidx"));
 		SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		
-		// mympaidx·Î t_mymap ºÒ·¯¿À±â
+		// mympaidxï¿½ï¿½ t_mymap ï¿½Ò·ï¿½ï¿½ï¿½ï¿½ï¿½
 		MymapVO mymapVO = mymapService.selectMymap(mymapidx);
-		// mymapidx·Î t_regmap ºÒ·¯¿À±â
+		// mymapidxï¿½ï¿½ t_regmap ï¿½Ò·ï¿½ï¿½ï¿½ï¿½ï¿½
 		RegmapVO regmapVO = mymapService.getRegmapList(mymapidx);
 		
 		String start = regmapVO.getSdate();
@@ -269,13 +269,13 @@ public class MymapController {
 		String sdate = sd.format(new Date(Long.valueOf(start)));
 		String edate = sd.format(new Date(Long.valueOf(end)));
 		
-		// mymapidx·Î t_hashtag °¡Á®¿À±â
+		// mymapidxï¿½ï¿½ t_hashtag ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		List<HashtagVO> hashtagList = mymapService.getHashtagList(mymapidx);
 		
-		// mymapidx·Î t_regmap ¸®½ºÆ®·Î °¡Á®¿À±â
+		// mymapidxï¿½ï¿½ t_regmap ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		List<RegcoordinatesVO> regcoordinatesList = mymapService.getRegmapsList(mymapidx);
 		
-		//coordinatesidx·Î t_checkpoint ºÒ·¯¿À±â
+		//coordinatesidxï¿½ï¿½ t_checkpoint ï¿½Ò·ï¿½ï¿½ï¿½ï¿½ï¿½
 		List<CheckpointVO> checkpointVO = new ArrayList<CheckpointVO>();
 		for(int i=0; i<regcoordinatesList.size(); i++){
 			CheckpointVO cpVO = mymapService.selectCheckPoint(regcoordinatesList.get(i).getIdx());
@@ -298,7 +298,7 @@ public class MymapController {
 	}
 	
 	/**
-	 * Àå¼Ò Áñ°ÜÃ£±â Ãß°¡
+	 * ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ã£ï¿½ï¿½ ï¿½ß°ï¿½
 	 * @param idx
 	 * @return
 	 */
@@ -307,46 +307,46 @@ public class MymapController {
 	public String getFavoritePlace(@RequestParam("idx") String idx,
 								   @RequestParam("placename") String placename){
 		
-		// ¼±ÅÃÇÑ ¸¶Ä¿
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¿
 		int checkpointidx = Integer.parseInt(idx);
-		// À¯Àú¾ÆÀÌµð
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ìµï¿½
 		String userid = "test@test.com";
-		// À¯Àú ¾ÆÀÌµð·Î ±âÁ¸¿¡ µî·ÏÇß´ø ¸¶Ä¿µé Á¶È¸
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ìµï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ß´ï¿½ ï¿½ï¿½Ä¿ï¿½ï¿½ ï¿½ï¿½È¸
 		List<FavoriteplaceVO> compareCheckPointidx = mymapService.selectcheckpoint(userid);
-		// ±âÁ¸¿¡ µî·ÏÇÑ ¸¶Ä¿¿Í »õ·Î µî·ÏÇÒ ¸¶Ä¿Áß µ¿ÀÏ ¿©ºÎ Ã¼Å©
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¿ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¿ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ã¼Å©
 		if(compareCheckPointidx != null){
 			for(int i=0; i<compareCheckPointidx.size(); i++){
 				if(checkpointidx == compareCheckPointidx.get(i).getCheckpointidx()){
-					return "ÀÌ¹Ì µî·ÏµÇ¾î ÀÖ½À´Ï´Ù.";
+					return "ï¿½Ì¹ï¿½ ï¿½ï¿½ÏµÇ¾ï¿½ ï¿½Ö½ï¿½ï¿½Ï´ï¿½.";
 				}
 			}
 		}
-		// µ¿ÀÏÇÑ°Å ¾øÀ¸¸é µî·Ï
+		// ï¿½ï¿½ï¿½ï¿½ï¿½Ñ°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
 		FavoriteplaceVO favoriteplaceVO = new FavoriteplaceVO();
 		favoriteplaceVO.setCheckpointidx(checkpointidx);
 		favoriteplaceVO.setUserid(userid);
 		favoriteplaceVO.setPlacename(placename);
 		
 		mymapService.insertFavoritePlace(favoriteplaceVO);
-		return "Àå¼Ò ÀúÀå ¿Ï·á";
+		return "ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ï·ï¿½";
 	}
 	
 	@RequestMapping("/map/getFavoriteMap.do")
 	@ResponseBody
 	public String getFavoriteMap(@RequestParam("mymapidx") String mymapidxstr){
 		
-		// À¯Àú ¾ÆÀÌµð
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ìµï¿½
 		String userid = "test1@test.com";
-		// ¼±ÅÃÇÑ ¸Ê mymapidx °ª
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ mymapidx ï¿½ï¿½
 		int mymapidx = Integer.parseInt(mymapidxstr);
-		// mymapidx°ªÀ¸·Î regmapidx ºÒ·¯¿À±â
+		// mymapidxï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ regmapidx ï¿½Ò·ï¿½ï¿½ï¿½ï¿½ï¿½
 		RegmapVO getRegmap = mymapService.getRegmapList(mymapidx);
 		List<FavoritemapVO> compareRegmapidx = mymapService.selectRegmapidx(userid);
 		
 		if(compareRegmapidx != null){
 			for(int i=0; i<compareRegmapidx.size(); i++){
 				if(getRegmap.getIdx() == compareRegmapidx.get(i).getRegmapidx()){
-					return "ÀÌ¹Ì µî·ÏµÇ¾î ÀÖ½À´Ï´Ù.";
+					return "ï¿½Ì¹ï¿½ ï¿½ï¿½ÏµÇ¾ï¿½ ï¿½Ö½ï¿½ï¿½Ï´ï¿½.";
 				}
 			}
 		}
@@ -355,7 +355,7 @@ public class MymapController {
 		favoritemapVO.setUserid(userid);
 		mymapService.insertFavoriteMap(favoritemapVO);
 		
-		return "¸Ê ÀúÀå ¿Ï·á";
+		return "ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ï·ï¿½";
 	}
 	
 	
@@ -393,13 +393,25 @@ public class MymapController {
 	
 	@RequestMapping("/map/getMymap.do")
 	@ResponseBody
-	public List<RegcoordinatesVO> getMymap(@RequestParam("mymapidx") String mymapidxstr){
+	public Object[] getMymap(@RequestParam("mymapidx") String mymapidxstr){
 		
 		int mymapidx = Integer.parseInt(mymapidxstr);
 		
 		List<RegcoordinatesVO> regcoordinatesVO = mymapService.getRegcoordinatesInfo(mymapidx);
+		List<CheckpointVO> checkpointList = new ArrayList<CheckpointVO>();
 		
-		return regcoordinatesVO;
+		for(int i=0; i<regcoordinatesVO.size(); i++){
+			CheckpointVO checkpointVO = mymapService.selectCheckPoint(regcoordinatesVO.get(i).getIdx());
+			checkpointList.add(checkpointVO);
+		}
+		
+		for(CheckpointVO vo : checkpointList){
+			System.out.println(vo);
+		}
+		
+		Object[] object = {regcoordinatesVO, checkpointList};
+		
+		return object;
 	}
 	
 	
