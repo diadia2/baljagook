@@ -388,7 +388,7 @@ public class MymapController {
 		if(compareCheckPointidx != null){
 			for(int i=0; i<compareCheckPointidx.size(); i++){
 				if(checkpointidx == compareCheckPointidx.get(i).getCheckpointidx()){
-					return "�̹� ��ϵǾ� �ֽ��ϴ�.";
+					return "already registration";
 				}
 			}
 		}
@@ -399,7 +399,7 @@ public class MymapController {
 		favoriteplaceVO.setPlacename(placename);
 		
 		mymapService.insertFavoritePlace(favoriteplaceVO);
-		return "��� ���� �Ϸ�";
+		return "done";
 	}
 	
 	@RequestMapping("/map/getFavoriteMap.do")
@@ -417,7 +417,7 @@ public class MymapController {
 		if(compareRegmapidx != null){
 			for(int i=0; i<compareRegmapidx.size(); i++){
 				if(getRegmap.getIdx() == compareRegmapidx.get(i).getRegmapidx()){
-					return "�̹� ��ϵǾ� �ֽ��ϴ�.";
+					return "already registration";
 				}
 			}
 		}
@@ -426,7 +426,7 @@ public class MymapController {
 		favoritemapVO.setUserid(userid);
 		mymapService.insertFavoriteMap(favoritemapVO);
 		
-		return "�� ���� �Ϸ�";
+		return "done";
 	}
 	
 	
