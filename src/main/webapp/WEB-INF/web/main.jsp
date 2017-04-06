@@ -63,8 +63,6 @@
 			</div>
 		</div>
 
-
-
 		<!-- 인기글 4개 노출 -->
 		<div class="projects-clean">
 			<div class="container">
