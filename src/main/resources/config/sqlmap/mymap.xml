@@ -100,11 +100,11 @@
    	   select idx from t_regmap where mymapidx = #{mymapidx}
    </select>
    
-   <insert id="insertLikeInfo" parameterType="kr.co.foot.like.LikeVO">
+   <insert id="insertLikeInfo" parameterType="LikeVO">
        insert into t_like(userid, regmapidx) values(#{userid}, #{regmapidx}) 
    </insert>
    
-   <delete id="deleteLikeInfo" parameterType="kr.co.foot.like.LikeVO">
+   <delete id="deleteLikeInfo" parameterType="LikeVO">
        delete from t_like where userid = #{userid} and regmapidx = #{regmapidx}
    </delete>
    
