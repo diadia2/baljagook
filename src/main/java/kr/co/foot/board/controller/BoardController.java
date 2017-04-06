@@ -20,7 +20,7 @@ public class BoardController {
 	@Autowired
 	private CommentService service;
 
-	/* ´ñ±Û ¸®½ºÆ® ³ª¿À´Â ºÎºÐ */
+	/* ëŒ“ê¸€ ë¦¬ìŠ¤íŠ¸ ë‚˜ì˜¤ëŠ” ë¶€ë¶„ */
 	@RequestMapping("/cmt.do")
 	public ModelAndView cmt() {
 		List<CommentVO> cmtList = service.list();
@@ -29,7 +29,7 @@ public class BoardController {
 		return mav;
 	}
 
-	/* url¿¬°á */
+	/* urlì—°ê²° */
 	@RequestMapping("/list.do")
 	public ModelAndView list() {
 		ModelAndView mav = new ModelAndView("test");
@@ -48,7 +48,7 @@ public class BoardController {
 	 * ModelAndView mav = new ModelAndView("forward:/cmt.do"); return mav; }
 	 */
 
-	/* ´ñ±Û ÀÔ·Â½Ã */
+	/* ëŒ“ê¸€ ìž…ë ¥ì‹œ */
 	@RequestMapping(value = "/insert.do")
 	@ResponseBody
 	public ModelAndView insertComment(@RequestParam String content, @RequestParam String userid,
@@ -62,7 +62,7 @@ public class BoardController {
 		return mav;
 	}
 
-	/* ´ñ±Û ¼öÁ¤½Ã */
+	/* ëŒ“ê¸€ ìˆ˜ì •ì‹œ */
 	@RequestMapping(value = "/modify.do")
 	public ModelAndView modifyComment(@RequestParam String content, @RequestParam int idx) {
 		commentVo.setContent(content);
@@ -74,7 +74,7 @@ public class BoardController {
 		return mav;
 	}
 
-	/* ´ñ±Û »èÁ¦½Ã */
+	/* ëŒ“ê¸€ ì‚­ì œì‹œ */
 	@RequestMapping(value = "/delete.do")
 	public ModelAndView deletComment(@RequestParam int idx) {
 		System.out.println(idx);
@@ -83,7 +83,7 @@ public class BoardController {
 		return mav;
 	}
 
-	/* ´ñ±Û ´ä±Û½Ã */
+	/* ëŒ“ê¸€ ë‹µê¸€ì‹œ */
 	@RequestMapping(value = "/reply.do")
 	public ModelAndView replyComment(@RequestParam String content, @RequestParam String userid,
 			@RequestParam int regmapidx, @RequestParam int idx) {

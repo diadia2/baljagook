@@ -11,16 +11,16 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import kr.co.foot.board.vo.CommentVO;
 
-@RunWith(SpringJUnit4ClassRunner.class) // JUnitÀ¸·Î ½Ç½Ã°£ Å×½ºÆ® ÇÒ°Å¾ß
+@RunWith(SpringJUnit4ClassRunner.class) // JUnitìœ¼ë¡œ ì‹¤ì‹œê°„ í…ŒìŠ¤íŠ¸ í• ê±°ì•¼
 // @ContextConfiguration(locations={"classpath:config/spring/spring-mvc.xml"})//xml
 @ContextConfiguration(locations = { "file:src/main/webapp/WEB-INF/config/applicationContext.xml" }) // xml
 public class DBTest {
 
 	@Autowired
-	private SqlSessionTemplate sqlSessionTemplate;// spring-mvc.xml Bean¿¡¼­ ¼³Á¤
+	private SqlSessionTemplate sqlSessionTemplate;// spring-mvc.xml Beanì—ì„œ ì„¤ì •
 
 	@Test
-	public void ·Î±×ÀÎÇÑ´ç() {
+	public void ë¡œê·¸ì¸í•œë‹¹() {
 		CommentVO vo = new CommentVO();
 	
 		System.out.println(vo);

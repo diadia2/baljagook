@@ -12,7 +12,7 @@ import kr.co.foot.board.vo.CommentVO;
 public class CommentDAOIMP implements CommentDAO{
 
 	@Autowired
-	private SqlSessionTemplate sqlSessionTemplate;//spring-mvc.xml Beanø°º≠ º≥¡§
+	private SqlSessionTemplate sqlSessionTemplate;//spring-mvc.xml BeanÏóêÏÑú ÏÑ§Ï†ï
 
 	@Override
 	public List<CommentVO> list() {
