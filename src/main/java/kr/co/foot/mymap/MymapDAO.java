@@ -35,5 +35,6 @@ public interface MymapDAO {
 	public List<String> getLikeCnt(int idx);
 	public int getRegmapIdx(int mymapidx);
 	public void insertLikeInfo(LikeVO likeVO);
+	public void deleteLikeInfo(LikeVO likeVO);
 
 }

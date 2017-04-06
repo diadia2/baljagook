@@ -197,4 +197,10 @@ public class MymapDAOImp implements MymapDAO {
 		
 	}
 	
+	@Override
+	public void deleteLikeInfo(LikeVO likeVO) {
+		
+		sqlSessionTemplate.delete("kr.co.foot.mymap.MymapDAO.deleteLikeInfo", likeVO);
+	}
+	
 }
