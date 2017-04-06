@@ -1146,6 +1146,7 @@
 	
 	<script>
 		var mymapLonLatList = new Array();
+		var mymapCheckpointList = new Array();
 		var mymapCoordinates;
 		function getMymap(mymapidx){
 		    
@@ -1157,27 +1158,34 @@
 					mymapidx : mymapidx
 			    },
 			    success: function(data) {
-					console.log(data);
 					var mymapLonLat = new Array();
-					for(var i=0; i<data.length; i++){
-					    mymapLonLat.push({lat:Number(data[i].lat), lng:Number(data[i].lon)});
+					var mymapCheckpoint = new Array();
+					for(var i=0; i<data[0].length; i++){
+					    mymapLonLat.push({lat:Number(data[0][i].lat), lng:Number(data[0][i].lon)});
+					    for(var j=0; j<data[1].length; j++){
+							if(data[0][i].idx == data[1][j].regcoordinatesidx){
+							    mymapCheckpoint.push({lat:Number(data[0][i].lat), lng:Number(data[0][i].lon), title:data[1][j].title, content:data[1][j].content});
+							}
+					    }
 					}
-					goZoomIn(Number(data[0].lat), Number(data[0].lon));
+					goZoomIn(Number(data[0][0].lat), Number(data[0][0].lon));
+					
+					// mymapLonLatList의 데이터가 있을때 새로들어온 데이터와 비교해서 동일하면 삭제하기
 					if(mymapLonLatList.length != 0){
 					    for(var i=0; i<mymapLonLatList.length; i++){
-							console.log(mymapLonLatList[i].mymapidx);
-							console.log(data[0].mymapidx);
-							if(mymapLonLatList[i].mymapidx == data[0].mymapidx){
+							if(mymapLonLatList[i].mymapidx == data[0][0].mymapidx){
 							    mymapLonLatList.splice(i,1);
-							    console.log(mymapLonLatList);
+							    mymapCheckpointList.splice(i,1);
 							    drawFavoriteMap();
 							    return;
 							}
 					    }
 					}
 					 
-					mymapLonLatList.push({mymapLonLat:mymapLonLat, mymapidx:data[0].mymapidx});
+					mymapLonLatList.push({mymapLonLat:mymapLonLat, mymapidx:data[0][0].mymapidx});
+					mymapCheckpointList.push({mymapCheckpoint:mymapCheckpoint, mymapidx:data[0][0].mymapidx});
 					console.log(mymapLonLatList);
+					console.log(mymapCheckpointList);
 					drawFavoriteMap();
 		        }
 			});	
@@ -1206,6 +1214,40 @@
 					mymapPath.setMap(null);
 					mymapPath.setMap(map);
 			}
+		    console.log(mymapCheckpointList.length);
+			/////////////////////		    
+			for(var i=0; i<mymapCheckpointList.length; i++){
+			    console.log(mymapCheckpointList[i].mymapCheckpoint.length); 
+			    for(var j=0; j<mymapCheckpointList[i].mymapCheckpoint.length; j++){
+					console.log(mymapCheckpointList[i].mymapCheckpoint[j]);
+						
+					checkMarker.push(new google.maps.Marker({
+				   	 	position: mymapCheckpointList[i].mymapCheckpoint[j],
+				    	map: map
+					}));
+				  
+				  var listener3 = google.maps.event.addListener(map, 'click', function(){
+					if(infowindow != null){
+						  infowindow.close();
+					  }
+				  });
+				  var listener1 = google.maps.event.addListener(checkMarker[i], 'click', function(){
+					  if(infowindow != null){
+						  infowindow.close();
+					  }
+					  infowindow = new google.maps.InfoWindow({
+						    content: (this.position.lat()).toFixed(7).toString()+", "+(this.position.lng()).toFixed(7).toString()+
+						    '<br/><input type="button" value="출발설정" onClick="startCheck('+
+						    		this.position.lat().toString()+", "+this.position.lng().toString()+')"/><input type="button" value="도착설정" onClick="endCheck('+
+						    		this.position.lat().toString()+", "+this.position.lng().toString()+')"/><input type="button" value="위치삭제" onClick="removeSpot('+
+						    		(this.position.lat()).toFixed(7).toString()+", "+(this.position.lng()).toFixed(7).toString()+')"/>'
+						  }); 
+					  infowindow.open(map, this);
+				  });  
+			    }
+			}
+		    
+		    
 		    
 		    if(listLonLat.length != 0){
 			var initflightPlanCoordinates = listLonLat;
