@@ -1,4 +1,4 @@
-package kr.co.foot.board.controller;
+package kr.co.foot.controller;
 
 import java.util.List;
 
