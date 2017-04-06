@@ -2,54 +2,11 @@
  * 
  */
 
- $(function() {
-      var sortIndex;	// 선택된 div index의 listLonLat 좌표값
-      var sortNum;		// 타임라인 div index 번호
-	      /* 타임라인 판넬 드래그 */
-		jQuery(function($) {
-			var panelList = $('#draggablePanelList');
-			panelList.sortable({
-        		start: function(event, ui) { 
-        		      sortIndex = listLonLat[ui.item.index()];
-        		      sortNum = ui.item.index();
-       			},
-       			stop: function(event, ui) { 
-       			    if(sortNum != ui.item.index()){
-			      		   for(var i=0; i<listLonLat.length; i++){
-								if(listLonLat[i].lat == sortIndex.lat && listLonLat[i].lng == sortIndex.lng){
-								    sortNum = i;
-								}
-							}
-	      		     	    listLonLat.splice(sortNum, 1);
-	      		     	    sortNum = ui.item.index();
-	      		     		listLonLat.splice(sortNum,0,sortIndex);
-	      		     		change = false;
-	      		     	initialize();
-       			    }
-     			},
-				handle : '.panel-heading',
-				update : function() {
-					$('.panel', panelList).each(function(index, elem) {
-						var $listItem = $(elem), newIndex = $listItem.index();
-						//판넬 리스트 번호 관련
-						// Persist the new indices.
-					});
-				}
-			});
-		});
-     
-      //leftmenu 토글
-		$('.navbar-toggler').on('click', function(event) {
-			event.preventDefault();
-			$(this).closest('.navbar-minimal').toggleClass('open');
-		})
-   });
- 
- // 시간별 좌표 불러오기
- var listLonLat = new Array();
+// 시간별 좌표 불러오기
+    var listLonLat = new Array();
 	var change = true;
- var zoom = 13;
- 
+    var zoom = 13;
+    
 	var routeLayer, routeLayerWalk, tmap, map;
 	var startX, startY, endX, endY;
 	var first, second;					// 길찾기 첫번째, 두번째 좌표
@@ -121,6 +78,35 @@
 				}
 			}
 			
+			 /////////////////////		    
+			if(mymapCheckpointList.length != 0){
+				for(var i=0; i<mymapCheckpointList.length; i++){
+				    for(var j=0; j<mymapCheckpointList[i].mymapCheckpoint.length; j++){
+						console.log(mymapCheckpointList[i].mymapCheckpoint[j]);
+							
+						checkPointMarker.push(new google.maps.Marker({
+					   	 	position: mymapCheckpointList[i].mymapCheckpoint[j],
+					    	map: map
+						}));
+					  
+					  var listener6 = google.maps.event.addListener(map, 'click', function(){
+						if(infowindow != null){
+							  infowindow.close();
+						  }
+					  });
+					  var listener7 = google.maps.event.addListener(checkPointMarker, 'click', function(){
+						  if(infowindow != null){
+							  infowindow.close();
+						  }
+						  infowindow = new google.maps.InfoWindow({
+							    content: gogogo
+							  }); 
+						  infowindow.open(map, this);
+					  });  
+				    }
+				}
+			}
+			 
 			var input = document.getElementById('pac-input');
 			var searchBox = new google.maps.places.SearchBox(input);
 			map.addListener('bounds_changed', function() {
@@ -189,7 +175,7 @@
 		center = new google.maps.LatLng(lat, lng);
 		map.setCenter(center);
 	}
-
+ 
 	//타임라인에 내용 추가 
 	var address;
 	var count = 0;
@@ -270,7 +256,7 @@
 		listLonLat.splice(index,1);
 		initLonLat = {lat:lat,lng:lng};
 		zoom = map.getZoom();
-	  	$('.panel-heading').eq(index).parent().remove();
+ 	  	$('.panel-heading').eq(index).parent().remove();
 		change = false;
 		initialize();	
 	}
@@ -329,7 +315,7 @@
 			  flightPaths[i].setMap(null);
 		if(directionsDisplay!=null)					// 교통수단 라인 리셋
 			directionsDisplay.setMap(null);
-		for(var i=0; i<flightPathsWalk.length; i++)	// 도보 라인 리셋
+ 		for(var i=0; i<flightPathsWalk.length; i++)	// 도보 라인 리셋
 			flightPathsWalk[i].setMap(null);
 /* 		for(var i=0; i<startMarkers.length; i++)	// 출발 마커 리셋
 			startMarkers[i].setMap(null); 
@@ -358,7 +344,7 @@
 		urlStr += "&endX=" + lonlat2.lon;
 		urlStr += "&endY=" + lonlat2.lat;
 		urlStr += "&startName="+encodeURIComponent(startName);
-     urlStr += "&endName="+encodeURIComponent(endName);
+        urlStr += "&endName="+encodeURIComponent(endName);
 		urlStr += "&appKey=bac4f916-3297-3be4-93ff-e37ae88b8f42";
 		var prtcl = new Tmap.Protocol.HTTP({
 			url : urlStr,
@@ -694,7 +680,7 @@
 			  flightPaths[i].setMap(null);
 		if(directionsDisplay!=null)					// 교통수단 라인 리셋
 			directionsDisplay.setMap(null);
-		for(var i=0; i<flightPathsWalk.length; i++)	// 도보 라인 리셋
+ 		for(var i=0; i<flightPathsWalk.length; i++)	// 도보 라인 리셋
 			flightPathsWalk[i].setMap(null);
 		for(var i=0; i<startMarkers.length; i++)
 			startMarkers[i].setMap(null);
@@ -797,147 +783,3 @@
 	function goSearch(){
 	    location.href = "${ pageContext.request.contextPath }/map/search.do?searchtext="+$('#searchtext').val();
 	}
-	
-
-	var favoritePlaceLonLat;
-	var favoriteMapLonLat = new Array();
-	
-		function getMyplace(checkpointidx){
-		    
-		    $.ajax({
-			    type: 'POST' , 
-			    url: '${ pageContext.request.contextPath }/map/getMyplace.do',
-			    dataType : 'json',
-			    data : {
-					checkpointidx : checkpointidx
-			    },
-			    success: function(data) {
-					var Fplace = {lat:Number(data.lat),lng:Number(data.lon)};
-					if(favoritePlaceLonLat != null){
-						favoritePlaceLonLat.setMap(null);
-						if(favoritePlaceLonLat.position.lat().toFixed(7) == Fplace.lat && favoritePlaceLonLat.position.lng().toFixed(7) == Fplace.lng){
-							return;
-						}
-					}
-					goZoomIn(data.lat, data.lon);
-					favoritePlaceLonLat = new google.maps.Marker({
-						map : map,
-						position : Fplace
-					});
-					var listener3 = google.maps.event.addListener(map, 'click', function(){
-						if(infowindow != null){
-							  infowindow.close();
-						  }
-					  });
-					  var listener1 = google.maps.event.addListener(favoritePlaceLonLat, 'click', function(){
-						  if(infowindow != null){
-							  infowindow.close();
-						  } 
-						  infowindow = new google.maps.InfoWindow({
-							    content: (this.position.lat()).toFixed(7).toString()+", "+(this.position.lng()).toFixed(7).toString()+
-							    '<br/><input type="button" value="위치추가" onClick="addFavoriteMarker('+
-							    		(this.position.lat()).toFixed(7)+", "+(this.position.lng()).toFixed(7)+')"/>'
-							  }); 
-						  infowindow.open(map, this);
-					  });  
-		        }
-			});	
-		    
-		}
-		
-		function addFavoriteMarker(lat, lon){
-		    console.log(lat+", "+lon);
-		    listLonLat.push({lat:lat, lng:lon});
-		    favoritePlaceLonLat = null;
-		    goZoomIn(lat, lon);
-		    initialize();
-		}
-		
-		var mymapLonLatList = new Array();
-		var mymapCoordinates;
-		function getMymap(mymapidx){
-		    
-		    $.ajax({
-			    type: 'POST' , 
-			    url: '${ pageContext.request.contextPath }/map/getMymap.do',
-			    dataType : 'json',
-			    data : {
-					mymapidx : mymapidx
-			    },
-			    success: function(data) {
-			    	console.log(data);
-					var mymapLonLat = new Array();
-					for(var i=0; i<data.length; i++){
-					    mymapLonLat.push({lat:Number(data[i].lat), lng:Number(data[i].lon)});
-					}
-					goZoomIn(Number(data[0].lat), Number(data[0].lon));
-					if(mymapLonLatList.length != 0){
-					    for(var i=0; i<mymapLonLatList.length; i++){
-							console.log(mymapLonLatList[i].mymapidx);
-							console.log(data[0].mymapidx);
-							if(mymapLonLatList[i].mymapidx == data[0].mymapidx){
-							    mymapLonLatList.splice(i,1);
-							    console.log(mymapLonLatList);
-							    drawFavoriteMap();
-							    return;
-							}
-					    }
-					}
-					 
-					mymapLonLatList.push({mymapLonLat:mymapLonLat, mymapidx:data[0].mymapidx});
-					console.log(mymapLonLatList);
-					drawFavoriteMap();
-		        }
-			});	
-		}
-		
-		function drawFavoriteMap(){
-		    
-		    map = new google.maps.Map(document.getElementById('map'), {
-				zoom : zoom,
-				mapTypeId: google.maps.MapTypeId.ROADMAP,
-				center : center,
-				mapTypeControl: false,
-				zoomControl: false,
-				streetViewControl: false
-			});
-		    
-		    for(var i=0; i<mymapLonLatList.length; i++){    
-				var mymapCoordinates = mymapLonLatList[i].mymapLonLat;
-					var mymapPath = new google.maps.Polyline({
-						path : mymapCoordinates,
-						geodesic : true,
-						strokeColor : '#FF0000',
-						strokeOpacity : 1.0,
-						strokeWeight : 3
-					});
-					mymapPath.setMap(null);
-					mymapPath.setMap(map);
-			}
-		    
-		    if(listLonLat.length != 0){
-			var initflightPlanCoordinates = listLonLat;
-				var initflightPath = new google.maps.Polyline({
-					path : initflightPlanCoordinates,
-					geodesic : true,
-					strokeColor : '#000000',
-					strokeOpacity : 1.0,
-					strokeWeight : 2
-				});
-				initflightPath.setMap(null);
-				
-				if(checkMarker.length != 0){	// 라인 마커가 있으면
-					for (var i = 0; i < checkMarker.length; i++) {
-						checkMarker[i].setMap(null);
-					  }
-					checkMarker = [];
-					startLocation = null;
-					endLocation = null;
-				}
-				
-				initflightPath.setMap(map);
-			}
-		    addLineMarker();
-		    
-		}
-	

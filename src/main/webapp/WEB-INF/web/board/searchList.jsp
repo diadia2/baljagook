@@ -59,7 +59,7 @@
 				</div>
 				<div class="list">
 					<ul>
-						<li><a href="mapDetail.do">
+						<li><a href="${pageContext.request.contextPath }/mapDetail.do">
 								<div class="list_box">
 									<div class="imgs">
 										<img
@@ -76,7 +76,7 @@
 									</div>
 								</div>
 						</a></li>
-						<li><a href="mapDetail.do">
+						<li><a href="${pageContext.request.contextPath }/mapDetail.do">
 								<div class="list_box">
 									<div class="imgs">
 										<img
@@ -93,7 +93,7 @@
 									</div>
 								</div>
 						</a></li>
-						<li><a href="mapDetail.do">
+						<li><a href="${pageContext.request.contextPath }/mapDetail.do">
 								<div class="list_box">
 									<div class="imgs">
 										<img
@@ -110,7 +110,7 @@
 									</div>
 								</div>
 						</a></li>
-						<li><a href="mapDetail.do">
+						<li><a href="${pageContext.request.contextPath }/mapDetail.do">
 								<div class="list_box">
 									<div class="imgs">
 										<img
@@ -127,7 +127,7 @@
 									</div>
 								</div>
 						</a></li>
-						<li><a href="mapDetail.do">
+						<li><a href="${pageContext.request.contextPath }/mapDetail.do">
 								<div class="list_box">
 									<div class="imgs">
 										<img

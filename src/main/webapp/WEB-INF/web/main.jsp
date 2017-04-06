@@ -71,7 +71,7 @@
 				</div>
 				<div class="row projects">
 					<div class="col-lg-3 col-sm-6 item">
-					<a href="mapDetail.do">
+					<a href="${pageContext.request.contextPath }/mapDetail.do">
 						<div class="card">
 							<img class="img-reponsive" alt="사진1" src="<c:url value="/resources/images/1.png"/>">
 							<h3 class="name">플젝이름</h3>

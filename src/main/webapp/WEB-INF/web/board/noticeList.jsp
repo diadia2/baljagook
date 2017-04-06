@@ -39,7 +39,7 @@
 						<tbody>
 							<tr>
 								<td class="centers">1</td>
-								<td><a href="noticeView.do">제목입니다.</a></td>
+								<td><a href="${pageContext.request.contextPath }/noticeView.do">제목입니다.</a></td>
 								<td class="centers">2016-01-01</td>
 							</tr>
 							<tr>

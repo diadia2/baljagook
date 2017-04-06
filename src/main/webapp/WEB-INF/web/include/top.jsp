@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8" session="true"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -186,7 +187,7 @@ body {
 		<div class="container-fluid">
 			<div class="navbar-header">
 				<!-- 로고, 이미지로 바꿀것 -->
-				<a class="navbar-brand" href="main.do">나만의 지도</a>
+				<a class="navbar-brand" href="${pageContext.request.contextPath }/main.do">나만의 지도</a>
 				<button class="navbar-toggle collapsed" data-toggle="collapse"
 					data-target="#target">
 					<!-- 메뉴 최소화시 =버튼 -->
@@ -203,6 +204,8 @@ body {
 						size="50%" style="text-align: center;" />&nbsp;&nbsp; <a href="searchList.do"><i
 						class="fa fa-search fa-2x" aria-hidden="true"></i></a>
 				</form>
+<!--  sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss-->
+				<label>ID : ${sessionScope.user} </label>
 				<ul class="nav navbar-nav navbar-right">
 					<!-- 우상단 드롭 메뉴 -->
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
@@ -211,7 +214,7 @@ body {
 						<ul class="dropdown-menu">
 							<li><a data-toggle="modal" data-target="#loginModal"
 								data-backdrop="static" data-keyboard="false">로그인</a></li>
-							<li><a href="mypage.do">마이페이지</a></li>
+							<li><a href="member/mypage.do">마이페이지</a></li>
 							<li class="divider"></li>
 							<li><a href="#">로그아웃</a></li>
 						</ul></li>

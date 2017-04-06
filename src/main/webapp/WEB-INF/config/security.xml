@@ -9,25 +9,30 @@
 
 	<http auto-config="true" use-expressions="true">
 		<csrf disabled="true"/>
-		<intercept-url pattern="/**" access="permitAll" />
 		<!-- <intercept-url pattern="/users/welcome" access="permitAll" />
 		<intercept-url pattern="/users/signUp" access="permitAll" />
 		<intercept-url pattern="/users/login" access="permitAll" />
 		<intercept-url pattern="/images/**" access="permitAll" />
 		<intercept-url pattern="/css/**" access="permitAll" /> -->
+		<intercept-url pattern="/**" access="hasRole('ROLE_ADMIN')" />
 		<intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')" />
+		<!-- <intercept-url pattern="/**" access="permitAll" /> -->
 		<!-- <intercept-url pattern="/users/**"
 			access="hasAnyRole('ROLE_ADMIN','ROLE_USER')" />
 		<intercept-url pattern="/bbs/**"
 			access="hasAnyRole('ROLE_ADMIN','ROLE_USER')" /> -->
 
 		<http-basic />
+		<form-login authentication-success-handler-ref="authenticationSuccessHandler"/>
+		
 		<!-- <form-login login-page="/users/login" authentication-failure-url="/users/login?error=1" 
 			default-target-url="/bbs/list?boardCd=free&amp;curPage=1" /> <logout logout-success-url="/users/login" 
 			invalidate-session="true" /> -->
 
 	</http>
-
+	
+	<beans:bean id="authenticationSuccessHandler" class="kr.co.foot.common.CustomAuthenticationSuccessHandler"></beans:bean>
+	
 	<authentication-manager>
 		<authentication-provider>
 			<jdbc-user-service data-source-ref="dataSource "

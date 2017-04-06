@@ -26,12 +26,6 @@ public class PageController {
 		return mav;
 	}
 	
-	@RequestMapping("/mypage.do")
-	public ModelAndView mypage() {
-		ModelAndView mav = new ModelAndView("/member/mypage");
-		return mav;
-	}
-	
 	@RequestMapping("/regMymap.do")
 	public ModelAndView regMymap() {
 		ModelAndView mav = new ModelAndView("/map/regMymap");
