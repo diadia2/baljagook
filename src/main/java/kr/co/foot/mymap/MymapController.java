@@ -373,10 +373,6 @@ public class MymapController {
 			mymapList.add(mymapVO);
 		}
 		
-		for(MymapVO vo : mymapList){
-			System.out.println(vo);
-		}
-		
 		model.addAttribute("favoriteplaceList", favoriteplaceList);
 		model.addAttribute("favoritemapList", favoritemapList);
 		model.addAttribute("mymapList", mymapList);
