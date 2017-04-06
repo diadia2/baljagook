@@ -9,13 +9,13 @@
 
 	<http auto-config="true" use-expressions="true">
 		<csrf disabled="true"/>
-		<intercept-url pattern="/**" access="permitAll" />
 		<!-- <intercept-url pattern="/users/welcome" access="permitAll" />
 		<intercept-url pattern="/users/signUp" access="permitAll" />
 		<intercept-url pattern="/users/login" access="permitAll" />
 		<intercept-url pattern="/images/**" access="permitAll" />
 		<intercept-url pattern="/css/**" access="permitAll" /> -->
 		<intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')" />
+		<!-- <intercept-url pattern="/**" access="permitAll" /> -->
 		<!-- <intercept-url pattern="/users/**"
 			access="hasAnyRole('ROLE_ADMIN','ROLE_USER')" />
 		<intercept-url pattern="/bbs/**"
