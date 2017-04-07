@@ -125,42 +125,12 @@
 					</div>
 				</div>
 			</div>
-			<div class="row">
-				<!-- 프로필사진 -->
-				<div class="col-sm-1">
-					<div class="thumbnail">
-						<img class="img-responsive user-photo"
-							src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
-					</div>
-				</div>
-				<div class="col-sm-5">
-					<div class="panel panel-default">
-						<div class="panel-heading">
-							<strong>myusername</strong> <span class="text-muted">commented
-								5 days ago</span>
-						</div>
-						<div class="panel-body">Panel contentssssssssssssssssss ssss</div>
-					</div>
-				</div>
-			</div>
-			<div class="row">
-				<!-- 프로필사진 -->
-				<div class="col-sm-1">
-					<div class="thumbnail">
-						<img class="img-responsive user-photo"
-							src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
-					</div>
-				</div>
-				<div class="col-sm-5">
-					<div class="panel panel-default">
-						<div class="panel-heading">
-							<strong>myusername</strong> <span class="text-muted">commented
-								5 days ago</span>
-						</div>
-						<div class="panel-body">Panel contentssssssssssssssssss ssss</div>
-					</div>
-				</div>
-			</div>
+			
+			
+			
+			
+			
+			
 			<div class="col-sm-5">
 				<input type="text" class="form-control title-text" placeholder="댓글">
 			</div>
