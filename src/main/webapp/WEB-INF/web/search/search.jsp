@@ -278,6 +278,7 @@ a.no-uline {
 	                                    </span>
 	                                    
 	                                   	<!-- Like -->
+	                                   	<br/>
 										<c:choose>
 											<c:when test="${ likeAlreadyChecked[mymapList.idx] == true }">
 												<i class="fa fa-heart" aria-hidden="true"></i>
@@ -292,7 +293,7 @@ a.no-uline {
 										</c:choose>	                                    
 	                                    
 	                                    <div class="views">
-	                                        <i class="fa fa-eye" aria-hidden="true"></i><span>3,014</span>
+	                                        <i class="fa fa-eye" aria-hidden="true"></i><span>${ viewcntMap[mymapList.idx] }</span>
 	                                    </div>
 	                                </div>
 	                            </div>

@@ -241,6 +241,9 @@ public class MymapController {
 		//like 수 초기화
 		int likeCnt = 0;
 		
+		HashMap<Integer, Integer> viewcntMap = new HashMap<Integer, Integer>();
+		int viewcnt = 0;
+		
 		for(int i=0; i<mymapList.size(); i++){
 			
 			// �˻����뿡 �´� mymapidx �ҷ�����
@@ -256,6 +259,8 @@ public class MymapController {
 		for(int i=0; i<mymapList.size(); i++){
 			RegmapVO getRegmap = mymapService.getRegmapList(mymapList.get(i).getIdx());
 			regmapList.add(getRegmap);
+			viewcnt = getRegmap.getViewcnt();
+			viewcntMap.put(mymapList.get(i).getIdx(), viewcnt);
 		}
 		
 		//Like
@@ -285,7 +290,7 @@ public class MymapController {
 		model.addAttribute("hashtagList", hashtagList);
 		model.addAttribute("likeMap", likeMap);
 		model.addAttribute("likeAlreadyChecked", likeAlreadyChecked);
-		model.addAttribute("regmapList", regmapList);
+		model.addAttribute("viewcntMap", viewcntMap);
 		
 		return "search/search";
 	}
