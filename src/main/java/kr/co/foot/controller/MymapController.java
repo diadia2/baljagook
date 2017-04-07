@@ -44,7 +44,6 @@ public class MymapController {
                      @RequestParam("end") String end,
                      HttpServletRequest request) throws Exception{
       
-      
       String userid = "test@test.com";
       int type = 1;  //���=1, ��ȹ=2
       
@@ -364,7 +363,7 @@ public class MymapController {
       if(compareCheckPointidx != null){
          for(int i=0; i<compareCheckPointidx.size(); i++){
             if(checkpointidx == compareCheckPointidx.get(i).getCheckpointidx()){
-               return "�̹� ��ϵǾ� �ֽ��ϴ�.";
+               return "already registed";
             }
          }
       }
@@ -375,7 +374,7 @@ public class MymapController {
       favoriteplaceVO.setPlacename(placename);
       
       mymapService.insertFavoritePlace(favoriteplaceVO);
-      return "��� ���� �Ϸ�";
+      return "register complete";
    }
    
    @RequestMapping("/map/getFavoriteMap.do")
@@ -393,7 +392,7 @@ public class MymapController {
       if(compareRegmapidx != null){
          for(int i=0; i<compareRegmapidx.size(); i++){
             if(getRegmap.getIdx() == compareRegmapidx.get(i).getRegmapidx()){
-               return "�̹� ��ϵǾ� �ֽ��ϴ�.";
+               return "already registed";
             }
          }
       }
@@ -402,7 +401,7 @@ public class MymapController {
       favoritemapVO.setUserid(userid);
       mymapService.insertFavoriteMap(favoritemapVO);
       
-      return "�� ���� �Ϸ�";
+      return "register complete";
    }
    
    

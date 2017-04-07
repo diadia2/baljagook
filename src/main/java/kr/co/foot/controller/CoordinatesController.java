@@ -77,7 +77,7 @@ public class CoordinatesController {
 
       List<CoordinatesVO> list = coordinatesService.getLonLat(startTime, endTime, id);
       
-      String[] cityArr = request.getParameterValues("city");
+/*      String[] cityArr = request.getParameterValues("city");
       String city = "";
       for(int i=0; i<cityArr.length; i++){
          if(i != cityArr.length-1){
@@ -99,15 +99,15 @@ public class CoordinatesController {
             theme += themeArr[i];
          }
       }
-      
+      */
       model.addAttribute("list", list);
       model.addAttribute("start", start);
       model.addAttribute("end", end);
       model.addAttribute("title", title);
       model.addAttribute("content", content);
       model.addAttribute("hashtag", hashtag);
-      model.addAttribute("city", city);
-      model.addAttribute("theme", theme);
+/*      model.addAttribute("city", city);
+      model.addAttribute("theme", theme);*/
       
       return "MapTest/regtrip";
    }
