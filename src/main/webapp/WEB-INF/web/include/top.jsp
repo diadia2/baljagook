@@ -180,6 +180,11 @@ body {
 	margin-bottom: 0;
 }
 </style>
+<script type="text/javascript">
+	function goSearch(){
+	    location.href = "${ pageContext.request.contextPath }/map/search.do?searchtext="+$('#searchtext').val();
+	}
+</script>
 </head>
 <body>
 	<!-- 상단 바 -->
@@ -200,8 +205,8 @@ body {
 			<div class="collapse navbar-collapse" id="target">
 				<!-- 검색바 -->
 				<form class="navbar-form navbar-nav">
-					<input type="text" class="form-control" placeholder="Search"
-						size="50%" style="text-align: center;" />&nbsp;&nbsp; <a href="searchList.do"><i
+					<input type="text" class="form-control" placeholder="Search" id="searchtext"
+						size="50%" style="text-align: center;" />&nbsp;&nbsp; <a href="javascript:goSearch()"><i
 						class="fa fa-search fa-2x" aria-hidden="true"></i></a>
 				</form>
 <!--  sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss-->

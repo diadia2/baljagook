@@ -10,4 +10,7 @@
         select idx, userid, title, content, regdate, type from t_myMap where userid = #{userid} and type = 2
     </select>
    
+    <select id="selectFavoriteMapByuserid" parameterType="String" resultType="kr.co.foot.favoriteplace.FavoriteplaceVO">
+        select idx, userid, checkpointidx, placename from t_favoriteplace where userid = #{userid}
+    </select>
 </mapper>

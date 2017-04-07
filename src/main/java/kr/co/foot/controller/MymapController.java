@@ -161,7 +161,7 @@ public class MymapController {
                      @RequestParam("content") String content,
                      HttpServletRequest request) throws ParseException{
       
-      String userid = "plan@makeplan.com";
+      String userid = "test@test.com";
       
       // t_mymap�� �����ȹ ������ ����
       Calendar cal = Calendar.getInstance();
@@ -378,7 +378,7 @@ public class MymapController {
    public String getFavoriteMap(@RequestParam("mymapidx") String mymapidxstr){
       
       // ���� ���̵�
-      String userid = "test1@test.com";
+      String userid = "test@test.com";
       // ������ �� mymapidx ��
       int mymapidx = Integer.parseInt(mymapidxstr);
       // mymapidx������ regmapidx �ҷ�����
@@ -404,7 +404,7 @@ public class MymapController {
    @RequestMapping("/map/plantrip.do")
    public String plantrip(Model model){
       
-      String userid = "test1@test.com";
+      String userid = "test@test.com";
       List<FavoriteplaceVO> favoriteplaceList = mymapService.selectcheckpoint(userid);
       List<FavoritemapVO> favoritemapList = mymapService.selectRegmapidx(userid);
       
