@@ -27,7 +27,6 @@
 			var header = $(this).text();
 			
 			if($(this).text()=='내여행' || $(this).text()=='내계획'){
-			    alert(header);
 			    $.ajax({
 				    type: 'POST' , 
 				    url: '${ pageContext.request.contextPath }/member/resetMypage.do',
@@ -36,21 +35,66 @@
 						header : header
 				    },
 				    success: function(data) {
-						console.log(data);
 						$('#myInfo > li').remove();
+						
+						for(var i=0; i<data.length; i++){
+						    if(i==0){
+								$('#myInfo').append('<li class="top"><a href="#!">'+data[i].title+'</a><span>×</span></li>');
+						    } else {
+								$('#myInfo').append('<li><a href="#!">'+data[i].title+'</a><span>×</span></li>');   
+						    }
+						}
 			        }
 				});
 			}
 			 
 			if($(this).text()=='MAP'){
-			    alert('MAP');
+			    $.ajax({
+				    type: 'POST' , 
+				    url: '${ pageContext.request.contextPath }/member/resetMypageTwo.do',
+				    dataType : 'json',
+				    data : {
+						header : header
+				    },
+				    success: function(data) {
+						$('#myInfo > li').remove();
+						
+						for(var i=0; i<data.length; i++){
+						    if(i==0){
+								$('#myInfo').append('<li class="top"><a href="#!">'+data[i].title+'</a><span>×</span></li>');
+						    } else {
+								$('#myInfo').append('<li><a href="#!">'+data[i].title+'</a><span>×</span></li>');   
+						    }
+						}
+			        }
+				});
 			}
 			
 			if($(this).text()=='장소'){
-			    alert('장소');
+			    $.ajax({
+				    type: 'POST' , 
+				    url: '${ pageContext.request.contextPath }/member/resetMypageThree.do',
+				    dataType : 'json',
+				    data : {
+						header : header
+				    },
+				    success: function(data) {
+						$('#myInfo > li').remove();
+						
+						for(var i=0; i<data.length; i++){
+						    if(i==0){
+								$('#myInfo').append('<li class="top"><a href="javascript:myPlace('+data[i].checkpointidx+')">'+data[i].placename+'</a><span>×</span></li>');
+						    } else {
+								$('#myInfo').append('<li><a href="javascript:myPlace('+data[i].checkpointidx+')">'+data[i].placename+'</a><span>×</span></li>');   
+						    }
+						}
+			        }
+				});
 			}
-			
 		});
+		
+		
+		
 		$(".btns").click(function() { 
 			$(".lpop").show();
 		});
@@ -65,6 +109,12 @@
 			lang : 'kr'
 		});
 	});
+	
+	function myPlace(checkpointidx){
+	    
+	    window.open("${ pageContext.request.contextPath }/member/favoritePlace.do?checkpointidx="+checkpointidx, "_blank", "width=800, height=700, toolbar=no, menubar=no, scrollbars=no, resizable=yes");
+
+	}
 </script>
 
 </head>
