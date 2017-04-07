@@ -44,7 +44,6 @@ public class MymapController {
                      @RequestParam("end") String end,
                      HttpServletRequest request) throws Exception{
       
-      
       String userid = "test@test.com";
       int type = 1;  //���=1, ��ȹ=2
       

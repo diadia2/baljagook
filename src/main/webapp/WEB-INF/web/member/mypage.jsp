@@ -10,14 +10,6 @@
 
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath }/resources/css/sub.css">
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<link rel="stylesheet"
-	href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<script type="text/javascript"
-	src="${pageContext.request.contextPath }/resources/js/jquery.datetimepicker.js"
-	charset="UTF-8"></script>
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/css/jquery.datetimepicker.css" />
 
 <script type="text/javascript">
 	$(document).ready(function() {
@@ -123,49 +115,79 @@
 			$(".lpop").show();
 		});
 		$("#reg").click(function() {
-			document.inputform.submit();
+		    
+		    if($('#title').val() == ""){
+				alert("제목을 입력하세요");
+				return false;
+		    }		
+		    else if ($('#content').val() == "") {
+				alert("내용을 입력하세요");
+				return false;
+			} 
+		    else if ($('#start').val() == "") {
+				alert("시작일을 입력하세요");
+				return false;
+			}
+		    else if ($('#end').val() == "") {
+				alert("도착일을 입력하세요");
+				return false;
+			}
+		    else if ($('#hashtag').val() == "") {
+				alert("해쉬태그를 입력하세요");
+				return false;
+			}
+		    else {
+				inputform.submit();
+		    }	
 		});
-		$(".btnx").click(function() {
-			$(".lpop").hide();
-		});
-		/* datetimepicker부분 */
-		      $('#datetimepicker1').datetimepicker({
-		         useCurrent : false,
-		         sideBySide : true,
-		         maxDate : moment(),
-		         defaultDate : '${start}',
-		         format : 'YYYY-MM-DD HH:mm'
-		      });
-		      $('#datetimepicker2').datetimepicker({
-		         useCurrent : false,
-		         sideBySide : true,
-		         maxDate : moment(),
-		         minDate : '${start}',
-		         defaultDate : '${end}',
-		         format : 'YYYY-MM-DD HH:mm'
-		      });
-		      $("#datetimepicker1").on("dp.show", function(e) {
-		         $('#datetimepicker1').data("DateTimePicker").maxDate($('#end').val());
-		      });
-		      $("#datetimepicker2").on("dp.show", function(e) {
-		         $('#datetimepicker2').data("DateTimePicker").minDate($('#start').val());
-		      });
-	});
-	
-	function myPlace(checkpointidx){
-	    
-	    window.open("${ pageContext.request.contextPath }/member/favoritePlace.do?checkpointidx="+checkpointidx, "_blank", "width=800, height=700, toolbar=no, menubar=no, scrollbars=no, resizable=yes");
+			$(".btnx").click(function() {
+			    $(".lpop").hide();
+			});
+
+			/* datetimepicker부분 */
+			$('#datetimepicker1').datetimepicker({
+			    useCurrent : false,
+			    sideBySide : true,
+			    maxDate : moment(),
+			    format : 'YYYY-MM-DD HH:mm'
+			});
+			$('#datetimepicker2').datetimepicker({
+			    useCurrent : false,
+			    sideBySide : true,
+			    maxDate : moment(),
+			    format : 'YYYY-MM-DD HH:mm'
+			});
+			$("#datetimepicker1").on(
+				"dp.show",
+				function(e) {
+				    $('#datetimepicker1')
+					    .data("DateTimePicker").maxDate(
+						    $('#end').val());
+				});
+			$("#datetimepicker2").on(
+				"dp.show",
+				function(e) {
+				    $('#datetimepicker2')
+					    .data("DateTimePicker").minDate(
+						    $('#start').val());
+				});
+		    });
+
+    function myPlace(checkpointidx) {
+
+	window.open("${ pageContext.request.contextPath }/member/favoritePlace.do?checkpointidx="
+					+ checkpointidx, "_blank", "width=800, height=700, toolbar=no, menubar=no, scrollbars=no, resizable=yes");
+
+    }
+
+    function deleteMymap(mymapidx, type) {
+	console.log(mymapidx);
+	console.log(type);
+	if (confirm("삭제 하시겠습니까?")) {
 
 	}
-	
-	function deleteMymap(mymapidx,type){
-	    console.log(mymapidx);
-	    console.log(type);
-	    if(confirm("삭제 하시겠습니까?")){
-			
-	    }
-	    
-	}
+
+    }
 </script>
 
 </head>
@@ -221,14 +243,14 @@
 						<div class="row">	
 							<div class='col-md-1'></div>
 								<div class='col-md-10'>
-									<input type="text" name="title" id="" class="form-control" placeholder="여행제목" />
+									<input type="text" name="title" id="title" class="form-control" placeholder="여행제목" />
 								</div>
 							<div class='col-md-1'></div>
 						</div>	
-						<div class="row">	
+						<div class="row">	 
 							<div class='col-md-1'></div>
 								<div class='col-md-10'>
-									<input type="text" name="content" id="" class="form-control" placeholder="여행내용" />
+									<input type="text" name="content" id="content" class="form-control" placeholder="여행내용" />
 								</div>
 							<div class='col-md-1'></div>
 						</div>	
@@ -238,18 +260,15 @@
 								<div class="form-group">
 									<div class='input-group date' id='datetimepicker1'>
 										<input type='text' class="form-control" name="start" id="start" />
-										<span class="input-group-addon"> <i class="fa fa-calendar"
-											aria-hidden="true"></i>
-										</span>
+										<span class="input-group-addon"> <i class="fa fa-calendar" aria-hidden="true"></i></span>
 									</div>
 								</div>
 							</div>
 							<div class='col-md-5'>
 								<div class="form-group">
 									<div class='input-group date' id='datetimepicker2'>
-										<input type='text' class="form-control" name="end" id="end" /> <span
-											class="input-group-addon"> <i class="fa fa-calendar"
-											aria-hidden="true"></i></span>
+										<input type='text' class="form-control" name="end" id="end" /> 
+										<span class="input-group-addon"> <i class="fa fa-calendar" aria-hidden="true"></i></span>
 									</div>
 								</div>
 							</div> 
@@ -258,12 +277,12 @@
 						<div class="row">
 							<div class='col-md-1'></div>
 								<div class='col-md-10'>
-									<input type="text" name="hashtag" id="" class="form-control" placeholder="태그추가  ex) #여행 #여름" />
+									<input type="text" name="hashtag" id="hashtag" class="form-control" placeholder="태그추가  ex) #여행 #여름" />
 								</div>
 							<div class='col-md-1'></div>
 						</div>
+						<button id="reg" class="btn btn-primary">등록하기</button>
 					</form>
-					<button id="reg" class="btn btn-primary">등록하기</button>
 				</div>
 			</div>
 		</div>
