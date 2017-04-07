@@ -5,14 +5,18 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -20,6 +24,8 @@ import kr.co.foot.checkpoint.CheckpointVO;
 import kr.co.foot.favoritemap.FavoritemapVO;
 import kr.co.foot.favoriteplace.FavoriteplaceVO;
 import kr.co.foot.hashtag.HashtagVO;
+import kr.co.foot.like.LikeDTO;
+import kr.co.foot.like.LikeVO;
 import kr.co.foot.mymap.MymapService;
 import kr.co.foot.mymap.MymapVO;
 import kr.co.foot.regcoordinates.RegcoordinatesVO;
@@ -222,34 +228,72 @@ public class MymapController {
       return "redirect:/";
    }
    
-   @RequestMapping("/map/search.do")
-   public String search(@RequestParam("searchtext") String searchtext, Model model){
-      
-      List<MymapVO> mymapList = mymapService.selectMymapList(searchtext);
-      List<HashtagVO> hashtagList = new ArrayList<HashtagVO>();
-      
-      for(int i=0; i<mymapList.size(); i++){
-         
-         // �˻����뿡 �´� mymapidx �ҷ�����
-         List<HashtagVO> eachHashtagList = mymapService.getHashtagList(mymapList.get(i).getIdx());
-         // �� mymapidx�� �´� t_hashtag �ҷ�����
-         for(int j=0; j<eachHashtagList.size(); j++){
-            hashtagList.add(eachHashtagList.get(j));
-         }
-      }
-   
-      // mymapidx�� �´� t_regmap �ҷ�����
-      List<RegmapVO> regmapList = new ArrayList<RegmapVO>();
-      for(int i=0; i<mymapList.size(); i++){
-         RegmapVO getRegmap = mymapService.getRegmapList(mymapList.get(i).getIdx());
-         regmapList.add(getRegmap);
-      }
-      
-      model.addAttribute("mymapList", mymapList);
-      model.addAttribute("hashtagList", hashtagList);
-      
-      return "search/search";
-   }
+	@RequestMapping(value = "/map/search.do", method = RequestMethod.GET)
+	public String search(@RequestParam("searchtext") String searchtext, Model model, HttpServletRequest request){
+		
+		List<MymapVO> mymapList = mymapService.selectMymapList(searchtext);
+		List<HashtagVO> hashtagList = new ArrayList<HashtagVO>();
+		
+		//View로 넘길 like 해시맵 생성
+		HashMap<Integer, Integer> likeMap = new HashMap<Integer, Integer>();
+		//View로 넘길 like 체크용 해시맵 생성
+		HashMap<Integer, Boolean> likeAlreadyChecked = new HashMap<Integer, Boolean>();
+		//like 수 초기화
+		int likeCnt = 0;
+		
+		HashMap<Integer, Integer> viewcntMap = new HashMap<Integer, Integer>();
+		int viewcnt = 0;
+		
+		for(int i=0; i<mymapList.size(); i++){
+			
+			// �˻����뿡 �´� mymapidx �ҷ�����
+			List<HashtagVO> eachHashtagList = mymapService.getHashtagList(mymapList.get(i).getIdx());
+			// �� mymapidx�� �´� t_hashtag �ҷ�����
+			for(int j=0; j<eachHashtagList.size(); j++){
+				hashtagList.add(eachHashtagList.get(j));
+			}
+		}
+	
+		// mymapidx�� �´� t_regmap �ҷ�����
+		List<RegmapVO> regmapList = new ArrayList<RegmapVO>();
+		for(int i=0; i<mymapList.size(); i++){
+			RegmapVO getRegmap = mymapService.getRegmapList(mymapList.get(i).getIdx());
+			regmapList.add(getRegmap);
+			viewcnt = getRegmap.getViewcnt();
+			viewcntMap.put(mymapList.get(i).getIdx(), viewcnt);
+		}
+		
+		//Like
+		List<String> userList = new ArrayList<String>();
+		for(int i=0; i<mymapList.size(); i++) {
+			userList = mymapService.getLikeCnt(mymapList.get(i).getIdx());
+			if(userList == null) {
+				likeCnt = 0;
+			} else {
+				likeCnt = userList.size();
+			}
+			
+			//Session에 저장된 userid 확인
+			String loggedUserid = "test@test.com";
+			System.out.println("로그인중인 사용자: " + loggedUserid);
+			
+			//로그인된 userid가 이미 게시글을 '좋아요' 했다면 hashmap에 정보 저장
+			if(userList.contains(loggedUserid)) {
+				likeAlreadyChecked.put(mymapList.get(i).getIdx(), true);
+			}
+			
+			likeMap.put(mymapList.get(i).getIdx(), likeCnt);	
+		}
+		
+		
+		model.addAttribute("mymapList", mymapList);
+		model.addAttribute("hashtagList", hashtagList);
+		model.addAttribute("likeMap", likeMap);
+		model.addAttribute("likeAlreadyChecked", likeAlreadyChecked);
+		model.addAttribute("viewcntMap", viewcntMap);
+		
+		return "search/search";
+	}
    
    @RequestMapping("/map/detail.do")
    public String detail(HttpServletRequest request, Model model){
@@ -285,6 +329,9 @@ public class MymapController {
             checkpointVO.add(cpVO);
          }
       }
+      
+      // 조회 수 증가
+      mymapService.increaseViewCnt(mymapidx);
       
       model.addAttribute("mymapidx", mymapidx);
       model.addAttribute("mymapVO", mymapVO);
@@ -417,6 +464,76 @@ public class MymapController {
       
       return object;
    }
+   
+//	Like
+	@RequestMapping(value="/like.do", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public HashMap<Integer, Integer> like(@RequestBody LikeDTO likeDTO, HttpServletRequest request) throws Exception {
+		
+		System.out.println("like 컨트롤러로 들어옴");
+		System.out.println(likeDTO);
+		
+		//검색페이지에 나온 mymapidx를 통해 해당 게시물의 regmapidx 추출
+		String userid = likeDTO.getUserid();
+		int mymapidx = likeDTO.getMymapidxRef();
+		int regmapidx = mymapService.getRegmapIdx(mymapidx);
+	
+		LikeVO likeVO = new LikeVO();
+		likeVO.setUserid(userid);
+		likeVO.setRegmapidx(regmapidx);
+		
+		mymapService.insertLikeInfo(likeVO);
+		
+		//사용자가 like 클릭 시 업데이트된 likeCnt 데이터 전송
+		HashMap<Integer, Integer> likeMap = new HashMap<Integer, Integer>();
+		int likeCnt = 0;
+		List<String> userList = new ArrayList<String>();
+		userList = mymapService.getLikeCnt(mymapidx);
+		if(userList == null) {
+			likeCnt = 0;
+		} else {
+			likeCnt = userList.size();
+		}
+			
+		likeMap.put(mymapidx, likeCnt);
+			
+		return likeMap;
+	}
+	
+//	Unlike	
+	@RequestMapping(value="/unlike.do", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public HashMap<Integer, Integer> unlike(@RequestBody LikeDTO likeDTO, HttpServletRequest request) throws Exception {
+		
+		System.out.println("like 컨트롤러로 들어옴");
+		System.out.println(likeDTO);
+		
+		//검색페이지에 나온 mymapidx를 통해 해당 게시물의 regmapidx 추출
+		String userid = likeDTO.getUserid();
+		int mymapidx = likeDTO.getMymapidxRef();
+		int regmapidx = mymapService.getRegmapIdx(mymapidx);
+	
+		LikeVO likeVO = new LikeVO();
+		likeVO.setUserid(userid);
+		likeVO.setRegmapidx(regmapidx);
+		
+		mymapService.deleteLikeInfo(likeVO);
+		
+		//사용자가 unlike 클릭 시 업데이트된 likeCnt 데이터 전송
+		HashMap<Integer, Integer> likeMap = new HashMap<Integer, Integer>();
+		int likeCnt = 0;
+		List<String> userList = new ArrayList<String>();
+		userList = mymapService.getLikeCnt(mymapidx);
+		if(userList == null) {
+			likeCnt = 0;
+		} else {
+			likeCnt = userList.size();
+		}
+			
+		likeMap.put(mymapidx, likeCnt);
+			
+		return likeMap;
+	}   
    
    
 }

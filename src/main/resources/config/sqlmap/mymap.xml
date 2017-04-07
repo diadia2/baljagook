@@ -38,7 +38,7 @@
        	or 
        	a.content like CONCAT('%',#{searchtext},'%')
        	or 
-       	b.name like CONCAT('%',#{searchtext},'%') 
+       	b.name = CONCAT('%',#{searchtext},'%') 
        	and a.type=1
    </select>
    
@@ -93,7 +93,7 @@
    <select id="getLikeCnt" parameterType="int" resultType="String">
        select a.userid from t_like a 
        inner join t_regmap b on a.regmapidx = b.idx
-       where b.mymapidx = #{idx}
+       where b.mymapidx = #{mymapidx}
    </select>
    
    <select id="getRegmapIdx" parameterType="int" resultType="int">
@@ -107,5 +107,9 @@
    <delete id="deleteLikeInfo" parameterType="LikeVO">
        delete from t_like where userid = #{userid} and regmapidx = #{regmapidx}
    </delete>
+
+   <update id="increaseViewCnt" parameterType="int">
+       update t_regmap set viewcnt = viewcnt+1 where mymapidx = #{mymapidx}
+   </update>
    
 </mapper>
