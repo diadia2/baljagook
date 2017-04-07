@@ -123,7 +123,8 @@ a.no-uline {
 				success: function(data) {
 					console.log("ajax post 통신 성공");
 					console.log(data);
-					$("#likeCnt").html(data);
+					console.log(this);
+					$("#likeCnt"+mymapidxRef).html(data[mymapidxRef]);
 				}
 			});
 		}
@@ -140,7 +141,7 @@ a.no-uline {
 				success: function(data) {
 					console.log("ajax post 통신 성공");
 					console.log(data);
-					$("#likeCnt").html(data);
+					$("#likeCnt"+mymapidxRef).html(data[mymapidxRef]);
 				}
 			});
 		}
@@ -275,10 +276,24 @@ a.no-uline {
 	                                    	</c:if>
 	                                    </c:forEach>
 	                                    </span>
+	                                    
+	                                   	<!-- Like -->
+	                                   	<br/>
+										<c:choose>
+											<c:when test="${ likeAlreadyChecked[mymapList.idx] == true }">
+												<i class="fa fa-heart" aria-hidden="true"></i>
+												<input type="checkbox" onclick="handleLike(this, ${ mymapList.idx });" checked="checked" >
+												<div id="likeCnt${ mymapList.idx}">${ likeMap[mymapList.idx] }</div>
+											</c:when>
+											<c:otherwise>
+												<i class="fa fa-heart" aria-hidden="true"></i>
+												<input type="checkbox" onclick="handleLike(this, ${ mymapList.idx });" >
+												<div id="likeCnt${ mymapList.idx}">${ likeMap[mymapList.idx] }</div>
+											</c:otherwise>
+										</c:choose>	                                    
+	                                    
 	                                    <div class="views">
-	                                    	<input type="checkbox" onclick="handleLike(this, ${ mymapList.idx });">
-	                                        <i class="fa fa-heart" aria-hidden="true"></i><div id="likeCnt">${ likeCnt }</div>
-	                                        <i class="fa fa-eye" aria-hidden="true"></i><span>3,014</span>
+	                                        <i class="fa fa-eye" aria-hidden="true"></i><span>${ viewcntMap[mymapList.idx] }</span>
 	                                    </div>
 	                                </div>
 	                            </div>

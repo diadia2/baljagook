@@ -39,9 +39,9 @@
 						
 						for(var i=0; i<data.length; i++){
 						    if(i==0){
-								$('#myInfo').append('<li class="top"><a href="#!">'+data[i].title+'</a><span>×</span></li>');
+								$('#myInfo').append('<li class="top"><a href="#!">'+data[i].title+'</a><br/>'+data[i].content+'<span>×</span></li>');
 						    } else {
-								$('#myInfo').append('<li><a href="#!">'+data[i].title+'</a><span>×</span></li>');   
+								$('#myInfo').append('<li><a href="#!">'+data[i].title+'</a><br/>'+data[i].content+'<span>×</span></li>');   
 						    }
 						}
 			        }
@@ -61,9 +61,9 @@
 						
 						for(var i=0; i<data.length; i++){
 						    if(i==0){
-								$('#myInfo').append('<li class="top"><a href="#!">'+data[i].title+'</a><span>×</span></li>');
+								$('#myInfo').append('<li class="top"><a href="#!">'+data[i].title+'</a><br/>'+data[i].content+'<span>×</span></li>');
 						    } else {
-								$('#myInfo').append('<li><a href="#!">'+data[i].title+'</a><span>×</span></li>');   
+								$('#myInfo').append('<li><a href="#!">'+data[i].title+'</a><br/>'+data[i].content+'<span>×</span></li>');   
 						    }
 						}
 			        }
@@ -151,10 +151,10 @@
 					<ul id="myInfo">
 						<c:forEach var="mymapList" items="${ mymapList }" varStatus="idx">
 							<c:if test="${ idx.index == 0 }">
-								<li class="top"><a href="#!">${ mymapList.title }</a><span>×</span></li>
+								<li class="top"><a href="#!">${ mymapList.title }</a><br/>${ mymapList.content }<span>×</span></li>
 							</c:if>
 							<c:if test="${ idx.index != 0 }">
-								<li><a href="#!">${ mymapList.title }</a><span>×</span></li>
+								<li><a href="#!">${ mymapList.title }</a><br/>${ mymapList.content }<span>×</span></li>
 							</c:if>
 						</c:forEach> 
 					</ul>
