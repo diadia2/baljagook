@@ -174,9 +174,9 @@ public class MymapServiceImp implements MymapService {
 	
 	//해당 게시물에 대한 like 정보 추출
 	@Override
-	public List<String> getLikeCnt(int idx) {
+	public List<String> getLikeCnt(int mymapidx) {
 		
-		List<String> userList = mymapDAO.getLikeCnt(idx);
+		List<String> userList = mymapDAO.getLikeCnt(mymapidx);
 		
 		return userList;
 	}
@@ -202,6 +202,12 @@ public class MymapServiceImp implements MymapService {
 	public void deleteLikeInfo(LikeVO likeVO) {
 		
 		mymapDAO.deleteLikeInfo(likeVO);
+	}
+	
+	//조회 수 증가
+	public void increaseViewCnt(int mymapidx) {
+		
+		mymapDAO.increaseViewCnt(mymapidx);
 	}
 	
 

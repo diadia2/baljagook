@@ -32,9 +32,10 @@ public interface MymapDAO {
 	public CheckpointVO selectCheckPointByIdx(String checkpointidx);
 	public RegcoordinatesVO getRegcoordinatesInfoByIdx(int regcoordinatesidx);
 	public MymapVO selectMymapByRegmapIdx(int regmapidx);
-	public List<String> getLikeCnt(int idx);
+	public List<String> getLikeCnt(int mymapidx);
 	public int getRegmapIdx(int mymapidx);
 	public void insertLikeInfo(LikeVO likeVO);
 	public void deleteLikeInfo(LikeVO likeVO);
+	public void increaseViewCnt(int mymapidx);
 
 }

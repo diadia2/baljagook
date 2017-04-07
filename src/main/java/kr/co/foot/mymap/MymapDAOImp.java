@@ -174,9 +174,9 @@ public class MymapDAOImp implements MymapDAO {
 	}
 	
 	@Override
-	public List<String> getLikeCnt(int idx) {
+	public List<String> getLikeCnt(int mymapidx) {
 		
-		List<String> userList = sqlSessionTemplate.selectList("kr.co.foot.mymap.MymapDAO.getLikeCnt", idx);
+		List<String> userList = sqlSessionTemplate.selectList("kr.co.foot.mymap.MymapDAO.getLikeCnt", mymapidx);
 		
 		return userList;
 	}
@@ -201,6 +201,12 @@ public class MymapDAOImp implements MymapDAO {
 	public void deleteLikeInfo(LikeVO likeVO) {
 		
 		sqlSessionTemplate.delete("kr.co.foot.mymap.MymapDAO.deleteLikeInfo", likeVO);
+	}
+	
+	@Override
+	public void increaseViewCnt(int mymapidx) {
+		
+		sqlSessionTemplate.update("kr.co.foot.mymap.MymapDAO.increaseViewCnt", mymapidx);
 	}
 	
 }
