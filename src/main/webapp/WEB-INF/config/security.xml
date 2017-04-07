@@ -23,7 +23,7 @@
 			access="hasAnyRole('ROLE_ADMIN','ROLE_USER')" /> -->
 
 		<http-basic />
-		<form-login authentication-success-handler-ref="authenticationSuccessHandler"/>
+		<form-login authentication-success-handler-ref="authenticationSuccessHandler" authentication-success-forward-url="http://localhost:8080/Baljagook/login/"/>
 		
 		<!-- <form-login login-page="/users/login" authentication-failure-url="/users/login?error=1" 
 			default-target-url="/bbs/list?boardCd=free&amp;curPage=1" /> <logout logout-success-url="/users/login" 
