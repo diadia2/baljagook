@@ -13,7 +13,7 @@
 </head>
 <body>
 	<c:forEach var="cmt" items="${mapCommentList }">
-		<div class="row" id="<c:out value='${cmt.idx }' />" <c:if test="${cmt.lvl>0 }">style="margin-left: ${cmt.lvl*30 }px;"</c:if>>
+		<div class="row" <c:if test="${cmt.lvl>0 }">style="margin-left: ${cmt.lvl*30 }px;"</c:if>>
 			<!-- 프로필사진 -->
 			<div class="col-sm-1">
 				<div class="thumbnail">
@@ -22,16 +22,17 @@
 				</div>
 			</div>
 			<div class="col-sm-5">
-				<div class="panel panel-default">
+				<div class="panel panel-default" id="<c:out value='${cmt.idx }' />" >
 					<div class="panel-heading">
 						<strong><c:out value="${cmt.userid }" /></strong> <span class="text-muted"><c:out value="${cmt.regdate }" /></span>
 					</div>
 					<div class="panel-body"><input type="text" class="cmt" value ="<c:out value='${cmt.content }' />" disabled="disabled"></div>
+				
+					<button class="mod1">수정</button>
+					<button class="mod2">완료</button>
+					<button class="del">삭제</button>
+					<button class="reply">답글</button>
 				</div>
-				<button class="mod1">수정</button>
-				<button class="mod2">완료</button>
-				<button class="del">삭제</button>
-				<button class="reply">답글</button>
 			</div>
 		</div>
 	</c:forEach>
