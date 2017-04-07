@@ -419,13 +419,12 @@ public class MymapController {
          mymapList.add(mymapVO);
       }
       
-      for(MymapVO vo : mymapList){
-         System.out.println(vo);
-      }
+      List<MymapVO> mymapListPlanAndReg = mymapService.selectMymapByuserid(userid);
       
       model.addAttribute("favoriteplaceList", favoriteplaceList);
       model.addAttribute("favoritemapList", favoritemapList);
       model.addAttribute("mymapList", mymapList);
+      model.addAttribute("mymapListPlanAndReg", mymapListPlanAndReg);
       
       return "MapTest/plantrip";
 

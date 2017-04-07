@@ -37,5 +37,6 @@ public interface MymapService {
 	public void insertLikeInfo(LikeVO likeVO);
 	public void deleteLikeInfo(LikeVO likeVO);
 	public void increaseViewCnt(int mymapidx);
+	public List<MymapVO> selectMymapByuserid(String userid);
 
 }

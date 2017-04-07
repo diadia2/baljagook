@@ -112,4 +112,7 @@
        update t_regmap set viewcnt = viewcnt+1 where mymapidx = #{mymapidx}
    </update>
    
+   <select id="selectMymapByuserid" parameterType="String" resultType="kr.co.foot.mymap.MymapVO">
+       select idx, title, content, userid, regdate, type from t_myMap where userid = #{userid}
+   </select>
 </mapper>
