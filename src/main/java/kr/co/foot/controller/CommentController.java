@@ -109,10 +109,9 @@ public class CommentController {
 	}
 
 	/* url연결 */
-	@RequestMapping("/map/list.do")
-	public ModelAndView slist() {
-		ModelAndView mav = new ModelAndView("test");
-		System.out.println("list");
+	@RequestMapping("/map/mapDetail.do")
+	public ModelAndView mapDetail() {
+		ModelAndView mav = new ModelAndView("/map/mapDetail");
 		return mav;
 	}
 

@@ -6,6 +6,10 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Map Detail</title>
+
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<script src="${pageContext.request.contextPath }/resources/js/comment/mapComment.js"></script>
 </head>
 <body>
 	<header>
@@ -107,24 +111,7 @@
 					<h3>Comment</h3>
 				</div>
 			</div>
-			<div class="row">
-				<!-- 프로필사진 -->
-				<div class="col-sm-1">
-					<div class="thumbnail">
-						<img class="img-responsive user-photo"
-							src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
-					</div>
-				</div>
-				<div class="col-sm-5">
-					<div class="panel panel-default">
-						<div class="panel-heading">
-							<strong>myusername</strong> <span class="text-muted">commented
-								5 days ago</span>
-						</div>
-						<div class="panel-body">Panel contentssssssssssssssssss ssss</div>
-					</div>
-				</div>
-			</div>
+			<div id="cmt"></div>
 			
 			
 			
