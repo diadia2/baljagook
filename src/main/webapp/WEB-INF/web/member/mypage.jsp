@@ -39,9 +39,11 @@
 						
 						for(var i=0; i<data.length; i++){
 						    if(i==0){
-								$('#myInfo').append('<li class="top"><a href="${ pageContext.request.contextPath }/map/detail.do?mymapidx='+data[i].idx+'">'+data[i].title+'</a><br/>'+data[i].content+'<span>×</span></li>');
+								$('#myInfo').append('<li class="top"><a href="${ pageContext.request.contextPath }/map/detail.do?mymapidx='+data[i].idx+'">'+
+													data[i].title+'</a><br/>'+data[i].content+'<span onclick="javascript:deleteMymap('+data[i].idx+','+data[i].type+')">×</span></li>');
 						    } else {
-								$('#myInfo').append('<li><a href="${ pageContext.request.contextPath }/map/detail.do?mymapidx='+data[i].idx+'">'+data[i].title+'</a><br/>'+data[i].content+'<span>×</span></li>');   
+								$('#myInfo').append('<li><a href="${ pageContext.request.contextPath }/map/detail.do?mymapidx='+data[i].idx+'">'+
+													data[i].title+'</a><br/>'+data[i].content+'<span>×</span></li>');   
 						    }
 						}
 			        }
@@ -155,6 +157,15 @@
 	    window.open("${ pageContext.request.contextPath }/member/favoritePlace.do?checkpointidx="+checkpointidx, "_blank", "width=800, height=700, toolbar=no, menubar=no, scrollbars=no, resizable=yes");
 
 	}
+	
+	function deleteMymap(mymapidx,type){
+	    console.log(mymapidx);
+	    console.log(type);
+	    if(confirm("삭제 하시겠습니까?")){
+			
+	    }
+	    
+	}
 </script>
 
 </head>
@@ -185,7 +196,7 @@
 				<div class="menus">
 					<span class="">장소</span> <span class="">MAP</span> <span class="">내계획</span> <span class="on">내여행</span>
 				</div>
-				<div class="btns">등록</div>
+				<div class="btns">여행등록</div>
 				<div class="div_board">
 					<!-- 여기에 ajax를 통한 데이터 넣으면 됨 -->
 					<ul id="myInfo">

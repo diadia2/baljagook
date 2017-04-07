@@ -39,7 +39,7 @@
        	a.content like CONCAT('%',#{searchtext},'%')
        	or 
        	b.name = CONCAT('%',#{searchtext},'%') 
-       	and a.type=1
+       	and a.type=1 group by a.idx
    </select>
    
    <select id="getHashtagList" parameterType="int" resultType="kr.co.foot.hashtag.HashtagVO">
