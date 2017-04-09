@@ -26,6 +26,7 @@ public class MemberController {
 	@Autowired
 	private MymapService mymapService;
 	
+	//마이페이지 선택
 	@RequestMapping("/member/mypage.do")
 	public String myPage(Model model){
 		
@@ -37,6 +38,7 @@ public class MemberController {
 		return "member/mypage";
 	}
 	
+	//내여행/내계획 선택 ajax
 	@RequestMapping("/member/resetMypage.do")
 	@ResponseBody
 	public List<MymapVO> resetMypage(@RequestParam("header") String header){
@@ -53,6 +55,7 @@ public class MemberController {
 		
 	}
 	
+	//MAP 선택 ajax
 	@RequestMapping("/member/resetMypageTwo.do")
 	@ResponseBody
 	public List<MymapVO> resetMypageTwo(@RequestParam("header") String header){
@@ -71,6 +74,7 @@ public class MemberController {
 		
 	}
 	
+	//장소 선택 ajax
 	@RequestMapping("/member/resetMypageThree.do")
 	@ResponseBody
 	public List<FavoriteplaceVO> resetMypageThree(@RequestParam("header") String header){
@@ -83,6 +87,7 @@ public class MemberController {
 		
 	}
 	
+	//favorite장소 새창 띄우기
 	@RequestMapping("/member/favoritePlace.do")
 	public String favoritePlace(@RequestParam("checkpointidx") String checkpointidx,
 								Model model){

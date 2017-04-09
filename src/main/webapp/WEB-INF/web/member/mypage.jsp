@@ -10,14 +10,6 @@
 
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath }/resources/css/sub.css">
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<link rel="stylesheet"
-	href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<script type="text/javascript"
-	src="${pageContext.request.contextPath }/resources/js/jquery.datetimepicker.js"
-	charset="UTF-8"></script>
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/css/jquery.datetimepicker.css" />
 
 <script type="text/javascript">
 	$(document).ready(function() {
@@ -26,7 +18,7 @@
 			$(this).addClass("on");
 			var header = $(this).text();
 			
-			if($(this).text()=='내여행' || $(this).text()=='내계획'){
+			if($(this).text()=='내여행'){
 			    $.ajax({
 				    type: 'POST' , 
 				    url: '${ pageContext.request.contextPath }/member/resetMypage.do',
@@ -39,9 +31,33 @@
 						
 						for(var i=0; i<data.length; i++){
 						    if(i==0){
-								$('#myInfo').append('<li class="top"><a href="#!">'+data[i].title+'</a><br/>'+data[i].content+'<span>×</span></li>');
+								$('#myInfo').append('<li class="top"><a href="${ pageContext.request.contextPath }/map/detail.do?mymapidx='+data[i].idx+'">'+
+													data[i].title+'</a><br/>'+data[i].content+'<span onclick="javascript:deleteMymap('+data[i].idx+','+data[i].type+')">×</span></li>');
 						    } else {
-								$('#myInfo').append('<li><a href="#!">'+data[i].title+'</a><br/>'+data[i].content+'<span>×</span></li>');   
+								$('#myInfo').append('<li><a href="${ pageContext.request.contextPath }/map/detail.do?mymapidx='+data[i].idx+'">'+
+													data[i].title+'</a><br/>'+data[i].content+'<span>×</span></li>');   
+						    }
+						}
+			        }
+				});
+			}
+			
+			if($(this).text()=='내계획'){
+			    $.ajax({
+				    type: 'POST' , 
+				    url: '${ pageContext.request.contextPath }/member/resetMypage.do',
+				    dataType : 'json',
+				    data : {
+						header : header
+				    },
+				    success: function(data) {
+						$('#myInfo > li').remove();
+						
+						for(var i=0; i<data.length; i++){
+						    if(i==0){
+								$('#myInfo').append('<li class="top"><a href="${pageContext.request.contextPath}/map/plantrip.do">'+data[i].title+'</a><br/>'+data[i].content+'<span>×</span></li>');
+						    } else {
+								$('#myInfo').append('<li><a href="#">'+data[i].title+'</a><br/>'+data[i].content+'<span>×</span></li>');   
 						    }
 						}
 			        }
@@ -61,9 +77,10 @@
 						
 						for(var i=0; i<data.length; i++){
 						    if(i==0){
-								$('#myInfo').append('<li class="top"><a href="#!">'+data[i].title+'</a><br/>'+data[i].content+'<span>×</span></li>');
+								console.log(data[i].idx);
+								$('#myInfo').append('<li class="top"><a href="${ pageContext.request.contextPath }/map/detail.do?mymapidx='+data[i].idx+'">'+data[i].title+'</a><br/>'+data[i].content+'<span>×</span></li>');
 						    } else {
-								$('#myInfo').append('<li><a href="#!">'+data[i].title+'</a><br/>'+data[i].content+'<span>×</span></li>');   
+								$('#myInfo').append('<li><a href="${ pageContext.request.contextPath }/map/detail.do?mymapidx='+data[i].idx+'">'+data[i].title+'</a><br/>'+data[i].content+'<span>×</span></li>');   
 						    }
 						}
 			        }
@@ -94,27 +111,83 @@
 		});
 		
 		
-		
 		$(".btns").click(function() { 
 			$(".lpop").show();
 		});
 		$("#reg").click(function() {
-			location.href = "regMymap.do";
+		    
+		    if($('#title').val() == ""){
+				alert("제목을 입력하세요");
+				return false;
+		    }		
+		    else if ($('#content').val() == "") {
+				alert("내용을 입력하세요");
+				return false;
+			} 
+		    else if ($('#start').val() == "") {
+				alert("시작일을 입력하세요");
+				return false;
+			}
+		    else if ($('#end').val() == "") {
+				alert("도착일을 입력하세요");
+				return false;
+			}
+		    else if ($('#hashtag').val() == "") {
+				alert("해쉬태그를 입력하세요");
+				return false;
+			}
+		    else {
+				inputform.submit();
+		    }	
 		});
-		$(".btnx").click(function() {
-			$(".lpop").hide();
-		});
-		$('.dates').datetimepicker({
-			format : 'd.m.Y H:i',
-			lang : 'kr'
-		});
-	});
-	
-	function myPlace(checkpointidx){
-	    
-	    window.open("${ pageContext.request.contextPath }/member/favoritePlace.do?checkpointidx="+checkpointidx, "_blank", "width=800, height=700, toolbar=no, menubar=no, scrollbars=no, resizable=yes");
+			$(".btnx").click(function() {
+			    $(".lpop").hide();
+			});
+
+			/* datetimepicker부분 */
+			$('#datetimepicker1').datetimepicker({
+			    useCurrent : false,
+			    sideBySide : true,
+			    maxDate : moment(),
+			    format : 'YYYY-MM-DD HH:mm'
+			});
+			$('#datetimepicker2').datetimepicker({
+			    useCurrent : false,
+			    sideBySide : true,
+			    maxDate : moment(),
+			    format : 'YYYY-MM-DD HH:mm'
+			});
+			$("#datetimepicker1").on(
+				"dp.show",
+				function(e) {
+				    $('#datetimepicker1')
+					    .data("DateTimePicker").maxDate(
+						    $('#end').val());
+				});
+			$("#datetimepicker2").on(
+				"dp.show",
+				function(e) {
+				    $('#datetimepicker2')
+					    .data("DateTimePicker").minDate(
+						    $('#start').val());
+				});
+		    });
+
+    function myPlace(checkpointidx) {
+
+	window.open("${ pageContext.request.contextPath }/member/favoritePlace.do?checkpointidx="
+					+ checkpointidx, "_blank", "width=800, height=700, toolbar=no, menubar=no, scrollbars=no, resizable=yes");
+
+    }
+
+    function deleteMymap(mymapidx, type) {
+	console.log(mymapidx);
+	console.log(type);
+	if (confirm("삭제 하시겠습니까?")) {
 
 	}
+
+    }
 </script>
 
 </head>
@@ -145,16 +218,16 @@
 				<div class="menus">
 					<span class="">장소</span> <span class="">MAP</span> <span class="">내계획</span> <span class="on">내여행</span>
 				</div>
-				<div class="btns">등록</div>
+				<div class="btns">여행등록</div>
 				<div class="div_board">
 					<!-- 여기에 ajax를 통한 데이터 넣으면 됨 -->
 					<ul id="myInfo">
 						<c:forEach var="mymapList" items="${ mymapList }" varStatus="idx">
 							<c:if test="${ idx.index == 0 }">
-								<li class="top"><a href="#!">${ mymapList.title }</a><br/>${ mymapList.content }<span>×</span></li>
+								<li class="top"><a href="${ pageContext.request.contextPath }/map/detail.do?mymapidx=${ mymapList.idx }">${ mymapList.title }</a><br/>${ mymapList.content }<span>×</span></li>
 							</c:if>
 							<c:if test="${ idx.index != 0 }">
-								<li><a href="#!">${ mymapList.title }</a><br/>${ mymapList.content }<span>×</span></li>
+								<li><a href="${ pageContext.request.contextPath }/map/detail.do?mymapidx=${ mymapList.idx }">${ mymapList.title }</a><br/>${ mymapList.content }<span>×</span></li>
 							</c:if>
 						</c:forEach> 
 					</ul>
@@ -166,23 +239,50 @@
 			<div class="lpop">
 				<span class="btnx">×</span>
 				<div class="contentview">
-					<form name="" method="post">
-						<input type="text" name="" id="" class="titles" placeholder="제목입력" />
-						<input type="text" class="dates" readonly placeholder="날짜선택" /> ~
-						<input type="text" class="dates" readonly placeholder="날짜선택" /> <input
-							type="text" name="" id="" class="tags"
-							placeholder="#태그를 입력 후 엔터!" />
-						<div>
-							<ul class="taglib">
-								<li>#이별<span>x</span></li>
-								<li>#사랑<span>x</span></li>
-								<li>#눈물<span>x</span></li>
-								<li>#ㅋㅋㅋ<span>x</span></li>
-								<li>#하하하<span>x</span></li>
-							</ul>
+					<form action="${ pageContext.request.contextPath }/map/mapcheck.do" method="POST" name="inputform">
+						<div class="row">	
+							<div class='col-md-1'></div>
+								<div class='col-md-10'>
+									<input type="text" name="title" id="title" class="form-control" placeholder="여행제목" />
+								</div>
+							<div class='col-md-1'></div>
+						</div>	
+						<div class="row">	 
+							<div class='col-md-1'></div>
+								<div class='col-md-10'>
+									<input type="text" name="content" id="content" class="form-control" placeholder="여행내용" />
+								</div>
+							<div class='col-md-1'></div>
+						</div>	
+						<div class="row">
+							<div class='col-md-1'></div>
+							<div class='col-md-5'>
+								<div class="form-group">
+									<div class='input-group date' id='datetimepicker1'>
+										<input type='text' class="form-control" name="start" id="start" />
+										<span class="input-group-addon"> <i class="fa fa-calendar" aria-hidden="true"></i></span>
+									</div>
+								</div>
+							</div>
+							<div class='col-md-5'>
+								<div class="form-group">
+									<div class='input-group date' id='datetimepicker2'>
+										<input type='text' class="form-control" name="end" id="end" /> 
+										<span class="input-group-addon"> <i class="fa fa-calendar" aria-hidden="true"></i></span>
+									</div>
+								</div>
+							</div> 
+							<div class='col-md-1'></div>
 						</div>
+						<div class="row">
+							<div class='col-md-1'></div>
+								<div class='col-md-10'>
+									<input type="text" name="hashtag" id="hashtag" class="form-control" placeholder="태그추가  ex) #여행 #여름" />
+								</div>
+							<div class='col-md-1'></div>
+						</div>
+						<button id="reg" class="btn btn-primary">등록하기</button>
 					</form>
-					<button id="reg">등록하기</button><button class="btnx">취소</button>
 				</div>
 			</div>
 		</div>

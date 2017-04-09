@@ -21,7 +21,6 @@ html, body {
 </style>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD6x6lwLmHlSpovbF0nM-fPIPpjfv4D9IM"></script>
 <script>
-
 	window.onload = function(){
 	    initMap();
 	}

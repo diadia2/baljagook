@@ -208,5 +208,13 @@ public class MymapDAOImp implements MymapDAO {
 		
 		sqlSessionTemplate.update("kr.co.foot.mymap.MymapDAO.increaseViewCnt", mymapidx);
 	}
+
+	@Override
+	public List<MymapVO> selectMymapByuserid(String userid) {
+
+		List<MymapVO> mymapListPlanAndReg = sqlSessionTemplate.selectList("kr.co.foot.mymap.MymapDAO.selectMymapByuserid", userid);
+		
+		return mymapListPlanAndReg;
+	}
 	
 }

@@ -39,7 +39,7 @@
        	a.content like CONCAT('%',#{searchtext},'%')
        	or 
        	b.name = CONCAT('%',#{searchtext},'%') 
-       	and a.type=1
+       	and a.type=1 group by a.idx
    </select>
    
    <select id="getHashtagList" parameterType="int" resultType="kr.co.foot.hashtag.HashtagVO">
@@ -112,4 +112,7 @@
        update t_regmap set viewcnt = viewcnt+1 where mymapidx = #{mymapidx}
    </update>
    
+   <select id="selectMymapByuserid" parameterType="String" resultType="kr.co.foot.mymap.MymapVO">
+       select idx, title, content, userid, regdate, type from t_myMap where userid = #{userid}
+   </select>
 </mapper>

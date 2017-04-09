@@ -488,6 +488,54 @@
 		}
 	
 	</script>
+	<script>
+		
+	function mymapListPlanAndReg(mymapidx){
+	    
+	    $.ajax({
+		    type: 'POST' , 
+		    url: '${ pageContext.request.contextPath }/map/getMymap.do',
+		    dataType : 'json',
+		    data : {
+				mymapidx : mymapidx
+		    },
+		    success: function(data) {
+				console.log(data);
+				var mymapLonLat = new Array();
+				var mymapCheckpoint = new Array();
+				for(var i=0; i<data[0].length; i++){
+				    mymapLonLat.push({lat:Number(data[0][i].lat), lng:Number(data[0][i].lon)});
+				    for(var j=0; j<data[1].length; j++){
+						if(data[0][i].idx == data[1][j].regcoordinatesidx){
+						    mymapCheckpoint.push({lat:Number(data[0][i].lat), lng:Number(data[0][i].lon), title:data[1][j].title, content:data[1][j].content});
+						}
+				    }
+				}
+				goZoomIn(Number(data[0][0].lat), Number(data[0][0].lon));
+				
+				// mymapLonLatList의 데이터가 있을때 새로들어온 데이터와 비교해서 동일하면 삭제하기
+				if(mymapLonLatList.length != 0){
+				    for(var i=0; i<mymapLonLatList.length; i++){
+						if(mymapLonLatList[i].mymapidx == data[0][0].mymapidx){
+						    mymapLonLatList.splice(i,1);
+						    mymapCheckpointList.splice(i,1);
+						    drawFavoriteMap();
+						    return;
+						}
+				    }
+				}
+				 
+				mymapLonLatList.push({mymapLonLat:mymapLonLat, mymapidx:data[0][0].mymapidx});
+				mymapCheckpointList.push({mymapCheckpoint:mymapCheckpoint, mymapidx:data[0][0].mymapidx});
+				console.log(mymapLonLatList);
+				console.log(mymapCheckpointList);
+				drawFavoriteMap();
+	        }
+		});
+	    
+	}
+		
+	</script>
 </head>
 <body>
 	<header>
@@ -513,15 +561,25 @@
 					</div>
 					<ul class="navbar-menu animate">
 						<li><div class="animate">
-								<div class="desc animate"
-									style="overflow: auto; height: 600px; width: 300px;">
-									내여행<br />내여행<br />내여행<br />내여행<br />내여행<br />내여행<br />
-								</div>
-								<i class="fa fa-map-o" aria-hidden="true"></i>
+								<div class="desc animate" style="overflow: auto; height: 600px; width: 300px;">
+									<c:forEach var="mymapListPlanAndReg" items="${ mymapListPlanAndReg }">
+										<c:if test="${ mymapListPlanAndReg.type == 1 }">
+											<a href="javascript:mymapListPlanAndReg('${ mymapListPlanAndReg.idx }')"
+											style="text-decoration: none; color: white;">${ mymapListPlanAndReg.title }</a><br/>
+										</c:if>
+									</c:forEach>
+								</div> 
+								<i class="fa fa-road" aria-hidden="true"></i>
 							</div></li>
 						<li><div class="animate">
-								<div class="desc animate"
-									style="overflow: auto; height: 600px; width: 300px;">내여행계획</div>
+								<div class="desc animate" style="overflow: auto; height: 600px; width: 300px;">
+									<c:forEach var="mymapListPlanAndReg" items="${ mymapListPlanAndReg }">
+										<c:if test="${ mymapListPlanAndReg.type == 2 }">
+											<a href="javascript:mymapListPlanAndReg('${ mymapListPlanAndReg.idx }')"
+											style="text-decoration: none; color: white;">${ mymapListPlanAndReg.title }</a><br/>
+										</c:if>
+									</c:forEach>
+								</div> 
 								<i class="fa fa-calendar" aria-hidden="true"></i>
 							</div></li>
 						<li><div class="animate">
@@ -540,8 +598,7 @@
 									style="overflow: auto; height: 600px; width: 300px;">
 									<c:forEach var="favoriteplaceList"
 										items="${ favoriteplaceList }">
-										<a
-											href="javascript:getMyplace('${ favoriteplaceList.checkpointidx }')"
+										<a href="javascript:getMyplace('${ favoriteplaceList.checkpointidx }')"
 											style="text-decoration: none; color: white;">${ favoriteplaceList.placename }</a>
 										<br />
 									</c:forEach>

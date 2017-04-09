@@ -209,6 +209,14 @@ public class MymapServiceImp implements MymapService {
 		
 		mymapDAO.increaseViewCnt(mymapidx);
 	}
+
+	@Override
+	public List<MymapVO> selectMymapByuserid(String userid) {
+
+		List<MymapVO> mymapListPlanAndReg = mymapDAO.selectMymapByuserid(userid);
+		
+		return mymapListPlanAndReg;
+	}
 	
 
 }
