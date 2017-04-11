@@ -324,13 +324,10 @@ public class MymapController {
       String sdate = sd.format(new Date(Long.valueOf(start)));
       String edate = sd.format(new Date(Long.valueOf(end)));
       
-      // mymapidx�� t_hashtag ��������
       List<HashtagVO> hashtagList = mymapService.getHashtagList(mymapidx);
       
-      // mymapidx�� t_regmap ����Ʈ�� ��������
       List<RegcoordinatesVO> regcoordinatesList = mymapService.getRegmapsList(mymapidx);
       
-      //coordinatesidx�� t_checkpoint �ҷ�����
       List<CheckpointVO> checkpointVO = new ArrayList<CheckpointVO>();
       for(int i=0; i<regcoordinatesList.size(); i++){
          CheckpointVO cpVO = mymapService.selectCheckPoint(regcoordinatesList.get(i).getIdx());

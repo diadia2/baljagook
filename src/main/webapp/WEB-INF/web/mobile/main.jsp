@@ -1,92 +1,70 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html lang="ko">
+<html>
 <head>
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0" />
-<meta name="format-detection"
-	content="telephone=no, address=no, email=no" />
-<meta property="og:type" content="website" />
-<meta property="og:title" content="mama" />
-<meta property="og:description" content="share you map" />
-<!--
-	<meta property="og:image" content="/data/board/tNVRIuu9Gs.png" />
-    -->
-<title>main</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
 
-<link href="${pageContext.request.contextPath }/css/mobile/common.css"
+<link href="${pageContext.request.contextPath }/resources/css/mobile/common.css"
 	rel="stylesheet" type="text/css" />
-<link href="${pageContext.request.contextPath }/css/mobile/main.css"
+<link href="${pageContext.request.contextPath }/resources/css/mobile/main.css"
 	rel="stylesheet" type="text/css" />
-<link href="${pageContext.request.contextPath }/css/mobile/sub.css"
+<link href="${pageContext.request.contextPath }/resources/css/mobile/sub.css"
 	rel="stylesheet" type="text/css" />
-<link href="${pageContext.request.contextPath }/css/mobile/board.css"
+<link href="${pageContext.request.contextPath }/resources/css/mobile/board.css"
 	rel="stylesheet" type="text/css" />
 <link
-	href="${pageContext.request.contextPath }/css/mobile/enterprise.css"
+	href="${pageContext.request.contextPath }/resources/css/mobile/enterprise.css"
 	rel="stylesheet" type="text/css" />
 
-<script src="//code.jquery.com/jquery-latest.min.js"></script>
+	<script src="//code.jquery.com/jquery-latest.min.js"></script>
 
 <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css"> -->
-<link href="/mobile/img/favicon.ico" rel="icon" type="image/x-icon">
+<link href="${pageContext.request.contextPath }/resources/images/mobile/favicon.ico" rel="icon" type="image/x-icon">
 <script
-	src="${pageContext.request.contextPath }/js/mobile/jquery-1.11.3.min.js"
+	src="${pageContext.request.contextPath }/resources/js/mobile/jquery-1.11.3.min.js"
 	type="text/javascript"></script>
 <script
-	src="${pageContext.request.contextPath }/js/mobile/jquery-2.1.4.min.js"
+	src="${pageContext.request.contextPath }/resources/js/mobile/jquery-2.1.4.min.js"
 	type="text/javascript"></script>
 <script
-	src="${pageContext.request.contextPath }/js/mobile/jquery.bxslider.js"></script>
+	src="${pageContext.request.contextPath }/resources/js/mobile/jquery.bxslider.js"></script>
 <script
-	src="${pageContext.request.contextPath }/js/mobile/placeholders.js"></script>
+	src="${pageContext.request.contextPath }/resources/js/mobile/placeholders.js"></script>
 
 <script
-	src="${pageContext.request.contextPath }/js/mobile/jquery.swipebox.js"></script>
-<link href="${pageContext.request.contextPath }/js/mobile/swipebox.css"
+	src="${pageContext.request.contextPath }/resources/js/mobile/jquery.swipebox.js"></script>
+<link href="${pageContext.request.contextPath }/resources/js/mobile/swipebox.css"
 	rel="stylesheet" type="text/css" />
 
 
 <!-- Add fancyBox main JS and CSS files -->
 <script type="text/javascript"
-	src="${pageContext.request.contextPath }/js/mobile/fancybox/source/jquery.fancybox.js?v=2.1.5"></script>
+	src="${pageContext.request.contextPath }/resources/js/mobile/fancybox/source/jquery.fancybox.js?v=2.1.5"></script>
 <link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/js/mobile/fancybox/source/jquery.fancybox.css?v=2.1.5"
+	href="${pageContext.request.contextPath }/resources/js/mobile/fancybox/source/jquery.fancybox.css?v=2.1.5"
 	media="screen" />
 
 
-<script src="${pageContext.request.contextPath }/js/mobile/script.js"
+<script src="${pageContext.request.contextPath }/resources/js/mobile/script.js"
 	type="text/javascript"></script>
-<script src=".${pageContext.request.contextPath }/js/mobile/util.js"
-	type="text/javascript"></script>
-
-<script
-	src="https://maps.google.com/maps/api/js?key=AIzaSyCAr0HeB2LSff7sqIUhi5D4H0NA0nPD7Bs&sensor=false"
+<script src=".${pageContext.request.contextPath }/resources/js/mobile/util.js"
 	type="text/javascript"></script>
 
+    <script src="https://maps.google.com/maps/api/js?key=AIzaSyCAr0HeB2LSff7sqIUhi5D4H0NA0nPD7Bs&sensor=false" type="text/javascript"></script>
 
 
-<style type="text/css">
 
-/* 하단 길찾기 */
-#navDiv {
-	width: 100%;
-	height: 70%;
-	background: #fff;
-	position: absolute;
-	z-index: 98;
-	bottom: 0px;
-	display: none;
-}
-</style>
+    <style type="text/css">
+        
+        /* 하단 길찾기 */
+        #navDiv{
+            width:100%;height:70%;background:#fff;position:absolute;z-index:98;bottom:0px;
+            display:none;
+        }
+    </style>
 
-<!--[if lt IE 9]>
-		<script src="../js/html5shiv.js"></script>
-		<script src="../js/html5shiv-printshiv.js"></script>
-	<![endif]-->
-<title>마마</title>
 
 <script type="text/javascript">
 	$(document).ready(function() {
@@ -243,7 +221,6 @@
 
 </head>
 <body>
-
 	<div class="side_menu_bg"></div>
 	<div class="layer_bg"></div>
 
@@ -254,8 +231,8 @@
 				class="center"></span> <span class="right"></span>
 			</a>
 			<h2 class="page_tit">
-				<a href="#"><img src="./images/logo.png" alt="로고" class="logo"
-					style="height: 60px;" /></a>
+				<a href="./main.html"><img src="${pageContext.request.contextPath }/resources/images/mobile/logo.png" alt="로고"
+					class="logo" style="height: 60px;" /></a>
 			</h2>
 
 
@@ -270,7 +247,7 @@
 			<!-- 로그인 안되었을 때 -->
 			<div class="user_info">
 				<div class="user_img" id="user_img">
-					<a href="./login.html"> <img src="./images/user_no_img.png"
+					<a href="${pageContext.request.contextPath }/resources/images/mobile/login.html"> <img src="${pageContext.request.contextPath }/resources/images/mobile/user_no_img.png"
 						alt="유저이미지" />
 					</a>
 				</div>
@@ -288,7 +265,7 @@
 		<div class="user_info">
 			<div class="user_img" id="user_img">
 				<a href="./login.html">
-					<img src="./images/user_img.png" alt="유저이미지" />
+					<img src="${pageContext.request.contextPath }/resources/images/mobile/user_img.png" alt="유저이미지" />
 				</a>
 			</div>
             <div class="user_txt" style="vertical-align:middle;">
@@ -303,16 +280,16 @@
 				<ul class="depth01 clearfix">
 
 
-					<li><a href="#!"> <img src="./images/icon_menu1.png"
+					<li><a href="#!"> <img src="${pageContext.request.contextPath }/resources/images/mobile/icon_menu1.png"
 							alt="즐겨찾기" /> <span>즐겨찾기</span>
-					</a> <img class="menu_rg" src="./images/icon_menu4.png" alt="검색"
+					</a> <img class="menu_rg" src="${pageContext.request.contextPath }/resources/images/mobile/icon_menu4.png" alt="검색"
 						onclick="goSearchs();" /></li>
 
 
 
 
 					<li id="show_map"><a href="#!"> <img
-							src="./images/icon_menu2.png" alt="지도" /> <span>지도</span>
+							src="${pageContext.request.contextPath }/resources/images/mobile/icon_menu2.png" alt="지도" /> <span>지도</span>
 					</a> <span class="menu_te">▲</span></li>
 
 					<li id="hidden_map">
@@ -335,7 +312,7 @@
 					</li>
 
 					<li id="show_place"><a href="#!"> <img
-							src="./images/icon_menu3.png" alt="장소" /> <span>장소</span>
+							src="${pageContext.request.contextPath }/resources/images/mobile/icon_menu3.png" alt="장소" /> <span>장소</span>
 					</a> <span class="menu_te">▲</span></li>
 
 					<li id="hidden_place">
@@ -366,7 +343,7 @@
 
 
 					<li id="show_fav"><a href="#!"> <img
-							src="./images/icon_menu1.png" alt="즐겨찾기" /> <span>즐겨찾기</span>
+							src="${pageContext.request.contextPath }/resources/images/mobile/icon_menu1.png" alt="즐겨찾기" /> <span>즐겨찾기</span>
 					</a> <span class="menu_te">▲</span></li>
 
 
@@ -402,7 +379,7 @@
 
 			</nav>
 			<a href="#!" class="btn_slide_close"><img
-				src="./images/btn_slide_close.png" alt="메뉴 닫기" /></a>
+				src="${pageContext.request.contextPath }/resources/images/mobile/btn_slide_close.png" alt="메뉴 닫기" /></a>
 		</aside>
 
 
@@ -493,7 +470,6 @@
 
 	</div>
 	<!--wrap_end-->
-
 
 
 </body>
