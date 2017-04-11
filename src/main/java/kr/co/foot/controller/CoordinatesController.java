@@ -48,12 +48,6 @@ public class CoordinatesController {
       coordinatesService.setCoordinates(testCoord); 
    }
    
-   @RequestMapping("/map/mapFront.do") 
-   public String mapFront(){
-      
-      return "MapTest/frontregtrip";
-   }
-   
    @RequestMapping("/map/mapcheck.do") 
    public String goMap(HttpServletRequest request,
          @RequestParam("start") String start,
