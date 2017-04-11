@@ -113,7 +113,7 @@ public class CoordinatesController {
    }
    
 
-   // ajax�κ�
+   // ajax
    @RequestMapping("/map/mapAgain.do")
    @ResponseBody
    public List<CoordinatesVO> mapAgain(@RequestParam("start") String start, @RequestParam("end") String end, Model model) throws ParseException{

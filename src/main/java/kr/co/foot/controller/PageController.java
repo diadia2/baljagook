@@ -26,12 +26,12 @@ public class PageController {
 		return mav;
 	}
 	
-	@RequestMapping("/regMymap.do")
+/*	@RequestMapping("/regMymap.do")
 	public ModelAndView regMymap() {
 		ModelAndView mav = new ModelAndView("/map/regMymap");
 		return mav;
 	}
-	
+	*/
 	@RequestMapping("/qna.do")
 	public ModelAndView qna() {
 		ModelAndView mav = new ModelAndView("/board/qna");
@@ -50,15 +50,16 @@ public class PageController {
 		return mav;
 	}
 	
-	@RequestMapping("/searchList.do")
+/*	@RequestMapping("/searchList.do")
 	public ModelAndView searchList() {
 		ModelAndView mav = new ModelAndView("/board/searchList");
 		return mav;
-	}
+	}*/
 	
-	@RequestMapping("/mapDetail.do")
+/*	@RequestMapping("/mapDetail.do")
 	public ModelAndView mapDetail() {
 		ModelAndView mav = new ModelAndView("/map/mapDetail");
 		return mav;
-	}
+	}*/
+	
 }

@@ -227,10 +227,11 @@ public class MymapController {
       return "redirect:/";
    }
    
-	@RequestMapping(value = "/map/search.do", method = RequestMethod.GET)
-	public String search(@RequestParam("searchtext") String searchtext, Model model, HttpServletRequest request){
+	@RequestMapping(value = "/map/searchList.do", method = RequestMethod.GET)
+	public String searchList(@RequestParam("searchtext") String searchtext, @RequestParam("moreCount") int moreCount, Model model, HttpServletRequest request){
 		
-		List<MymapVO> mymapList = mymapService.selectMymapList(searchtext);
+		List<MymapVO> mymapList = mymapService.selectMymapList(searchtext, 4*moreCount);//5*1 더보기 누르면 5*2 5*3  
+		System.out.println(mymapList.size());
 		List<HashtagVO> hashtagList = new ArrayList<HashtagVO>();
 		
 		//View로 넘길 like 해시맵 생성
@@ -290,6 +291,15 @@ public class MymapController {
 		model.addAttribute("likeMap", likeMap);
 		model.addAttribute("likeAlreadyChecked", likeAlreadyChecked);
 		model.addAttribute("viewcntMap", viewcntMap);
+		
+		return "search/searchList";
+	}
+	
+	@RequestMapping(value = "/map/search.do", method = RequestMethod.GET)
+	public String search(@RequestParam("searchtext") String searchtext, Model model, HttpServletRequest request){
+		int moreCount = 1;
+		model.addAttribute("searchtext", searchtext);
+		model.addAttribute("moreCount", moreCount);
 		
 		return "search/search";
 	}
