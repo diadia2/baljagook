@@ -531,7 +531,7 @@ public class MymapController {
 		likeMap.put(mymapidx, likeCnt);
 			
 		return likeMap;
-	}   
+	}z
    
    
 }
