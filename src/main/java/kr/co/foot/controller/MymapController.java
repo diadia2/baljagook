@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.google.gson.Gson;
+
 import kr.co.foot.checkpoint.CheckpointVO;
 import kr.co.foot.favoritemap.FavoritemapVO;
 import kr.co.foot.favoriteplace.FavoriteplaceVO;
@@ -541,7 +543,39 @@ public class MymapController {
 		likeMap.put(mymapidx, likeCnt);
 			
 		return likeMap;
-	}z
-   
-   
+	}
+	
+	@RequestMapping("/mobile/getFavMapList.do")
+	public Object showFavMapList() {
+		String userid = "test@test.com";
+		List<FavoritemapVO> favMapList = mymapService.selectRegmapidx(userid);
+		List<String> favMapTitles = new ArrayList<String>();
+		for (int i = 0; i < favMapList.size(); i++) {
+			MymapVO mymapVO = mymapService.selectMymapByRegmapIdx(favMapList.get(i).getRegmapidx());
+			favMapTitles.add(mymapVO.getTitle());
+			System.out.println(mymapVO.getTitle());
+		}
+		
+		String json = new Gson().toJson(favMapTitles);
+		
+		return json;
+	}	
+	
+	@RequestMapping("/mobile/getFavPlaceList.do")
+	public Object showFavPlaceList() {
+		String userid = "test@test.com";
+		List<FavoriteplaceVO> favPlaceList = mymapService.selectcheckpoint(userid);
+		List<String> favPlaceTitles = new ArrayList<>();
+		for (int i = 0; i < favPlaceList.size(); i++) {
+			
+			MymapVO mymapVO = mymapService.selectMymapByRegmapIdx(favoritemapList.get(i).getRegmapidx());
+			favMapTitles.add(mymapVO.getTitle());
+			System.out.println(mymapVO.getTitle());
+		}
+		
+		String json = new Gson().toJson(favMapTitles);
+		
+		return json;
+	}
+	
 }
