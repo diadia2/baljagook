@@ -1,0 +1,41 @@
+@charset "utf-8";
+
+/*///////////////////// header /////////////////////*/
+
+/*///////////////////// header End /////////////////////*/
+
+/*///////////////////// container /////////////////////*/
+/* 서브타이틀 */
+.sub-top .sub-tit{position:relative;height:45px;line-height:45px;padding:0 2%;font-size:0.8em;font-weight:bold;color:#333;text-indent:12px;box-shadow:0 3px 4px 0 #e4e4e4;z-index:1;}
+.sub-top .sub-tit:after{position:absolute;left:2%;top:50%;margin-top:-2px;width:4px;height:4px;background-color:#ff3254;content:"";display:block;}
+
+/*레이어*/
+.layer_wrap{position:fixed;width:90%;left:50%;top:50%;margin-left:-45%;background-color:#FFF;z-index:99;display:none; border-radius: 20px; overflow: hidden;}
+.layer_wrap .layer-top{height:38px;background-color:#ff4f01;}
+.layer_wrap .layer-top h3{text-align:center;line-height:38px;color:#fff;font-weight:bold;font-size:1em;}
+.layer_wrap .btn_layer_close {position:absolute; right: 13px; top:4px;  text-align:center;  font-size:24px;color:#fff;}
+
+
+
+
+/* 서브메인 */
+.submain_list02{ padding: 5%; }
+.submain_list02 .shop_list .list{ width: 49%; float: left; margin-right: 2%; }
+.submain_list02 .shop_list .list.even{ margin-right: 0; }
+.submain_list02 .shop_list .list .list_content{ padding: 15px 8px; }
+.submain_list02 .shop_list .list .list_content .list_tit{display:block;font-size:14px;color:#000; text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
+.submain_list02 .shop_list .list .list_content .list_distance span{font-size:11px;color:#555;}
+.submain_list02 .shop_list .list .list_content .list_info{ overflow: hidden; }
+.submain_list02 .shop_list .list .list_content .list_info a {display:block;float:left;margin:0 2px;text-align:center; }
+.submain_list02 .shop_list .list .list_content .list_info a img{width:28px;}
+.submain_list02 .shop_list .list .list_content .list_info a strong{color:#555;font-size:11px; vertical-align: -3px;}
+
+
+
+
+/*///////////////////// container End /////////////////////*/
+
+/*///////////////////// footer /////////////////////*/
+
+/*///////////////////// footer End /////////////////////*/
+

@@ -1,0 +1,270 @@
+
+
+#header{ position: fixed; top: 0; left: 0; }
+#header:after{ display: none; }
+#container{ position: fixed; top: 52px; left: 0; width: 100%; }
+
+/* 검색창 */
+.search-content .search-box{position:relative;background-color:#00a9c7;padding:8px 2%; overflow: hidden;}
+.search-content .search-box img { margin-right:10px; padding-top:5px; }
+.search-content .search-box input[type="text"]{ float: left; height:40px;width:73%; text-indent: 10px; /border-color:#fff; border: 0;}
+.search-content .search-box .btn_search{ float: left; width: 13%; height:40px; text-align:center;color:#ff3254; background: #fff; }
+
+.search-content .search-box .titles{ float: left; width: 90%;  text-align:left;color:#fff; background: #00a9c7; position:absolute; font-weight:bold; display:inline-block; }
+.search-content .search-box .names{ float: right; width: 85%;  text-align:right;color:#fff; background: #00a9c7; position:absolute; font-weight:bold;  display:inline-block; margin-top:20px; font-size:13px; }
+
+
+.search-content .search-box-btn{position:relative;background-color:#00a9c7;padding:8px 2%; overflow: hidden; text-align:center; 
+border:dashed 1px #fff; color:#fff; }
+
+
+.search-content .search-box-info{position:relative;padding:8px 2%; }
+
+.search-content .search-box-info .tag { top:0px; left:0px; 
+display: block; width: 100%; text-align: left; font-weight:bold;  color:#000; font-size:small;
+
+}
+
+.search-content .search-box-info .info { font-size: small; display: block; width: 100%; text-align: center; font-weight:bold;  color:#000; margin-top:10px;
+}
+
+.search-content .search-box-info .info .likebtn { 
+	float: right; margin-right: 10px; font-size: large;
+}
+
+.search-content .search-box-info .info .on { 
+	color:red;
+}
+
+   
+.info_views { font-size: small; display: block; width: 100%; text-align: left; font-weight:bold;  color:#000; margin-top:10px;
+}
+
+.info_views .views {
+	margin-left:1%;
+	width:30%;
+	display:inline-block;
+}
+
+.info_views .views span {
+	line-height:23px;
+}
+
+.info_views .likes {
+	width:30%;
+	display:inline-block;
+}
+
+.info_views .likes span {
+	line-height:23px;
+}
+
+.replys{
+	width:99%; text-align:left; margin-top:10px;
+}
+
+.replys .inputs{
+	width:99%; text-align:left; margin-top:10px;
+	display:none;
+}
+
+
+.replys .inputs textarea{
+	width:95%; text-align:left; margin-top:10px; margin-left:5px;
+	border:solid 1px;
+	height:50px;
+}
+
+
+.replys .inputs textarea:focus{
+	border:solid 3px #00a9c7;
+}
+
+.replys .inputs .writer{
+	font-size:small; font-weight:bold; margin-left:5px;
+}
+
+
+
+.replys .inputs .writebtn{
+	float:right; margin-right:5px;
+}
+
+.replys .inputs .writebtn button{
+	padding:5px;
+	border:double  1px;
+	width:50px; font-weight:bold;
+
+}
+
+
+.replys .re_menu {
+	width:100%; text-align:left; font-weight:bold; color:#555555; padding-left:5px;
+}
+
+.replys .re_menu .btn_all {
+	margin-left:50px;
+	cursor:pointer;
+}
+
+.replys .re_menu .nums{
+	color:red;
+}
+
+
+.replys ul{
+	margin-top:20px;
+}
+
+.replys ul li{
+	margin-top:10px;
+	padding-bottom:10px;
+	padding-left:5px;
+	border-bottom:dashed 1px #00a9c7;
+}
+
+.replys ul li .imgsrc {
+	width:45px; height:45px; display:inline-block;
+	border-radius:100%; overflow:hidden;
+}
+
+.replys ul li .imgsrc img {
+	width:45px; height:45px; float:left; left:0px;
+}
+
+
+.replys ul li .texts {
+	display:inline-block;
+	width:82%; vertical-align:top;
+	font-size:small;
+}
+
+.replys ul li .texts span {
+	font-weight:bold;
+	margin-right:5px;
+}
+
+
+.replys .inputs{
+	width:99%; height:100px; text-align:left; margin-top:10px;
+}
+
+
+
+
+.search-content .search-box2{position:relative;background-color:#00a9c7;padding:8px 2%; overflow: hidden; display:none;}
+
+.search-content .search-box2 ul{ margin-left:auto; }
+.search-content .search-box2 ul li { width:24%; float:left; margin-left:auto; }
+.search-content .search-box2 ul li span { width:25%; color:#fff; font-weight:bold; }
+.search-content .search-box2 ul li select { width:70% height:30px; }
+
+.search-content .search-box2 input[type="text"]{ float: left; height:40px;width:87%; text-indent: 10px; /border-color:#fff; border: 0;}
+.search-content .search-box2 .btn_search{ float: left; width: 13%; height:40px; text-align:center;color:#ff3254; background: #fff; }
+
+.search-content .search-box3{position:relative;background-color:#00a9c7;padding:8px 2%; overflow: hidden; display:none;}
+.search-content .search-box3 .listDiv { width:100%; float:left; margin-left:auto; border-top:dashed 1px white;  padding-top:10px;  padding-bottom:10px; color:#fff; font-weight:bold; display:inline-block; }
+.search-content .search-box3 .top {border-top:none;  }
+.search-content .search-box3 span {border-right:solid 2px white; padding-right:7px; }
+
+
+.search-content .search-box3 ul{ margin-left:auto; display:inline-flex; }
+.search-content .search-box3 ul li { float:left; margin-left:7px; padding:0px 10px 0px 10px ;   }
+
+
+
+.search-content .search-list-tit{font-size:15px; color:#3333;font-weight:bold;text-align:center;line-height:40px;border-bottom:1px solid #ddd; }
+.search-content .search-list li{position:relative;padding:12px 0 12px 40px;font-size:16px;font-weight:bold;color:#555;}
+.search-content .search-list li.cRed{color:#ff3254;}
+.search-content .search-list li:nth-child(even){background-color:#f6f6f6;}
+.search-content .search-list li .num{position:absolute;left:12px;top:50%;margin-top:-9px;display:inline-block;margin-right:8px;width:15px;height:15px;line-height:15px;text-align:center;border:1px solid #555;border-radius:50%;font-size:12px;}
+.search-content .search-list li.cRed .num{border-color:#ff3254;background-color:#ff3254;color:#fff;}
+
+
+/*인기검색어*/
+.searchList{ margin-bottom: 140px; }
+.searchList h2{ color: #333; font-size: 1em; text-align: center; height:40px; line-height: 40px; border-bottom: 1px solid #ddd; }
+.searchList ul{ width: 100%; margin: 0 auto; }
+.searchList ul li{ padding: 15px 5%; }
+.searchList ul li a{ color: #555; font-weight: bold; }
+.searchList ul li a span{ border: 1px solid #000; box-sizing: border-box; display: inline-block; width: 19px; height: 19px; border-radius: 50%; text-align: center; line-height: 17px; }
+.searchList ul li.active a{ color: #ff3254; }
+.searchList ul li.active a span{ border: 1px solid #ff3254; background: #ff3254; color: #fff; }
+.searchList ul li.odd{ background: #fff; }
+.searchList ul li.even{ background: #f6f6f6; }
+
+
+/* 지역별 역주변 공통 */
+.search_tab{ overflow: hidden; }
+.search_tab li{ float: left; width: 33.33%; text-align: center; border-bottom: 2px solid #ddd; position: relative; }
+.search_tab li a{ color: #333333; font-size: 1em; font-weight: bold; display: block; padding: 13px 0; }
+.search_tab li.active a{ color: #ff3254; }
+.search_tab li.active:after{ content: ""; display: block; width: 100%; height: 5px; background: #ff3254; position: absolute; bottom: 0; left: 0; }
+
+.search_result{ position: fixed; width: 100%; overflow: hidden; }
+.search_result > div{ float: left; overflow-y: auto; border: 1px solid #ddd; box-sizing: border-box; /* height: 348px; */ }
+.search_result > div ul li{ box-sizing: border-box; border-bottom: 1px solid #ddd; display: block; height: 40px; line-height: 40px; }
+.search_result > div ul li a{ display: block; text-indent: 10%; font-size: 0.85em; color: #393939; position: relative; }
+
+/* 지역별 */
+.search_loca .loca1{ width: 30%;  border: 1px solid #ddd; overflow-y: auto; }
+.search_loca .loca1 ul li{ text-indent: 10%;  }
+.search_loca .loca1 ul li a{ font-size: 0.85em; color: #393939; position: relative; }
+.search_loca .loca1 ul li.active a{ font-weight: bold; color: #ff3254;  }
+.search_loca .loca1 ul li.active a:after{ content: ">"; display: inline-block; position: absolute; right: 40px; top: 0; }
+
+.search_loca .loca2{ width: 70%; height: 348px; overflow-y: auto; /* display: none; */  }
+.search_loca .loca2 ul li{ overflow: hidden; }
+.search_loca .loca2 ul li a{ float: left; width: 70%;  }
+.search_loca .loca2 ul li span{ float: right; color: #ff3254; text-align: right; padding-right: 5%; font-weight: bold; }
+
+.search_loca .loca3{ width: 70%; height: 348px; overflow: hidden; overflow-y: auto; /* display: none; */  }
+.search_loca .loca3 ul{ float: left; }
+.search_loca .loca3 ul li{ overflow: hidden; }
+.search_loca .loca3 ul.loca3_1{ width: 50%; }
+.search_loca .loca3 ul.loca3_1 li{ border-right: 1px solid #ddd; }
+.search_loca .loca3 ul.loca3_2{ width: 50%; }
+.search_loca .loca3 ul li a{ float: left; width: 70%;  }
+.search_loca .loca3 ul li span{ float: right; color: #ff3254; text-align: right; padding-right: 5%; font-weight: bold; }
+
+/* 역주변 */
+.search_stat .stat_tab{ overflow: hidden; }
+.search_stat .stat_tab li{ float: left; width: 20%; }
+.search_stat .stat_tab li a{ display: block; text-align: center; font-size: 0.8em; color: #333; background: #f0f0f0; height: 40px; line-height: 40px; }
+.search_stat .stat_tab li.active a{ color: #ff3254; background: #fff; font-weight: bold; }
+
+
+.search_stat .stat{ width: 100%; overflow: hidden; display: none; }
+.search_stat .stat div{ float: left; overflow-y: auto; border: 1px solid #ddd; box-sizing: border-box; }
+.search_stat .stat div ul{  /* float: left; */ }
+.search_stat .stat div ul li{ text-indent: 10%;  }
+.search_stat .stat div ul li a{ font-size: 0.85em; color: #393939; position: relative; display: block; }
+
+.search_stat .stat .stat_line{ width: 30%; }
+.search_stat .stat .stat_line ul{ width: 100%; }
+.search_stat .stat .stat_line li{ position: relative; }
+.search_stat .stat .stat_line ul li.active a{ font-weight: bold; color: #ff3254; }
+.search_stat .stat .stat_line ul li.active a:after{ content: ">"; display: inline-block; position: absolute; right: 35px; top: 0; }
+.search_stat .stat .stat_stat{ width: 70%; }
+.search_stat .stat .stat_stat ul{ width: 100%; }
+.search_stat .stat .stat_stat ul li a{ float: left; width: 70%; }
+.search_stat .stat .stat_stat ul li span{ float: right; color: #ff3254; text-align: right; padding-right: 5%; font-weight: bold; }
+
+/* 상권별 */
+.search_loca .market1{ width: 20%; border: 1px solid #ddd; overflow-y: auto; }
+.search_loca .market1 ul li{ text-indent: 10%;  }
+.search_loca .market1 ul li a{ font-size: 0.85em; color: #393939; position: relative; }
+.search_loca .market1 ul li.active a{ font-weight: bold; color: #ff3254;  }
+.search_loca .market1 ul li.active a:after{ content: ">"; display: inline-block; position: absolute; right: 10px; top: 0; }
+
+.search_loca .market2{ width: 30%; height: 348px; overflow-y: auto; /* display: none; */  }
+.search_loca .market2 ul li{ overflow: hidden; font-size: 0.8em; }
+.search_loca .market2 ul li i{ display: block; text-align: center; }
+.search_loca .market2 ul li a{ float: left; width: 70%; font-size: 1.2em; }
+.search_loca .market2 ul li span{ float: right; color: #ff3254; text-align: right; padding-right: 5%; font-weight: bold; font-size: 1.2em; }
+
+.search_loca .market3{ width: 50%; height: 348px; overflow-y: auto; /* display: none; */  }
+.search_loca .market3 ul li{ overflow: hidden; font-size: 0.8em; }
+.search_loca .market3 ul li i{ display: block; text-align: center; }
+.search_loca .market3 ul li a{ float: left; width: 70%; font-size: 1.2em; }
+.search_loca .market3 ul li span{ float: right; color: #ff3254; text-align: right; padding-right: 5%; font-weight: bold; font-size: 1.2em; }
