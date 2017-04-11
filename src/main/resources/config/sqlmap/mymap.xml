@@ -30,7 +30,20 @@
        insert into t_checkpoint (coordinatesidx, regcoordinatesidx, content, title) values (0, #{regcoordinatesidx}, #{content}, #{title})
    </insert>
    
-   <select id="selectMymapList" parameterType="String" resultType="kr.co.foot.mymap.MymapVO">
+   <!-- Number of map listings Searched -->
+<!--    <select id="selectMymapCount" parameterType="String" resultType="int">
+       select count(*) from t_myMap
+       where 
+       a.title like CONCAT('%',#{searchtext},'%') 
+       or 
+       a.content like CONCAT('%',#{searchtext},'%')
+       or 
+       b.name = CONCAT('%',#{searchtext},'%') 
+       and a.type=1 group by a.idx
+   </select> -->
+   
+    <!-- Searched map list selection -->
+   <select id="selectMymapList" parameterType="hashmap" resultType="kr.co.foot.mymap.MymapVO">
        select a.idx as idx, a.title as title, a.content as content, a.userid as userid, a.regdate as regdate, a.type as type from t_myMap a 
        inner join t_hashtag b on a.idx = b.mymapidx 
        where 
@@ -40,6 +53,7 @@
        	or 
        	b.name = CONCAT('%',#{searchtext},'%') 
        	and a.type=1 group by a.idx
+       	LIMIT #{start}, #{pageSize}
    </select>
    
    <select id="getHashtagList" parameterType="int" resultType="kr.co.foot.hashtag.HashtagVO">
