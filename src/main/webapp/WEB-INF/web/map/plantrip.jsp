@@ -1085,7 +1085,8 @@
 					goZoomIn(data.lat, data.lon);
 					favoritePlaceLonLat = new google.maps.Marker({
 						map : map,
-						position : Fplace
+						position : Fplace,
+						icon : "https://developers.skplanetx.com/upload/tmap/marker/pin_b_m_a.png"
 					});
 					var listener3 = google.maps.event.addListener(map, 'click', function(){
 						if(infowindow != null){
