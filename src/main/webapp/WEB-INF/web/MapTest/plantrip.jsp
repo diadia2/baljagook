@@ -327,7 +327,8 @@
 					goZoomIn(data.lat, data.lon);
 					favoritePlaceLonLat = new google.maps.Marker({
 						map : map,
-						position : Fplace
+						position : Fplace,
+						icon : "https://developers.skplanetx.com/upload/tmap/marker/pin_b_m_a.png"
 					});
 					var listener3 = google.maps.event.addListener(map, 'click', function(){
 						if(infowindow != null){
@@ -432,7 +433,7 @@
 			}
 		    console.log(mymapCheckpointList.length);
 			
-		    /////////////////////		    
+		    /////////////////////
 			for(var i=0; i<mymapCheckpointList.length; i++){
 			    for(var j=0; j<mymapCheckpointList[i].mymapCheckpoint.length; j++){
 					console.log(mymapCheckpointList[i].mymapCheckpoint[j]);

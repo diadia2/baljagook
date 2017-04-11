@@ -12,18 +12,55 @@
 <script
 	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD6x6lwLmHlSpovbF0nM-fPIPpjfv4D9IM&libraries=places"></script>
 
+<!-- 판넬 드래그에 필요함 -->
+<script type='text/javascript'
+	src="https://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
+
 <script type="text/javascript">
 
-   $(function() {
-      /* 화면폭 */
-      
-      var $info = $("#info");
-      window.onresize = function() {
-         $info.html("화면 폭 : " + window.innerWidth + "px");
-
-      }
-       
+   $(function() { 
+      var sortIndex;	// 선택된 div index의 listLonLat 좌표값
+      var sortNum;		// 타임라인 div index 번호
+	      /* 타임라인 판넬 드래그 */
+		jQuery(function($) {
+			var panelList = $('#draggablePanelList');
+			panelList.sortable({
+        		start: function(event, ui) { 
+        		      sortIndex = listLonLat[ui.item.index()];
+        		      sortNum = ui.item.index();
+       			},
+       			stop: function(event, ui) { 
+       			    if(sortNum != ui.item.index()){
+			      		   for(var i=0; i<listLonLat.length; i++){
+								if(listLonLat[i].lat == sortIndex.lat && listLonLat[i].lng == sortIndex.lng){
+								    sortNum = i;
+								}
+							}
+	      		     	    listLonLat.splice(sortNum, 1);
+	      		     	    sortNum = ui.item.index();
+	      		     		listLonLat.splice(sortNum,0,sortIndex);
+	      		     		change = false;
+	      		     	initialize();
+       			    }
+     			},
+				handle : '.panel-heading',
+				update : function() {
+					$('.panel', panelList).each(function(index, elem) {
+						var $listItem = $(elem), newIndex = $listItem.index();
+						//판넬 리스트 번호 관련
+						// Persist the new indices.
+					});
+				}
+			});
+		});
+     
+      //leftmenu 토글
+		$('.navbar-toggler').on('click', function(event) {
+			event.preventDefault();
+			$(this).closest('.navbar-minimal').toggleClass('open');
+		})
    });
+   
  
 </script>
 </head>
@@ -102,6 +139,10 @@
 
 
 /* 좌 메뉴 */
+#leftmenu{
+	float: left;
+}
+
 .animate {
 	-webkit-transition: all 0.3s ease-in-out;
 	-moz-transition: all 0.3s ease-in-out;
@@ -268,19 +309,7 @@
  
     // 시간별 좌표 불러오기
     var listLonLat = new Array();
-	var checkpoint = new Array();
-	var checkpointidx = new Array();
-	<c:forEach items="${regcoordinatesList}" var="regcoordinatesList">
-	  	listLonLat.push({lat:${regcoordinatesList.lat},lng:${regcoordinatesList.lon}});
-	  	<c:forEach items="${checkpointVO}" var="checkpointVO">
-	  		<c:if test="${regcoordinatesList.idx == checkpointVO.regcoordinatesidx}">
-	  			checkpoint.push({lat:${regcoordinatesList.lat},lng:${regcoordinatesList.lon}});
-	  			checkpointidx.push({idx:${checkpointVO.idx}});
-	  		</c:if>
-		</c:forEach>
-	</c:forEach>
-    
-    var center = listLonLat[listLonLat.length-1];
+	var change = true;
     var zoom = 13;
     
 	var routeLayer, routeLayerWalk, tmap, map;
@@ -292,12 +321,15 @@
 	var startLocation, endLocation;		// 길찾기 시작좌표, 도착좌표
 	var flightPaths = [];
 	var flightPathsWalk = [];
+	var extraMarker;
 	var f = 0;
+	var extraflag = 0;					// 마커 직접 추가 flag
 	var lineLocation = new Array();
 	var lineLocationWalk = new Array();
 	
 	var directionsDisplay;
 	var directionsService;
+	var center = {lat : 37.56461982743129, lng : 126.9823439963945};
 	
 	function initialize() {
 		// 좌표 등록
@@ -306,9 +338,12 @@
 			zoom : zoom,
 			mapTypeId: google.maps.MapTypeId.ROADMAP,
 			center : center,
-			mapTypeControl: false
+			mapTypeControl: false,
+			zoomControl: false,
+			streetViewControl: false
 		});
-		 
+
+		
 		if(listLonLat.length != 0){
 			var initflightPlanCoordinates = listLonLat;
 				var initflightPath = new google.maps.Polyline({
@@ -330,19 +365,115 @@
 				}
 				
 				initflightPath.setMap(map);
+			}	
+			addLineMarker();
+			
+			if(mymapLonLatList.length != 0){
+				for(var i=0; i<mymapLonLatList.length; i++){    
+					var mymapCoordinates = mymapLonLatList[i].mymapLonLat;
+						var mymapPath = new google.maps.Polyline({
+							path : mymapCoordinates,
+							geodesic : true,
+							strokeColor : '#FF0000',
+							strokeOpacity : 1.0,
+							strokeWeight : 3
+						});
+						mymapPath.setMap(null);
+						mymapPath.setMap(map);
+				}
 			}
 			
-			addLineMarker();
-
+			var input = document.getElementById('pac-input');
+			var searchBox = new google.maps.places.SearchBox(input);
+			map.addListener('bounds_changed', function() {
+				searchBox.setBounds(map.getBounds());
+			});
+			
+			var listener3 = google.maps.event.addListener(map, 'click', function(){
+				if(infowindow != null){
+					  infowindow.close();
+				  }
+			  });
+			
+			 
+			// 주소로 검색해서 마커 표시
+			var markers = [];
+			searchBox.addListener('places_changed', function() {
+				var places = searchBox.getPlaces();
+		
+				if (places.length == 0) {
+					return;
+				}
+		 
+				// Clear out the old markers.
+				markers.forEach(function(marker) {
+					marker.setMap(null);
+				});
+				markers = [];
+		
+				// For each place, get the icon, name and location.
+				var bounds = new google.maps.LatLngBounds();
+				places.forEach(function(place) {
+					var icon = {
+						url : "https://developers.skplanetx.com/upload/tmap/marker/pin_b_m_1.png",
+						size : new google.maps.Size(71, 71),
+						origin : new google.maps.Point(0, 0),
+						anchor : new google.maps.Point(17, 34)
+					};
+		
+					// Create a marker for each place.
+					markers.push(new google.maps.Marker({
+						map : map,
+						icon : icon,
+						title : place.name,
+						position : place.geometry.location
+					}));
+					 
+					if (place.geometry.viewport) {
+						// Only geocodes have viewport.
+						bounds.union(place.geometry.viewport);
+					} else {
+						bounds.extend(place.geometry.location);
+					}
+				});
+				map.fitBounds(bounds);
+			});
+			
+			if(listLonLat.length != 0 && change == true){
+				addTimeLine();	
+			}
+			change = true;
 	}
 	
 	
 	// 타임라인 div 클릭시 센터좌표 이동
-	function goZoomIn(i){
- 		var center = new google.maps.LatLng(checkpoint[i].lat, checkpoint[i].lng);
-		map.setCenter(center); 
+	function goZoomIn(lat, lng){
+		center = new google.maps.LatLng(lat, lng);
+		map.setCenter(center);
 	}
+ 
+	//타임라인에 내용 추가 
+	var address;
+	var count = 0;
+	function addTimeLine(){
+	    count = listLonLat.length-1;
+//		$('#draggablePanelList').children().remove();
+	    var geocoder = new google.maps.Geocoder;
+		
+		geocoder.geocode({'location': listLonLat[count]}, (function(count){return function(results, status) {
+				if (status === google.maps.GeocoderStatus.OK) {
+			        address = results[0].formatted_address;
+			        address = address.substring(5, address.length);
+					$('#draggablePanelList').append('<div id="addTimeInfo" class="panel panel-info" onClick="goZoomIn('+listLonLat[count].lat+", "+listLonLat[count].lng
+						+')"><div class="panel-heading"><input class="form-control" type="text" style="font-size:8pt;" value="'+address
+						+'"/></div><div class="panel-body"><textarea class="form-control" style="overflow:hidden" placeholder="내용"/></div></div>');
+			    } 
+			}
+		})(count)
+		);
+	}    
 	
+	 
 	var checkMarker = new Array();
 	var num;
 	var infowindow;
@@ -352,20 +483,19 @@
 			return;
 	    }
 	    
-		if(checkpoint != null){
+		if(checkMarker != null){
 			for(var i=0; i<checkMarker.length; i++){
 				checkMarker[i].setMap(map);
 			}
 		} 
-		for(var i=0; i<checkpoint.length; i++){
+		for(var i=0; i<listLonLat.length; i++){
 			
 			num = i;
 			
 			checkMarker.push(new google.maps.Marker({
-		    position: checkpoint[i],
+		    position: listLonLat[i],
 		    map: map,
-		    num : i,
-		    idx : checkpointidx[i]
+		    num :i
 		
 		}));
 		  
@@ -382,57 +512,29 @@
 				    content: (this.num+1)+". "+(this.position.lat()).toFixed(7).toString()+", "+(this.position.lng()).toFixed(7).toString()+
 				    '<br/><input type="button" value="출발설정" onClick="startCheck('+
 				    		this.position.lat().toString()+", "+this.position.lng().toString()+')"/><input type="button" value="도착설정" onClick="endCheck('+
-				    		this.position.lat().toString()+", "+this.position.lng().toString()+')"/><input type="button" value="즐겨찾기등록" onClick="getFavoritePlace('+this.idx.idx+')"/>'
+				    		this.position.lat().toString()+", "+this.position.lng().toString()+')"/><input type="button" value="위치삭제" onClick="removeSpot('+
+				    		(this.position.lat()).toFixed(7).toString()+", "+(this.position.lng()).toFixed(7).toString()+')"/>'
 				  }); 
 			  infowindow.open(map, this);
 		  });  
 		}
 	} 
 	
-	//idx => t_checkpoint idx번호
-	function getFavoritePlace(idx){
-	    
-	    var placename = prompt('장소를 입력하세요.');
-	    if(placename==""){
-			return;
-	    } else if(!placename){
-			return;
-	    }
-	    
-
-	    $.ajax({
-		    type: 'POST' , 
-		    url: '${ pageContext.request.contextPath }/map/getFavoritePlace.do',
-		    dataType : 'text',
-		    data : {
-				idx : idx,
-				placename : placename
-		    },
-		    success: function(data) {
-				alert(data);
-	        },
-	        error : function(error){
-	            console.log(error);
-	        }
-		});	
-	    
-	}
-	
-	function getFavoriteMap(){
-	    $.ajax({
-		    type: 'POST' , 
-		    url: '${ pageContext.request.contextPath }/map/getFavoriteMap.do',
-		    dataType : 'text',
-		    data : {
-				mymapidx : '${mymapidx}'
-		    },
-		    success: function(data) {
-				alert(data);
-	        },
-	        error : function(error){
-	            console.log(error);
-	        }
-		});	
+	// 마커 선택하여 위치삭제
+	function removeSpot(lat, lng){
+		var index;
+		
+		for(var i=0; i<listLonLat.length; i++){
+			if(listLonLat[i].lat == lat && listLonLat[i].lng == lng){
+				index = i;
+			}
+		}
+		listLonLat.splice(index,1);
+		initLonLat = {lat:lat,lng:lng};
+		zoom = map.getZoom();
+ 	  	$('.panel-heading').eq(index).parent().remove();
+		change = false;
+		initialize();	
 	}
 	  
 	function startCheck(lat, lng){
@@ -491,6 +593,10 @@
 			directionsDisplay.setMap(null);
  		for(var i=0; i<flightPathsWalk.length; i++)	// 도보 라인 리셋
 			flightPathsWalk[i].setMap(null);
+/* 		for(var i=0; i<startMarkers.length; i++)	// 출발 마커 리셋
+			startMarkers[i].setMap(null); 
+		for(var i=0; i<endMarkers.length; i++)		// 도착 마커 리셋
+			endMarkers[i].setMap(null); */
 	}
 	 
 	// Tmap에서 도보로 길찾기 좌표 불러오기 
@@ -749,6 +855,33 @@
 		}
 	}
 		
+	// 마커 추가 설정
+	function addExtraMarker(lat, lng){
+		var insertMarker = {lat:Number(lat),lng:Number(lng)};
+		listLonLat.push(insertMarker);
+		initLonLat = {lat:lat,lng:lng};
+		zoom = map.getZoom();
+		center = new google.maps.LatLng(lat, lng);
+		map.setCenter(center);
+		initialize();
+	}
+	  
+	// 직접 마커 설정
+	function locationExtra(location, map){
+		if(extraflag!=1){
+			return;
+		}
+		extraflag=0;
+		extraMarker = new google.maps.Marker({
+			position : location,
+			draggable : true,
+			map : map
+		});
+		
+		addExtraMarker((location.lat).toFixed(7).toString(),(location.lng).toFixed(7).toString());
+		
+	}
+	 
 	function dragStart(event) {
 		event.dataTransfer.effectAllowed = 'move';
 		event.dataTransfer.setData("Text", event.target.getAttribute('id'));
@@ -801,7 +934,21 @@
 		event.dataTransfer.clearData("Text");
 		return true;
 	}
-
+	
+	function dragextramarker(event){
+		extraflag=1;
+		google.maps.event.addListener(map, 'mouseover', function(event) {
+			if(extraflag==1){
+				var lat = event.latLng.lat();
+				var lng = event.latLng.lng();
+				var locationEx = {lat:lat, lng:lng};
+				locationExtra(locationEx, map);
+			}
+		});
+		event.dataTransfer.clearData("Text");
+		return true;
+	}
+	
 	// 길찾기 종료.
 	function closeSearch(){
 		$('#addinfo').children().remove();			// 길찾기 정보 리셋
@@ -914,202 +1061,258 @@
 	}
 	</script>
 
+	<script>
+	var favoritePlaceLonLat;
+	var favoriteMapLonLat = new Array();
+	
+		function getMyplace(checkpointidx){
+		    
+		    $.ajax({
+			    type: 'POST' , 
+			    url: '${ pageContext.request.contextPath }/map/getMyplace.do',
+			    dataType : 'json',
+			    data : {
+					checkpointidx : checkpointidx
+			    },
+			    success: function(data) {
+					var Fplace = {lat:Number(data.lat),lng:Number(data.lon)};
+					if(favoritePlaceLonLat != null){
+						favoritePlaceLonLat.setMap(null);
+						if(favoritePlaceLonLat.position.lat().toFixed(7) == Fplace.lat && favoritePlaceLonLat.position.lng().toFixed(7) == Fplace.lng){
+							return;
+						}
+					}
+					goZoomIn(data.lat, data.lon);
+					favoritePlaceLonLat = new google.maps.Marker({
+						map : map,
+						position : Fplace,
+						icon : "https://developers.skplanetx.com/upload/tmap/marker/pin_b_m_a.png"
+					});
+					var listener3 = google.maps.event.addListener(map, 'click', function(){
+						if(infowindow != null){
+							  infowindow.close();
+						  }
+					  });
+					  var listener1 = google.maps.event.addListener(favoritePlaceLonLat, 'click', function(){
+						  if(infowindow != null){
+							  infowindow.close();
+						  } 
+						  infowindow = new google.maps.InfoWindow({
+							    content: (this.position.lat()).toFixed(7).toString()+", "+(this.position.lng()).toFixed(7).toString()+
+							    '<br/><input type="button" value="위치추가" onClick="addFavoriteMarker('+
+							    		(this.position.lat()).toFixed(7)+", "+(this.position.lng()).toFixed(7)+')"/>'
+							  }); 
+						  infowindow.open(map, this);
+					  });  
+		        }
+			});	
+		    
+		}
+		
+		function addFavoriteMarker(lat, lon){
+		    console.log(lat+", "+lon);
+		    listLonLat.push({lat:lat, lng:lon});
+		    favoritePlaceLonLat = null;
+		    goZoomIn(lat, lon);
+		    initialize();
+		}
+	</script>
+	
+	<script>
+		var mymapLonLatList = new Array();
+		var mymapCoordinates;
+		function getMymap(mymapidx){
+		    
+		    $.ajax({
+			    type: 'POST' , 
+			    url: '${ pageContext.request.contextPath }/map/getMymap.do',
+			    dataType : 'json',
+			    data : {
+					mymapidx : mymapidx
+			    },
+			    success: function(data) {
+					console.log(data);
+					var mymapLonLat = new Array();
+					for(var i=0; i<data.length; i++){
+					    mymapLonLat.push({lat:Number(data[i].lat), lng:Number(data[i].lon)});
+					}
+					goZoomIn(Number(data[0].lat), Number(data[0].lon));
+					if(mymapLonLatList.length != 0){
+					    for(var i=0; i<mymapLonLatList.length; i++){
+							console.log(mymapLonLatList[i].mymapidx);
+							console.log(data[0].mymapidx);
+							if(mymapLonLatList[i].mymapidx == data[0].mymapidx){
+							    mymapLonLatList.splice(i,1);
+							    console.log(mymapLonLatList);
+							    drawFavoriteMap();
+							    return;
+							}
+					    }
+					}
+					 
+					mymapLonLatList.push({mymapLonLat:mymapLonLat, mymapidx:data[0].mymapidx});
+					console.log(mymapLonLatList);
+					drawFavoriteMap();
+		        }
+			});	
+		}
+		
+		function drawFavoriteMap(){
+		    
+		    map = new google.maps.Map(document.getElementById('map'), {
+				zoom : zoom,
+				mapTypeId: google.maps.MapTypeId.ROADMAP,
+				center : center,
+				mapTypeControl: false,
+				zoomControl: false,
+				streetViewControl: false
+			});
+		    
+		    for(var i=0; i<mymapLonLatList.length; i++){    
+				var mymapCoordinates = mymapLonLatList[i].mymapLonLat;
+					var mymapPath = new google.maps.Polyline({
+						path : mymapCoordinates,
+						geodesic : true,
+						strokeColor : '#FF0000',
+						strokeOpacity : 1.0,
+						strokeWeight : 3
+					});
+					mymapPath.setMap(null);
+					mymapPath.setMap(map);
+			}
+		    
+		    if(listLonLat.length != 0){
+			var initflightPlanCoordinates = listLonLat;
+				var initflightPath = new google.maps.Polyline({
+					path : initflightPlanCoordinates,
+					geodesic : true,
+					strokeColor : '#000000',
+					strokeOpacity : 1.0,
+					strokeWeight : 2
+				});
+				initflightPath.setMap(null);
+				
+				if(checkMarker.length != 0){	// 라인 마커가 있으면
+					for (var i = 0; i < checkMarker.length; i++) {
+						checkMarker[i].setMap(null);
+					  }
+					checkMarker = [];
+					startLocation = null;
+					endLocation = null;
+				}
+				
+				initflightPath.setMap(map);
+			}
+		    addLineMarker();
+		    
+		}
+	
+	</script> 
 
 <body> 
-	<div>상단바 자리</div>
-	<!-- 상단 바 -->
-	<nav class="navbar navbar-default navbar-fixed-top">
-		<div class="container-fluid">
-			<div class="navbar-header">
-				<!-- 로고, 이미지로 바꿀것 -->
-				<a class="navbar-brand" href="#">나만의 지도</a>
-				<button class="navbar-toggle collapsed" data-toggle="collapse"
-					data-target="#target">
-					<!-- 메뉴 최소화시 =버튼 -->
-					<span class="sr-only">Toggle navigation</span> <span
-						class="icon-bar"></span> <span class="icon-bar"></span> <span
-						class="icon-bar"></span> <span class="icon-bar"></span>
-				</button>
-			</div>
-
-			<div class="collapse navbar-collapse" id="target">
-				<!-- 검색바 -->
-				<div class="navbar-form navbar-nav">
-					<input type="text" class="form-control" placeholder="Search" id="searchtext" size="50%" style="text-align: center;" />&nbsp;&nbsp; 
-					<a href="javascript:goSearch()"><i class="fa fa-search fa-2x" aria-hidden="true"></i></a>
-				</div>
-				<ul class="nav navbar-nav navbar-right">
-					<!-- 우상단 드롭 메뉴 -->
-					<li class="dropdown"><a href="#" class="dropdown-toggle"
-						data-toggle="dropdown" aria-expanded="false"><span>메뉴</span> <span
-							class="caret"></span> </a>
-						<ul class="dropdown-menu">
-							<li><a data-toggle="modal" data-target="#loginModal"
-								data-backdrop="static" data-keyboard="false">로그인</a></li>
-							<li><a href="#">마이페이지</a></li>
-							<li class="divider"></li>
-							<li><a href="#">로그아웃</a></li>
-						</ul></li>
-				</ul>
-			</div>
-		</div>
-	</nav>
-	<!-- 상단바 끝 -->
+		<header>
+		<jsp:include page="/top.do" />
+	</header>
+	<section>
+	<form name="inputform" action="${ pageContext.request.contextPath }/map/planMymap.do">
 	<br/><br/> 
-		
+			 	 	   
 		<div class="row">
-			<div class="col-md-1"></div>
-			<div class="col-md-10">
-				<div class="col-md-12" style="text-align: center;">
-					<strong>${ mymapVO.title }</strong> <span style="font-size: 6pt">by ${ mymapVO.userid }</span>
+				<div id="map" class="col-md-10" style="height: 850px; position: absolute;"
+					ondragenter="return dragEnter(event)"
+					ondrop="return dragDrop(event)" ondragover="return dragOver(event)">
 				</div>
-				<br /> <br />
-				<div class="col-md-12" style="text-align: center;">
-					내용 : ${ mymapVO.content }
+				
+				<nav id="leftmenu" class="navbar navbar-minimal animate" role="navigation">
+					<div class="navbar-toggler animate">
+						<span class="menu-icon"></span>
+					</div>
+					<ul class="navbar-menu animate">
+						<li><div class="animate">
+								<div class="desc animate" style="overflow: auto; height: 600px; width: 300px;">
+									내여행<br />내여행<br />내여행<br />내여행<br />내여행<br />내여행<br />
+								</div>
+								<i class="fa fa-map-o" aria-hidden="true"></i>
+							</div></li>
+						<li><div class="animate">
+								<div class="desc animate" style="overflow: auto; height: 600px; width: 300px;">내여행계획</div>
+								<i class="fa fa-calendar" aria-hidden="true"></i>
+							</div></li>
+						<li><div class="animate">
+								<div class="desc animate" style="overflow: auto; height: 600px; width: 300px;">
+									<c:forEach var="mymapList" items="${ mymapList }">
+										<a href="javascript:getMymap('${ mymapList.idx }')" style="text-decoration: none; color: white;">${ mymapList.title }</a><br/>
+									</c:forEach> 
+								</div> 
+								<i class="fa fa-star-o" aria-hidden="true"></i>
+							</div></li>
+						<li><div class="animate">
+								<div class="desc animate" style="overflow: auto; height: 600px; width: 300px;">
+									<c:forEach var="favoriteplaceList" items="${ favoriteplaceList }">
+										<a href="javascript:getMyplace('${ favoriteplaceList.checkpointidx }')" style="text-decoration: none; color: white;">${ favoriteplaceList.placename }</a><br/>
+									</c:forEach>
+								</div>
+								<i class="fa fa-map-marker" aria-hidden="true"></i>
+							</div></li>
+					</ul>
+				</nav>  
+				
+				<div class="col-md-2"  style="border: solid; float: right; margin-left: 0">
+					<div>
+						<input type="text" name="title" placeholder="제목" class="form-control"/>
+					</div>
+					<div>
+						<input type="text" name="content" placeholder="내용" class="form-control"/>
+					</div>
+					<span class="col-md-2" draggable="true"
+						ondragstart="return dragStart(event)"
+						ondragend="return dragextramarker(event)"><img
+						src="https://developers.skplanetx.com/upload/tmap/marker/pin_b_m_a.png" /></span>
+					<div class="col-md-10">
+						<input id="pac-input" class="form-control title-text" type="text"
+							placeholder="Search Box">
+					</div>
+					<br /> <br />
+					<div class="col-md-12"
+						style="height: 696px; overflow: auto; border: solid;">
+						<div id="draggablePanelList" class="list-unstyled"></div>
+					</div>
+	
+					<div class="col-md-12">
+						<button type="button" class="btn btn-secondary col-md-6" onclick="goSubmit()">등록</button>
+						<button type="button" class="btn btn-secondary col-md-6">취소</button>
+					</div>
 				</div>
-				<br /> <br />
-				<div class='col-md-12' style="text-align: center;">
-					<c:forEach var="hashtagList" items="${ hashtagList }">
-						<strong>#${ hashtagList.name } </strong>
-					</c:forEach>  
-				</div>
-				<br /> <br />
-				<div class='col-md-12' style="text-align: center;">
-					${ sdate } ~ ${ edate }
-				</div>
- 				<br /> <br />
-			</div>
-			<div class="col-md-1"></div>
-		</div>
-		   
-		<div class="row">
-			<div id="map" class="col-md-10" style="height: 850px;"
-				ondragenter="return dragEnter(event)"
-				ondrop="return dragDrop(event)" ondragover="return dragOver(event)">	
-			</div>
-			<div class="col-md-2" style="overflow: auto; border: solid; height: 850px;">
-				<div id="draggablePanelList" class="list-unstyled">
-					<c:forEach var="checkpointVO" items="${ checkpointVO }" varStatus="i">
-						<div id="addTimeInfo" class="panel panel-info" onClick="goZoomIn(${i.index})">
-							<div class="panel-heading">${ checkpointVO.title }</div>
-							<div class="panel-body">${ checkpointVO.content }</div>
-						</div>
-					</c:forEach>
-				</div>
-			</div>
-		</div>
-		<br /> <br /> <br />
-		<div class="row">
-			<div class="col-md-1"></div>
-			<div class="col-md-8"
-				style="border: solid; overflow: auto; width: 800px">
+   
+		</div><br/>
+		<div class="row"> 
+			<div class="col-md-10" style="border:solid; overflow: auto;">
 				<h3>길찾기</h3>
 				<span id="dragStart" draggable="true"
 					ondragstart="return dragStart(event)"
-					ondragend="return startDragEnd(event)"> <img
-					src="https://developers.skplanetx.com/upload/tmap/marker/pin_b_m_a.png" />출발
-				</span> <span id="dragEnd" draggable="true"
+					ondragend="return startDragEnd(event)"> 
+					<img src="https://developers.skplanetx.com/upload/tmap/marker/pin_b_m_a.png" />출발
+				</span> 
+				<span id="dragEnd" draggable="true"
 					ondragstart="return dragStart(event)"
-					ondragend="return endDragEnd(event)"> <img
-					src="https://developers.skplanetx.com/upload/tmap/marker/pin_b_m_a.png" />도착
-				</span> <span><input type="button" value="자가용"
-					onclick="findLoadAgain()" /></span> <span><input type="button"
-					value="대중교통" onclick="calculateAndDisplayRoute()" /></span> <span><input
-					type="button" value="도보" onclick="forWalk()" /></span>
-				<div class="col-md-12">
-					<input type="button" value=" 길찾기 종료 " onclick="closeSearch()"
-						class="btn btn-secondary col-md-6" />
-				</div>
-				<br />--------------------------------------------
-				<div id="addinfo"></div>
+					ondragend="return endDragEnd(event)"> 
+					<img src="https://developers.skplanetx.com/upload/tmap/marker/pin_b_m_a.png" />도착
+				</span> 
+				<span><input type="button" value="자가용" onclick="findLoadAgain()" /></span> 
+				<span><input type="button" value="대중교통" onclick="calculateAndDisplayRoute()" /></span> 
+				<span><input type="button" value="도보" onclick="forWalk()" /></span>
+				<input type="button" value=" 길찾기 종료 " onclick="closeSearch()" class="btn btn-secondary col-md-2" /> 
+				<div id="addinfo"></div><br/>
 			</div>
-			<div class="col-md-1"></div>
+			<br/>
 		</div>
 		<br /> <br /> <br />
 		<div id="map_div"></div>
+		</form>
 		
-		<!-- 즐찾 조회수 추천 신고 위치 잡아야함-->
-	<div class="container">
-		<div class="row">
-			<div class="text-center">
-				<a href="javascript:getFavoriteMap()"><i class="fa fa-heart fa-2x" aria-hidden="true"></i></a> 
-				<a href="#"><i class="fa fa-star-o fa-2x" aria-hidden="true"></i></a>
-				<a href="#"><i class="fa fa-eye fa-2x" aria-hidden="true"></i></a>
-				<a href="#"><i class="fa fa-exclamation-triangle fa-2x" aria-hidden="true"></i></a>
-				수정하면서 위치 바꿀예정
-			</div>
-		</div>
-	</div>
-		
-		<!-- 댓글 부분 -->
-	<div class="container">
-		<div class="row">
-			<div class="col-sm-12">
-				<h3>Comment</h3>
-			</div>
-		</div>
-		<div class="row">
-			<!-- 프로필사진 -->
-			<div class="col-sm-1">
-				<div class="thumbnail">
-					<img class="img-responsive user-photo"
-						src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
-				</div>
-			</div>
-			<div class="col-sm-5">
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<strong>myusername</strong> <span class="text-muted">commented
-							5 days ago</span>
-					</div>
-					<div class="panel-body">Panel contentssssssssssssssssss ssss</div>
-				</div>
-			</div>
-		</div>
-		<div class="row">
-			<!-- 프로필사진 -->
-			<div class="col-sm-1">
-				<div class="thumbnail">
-					<img class="img-responsive user-photo"
-						src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
-				</div>
-			</div>
-			<div class="col-sm-5">
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<strong>myusername</strong> <span class="text-muted">commented
-							5 days ago</span>
-					</div>
-					<div class="panel-body">Panel contentssssssssssssssssss ssss</div>
-				</div>
-			</div>
-		</div>
-		<div class="row">
-			<!-- 프로필사진 -->
-			<div class="col-sm-1">
-				<div class="thumbnail">
-					<img class="img-responsive user-photo"
-						src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
-				</div>
-			</div>
-			<div class="col-sm-5">
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<strong>myusername</strong> <span class="text-muted">commented
-							5 days ago</span>
-					</div>
-					<div class="panel-body">Panel contentssssssssssssssssss ssss</div>
-				</div>
-			</div>
-		</div>
-		<div class="col-sm-5">
-			<input type="text" class="form-control title-text" placeholder="댓글">
-		</div>
-		<div class="col-sm-5">
-			<a class="text-muted" href="#"><i class="fa fa-comment fa-2x"></i></a>
-		</div>
-
-
-	</div>
+			</section>
+	<footer>
+		<jsp:include page="/bottom.do" />
+	</footer>
 </body>
 </html>
