@@ -48,12 +48,6 @@ public class CoordinatesController {
       coordinatesService.setCoordinates(testCoord); 
    }
    
-   @RequestMapping("/map/mapFront.do") 
-   public String mapFront(){
-      
-      return "MapTest/frontregtrip";
-   }
-   
    @RequestMapping("/map/mapcheck.do") 
    public String goMap(HttpServletRequest request,
          @RequestParam("start") String start,
@@ -113,7 +107,7 @@ public class CoordinatesController {
    }
    
 
-   // ajax�κ�
+   // ajax
    @RequestMapping("/map/mapAgain.do")
    @ResponseBody
    public List<CoordinatesVO> mapAgain(@RequestParam("start") String start, @RequestParam("end") String end, Model model) throws ParseException{

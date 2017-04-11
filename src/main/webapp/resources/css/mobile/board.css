@@ -1,0 +1,95 @@
+
+/*///// 리스트 검색 양식 공통 /////*/
+.search_form{ text-align: right; margin-bottom: 10px; margin-right:19px;}
+.search_form select{ height: 45px; font-size: 13px; color: #666666; border: 1px solid #dddddd; width: 105px; }
+.search_form input[type=text]{ border: 1px solid #dddddd; border-right: 0; height: 45px; }
+.search_form input[type=submit]{ border: 1px solid #ddd; border-left: 0; text-indent: -999px; height: 47px; margin-left: -5px; width: 50px; background: url('../img/sub/search.png') center center no-repeat; }
+/*///// 페이저 공통 /////*/
+.pager_wrap{width:100%; text-align:center; margin-top:35px;}
+.pager_wrap ul{width:100%; display:inline-block; text-align:center;}
+.pager_wrap ul li{display:inline-block; text-align:center; vertical-align:middle; width:40px; height:40px;}
+.pager_wrap ul li a{display:block; text-align:center; font-size:14px; color:#666666; line-height:40px; text-align:center;}
+.pager_wrap ul li.num.active{ background-color:#005aab;}
+.pager_wrap ul li.num.active a{color:#fff; font-weight:bold;}
+
+/*///// 페이저 모바일 공통 /////*/
+.pager_wrap_m{width:100%; text-align:center; margin-top:20px; padding-bottom: 50px; }
+.pager_wrap_m ul{width:100%; display:inline-block; text-align:center;}
+.pager_wrap_m ul li{display:inline-block; text-align:center; vertical-align:middle; width:20px; height:20px;}
+.pager_wrap_m ul li a{display:block; text-align:center; font-size:14px; color:#666666; line-height:20px; text-align:center;}
+.pager_wrap_m ul li.num.active{ background-color:#005aab;}
+.pager_wrap_m ul li.num.active a{color:#fff; font-weight:bold;}
+
+/*///// 게시판 view 버튼 공통 /////*/
+.bo_btn{ text-align: right; margin-top: 15px; margin-bottom: 150px; }
+.bo_btn a{ color: #333333; font-size: 16px; font-weight: bold; border: 1px solid #ddd; display: inline-block; text-align: center; width: 140px; height: 47px; line-height: 47px; }
+/*///// 게시판 write 버튼 공통 /////*/
+.wr_btn{ text-align: center; margin-top: 30px; margin-bottom: 75px; }
+.wr_btn a, .wr_btn .submit{ display: inline-block; width: 140px; height: 48px; line-height: 48px; }
+.wr_btn a{ border: 1px solid #ddd; color: #666; vertical-align: top; }
+.wr_btn .submit{ color: #fff; background: #005aab; border: 0; font-size: 15px; height: 50px; cursor: pointer; }
+
+
+
+
+
+/* 게시판 - list */
+.list ul{ overflow: hidden; }
+.list ul.list_title{ border-top: 2px solid #005aab;  }
+.list ul li{ float: left; color: #666666; font-size: 14px; height: 50px; line-height: 50px; text-align: center; border-bottom: 1px solid #dbdbdb; }
+.list ul li a{ color: #555555; font-size: 14px; }
+.list ul li.num{ width: 10%; }
+.list ul li.list_subject{ width: 50%; text-align: left; text-indent: 20px; overflow: hidden; text-overflow:ellipsis; white-space: nowrap; }
+.list ul li.list_subject:hover a{ font-weight: bold; }
+.list ul li.writer{ width: 15%; }
+.list ul li.date{ width: 15%; }
+.list ul li.hit{ width: 10%; }
+/* 게시판 - view */
+.view .view_title{ border-top: 2px solid #005aab; }
+.view .view_title li{ color: #888888; font-size: 14px; height: 50px; line-height: 50px; border-bottom: 1px solid #dbdbdb; padding-left: 33px;  }
+.view .view_title li.file{ height: auto; line-height: 20px; overflow: hidden; }
+.view .view_title li.file p{ float: left; display: block; margin-right: 10px; line-height: 25px; } 
+.view .view_title li.view_subject{ font-weight: bold; color: #333333; font-size: 16px; }
+.view .view_title li span{ display: inline-block; margin-right: 20px; }
+.view .view_content{ padding: 33px; font-size: 14px; color: #555555; /* min-height: 300px; */ border-bottom: 1px solid #dbdbdb; }
+/* 게시판 view 페이지 답변 */
+.answer{}
+.answer .answer_form ul li{ float: left; padding: 5px 0; }
+.answer .answer_form ul li.ans_con{ width: 85%;  }
+.answer .answer_form ul li.ans_con textarea{ width: 99%; resize: none; border: 1px solid #dbdbdb; }
+.answer .answer_form ul li.ans_wr{ width: 15%; }
+.answer .answer_form ul li.ans_wr input{ width: 100%; height: 152px; color: #fff; background: #005aab; border: 0; font-size: 16px; }
+.answer .answer_list{  }
+.answer .answer_list ul li{ font-size: 14px; border-bottom: 1px solid #dbdbdb; padding: 20px; }
+.answer .answer_list ul li div span{ display: inline-block; margin-right: 10px; }
+.answer .answer_list ul li div a{ color: #005aab; display: inline-block; margin-left: 50px; }
+.answer .answer_list ul li p.ans_list_con{ padding: 10px; }
+/* 게시판 - write */
+.write{ border-top: 1px solid #ddd; }
+.write ul{ overflow: hidden; border-bottom: 1px solid #ddd; }
+.write ul li{ float: left; height: 37px; line-height: 37px; font-size: 13px; color: #333; width: 70%; padding: 10px 0; }
+.write ul li.title{ width: 20%; padding-left: 35px; background: #f9fbfe; font-size: 13px; font-weight: bold; }
+.write ul.write_content li{ height: auto;  }
+.write ul.write_content li.title{ line-height: 230px; }
+.write ul li input{ border: 1px solid #d3d3d3; height: 37px; }
+.write ul li select{ border: 1px solid #d3d3d3; height: 37px; width: 30%; color: #999; }
+.write ul li textarea{ border: 1px solid #d3d3d3; resize: vertical; width: 98%; height: 230px; vertical-align: middle; }
+.write .narrow{ width: 30%; }
+.write .wide{ width: 98%; }
+
+
+
+.gallery{  }
+.gallery_list{  }
+.gallery_list li{ float: left; width: 5%; border: 1px solid #ddd; margin-right: 5px; margin-bottom: 25px; }/*1.09%*/
+.gallery_list li.li_for{ margin: 0; }
+.gallery_list li a{ display: block; }
+.gallery_list li a .gal_img{ height: 200px; position: relative; border-bottom: 1px solid #ddd; overflow: hidden; }
+.gallery_list li a .gal_img img{ /* position: absolute; height: auto; top: 0; left: 50%; bottom: 0; margin: auto; margin-left: -40%; */height: 100%; }
+.gallery_list li a .gal_text{ padding: 10px; }
+.gallery_list li a .gal_text p{ color: #666; font-size: 14px; font-weight: normal; line-height: 23px; overflow: hidden; text-overflow:ellipsis; white-space: nowrap; margin-bottom: 5px; }
+.gallery_list li a .gal_text p.gal_subject{ font-weight: bold; }
+.gallery_list li a .gal_text p.gal_date{ font-size: 13px; }
+.gallery_list li a .gal_text p.gal_date span{ display: inline-block; padding-right: 5px; margin-right: 5px; position: relative; }
+.gallery_list li a .gal_text p.gal_date span:after{ content: ""; display: block; width: 1px; height: 10px; position: absolute; top: 7px; right: -3px; background: #666; }
+.gallery_list li a .gal_text p.gal_date span.hit:after{ display: none; }

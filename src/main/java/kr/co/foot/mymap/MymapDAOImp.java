@@ -1,5 +1,6 @@
 package kr.co.foot.mymap;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -71,11 +72,15 @@ public class MymapDAOImp implements MymapDAO {
 		
 	}
 
-	@Override
-	public List<MymapVO> selectMymapList(String searchtext) {
+	@Override /*더보기 페이징 셀렉트*/
+	public List<MymapVO> selectMymapList(String searchtext, int pageSize) {
+		int start = 0;
+		HashMap<String, Object> search = new HashMap<String, Object>();
+		search.put("start", start);
+		search.put("pageSize", pageSize);
+		search.put("searchtext", searchtext);
 		
-		List<MymapVO> mymapList = sqlSessionTemplate.selectList("kr.co.foot.mymap.MymapDAO.selectMymapList", searchtext);
-		
+		List<MymapVO> mymapList = sqlSessionTemplate.selectList("kr.co.foot.mymap.MymapDAO.selectMymapList", search);
 		return mymapList;
 	}
 

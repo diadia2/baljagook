@@ -69,11 +69,11 @@ public class MymapServiceImp implements MymapService {
 		mymapDAO.insertCheckpoint(checkpointVO);
 		
 	}
-
+	
 	@Override
-	public List<MymapVO> selectMymapList(String searchtext) {
+	public List<MymapVO> selectMymapList(String searchtext, int pageSize) {
 		
-		List<MymapVO> mymapList = mymapDAO.selectMymapList(searchtext);
+		List<MymapVO> mymapList = mymapDAO.selectMymapList(searchtext, pageSize);
 		
 		return mymapList;
 	}

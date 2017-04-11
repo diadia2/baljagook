@@ -19,7 +19,7 @@ public interface MymapDAO {
 	public void insertHashtag(HashtagVO hashtagVO);
 	public List<RegcoordinatesVO> getRegcoordinatesInfo(int mymapidx);
 	public void insertCheckpoint(CheckpointVO checkpointVO);
-	public List<MymapVO> selectMymapList(String searchtext);
+	public List<MymapVO> selectMymapList(String searchtext, int pageSize);
 	public List<HashtagVO> getHashtagList(int idx);
 	public RegmapVO getRegmapList(int idx);
 	public MymapVO selectMymap(int mymapidx);
@@ -38,5 +38,6 @@ public interface MymapDAO {
 	public void deleteLikeInfo(LikeVO likeVO);
 	public void increaseViewCnt(int mymapidx);
 	public List<MymapVO> selectMymapByuserid(String userid);
+
 
 }
