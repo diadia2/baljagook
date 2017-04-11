@@ -1,10 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
+<script
+	src="https://apis.skplanetx.com/tmap/js?version=1&format=javascript&appKey=bac4f916-3297-3be4-93ff-e37ae88b8f42"></script>
+<script
+	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD6x6lwLmHlSpovbF0nM-fPIPpjfv4D9IM&libraries=places"></script>
 
 <link href="${pageContext.request.contextPath }/resources/css/mobile/common.css"
 	rel="stylesheet" type="text/css" />
@@ -52,7 +57,7 @@
 <script src=".${pageContext.request.contextPath }/resources/js/mobile/util.js"
 	type="text/javascript"></script>
 
-    <script src="https://maps.google.com/maps/api/js?key=AIzaSyCAr0HeB2LSff7sqIUhi5D4H0NA0nPD7Bs&sensor=false" type="text/javascript"></script>
+<!--     <script src="https://maps.google.com/maps/api/js?key=AIzaSyCAr0HeB2LSff7sqIUhi5D4H0NA0nPD7Bs&sensor=false" type="text/javascript"></script> -->
 
 
 
@@ -68,12 +73,13 @@
 
 <script type="text/javascript">
 	$(document).ready(function() {
-		$("#hidden_fav").hide();
-		$("#hidden_map").hide();
-		$("#hidden_place").hide();
+		$("#hidden_favMap").hide();
+		$("#hidden_favPlace").hide();
+		$("#hidden_myPlan").hide();
 
-		$("#show_fav").click(function() {
-			$("#hidden_fav").slideToggle('slow');
+// 		즐겨찾기한 지도 목록 보기
+		$("#show_favMap").click(function() {			
+			$("#hidden_favMap").slideToggle('slow');
 			var nowText = $(this).find(".menu_te").text();
 
 			if (nowText == "▲") {
@@ -82,9 +88,56 @@
 				$(this).find(".menu_te").text("▲");
 			}
 		});
+		
+//		즐겨차기한 지도 좌표 지도에 뿌려주기		
+		function displayFavMap(mymapidx) {		    
+			$.ajax({
+			    type: 'POST' , 
+			    url: '${ pageContext.request.contextPath }/map/getMymap.do',
+			    dataType : 'json',
+			    data : {
+					mymapidx : mymapidx
+			    },
+			    success: function(data) {
+					console.log(data);
+					var mymapLonLat = new Array();
+					var mymapCheckpoint = new Array();
+					for(var i=0; i<data[0].length; i++){
+					    mymapLonLat.push({lat:Number(data[0][i].lat), lng:Number(data[0][i].lon)});
+					    for(var j=0; j<data[1].length; j++){
+							if(data[0][i].idx == data[1][j].regcoordinatesidx){
+							    mymapCheckpoint.push({lat:Number(data[0][i].lat), lng:Number(data[0][i].lon), title:data[1][j].title, content:data[1][j].content});
+							}
+					    }
+					}
+					goZoomIn(Number(data[0][0].lat), Number(data[0][0].lon));
+					
+					// mymapLonLatList의 데이터가 있을때 새로들어온 데이터와 비교해서 동일하면 삭제하기
+					if(mymapLonLatList.length != 0){
+					    for(var i=0; i<mymapLonLatList.length; i++){
+							if(mymapLonLatList[i].mymapidx == data[0][0].mymapidx){
+							    mymapLonLatList.splice(i,1);
+							    mymapCheckpointList.splice(i,1);
+							    drawFavoriteMap();
+							    return;
+							}
+					    }
+					}
+					 
+					mymapLonLatList.push({mymapLonLat:mymapLonLat, mymapidx:data[0][0].mymapidx});
+					mymapCheckpointList.push({mymapCheckpoint:mymapCheckpoint, mymapidx:data[0][0].mymapidx});
+					console.log(mymapLonLatList);
+					console.log(mymapCheckpointList);
+					drawFavoriteMap();
+		        }
+			});			
+		};
+		
+		
 
-		$("#show_map").click(function() {
-			$("#hidden_map").slideToggle('slow');
+//		즐겨찾기한 장소 목록 보기		
+		$("#show_favPlace").click(function() {
+			$("#hidden_favPlace").slideToggle('slow');
 			var nowText = $(this).find(".menu_te").text();
 
 			if (nowText == "▲") {
@@ -93,9 +146,65 @@
 				$(this).find(".menu_te").text("▲");
 			}
 		});
+		
+		var favoritePlaceLonLat;
+		var favoriteMapLonLat = new Array();
 
-		$("#show_place").click(function() {
-			$("#hidden_place").slideToggle('slow');
+//		즐겨찾기한 장소 지도에 뿌려주기		
+		function displayFavPlace(checkpointidx){
+			    
+			    $.ajax({
+				    type: 'POST' , 
+				    url: '${ pageContext.request.contextPath }/map/getMyplace.do',
+				    dataType : 'json',
+				    data : {
+						checkpointidx : checkpointidx
+				    },
+				    success: function(data) {
+						var Fplace = {lat:Number(data.lat),lng:Number(data.lon)};
+						if(favoritePlaceLonLat != null){
+							favoritePlaceLonLat.setMap(null);
+							if(favoritePlaceLonLat.position.lat().toFixed(7) == Fplace.lat && favoritePlaceLonLat.position.lng().toFixed(7) == Fplace.lng){
+								return;
+							}
+						}
+						goZoomIn(data.lat, data.lon);
+						favoritePlaceLonLat = new google.maps.Marker({
+							map : map,
+							position : Fplace
+						});
+						var listener3 = google.maps.event.addListener(map, 'click', function(){
+							if(infowindow != null){
+								  infowindow.close();
+							  }
+						  });
+						  var listener1 = google.maps.event.addListener(favoritePlaceLonLat, 'click', function(){
+							  if(infowindow != null){
+								  infowindow.close();
+							  } 
+							  infowindow = new google.maps.InfoWindow({
+								    content: (this.position.lat()).toFixed(7).toString()+", "+(this.position.lng()).toFixed(7).toString()+
+								    '<br/><input type="button" value="위치추가" onClick="addFavoriteMarker('+
+								    		(this.position.lat()).toFixed(7)+", "+(this.position.lng()).toFixed(7)+')"/>'
+								  }); 
+							  infowindow.open(map, this);
+						  });  
+			        }
+				});	
+			    
+			}
+			
+			function addFavoriteMarker(lat, lon){
+			    console.log(lat+", "+lon);
+			    listLonLat.push({lat:lat, lng:lon});
+			    favoritePlaceLonLat = null;
+			    goZoomIn(lat, lon);
+			    initialize();
+			}		
+
+//		내계획 목록 보기
+		$("#show_myPlan").click(function() {			
+			$("#hidden_myPlan").slideToggle('slow');
 			var nowText = $(this).find(".menu_te").text();
 
 			if (nowText == "▲") {
@@ -287,83 +396,48 @@
 
 
 
-
-					<li id="show_map"><a href="#!"> <img
-							src="${pageContext.request.contextPath }/resources/images/mobile/icon_menu2.png" alt="지도" /> <span>지도</span>
+					<!-- 즐겨찾기한 지도 목록 보기 -->
+					<li id="show_favMap"><a href="#!"> <img
+							src="${pageContext.request.contextPath }/resources/images/mobile/icon_menu2.png" alt="즐찾지도" /> <span>즐찾지도</span>
 					</a> <span class="menu_te">▲</span></li>
-
-					<li id="hidden_map">
-						<div
-							style="width: 100%; max-height: 200px; overflow: hidden; overflow-y: auto;">
-
+					<li id="hidden_favMap">
+						<div id="favMapList" style="width: 100%; max-height: 200px; overflow: hidden; overflow-y: auto;">
 							<ul class="sub_depth01 clearfix">
-
-								<li><a href="#!"> <span>지도1</span>
-								</a></li>
-
-								<li><a href="#!"> <span>지도1</span>
-								</a></li>
-
-
+								<c:forEach items="${ favMapList }" var="favMap">
+									<li onclick="displayFavMap(${ favMap.idx });"><a>${ favMap.title }</a></li>
+								</c:forEach> 
 							</ul>
-
 						</div>
-
 					</li>
 
-					<li id="show_place"><a href="#!"> <img
-							src="${pageContext.request.contextPath }/resources/images/mobile/icon_menu3.png" alt="장소" /> <span>장소</span>
+					<!-- 즐겨찾기한 장소 목록 보기 -->
+					<li id="show_favPlace"><a href="#!"> <img
+							src="${pageContext.request.contextPath }/resources/images/mobile/icon_menu3.png" alt="즐찾장소" /> <span>즐찾장소</span>
 					</a> <span class="menu_te">▲</span></li>
-
-					<li id="hidden_place">
-						<div
+					<li id="hidden_favPlace">
+						<div id="favPlaceList"
 							style="width: 100%; max-height: 200px; overflow: hidden; overflow-y: auto;">
-
 							<ul class="sub_depth01 clearfix">
-
-								<li><a href="#!"> <span>장소1</span>
-								</a></li>
-
-								<li><a href="#!"> <span>장소1</span>
-								</a></li>
-								<li><a href="#!"> <span>장소1</span>
-								</a></li>
-								<li><a href="#!"> <span>장소1</span>
-								</a></li>
-								<li><a href="#!"> <span>장소1</span>
-								</a></li>
-								<li><a href="#!"> <span>장소1</span>
-								</a></li>
-
+								<c:forEach items="${ favPlaceList }" var="favPlace">
+									<li onclick="displayFavPlace(${ favPlace.idx });"><a>${ favPlace.placename }</a></li>
+								</c:forEach>
 							</ul>
-
 						</div>
-
 					</li>
 
-
-					<li id="show_fav"><a href="#!"> <img
-							src="${pageContext.request.contextPath }/resources/images/mobile/icon_menu1.png" alt="즐겨찾기" /> <span>즐겨찾기</span>
+					<!-- 내 여행계획 보기 -->
+					<li id="show_myPlan"><a href="#!"> <img
+							src="${pageContext.request.contextPath }/resources/images/mobile/icon_menu1.png" alt="내계획" /> <span>내계획</span>
 					</a> <span class="menu_te">▲</span></li>
-
-
-					<li id="hidden_fav">
-						<div
+					<li id="hidden_myPlan">
+						<div id="myPlanList"
 							style="width: 100%; max-height: 200px; overflow: hidden; overflow-y: auto;">
-
 							<ul class="sub_depth01 clearfix">
-
-								<li><a href="#!"> <span>즐겨찾기1</span>
-								</a></li>
-
-								<li><a href="#!"> <span>즐겨찾기1</span>
-								</a></li>
-
-
+								<c:forEach items="${ myPlanList }" var="myPlan">
+									<li onclick="displayMyPlan(${ myPlan.idx });"><a>${ myPlan.title }</a></li>
+								</c:forEach>
 							</ul>
-
 						</div>
-
 					</li>
 
 
