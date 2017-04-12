@@ -54,7 +54,7 @@
 
 <script src="${pageContext.request.contextPath }/resources/js/mobile/script.js"
 	type="text/javascript"></script>
-<script src=".${pageContext.request.contextPath }/resources/js/mobile/util.js"
+<script src="${pageContext.request.contextPath }/resources/js/mobile/util.js"
 	type="text/javascript"></script>
 
 <!--     <script src="https://maps.google.com/maps/api/js?key=AIzaSyCAr0HeB2LSff7sqIUhi5D4H0NA0nPD7Bs&sensor=false" type="text/javascript"></script> -->
@@ -88,52 +88,6 @@
 				$(this).find(".menu_te").text("▲");
 			}
 		});
-		
-//		즐겨차기한 지도 좌표 지도에 뿌려주기		
-		function displayFavMap(mymapidx) {		    
-			$.ajax({
-			    type: 'POST' , 
-			    url: '${ pageContext.request.contextPath }/map/getMymap.do',
-			    dataType : 'json',
-			    data : {
-					mymapidx : mymapidx
-			    },
-			    success: function(data) {
-					console.log(data);
-					var mymapLonLat = new Array();
-					var mymapCheckpoint = new Array();
-					for(var i=0; i<data[0].length; i++){
-					    mymapLonLat.push({lat:Number(data[0][i].lat), lng:Number(data[0][i].lon)});
-					    for(var j=0; j<data[1].length; j++){
-							if(data[0][i].idx == data[1][j].regcoordinatesidx){
-							    mymapCheckpoint.push({lat:Number(data[0][i].lat), lng:Number(data[0][i].lon), title:data[1][j].title, content:data[1][j].content});
-							}
-					    }
-					}
-					goZoomIn(Number(data[0][0].lat), Number(data[0][0].lon));
-					
-					// mymapLonLatList의 데이터가 있을때 새로들어온 데이터와 비교해서 동일하면 삭제하기
-					if(mymapLonLatList.length != 0){
-					    for(var i=0; i<mymapLonLatList.length; i++){
-							if(mymapLonLatList[i].mymapidx == data[0][0].mymapidx){
-							    mymapLonLatList.splice(i,1);
-							    mymapCheckpointList.splice(i,1);
-							    drawFavoriteMap();
-							    return;
-							}
-					    }
-					}
-					 
-					mymapLonLatList.push({mymapLonLat:mymapLonLat, mymapidx:data[0][0].mymapidx});
-					mymapCheckpointList.push({mymapCheckpoint:mymapCheckpoint, mymapidx:data[0][0].mymapidx});
-					console.log(mymapLonLatList);
-					console.log(mymapCheckpointList);
-					drawFavoriteMap();
-		        }
-			});			
-		};
-		
-		
 
 //		즐겨찾기한 장소 목록 보기		
 		$("#show_favPlace").click(function() {
@@ -146,61 +100,6 @@
 				$(this).find(".menu_te").text("▲");
 			}
 		});
-		
-		var favoritePlaceLonLat;
-		var favoriteMapLonLat = new Array();
-
-//		즐겨찾기한 장소 지도에 뿌려주기		
-		function displayFavPlace(checkpointidx){
-			    
-			    $.ajax({
-				    type: 'POST' , 
-				    url: '${ pageContext.request.contextPath }/map/getMyplace.do',
-				    dataType : 'json',
-				    data : {
-						checkpointidx : checkpointidx
-				    },
-				    success: function(data) {
-						var Fplace = {lat:Number(data.lat),lng:Number(data.lon)};
-						if(favoritePlaceLonLat != null){
-							favoritePlaceLonLat.setMap(null);
-							if(favoritePlaceLonLat.position.lat().toFixed(7) == Fplace.lat && favoritePlaceLonLat.position.lng().toFixed(7) == Fplace.lng){
-								return;
-							}
-						}
-						goZoomIn(data.lat, data.lon);
-						favoritePlaceLonLat = new google.maps.Marker({
-							map : map,
-							position : Fplace
-						});
-						var listener3 = google.maps.event.addListener(map, 'click', function(){
-							if(infowindow != null){
-								  infowindow.close();
-							  }
-						  });
-						  var listener1 = google.maps.event.addListener(favoritePlaceLonLat, 'click', function(){
-							  if(infowindow != null){
-								  infowindow.close();
-							  } 
-							  infowindow = new google.maps.InfoWindow({
-								    content: (this.position.lat()).toFixed(7).toString()+", "+(this.position.lng()).toFixed(7).toString()+
-								    '<br/><input type="button" value="위치추가" onClick="addFavoriteMarker('+
-								    		(this.position.lat()).toFixed(7)+", "+(this.position.lng()).toFixed(7)+')"/>'
-								  }); 
-							  infowindow.open(map, this);
-						  });  
-			        }
-				});	
-			    
-			}
-			
-			function addFavoriteMarker(lat, lon){
-			    console.log(lat+", "+lon);
-			    listLonLat.push({lat:lat, lng:lon});
-			    favoritePlaceLonLat = null;
-			    goZoomIn(lat, lon);
-			    initialize();
-			}		
 
 //		내계획 목록 보기
 		$("#show_myPlan").click(function() {			
@@ -237,8 +136,18 @@
 		$("#clsNav2").click(function() {
 			$("#bottomDiv").hide();
 		});
-
 	});
+	
+//	즐겨찾기한 지도 좌표 지도에 뿌려주기		
+	function displayFavMap(mymapidx) {
+		alert('즐겨찾기 지도 지도에 뿌려주자');
+	}
+	
+//	내 여행 계획 지도에 뿌려주기
+	function displayMyPlan(mymapidx) {
+		alert('내 여행 계획 지도에 뿌려주자');
+	}
+	
 
 	var latitude = "";
 	var longitude = "";
@@ -328,6 +237,68 @@
 	}
 </script>
 
+<!-- 즐겨찾기한 장소 지도에 뿌리기 -->
+<script>
+	var favoritePlaceLonLat;
+	var favoriteMapLonLat = new Array();
+		
+	function displayFavPlace(checkpointidx) {
+		$.ajax({
+			    type: 'POST' , 
+			    url: '${ pageContext.request.contextPath }/map/getMyplace.do',
+			    dataType : 'json',
+			    data : {
+			    	checkpointidx : checkpointidx
+			    },
+			    error: function() {
+			    	alert('에러뜸');
+			    },
+			    success: function(data) {
+			    	var Fplace = {lat:Number(data.lat),lng:Number(data.lon)};
+					
+					console.log(Fplace);
+					
+					if(favoritePlaceLonLat != null){
+						favoritePlaceLonLat.setMap(null);
+						if(favoritePlaceLonLat.position.lat().toFixed(7) == Fplace.lat && favoritePlaceLonLat.position.lng().toFixed(7) == Fplace.lng){
+							return;
+						}
+					}
+					goZoomIn(data.lat, data.lon);
+					favoritePlaceLonLat = new google.maps.Marker({
+						map : map,
+						position : Fplace,
+						icon : "https://developers.skplanetx.com/upload/tmap/marker/pin_b_m_a.png"
+					});
+					var listener3 = google.maps.event.addListener(map, 'click', function(){
+						if(infowindow != null){
+							  infowindow.close();
+						  }
+					  });
+					  var listener1 = google.maps.event.addListener(favoritePlaceLonLat, 'click', function(){
+						  if(infowindow != null){
+							  infowindow.close();
+						  } 
+						  infowindow = new google.maps.InfoWindow({
+							    content: (this.position.lat()).toFixed(7).toString()+", "+(this.position.lng()).toFixed(7).toString()+
+							    '<br/><input type="button" value="위치추가" onClick="addFavoriteMarker('+
+							    		(this.position.lat()).toFixed(7)+", "+(this.position.lng()).toFixed(7)+')"/>'
+							  }); 
+						  infowindow.open(map, this);
+					  });  
+		        }
+			});	
+		    
+		}
+		
+		function addFavoriteMarker(lat, lon){
+		    console.log(lat+", "+lon);
+		    listLonLat.push({lat:lat, lng:lon});
+		    favoritePlaceLonLat = null;
+		    goZoomIn(lat, lon);
+		    initialize();
+		}
+</script>
 </head>
 <body>
 	<div class="side_menu_bg"></div>
@@ -419,7 +390,7 @@
 							style="width: 100%; max-height: 200px; overflow: hidden; overflow-y: auto;">
 							<ul class="sub_depth01 clearfix">
 								<c:forEach items="${ favPlaceList }" var="favPlace">
-									<li onclick="displayFavPlace(${ favPlace.idx });"><a>${ favPlace.placename }</a></li>
+									<li onclick="displayFavPlace(${ favPlace.checkpointidx });"><a>${ favPlace.placename }</a></li>
 								</c:forEach>
 							</ul>
 						</div>

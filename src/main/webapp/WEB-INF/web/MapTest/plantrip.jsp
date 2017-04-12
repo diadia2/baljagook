@@ -317,6 +317,8 @@
 					checkpointidx : checkpointidx
 			    },
 			    success: function(data) {
+			    	alert('데이터 잘 받음');
+			    	alert(data);
 					var Fplace = {lat:Number(data.lat),lng:Number(data.lon)};
 					if(favoritePlaceLonLat != null){
 						favoritePlaceLonLat.setMap(null);
