@@ -3,10 +3,27 @@
 <mapper namespace="kr.co.foot.coordinates.CoordinatesDAO">
    
    <insert id="setCoordinates" parameterType="kr.co.foot.coordinates.CoordinatesVO">
-      INSERT INTO coordinates(lat, lon, email, timestamp, accuracy) VALUES (#{lat}, #{lon}, #{email}, #{timestamp}, #{accuracy})
+      INSERT INTO t_coordinates(lat, lon, email, timestamp, accuracy) VALUES (#{lat}, #{lon}, #{email}, #{timestamp}, #{accuracy})
    </insert>
    
    <select id="getLonLat" parameterType="kr.co.foot.coordinates.TimeStampVO" resultType="kr.co.foot.coordinates.CoordinatesVO">
        select lon, lat, timestamp, accuracy, email from t_coordinates where accuracy <![CDATA[<]]> 50 and email = #{id} and timestamp between #{startTime} and #{endTime} group by lon order by idk DESC
    </select>
+   
+   <select id="selectidx" parameterType="String" resultType="int">
+       select idk from t_coordinates where timestamp = #{timestamp}
+   </select>
+   
+   <insert id="insertCheckpoint" parameterType="kr.co.foot.checkpoint.CheckpointVO">
+       insert into t_checkpoint (coordinatesidx, regcoordinatesidx, title, content) 
+  	   		values (#{coordinatesidx}, 0, #{title}, #{content})
+   </insert>
+   
+   <select id="selectCheckpointidx" parameterType="int" resultType="int">
+       select idx from t_checkpoint where coordinatesidx = #{coordinatesidx}
+   </select>
+   
+   <insert id="insertPhoto" parameterType="kr.co.foot.photo.PhotoVO">
+       insert into t_photo (checkpointidx, oriname, newname) values (#{checkpointidx}, #{oriname}, #{newname})
+   </insert>
 </mapper>
