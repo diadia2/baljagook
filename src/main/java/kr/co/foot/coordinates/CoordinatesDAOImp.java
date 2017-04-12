@@ -6,6 +6,9 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import kr.co.foot.checkpoint.CheckpointVO;
+import kr.co.foot.photo.PhotoVO;
+
 @Repository
 public class CoordinatesDAOImp implements CoordinatesDAO {
 	
@@ -27,6 +30,36 @@ public class CoordinatesDAOImp implements CoordinatesDAO {
 		List<CoordinatesVO> list = sqlSessionTemplate.selectList("kr.co.foot.coordinates.CoordinatesDAO.getLonLat", timestampVO);
 		
 		return list;
+	}
+
+	@Override
+	public void insertCheckpoint(CheckpointVO checkpoint) {
+
+		sqlSessionTemplate.insert("kr.co.foot.coordinates.CoordinatesDAO.insertCheckpoint",checkpoint);
+		
+	}
+
+	@Override
+	public int selectidx(String timestamp) {
+
+		int coordinatesidx = sqlSessionTemplate.selectOne("kr.co.foot.coordinates.CoordinatesDAO.selectidx", timestamp);
+		
+		return coordinatesidx;
+	}
+
+	@Override
+	public int selectCheckpointidx(int coordinatesidx) {
+
+		int checkpointidx = sqlSessionTemplate.selectOne("kr.co.foot.coordinates.CoordinatesDAO.selectCheckpointidx", coordinatesidx);
+		
+		return checkpointidx;
+	}
+
+	@Override
+	public void insertPhoto(PhotoVO photo) {
+
+		sqlSessionTemplate.insert("kr.co.foot.coordinates.CoordinatesDAO.insertPhoto", photo);
+		
 	}
 
 }
