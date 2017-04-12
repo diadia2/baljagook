@@ -407,6 +407,12 @@
 			});	
 		}
 		
+		// 타임라인 div 클릭시 센터좌표 이동
+		function goZoomIn(lat, lng){
+			var center = new google.maps.LatLng(lat, lng);
+			map.setCenter(center);
+		}
+		
 		var checkPointMarker = new Array();
 		function drawFavoriteMap(){
 		    
