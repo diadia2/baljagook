@@ -38,7 +38,7 @@
 						<h2 class="text-center">
 							<a href="#"><i class="fa fa-star-o fa-2x" aria-hidden="true"></i></a>
 						</h2>
-						<h3 class="name text-center">Add Places</h3>
+						<h3 class="name text-center">Add Favorites</h3>
 						<p class="description text-center">가고싶은 여행이나 장소를 추가하세요.</p>
 					</div>
 
@@ -47,7 +47,7 @@
 							<a href="#"><i class="fa fa-picture-o fa-2x"
 								aria-hidden="true"></i></a>
 						</h2>
-						<h3 class="name text-center">Add Places</h3>
+						<h3 class="name text-center">Add Photos</h3>
 						<p class="description text-center">사진 추가가능.</p>
 					</div>
 					<div class="col-lg-3 col-md-4 col-sm-6 item">
@@ -55,7 +55,7 @@
 							<a href="#"><i class="fa fa-share-alt fa-2x"
 								aria-hidden="true"></i></a>
 						</h2>
-						<h3 class="name text-center">Add Places</h3>
+						<h3 class="name text-center">Share</h3>
 						<p class="description text-center">당신의 발자취를 공유해 보세요.</p>
 					</div>
 

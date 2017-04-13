@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -232,15 +233,15 @@ public class MymapController {
 	@RequestMapping(value = "/map/searchList.do", method = RequestMethod.GET)
 	public String searchList(@RequestParam("searchtext") String searchtext, @RequestParam("moreCount") int moreCount, Model model, HttpServletRequest request){
 		
-		List<MymapVO> mymapList = mymapService.selectMymapList(searchtext, 4*moreCount);//5*1 ��蹂닿린 ��瑜대㈃ 5*2 5*3  
+		List<MymapVO> mymapList = mymapService.selectMymapList(searchtext, 4*moreCount);//5*1 더보기 누르면 5*2 5*3  
 		System.out.println(mymapList.size());
 		List<HashtagVO> hashtagList = new ArrayList<HashtagVO>();
 		
-		//View濡� ��湲� like �댁��留� ����
+		//View로 넘길 like 해시맵 생성
 		HashMap<Integer, Integer> likeMap = new HashMap<Integer, Integer>();
-		//View濡� ��湲� like 泥댄�ъ�� �댁��留� ����
+		//View로 넘길 like 체크용 해시맵 생성
 		HashMap<Integer, Boolean> likeAlreadyChecked = new HashMap<Integer, Boolean>();
-		//like �� 珥�湲고��
+		//like 수 초기화
 		int likeCnt = 0;
 		
 		HashMap<Integer, Integer> viewcntMap = new HashMap<Integer, Integer>();
@@ -265,6 +266,11 @@ public class MymapController {
 			viewcntMap.put(mymapList.get(i).getIdx(), viewcnt);
 		}
 		
+		//Session에 저장된 userid 확인
+		HttpSession session = request.getSession(true);
+		String loggedUserid = (String) session.getAttribute("user");
+		System.out.println("로그인중인 사용자: " + loggedUserid);
+		
 		//Like
 		List<String> userList = new ArrayList<String>();
 		for(int i=0; i<mymapList.size(); i++) {
@@ -275,11 +281,7 @@ public class MymapController {
 				likeCnt = userList.size();
 			}
 			
-			//Session�� ���λ�� userid ����
-			String loggedUserid = "test@test.com";
-			System.out.println("濡�洹몄�몄��� �ъ�⑹��: " + loggedUserid);
-			
-			//濡�洹몄�몃�� userid媛� �대�� 寃���湲��� '醫�����' ���ㅻ㈃ hashmap�� ��蹂� ����
+			//로그인된 userid가 이미 게시글을 '좋아요' 했다면 hashmap에 정보 저장
 			if(userList.contains(loggedUserid)) {
 				likeAlreadyChecked.put(mymapList.get(i).getIdx(), true);
 			}
@@ -338,7 +340,7 @@ public class MymapController {
          }
       }
       
-      // 議고�� �� 利�媛�
+      // 조회 수 증가
       mymapService.increaseViewCnt(mymapidx);
       
       model.addAttribute("mymapidx", mymapidx);
@@ -477,10 +479,10 @@ public class MymapController {
 	@ResponseBody
 	public HashMap<Integer, Integer> like(@RequestBody LikeDTO likeDTO, HttpServletRequest request) throws Exception {
 		
-		System.out.println("like 而⑦�몃·�щ� �ㅼ�댁��");
+		System.out.println("like 컨트롤러로 들어옴");
 		System.out.println(likeDTO);
 		
-		//寃������댁��� ���� mymapidx瑜� �듯�� �대�� 寃���臾쇱�� regmapidx 異�異�
+		//검색페이지에 나온 mymapidx를 통해 해당 게시물의 regmapidx 추출
 		String userid = likeDTO.getUserid();
 		int mymapidx = likeDTO.getMymapidxRef();
 		int regmapidx = mymapService.getRegmapIdx(mymapidx);
@@ -491,7 +493,7 @@ public class MymapController {
 		
 		mymapService.insertLikeInfo(likeVO);
 		
-		//�ъ�⑹��媛� like �대┃ �� ���곗�댄�몃�� likeCnt �곗�댄�� ����
+		//사용자가 like 클릭 시 업데이트된 likeCnt 데이터 전송
 		HashMap<Integer, Integer> likeMap = new HashMap<Integer, Integer>();
 		int likeCnt = 0;
 		List<String> userList = new ArrayList<String>();
@@ -512,10 +514,10 @@ public class MymapController {
 	@ResponseBody
 	public HashMap<Integer, Integer> unlike(@RequestBody LikeDTO likeDTO, HttpServletRequest request) throws Exception {
 		
-		System.out.println("like 而⑦�몃·�щ� �ㅼ�댁��");
+		System.out.println("like 컨트롤러로 들어옴");
 		System.out.println(likeDTO);
 		
-		//寃������댁��� ���� mymapidx瑜� �듯�� �대�� 寃���臾쇱�� regmapidx 異�異�
+		//검색페이지에 나온 mymapidx를 통해 해당 게시물의 regmapidx 추출
 		String userid = likeDTO.getUserid();
 		int mymapidx = likeDTO.getMymapidxRef();
 		int regmapidx = mymapService.getRegmapIdx(mymapidx);
@@ -526,7 +528,7 @@ public class MymapController {
 		
 		mymapService.deleteLikeInfo(likeVO);
 		
-		//�ъ�⑹��媛� unlike �대┃ �� ���곗�댄�몃�� likeCnt �곗�댄�� ����
+		//사용자가 unlike 클릭 시 업데이트된 likeCnt 데이터 전송
 		HashMap<Integer, Integer> likeMap = new HashMap<Integer, Integer>();
 		int likeCnt = 0;
 		List<String> userList = new ArrayList<String>();
