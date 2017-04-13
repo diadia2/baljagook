@@ -129,4 +129,12 @@
    <select id="selectMymapByuserid" parameterType="String" resultType="kr.co.foot.mymap.MymapVO">
        select idx, title, content, userid, regdate, type from t_myMap where userid = #{userid}
    </select>
+   
+   <select id="selectCheckpointByCoorIdx" parameterType="int" resultType="kr.co.foot.checkpoint.CheckpointVO">
+       select idx, coordinatesidx, regcoordinatesidx, content, title from t_checkpoint where coordinatesidx = #{coordinatesidx}
+   </select>
+   
+   <select id="selectPhoto" parameterType="int" resultType="kr.co.foot.photo.PhotoVO">
+       select idx, checkpointidx, oriname, newname from t_photo where checkpointidx = #{checkpointidx}
+   </select>
 </mapper>

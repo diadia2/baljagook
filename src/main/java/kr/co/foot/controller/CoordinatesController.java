@@ -2,6 +2,7 @@ package kr.co.foot.controller;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,8 +16,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import kr.co.foot.checkpoint.CheckpointVO;
 import kr.co.foot.coordinates.CoordinatesService;
 import kr.co.foot.coordinates.CoordinatesVO;
+import kr.co.foot.mymap.MymapService;
+import kr.co.foot.photo.PhotoVO;
 
 
 
@@ -27,6 +31,8 @@ public class CoordinatesController {
 
    @Autowired
    private CoordinatesService coordinatesService;
+   @Autowired
+   private MymapService mymapService;
 
    @RequestMapping(value = "/setCoordinatesPOST", method = RequestMethod.POST)
    public void setCoordinatesPOST(HttpServletRequest request, @RequestParam("lon") String lon,
@@ -70,7 +76,35 @@ public class CoordinatesController {
       String endTime = String.valueOf(time2.parse(end).getTime()/1000);
 
       List<CoordinatesVO> list = coordinatesService.getLonLat(startTime, endTime, id);
+      for(CoordinatesVO vo : list){
+    	  System.out.println(vo);
+      }
       
+      List<CheckpointVO> checkpointList = new ArrayList<CheckpointVO>();
+      for(int i=0; i<list.size(); i++){
+    	  System.out.println(list.get(i).getIdk());
+    	  CheckpointVO checkpointVO = mymapService.selectCheckpointByCoorIdx(list.get(i).getIdk());
+    	  if(checkpointVO != null){
+    		  checkpointList.add(checkpointVO);
+    	  }
+      }
+      for(CheckpointVO vo : checkpointList){
+    	  System.out.println(vo);
+      }
+      CheckpointVO checkpointVO = mymapService.selectCheckpointByCoorIdx(1006);
+      checkpointList.add(checkpointVO);
+      CheckpointVO checkpointVO1 = mymapService.selectCheckpointByCoorIdx(1007);
+      checkpointList.add(checkpointVO1);
+      System.out.println("=====================");
+      List<PhotoVO> photoList = new ArrayList<PhotoVO>();
+      if(checkpointList != null){
+	      for(int i=0; i<checkpointList.size(); i++){
+	    	  PhotoVO photoVO = mymapService.selectPhoto(checkpointList.get(i).getIdx());
+	    	  if(photoVO != null){
+	    		  photoList.add(photoVO);
+	    	  }
+	      }
+      } 
 /*      String[] cityArr = request.getParameterValues("city");
       String city = "";
       for(int i=0; i<cityArr.length; i++){
@@ -95,6 +129,8 @@ public class CoordinatesController {
       }
       */
       model.addAttribute("list", list);
+      model.addAttribute("checkpointList", checkpointList);
+      model.addAttribute("photoList", photoList);
       model.addAttribute("start", start);
       model.addAttribute("end", end);
       model.addAttribute("title", title);
@@ -102,7 +138,6 @@ public class CoordinatesController {
       model.addAttribute("hashtag", hashtag);
 /*      model.addAttribute("city", city);
       model.addAttribute("theme", theme);*/
-      
       return "MapTest/regtrip";
    }
    
