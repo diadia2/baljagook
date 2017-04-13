@@ -76,21 +76,15 @@ public class CoordinatesController {
       String endTime = String.valueOf(time2.parse(end).getTime()/1000);
 
       List<CoordinatesVO> list = coordinatesService.getLonLat(startTime, endTime, id);
-      for(CoordinatesVO vo : list){
-    	  System.out.println(vo);
-      }
       
       List<CheckpointVO> checkpointList = new ArrayList<CheckpointVO>();
       for(int i=0; i<list.size(); i++){
-    	  System.out.println(list.get(i).getIdk());
     	  CheckpointVO checkpointVO = mymapService.selectCheckpointByCoorIdx(list.get(i).getIdk());
     	  if(checkpointVO != null){
     		  checkpointList.add(checkpointVO);
     	  }
       }
-      for(CheckpointVO vo : checkpointList){
-    	  System.out.println(vo);
-      }
+      
       CheckpointVO checkpointVO = mymapService.selectCheckpointByCoorIdx(1006);
       checkpointList.add(checkpointVO);
       CheckpointVO checkpointVO1 = mymapService.selectCheckpointByCoorIdx(1007);
@@ -145,7 +139,7 @@ public class CoordinatesController {
    // ajax
    @RequestMapping("/map/mapAgain.do")
    @ResponseBody
-   public List<CoordinatesVO> mapAgain(@RequestParam("start") String start, @RequestParam("end") String end, Model model) throws ParseException{
+   public Object mapAgain(@RequestParam("start") String start, @RequestParam("end") String end, Model model) throws ParseException{
       
       String id = "ghosdi0624@naver.com";
       
@@ -159,12 +153,35 @@ public class CoordinatesController {
       String endTime = String.valueOf(time2.parse(end).getTime()/1000);
       
       List<CoordinatesVO> list = coordinatesService.getLonLat(startTime, endTime, id);
+      
+      List<CheckpointVO> checkpointList = new ArrayList<CheckpointVO>();
+      for(int i=0; i<list.size(); i++){
+    	  CheckpointVO checkpointVO = mymapService.selectCheckpointByCoorIdx(list.get(i).getIdk());
+    	  if(checkpointVO != null){
+    		  checkpointList.add(checkpointVO);
+    	  }
+      }
+      
+      CheckpointVO checkpointVO = mymapService.selectCheckpointByCoorIdx(1006);
+      checkpointList.add(checkpointVO);
+      CheckpointVO checkpointVO1 = mymapService.selectCheckpointByCoorIdx(1007);
+      checkpointList.add(checkpointVO1);
+      
+      List<PhotoVO> photoList = new ArrayList<PhotoVO>();
+      if(checkpointList != null){
+	      for(int i=0; i<checkpointList.size(); i++){
+	    	  PhotoVO photoVO = mymapService.selectPhoto(checkpointList.get(i).getIdx());
+	    	  if(photoVO != null){
+	    		  photoList.add(photoVO);
+	    	  }
+	      }
+      } 
 
       model.addAttribute("list", list);
 
-      System.out.println("����");
+      Object[] object = {list,checkpointList,photoList};
       
-      return list;
+      return object;
    }
 
    

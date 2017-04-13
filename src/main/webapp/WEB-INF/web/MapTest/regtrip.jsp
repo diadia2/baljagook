@@ -35,10 +35,20 @@
 			    },
 			    success: function(data) {
 					listLonLat = new Array();
-					for(var i=0; i<data.length; i++){
-					    listLonLat.push({lat:Number(data[i].lat),lng:Number(data[i].lon)});
+					for(var i=0; i<data[0].length; i++){
+					    listLonLat.push({lat:Number(data[0][i].lat),lng:Number(data[0][i].lon),idk:data[0][i].idk});
 					}
 					initLonLat = listLonLat[listLonLat.length-1];
+					
+					checkpointList = new Array();
+					for(var i=0; i<data[1].length; i++){
+					    checkpointList.push({idx:data[1][i].idx, coordinatesidx:data[1][i].coordinatesidx, title:data[1][i].title, content:data[1][i].content});
+					}
+					
+					photoList = new Array();
+					for(var i=0; i<data[2].length; i++){
+					    photoList.push({checkpointidx:data[2][i].checkpointidx, oriname:data[2][i].oriname, newname:data[2][i].newname});
+					}
 					initialize();
 		        }
 			});	
@@ -981,16 +991,21 @@ body {
 	    // listLonLat 좌표
 	    var lonlat1 = "";
 	    var lonlat2 = "";
+	    var lonlat3 = "";
 	    for(var i=0; i<listLonLat.length; i++){
 			lonlat1 += listLonLat[i].lat.toFixed(7);
 			lonlat1 += "/";
 			lonlat2 += listLonLat[i].lng.toFixed(7);
 			lonlat2 += "/";
+			lonlat3 += listLinLat[i].idk;
+			lonlat3 += "/";
 	    }
 	    tag1 = "<input type='hidden' value='"+lonlat1+"' name='lat'/>";
 	    tag2 = "<input type='hidden' value='"+lonlat2+"' name='lng'/>";
+	    tag3 = "<input type='hidden' value='"+lonlat3+"' name='idk'/>";
 	    $('#map_div').append(tag1);
 		$('#map_div').append(tag2);
+		$('#map_div').append(tag3);
 		
 		// checkMarker 좌표
 	    var markerlonlat1 = "";
