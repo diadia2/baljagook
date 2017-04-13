@@ -10,6 +10,7 @@ import kr.co.foot.favoritemap.FavoritemapVO;
 import kr.co.foot.favoriteplace.FavoriteplaceVO;
 import kr.co.foot.hashtag.HashtagVO;
 import kr.co.foot.like.LikeVO;
+import kr.co.foot.photo.PhotoVO;
 import kr.co.foot.regcoordinates.RegcoordinatesVO;
 import kr.co.foot.regmap.RegmapVO;
 
@@ -172,7 +173,7 @@ public class MymapServiceImp implements MymapService {
 		return mymapVO;
 	}
 	
-	//해당 게시물에 대한 like 정보 추출
+	//�대�� 寃���臾쇱�� ���� like ��蹂� 異�異�
 	@Override
 	public List<String> getLikeCnt(int mymapidx) {
 		
@@ -181,7 +182,7 @@ public class MymapServiceImp implements MymapService {
 		return userList;
 	}
 	
-	//해당 게시물의 regmapidx 정보 추출
+	//�대�� 寃���臾쇱�� regmapidx ��蹂� 異�異�
 	@Override
 	public int getRegmapIdx(int mymapidx) {
 		
@@ -190,21 +191,21 @@ public class MymapServiceImp implements MymapService {
 		return regmapidx;
 	}
 	
-	//like한 정보 입력
+	//like�� ��蹂� ����
 	@Override
 	public void insertLikeInfo(LikeVO likeVO) {
 		
 		mymapDAO.insertLikeInfo(likeVO);
 	}
 	
-	//like 취소
+	//like 痍⑥��
 	@Override
 	public void deleteLikeInfo(LikeVO likeVO) {
 		
 		mymapDAO.deleteLikeInfo(likeVO);
 	}
 	
-	//조회 수 증가
+	//議고�� �� 利�媛�
 	public void increaseViewCnt(int mymapidx) {
 		
 		mymapDAO.increaseViewCnt(mymapidx);
@@ -216,6 +217,22 @@ public class MymapServiceImp implements MymapService {
 		List<MymapVO> mymapListPlanAndReg = mymapDAO.selectMymapByuserid(userid);
 		
 		return mymapListPlanAndReg;
+	}
+
+	@Override
+	public CheckpointVO selectCheckpointByCoorIdx(int coordinatesidx) {
+
+		CheckpointVO checkpointVO = mymapDAO.selectCheckpointByCoorIdx(coordinatesidx);
+		
+		return checkpointVO;
+	}
+
+	@Override
+	public PhotoVO selectPhoto(int checkpoinidx) {
+
+		PhotoVO photoVO = mymapDAO.selectPhoto(checkpoinidx);
+		
+		return photoVO;
 	}
 	
 

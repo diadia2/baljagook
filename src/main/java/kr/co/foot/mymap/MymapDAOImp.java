@@ -12,6 +12,7 @@ import kr.co.foot.favoritemap.FavoritemapVO;
 import kr.co.foot.favoriteplace.FavoriteplaceVO;
 import kr.co.foot.hashtag.HashtagVO;
 import kr.co.foot.like.LikeVO;
+import kr.co.foot.photo.PhotoVO;
 import kr.co.foot.regcoordinates.RegcoordinatesVO;
 import kr.co.foot.regmap.RegmapVO;
 
@@ -72,7 +73,7 @@ public class MymapDAOImp implements MymapDAO {
 		
 	}
 
-	@Override /*더보기 페이징 셀렉트*/
+	@Override /*��蹂닿린 ���댁� ������*/
 	public List<MymapVO> selectMymapList(String searchtext, int pageSize) {
 		int start = 0;
 		HashMap<String, Object> search = new HashMap<String, Object>();
@@ -220,6 +221,22 @@ public class MymapDAOImp implements MymapDAO {
 		List<MymapVO> mymapListPlanAndReg = sqlSessionTemplate.selectList("kr.co.foot.mymap.MymapDAO.selectMymapByuserid", userid);
 		
 		return mymapListPlanAndReg;
+	}
+
+	@Override
+	public CheckpointVO selectCheckpointByCoorIdx(int coordinatesidx) {
+
+		CheckpointVO checkpointVO = sqlSessionTemplate.selectOne("kr.co.foot.mymap.MymapDAO.selectCheckpointByCoorIdx", coordinatesidx);
+		
+		return checkpointVO;
+	}
+
+	@Override
+	public PhotoVO selectPhoto(int checkpoinidx) {
+
+		PhotoVO photoVO = sqlSessionTemplate.selectOne("kr.co.foot.mymap.MymapDAO.selectPhoto", checkpoinidx);
+		
+		return photoVO;
 	}
 	
 }

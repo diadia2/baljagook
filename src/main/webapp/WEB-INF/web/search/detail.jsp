@@ -393,11 +393,13 @@
 	function getFavoritePlace(idx){
 	    
 	    var placename = prompt('장소를 입력하세요.');
-	    if(placename == ""){
-			alert("장소를 입력하세요");
+	    if(placename==""){
+			return;
+	    } else if(!placename){
 			return;
 	    }
 	    
+
 	    $.ajax({
 		    type: 'POST' , 
 		    url: '${ pageContext.request.contextPath }/map/getFavoritePlace.do',
@@ -413,6 +415,7 @@
 	            console.log(error);
 	        }
 		});	
+	    
 	}
 	
 	function getFavoriteMap(){

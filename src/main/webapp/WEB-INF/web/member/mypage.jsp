@@ -57,7 +57,7 @@
 						    if(i==0){
 								$('#myInfo').append('<li class="top"><a href="${pageContext.request.contextPath}/map/plantrip.do">'+data[i].title+'</a><br/>'+data[i].content+'<span>×</span></li>');
 						    } else {
-								$('#myInfo').append('<li><a href="#">'+data[i].title+'</a><br/>'+data[i].content+'<span>×</span></li>');   
+								$('#myInfo').append('<li><a href="${pageContext.request.contextPath}/map/plantrip.do">'+data[i].title+'</a><br/>'+data[i].content+'<span>×</span></li>');   
 						    }
 						}
 			        }

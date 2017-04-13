@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -46,7 +45,7 @@ public class MymapController {
                      HttpServletRequest request) throws Exception{
       
       String userid = "test@test.com";
-      int type = 1;  //���=1, ��ȹ=2
+      int type = 1;  
       
       Calendar cal = Calendar.getInstance();
       SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -60,17 +59,19 @@ public class MymapController {
       mymapVO.setType(type);
       mymapVO.setRegdate(regdate);
       
-      // t_myMap�� ������ ����
+      // t_myMap占쏙옙 占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙
       mymapService.regMyMap(mymapVO);
       
-      // t_myMap index�� �ҷ�����
+      // t_myMap index占쏙옙 占쌀뤄옙占쏙옙占쏙옙
       int mymapidx = mymapService.getIndex(regdate); 
       
-      // t_regcoordinates�� ��ǥ �����͵� ����      
+      // t_regcoordinates占쏙옙 占쏙옙표 占쏙옙占쏙옙占싶듸옙 占쏙옙占쏙옙      
       String getlat = request.getParameter("lat");
       String getlon = request.getParameter("lng");
+      String getidk = request.getParameter("idk");
       String[] latArr = getlat.split("/");
       String[] lonArr = getlon.split("/");
+      String[] idkArr = getidk.split("/");
       
       for(int i=0; i<latArr.length; i++){
          RegcoordinatesVO regcoordinatesVO = new RegcoordinatesVO();
@@ -82,7 +83,7 @@ public class MymapController {
          mymapService.insertLonLat(regcoordinatesVO);
       }
       
-      // t_regmap�� ������ ����
+      // t_regmap占쏙옙 占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙
       RegmapVO regmapVO = new RegmapVO();
 //      String city = request.getParameter("city");
 //      String theme = request.getParameter("theme");
@@ -93,10 +94,10 @@ public class MymapController {
       start += ":00";
       end += ":00";
       
-      //�����
+      //占쏙옙占쏙옙占�
       SimpleDateFormat time1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
       String sdate = String.valueOf(time1.parse(start).getTime()/1000);
-      //������
+      //占쏙옙占쏙옙占쏙옙
       SimpleDateFormat time2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
       String edate = String.valueOf(time2.parse(end).getTime()/1000);
       
@@ -108,7 +109,7 @@ public class MymapController {
       
       mymapService.insertRegMap(regmapVO);
       
-      // t_hashtag�� ������ ����
+      // t_hashtag占쏙옙 占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙
       String hashtag = request.getParameter("hashtag").trim();
       String[] nameArr = hashtag.split("#");
       
@@ -120,7 +121,7 @@ public class MymapController {
          mymapService.insertHashtag(hashtagVO);
       }
       
-      // t_checkpoint �����͵� ����
+      // t_checkpoint 占쏙옙占쏙옙占싶듸옙 占쏙옙占쏙옙
       List<RegcoordinatesVO> regList = mymapService.getRegcoordinatesInfo(mymapidx);
       
       String markerlat = request.getParameter("markerlat");
@@ -133,14 +134,14 @@ public class MymapController {
       String[] ptitleArr = getpaneltitle.split("/");
       String[] pcontentArr = getpanelcontent.split("/");
       
-      // ��Ŀ ������ŭ for��
+      // 占쏙옙커 占쏙옙占쏙옙占쏙옙큼 for占쏙옙
       for(int i=0; i<markerlatArr.length; i++){
          String checkPointLat = markerlatArr[i];
          String checkPointLon = markerlonArr[i];
          String paneltitle = ptitleArr[i];
          String panelcontent = pcontentArr[i];
          
-         // �ش� ��Ŀ�� ��ǥ�� regcoordinates�� ��ǥ�� ��ġ�ϸ� regcoordinatesidx�� �����ͼ� t_checkpoint�� ����
+         // 占쌔댐옙 占쏙옙커占쏙옙 占쏙옙표占쏙옙 regcoordinates占쏙옙 占쏙옙표占쏙옙 占쏙옙치占싹몌옙 regcoordinatesidx占쏙옙 占쏙옙占쏙옙占싶쇽옙 t_checkpoint占쏙옙 占쏙옙占쏙옙
          for(int j=0; j<regList.size(); j++){
             if(regList.get(j).getLat().equals(checkPointLat) && regList.get(j).getLon().equals(checkPointLon)){
                CheckpointVO checkpointVO = new CheckpointVO();
@@ -163,7 +164,7 @@ public class MymapController {
       
       String userid = "test@test.com";
       
-      // t_mymap�� �����ȹ ������ ����
+      // t_mymap占쏙옙 占쏙옙占쏙옙占싫� 占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙
       Calendar cal = Calendar.getInstance();
       SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
       String today = sdf.format(cal.getTime());
@@ -177,10 +178,10 @@ public class MymapController {
       mymapVO.setRegdate(regdate);
       mymapService.regMyMap(mymapVO);
       
-      // t_myMap index�� �ҷ�����
+      // t_myMap index占쏙옙 占쌀뤄옙占쏙옙占쏙옙
       int mymapidx = mymapService.getIndex(regdate);
       
-      // t_regcoordinates�� ��ǥ �����͵� ����      
+      // t_regcoordinates占쏙옙 占쏙옙표 占쏙옙占쏙옙占싶듸옙 占쏙옙占쏙옙      
       String getlat = request.getParameter("lat");
       String getlon = request.getParameter("lng");
       String[] latArr = getlat.split("/");
@@ -196,7 +197,7 @@ public class MymapController {
          mymapService.insertLonLat(regcoordinatesVO);
       }
       
-      // t_checkpoint �����͵� ����
+      // t_checkpoint 占쏙옙占쏙옙占싶듸옙 占쏙옙占쏙옙
       List<RegcoordinatesVO> regList = mymapService.getRegcoordinatesInfo(mymapidx);
       
       String markerlat = request.getParameter("markerlat");
@@ -231,15 +232,15 @@ public class MymapController {
 	@RequestMapping(value = "/map/searchList.do", method = RequestMethod.GET)
 	public String searchList(@RequestParam("searchtext") String searchtext, @RequestParam("moreCount") int moreCount, Model model, HttpServletRequest request){
 		
-		List<MymapVO> mymapList = mymapService.selectMymapList(searchtext, 4*moreCount);//5*1 더보기 누르면 5*2 5*3  
+		List<MymapVO> mymapList = mymapService.selectMymapList(searchtext, 4*moreCount);//5*1 ��蹂닿린 ��瑜대㈃ 5*2 5*3  
 		System.out.println(mymapList.size());
 		List<HashtagVO> hashtagList = new ArrayList<HashtagVO>();
 		
-		//View로 넘길 like 해시맵 생성
+		//View濡� ��湲� like �댁��留� ����
 		HashMap<Integer, Integer> likeMap = new HashMap<Integer, Integer>();
-		//View로 넘길 like 체크용 해시맵 생성
+		//View濡� ��湲� like 泥댄�ъ�� �댁��留� ����
 		HashMap<Integer, Boolean> likeAlreadyChecked = new HashMap<Integer, Boolean>();
-		//like 수 초기화
+		//like �� 珥�湲고��
 		int likeCnt = 0;
 		
 		HashMap<Integer, Integer> viewcntMap = new HashMap<Integer, Integer>();
@@ -247,15 +248,15 @@ public class MymapController {
 		
 		for(int i=0; i<mymapList.size(); i++){
 			
-			// �˻����뿡 �´� mymapidx �ҷ�����
+			// 占싯삼옙占쏙옙占쎈에 占승댐옙 mymapidx 占쌀뤄옙占쏙옙占쏙옙
 			List<HashtagVO> eachHashtagList = mymapService.getHashtagList(mymapList.get(i).getIdx());
-			// �� mymapidx�� �´� t_hashtag �ҷ�����
+			// 占쏙옙 mymapidx占쏙옙 占승댐옙 t_hashtag 占쌀뤄옙占쏙옙占쏙옙
 			for(int j=0; j<eachHashtagList.size(); j++){
 				hashtagList.add(eachHashtagList.get(j));
 			}
 		}
 	
-		// mymapidx�� �´� t_regmap �ҷ�����
+		// mymapidx占쏙옙 占승댐옙 t_regmap 占쌀뤄옙占쏙옙占쏙옙
 		List<RegmapVO> regmapList = new ArrayList<RegmapVO>();
 		for(int i=0; i<mymapList.size(); i++){
 			RegmapVO getRegmap = mymapService.getRegmapList(mymapList.get(i).getIdx());
@@ -263,11 +264,6 @@ public class MymapController {
 			viewcnt = getRegmap.getViewcnt();
 			viewcntMap.put(mymapList.get(i).getIdx(), viewcnt);
 		}
-		
-		//Session에 저장된 userid 확인
-		HttpSession session = request.getSession(true);
-		String loggedUserid = (String) session.getAttribute("user");
-		System.out.println("로그인중인 사용자: " + loggedUserid);
 		
 		//Like
 		List<String> userList = new ArrayList<String>();
@@ -279,7 +275,11 @@ public class MymapController {
 				likeCnt = userList.size();
 			}
 			
-			//로그인된 userid가 이미 게시글을 '좋아요' 했다면 hashmap에 정보 저장
+			//Session�� ���λ�� userid ����
+			String loggedUserid = "test@test.com";
+			System.out.println("濡�洹몄�몄��� �ъ�⑹��: " + loggedUserid);
+			
+			//濡�洹몄�몃�� userid媛� �대�� 寃���湲��� '醫�����' ���ㅻ㈃ hashmap�� ��蹂� ����
 			if(userList.contains(loggedUserid)) {
 				likeAlreadyChecked.put(mymapList.get(i).getIdx(), true);
 			}
@@ -312,9 +312,9 @@ public class MymapController {
       int mymapidx = Integer.parseInt(request.getParameter("mymapidx"));
       SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd HH:mm");
       
-      // mympaidx�� t_mymap �ҷ�����
+      // mympaidx占쏙옙 t_mymap 占쌀뤄옙占쏙옙占쏙옙
       MymapVO mymapVO = mymapService.selectMymap(mymapidx);
-      // mymapidx�� t_regmap �ҷ�����
+      // mymapidx占쏙옙 t_regmap 占쌀뤄옙占쏙옙占쏙옙
       RegmapVO regmapVO = mymapService.getRegmapList(mymapidx);
       
       String start = regmapVO.getSdate();
@@ -338,7 +338,7 @@ public class MymapController {
          }
       }
       
-      // 조회 수 증가
+      // 議고�� �� 利�媛�
       mymapService.increaseViewCnt(mymapidx);
       
       model.addAttribute("mymapidx", mymapidx);
@@ -353,7 +353,7 @@ public class MymapController {
    }
    
    /**
-    * ��� ���ã�� �߰�
+    * 占쏙옙占� 占쏙옙占시ｏ옙占� 占쌩곤옙
     * @param idx
     * @return
     */
@@ -362,13 +362,13 @@ public class MymapController {
    public String getFavoritePlace(@RequestParam("idx") String idx,
                            @RequestParam("placename") String placename){
       
-      // ������ ��Ŀ
+      // 占쏙옙占쏙옙占쏙옙 占쏙옙커
       int checkpointidx = Integer.parseInt(idx);
-      // �������̵�
+      // 占쏙옙占쏙옙占쏙옙占싱듸옙
       String userid = "test@test.com";
-      // ���� ���̵�� ������ ����ߴ� ��Ŀ�� ��ȸ
+      // 占쏙옙占쏙옙 占쏙옙占싱듸옙占� 占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙杉占� 占쏙옙커占쏙옙 占쏙옙회
       List<FavoriteplaceVO> compareCheckPointidx = mymapService.selectcheckpoint(userid);
-      // ������ ����� ��Ŀ�� ���� ����� ��Ŀ�� ���� ���� üũ
+      // 占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙占� 占쏙옙커占쏙옙 占쏙옙占쏙옙 占쏙옙占쏙옙占� 占쏙옙커占쏙옙 占쏙옙占쏙옙 占쏙옙占쏙옙 체크
       if(compareCheckPointidx != null){
          for(int i=0; i<compareCheckPointidx.size(); i++){
             if(checkpointidx == compareCheckPointidx.get(i).getCheckpointidx()){
@@ -376,7 +376,7 @@ public class MymapController {
             }
          }
       }
-      // �����Ѱ� ������ ���
+      // 占쏙옙占쏙옙占싼곤옙 占쏙옙占쏙옙占쏙옙 占쏙옙占�
       FavoriteplaceVO favoriteplaceVO = new FavoriteplaceVO();
       favoriteplaceVO.setCheckpointidx(checkpointidx);
       favoriteplaceVO.setUserid(userid);
@@ -390,11 +390,11 @@ public class MymapController {
    @ResponseBody
    public String getFavoriteMap(@RequestParam("mymapidx") String mymapidxstr){
       
-      // ���� ���̵�
+      // 占쏙옙占쏙옙 占쏙옙占싱듸옙
       String userid = "test@test.com";
-      // ������ �� mymapidx ��
+      // 占쏙옙占쏙옙占쏙옙 占쏙옙 mymapidx 占쏙옙
       int mymapidx = Integer.parseInt(mymapidxstr);
-      // mymapidx������ regmapidx �ҷ�����
+      // mymapidx占쏙옙占쏙옙占쏙옙 regmapidx 占쌀뤄옙占쏙옙占쏙옙
       RegmapVO getRegmap = mymapService.getRegmapList(mymapidx);
       List<FavoritemapVO> compareRegmapidx = mymapService.selectRegmapidx(userid);
       
@@ -477,10 +477,10 @@ public class MymapController {
 	@ResponseBody
 	public HashMap<Integer, Integer> like(@RequestBody LikeDTO likeDTO, HttpServletRequest request) throws Exception {
 		
-		System.out.println("like 컨트롤러로 들어옴");
+		System.out.println("like 而⑦�몃·�щ� �ㅼ�댁��");
 		System.out.println(likeDTO);
 		
-		//검색페이지에 나온 mymapidx를 통해 해당 게시물의 regmapidx 추출
+		//寃������댁��� ���� mymapidx瑜� �듯�� �대�� 寃���臾쇱�� regmapidx 異�異�
 		String userid = likeDTO.getUserid();
 		int mymapidx = likeDTO.getMymapidxRef();
 		int regmapidx = mymapService.getRegmapIdx(mymapidx);
@@ -491,7 +491,7 @@ public class MymapController {
 		
 		mymapService.insertLikeInfo(likeVO);
 		
-		//사용자가 like 클릭 시 업데이트된 likeCnt 데이터 전송
+		//�ъ�⑹��媛� like �대┃ �� ���곗�댄�몃�� likeCnt �곗�댄�� ����
 		HashMap<Integer, Integer> likeMap = new HashMap<Integer, Integer>();
 		int likeCnt = 0;
 		List<String> userList = new ArrayList<String>();
@@ -512,10 +512,10 @@ public class MymapController {
 	@ResponseBody
 	public HashMap<Integer, Integer> unlike(@RequestBody LikeDTO likeDTO, HttpServletRequest request) throws Exception {
 		
-		System.out.println("like 컨트롤러로 들어옴");
+		System.out.println("like 而⑦�몃·�щ� �ㅼ�댁��");
 		System.out.println(likeDTO);
 		
-		//검색페이지에 나온 mymapidx를 통해 해당 게시물의 regmapidx 추출
+		//寃������댁��� ���� mymapidx瑜� �듯�� �대�� 寃���臾쇱�� regmapidx 異�異�
 		String userid = likeDTO.getUserid();
 		int mymapidx = likeDTO.getMymapidxRef();
 		int regmapidx = mymapService.getRegmapIdx(mymapidx);
@@ -526,7 +526,7 @@ public class MymapController {
 		
 		mymapService.deleteLikeInfo(likeVO);
 		
-		//사용자가 unlike 클릭 시 업데이트된 likeCnt 데이터 전송
+		//�ъ�⑹��媛� unlike �대┃ �� ���곗�댄�몃�� likeCnt �곗�댄�� ����
 		HashMap<Integer, Integer> likeMap = new HashMap<Integer, Integer>();
 		int likeCnt = 0;
 		List<String> userList = new ArrayList<String>();

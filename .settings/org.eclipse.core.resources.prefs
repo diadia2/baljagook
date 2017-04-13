@@ -1,5 +1,8 @@
 eclipse.preferences.version=1
 encoding//src/main/java/kr/co/foot/board/dao/CommentDAOIMP.java=UTF-8
 encoding//src/main/java/kr/co/foot/controller/CommentController.java=UTF-8
+encoding//src/main/java/kr/co/foot/controller/MymapController.java=UTF-8
+encoding//src/main/java/kr/co/foot/mymap/MymapDAOImp.java=UTF-8
+encoding//src/main/java/kr/co/foot/mymap/MymapServiceImp.java=UTF-8
 encoding//src/test/java/DBTest.java=UTF-8
 encoding/<project>=UTF-8

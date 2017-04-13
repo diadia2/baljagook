@@ -327,7 +327,8 @@
 					goZoomIn(data.lat, data.lon);
 					favoritePlaceLonLat = new google.maps.Marker({
 						map : map,
-						position : Fplace
+						position : Fplace,
+						icon : "https://developers.skplanetx.com/upload/tmap/marker/pin_b_m_a.png"
 					});
 					var listener3 = google.maps.event.addListener(map, 'click', function(){
 						if(infowindow != null){
@@ -406,6 +407,12 @@
 			});	
 		}
 		
+		// 타임라인 div 클릭시 센터좌표 이동
+		function goZoomIn(lat, lng){
+			var center = new google.maps.LatLng(lat, lng);
+			map.setCenter(center);
+		}
+		
 		var checkPointMarker = new Array();
 		function drawFavoriteMap(){
 		    
@@ -432,7 +439,7 @@
 			}
 		    console.log(mymapCheckpointList.length);
 			
-		    /////////////////////		    
+		    /////////////////////
 			for(var i=0; i<mymapCheckpointList.length; i++){
 			    for(var j=0; j<mymapCheckpointList[i].mymapCheckpoint.length; j++){
 					console.log(mymapCheckpointList[i].mymapCheckpoint[j]);
