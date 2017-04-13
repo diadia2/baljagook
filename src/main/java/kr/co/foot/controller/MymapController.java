@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -263,6 +264,11 @@ public class MymapController {
 			viewcntMap.put(mymapList.get(i).getIdx(), viewcnt);
 		}
 		
+		//Session에 저장된 userid 확인
+		HttpSession session = request.getSession(true);
+		String loggedUserid = (String) session.getAttribute("user");
+		System.out.println("로그인중인 사용자: " + loggedUserid);
+		
 		//Like
 		List<String> userList = new ArrayList<String>();
 		for(int i=0; i<mymapList.size(); i++) {
@@ -272,10 +278,6 @@ public class MymapController {
 			} else {
 				likeCnt = userList.size();
 			}
-			
-			//Session에 저장된 userid 확인
-			String loggedUserid = "test@test.com";
-			System.out.println("로그인중인 사용자: " + loggedUserid);
 			
 			//로그인된 userid가 이미 게시글을 '좋아요' 했다면 hashmap에 정보 저장
 			if(userList.contains(loggedUserid)) {
