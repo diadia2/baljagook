@@ -2,7 +2,7 @@ package kr.co.foot.coordinates;
 
 public class CoordinatesVO {
 	
-	private int idx;
+	private int idk;
 	private String lat;
 	private String lon;
 	private String email;
@@ -33,12 +33,12 @@ public class CoordinatesVO {
 		this.timestamp = timestamp;
 	}
 
-	public int getIdx() {
-		return idx;
+	public int getIdk() {
+		return idk;
 	}
 
-	public void setIdx(int idx) {
-		this.idx = idx;
+	public void setidk(int idk) {
+		this.idk = idk;
 	}
 
 	public String getLat() {
@@ -59,7 +59,7 @@ public class CoordinatesVO {
 
 	@Override
 	public String toString() {
-		return "CoordinatesVO [idx=" + idx + ", lat=" + lat + ", lon=" + lon + ", email=" + email + ", timestamp="
+		return "CoordinatesVO [idk=" + idk + ", lat=" + lat + ", lon=" + lon + ", email=" + email + ", timestamp="
 				+ timestamp + ", accuracy=" + accuracy + ", toString()=" + super.toString() + "]";
 	}
 

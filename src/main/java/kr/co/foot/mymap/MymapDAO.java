@@ -7,6 +7,7 @@ import kr.co.foot.favoritemap.FavoritemapVO;
 import kr.co.foot.favoriteplace.FavoriteplaceVO;
 import kr.co.foot.hashtag.HashtagVO;
 import kr.co.foot.like.LikeVO;
+import kr.co.foot.photo.PhotoVO;
 import kr.co.foot.regcoordinates.RegcoordinatesVO;
 import kr.co.foot.regmap.RegmapVO;
 
@@ -38,6 +39,8 @@ public interface MymapDAO {
 	public void deleteLikeInfo(LikeVO likeVO);
 	public void increaseViewCnt(int mymapidx);
 	public List<MymapVO> selectMymapByuserid(String userid);
+	public CheckpointVO selectCheckpointByCoorIdx(int coordinatesidx);
+	public PhotoVO selectPhoto(int checkpoinidx);
 
 
 }

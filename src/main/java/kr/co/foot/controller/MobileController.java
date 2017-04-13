@@ -1,14 +1,11 @@
 package kr.co.foot.controller;
 
-<<<<<<< HEAD
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-=======
-import java.io.IOException;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
->>>>>>> ded5c0a236dd6d422298c4d8d9f6410224daa405
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,18 +14,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import kr.co.foot.checkpoint.CheckpointVO;
-<<<<<<< HEAD
+import kr.co.foot.coordinates.CoordinatesService;
+import kr.co.foot.coordinates.CoordinatesVO;
 import kr.co.foot.favoritemap.FavoritemapVO;
 import kr.co.foot.favoriteplace.FavoriteplaceVO;
 import kr.co.foot.member.MemberService;
 import kr.co.foot.mymap.MymapService;
 import kr.co.foot.mymap.MymapVO;
-=======
-import kr.co.foot.coordinates.CoordinatesService;
-import kr.co.foot.coordinates.CoordinatesVO;
 import kr.co.foot.photo.PhotoVO;
 import kr.co.foot.util.FileUtils;
->>>>>>> ded5c0a236dd6d422298c4d8d9f6410224daa405
+
 
 
 @Controller
@@ -38,14 +33,13 @@ public class MobileController {
 	private CoordinatesService coordinatesService;
 	
 	@Autowired
-<<<<<<< HEAD
 	private MemberService memberService;
 	
 	@Autowired
 	private MymapService mymapService;
-=======
+
 	private FileUtils fileutils;
->>>>>>> ded5c0a236dd6d422298c4d8d9f6410224daa405
+
 	
 	@RequestMapping("m/main.do")
 	public ModelAndView bottom(String userid, Model model) {
@@ -82,7 +76,7 @@ public class MobileController {
 	
 	@RequestMapping("m/insert.do")
 	public void insertData(HttpServletRequest request) throws IllegalStateException, IOException{
-		System.out.println("ÁøÀÔ");
+		System.out.println("ï¿½ï¿½ï¿½ï¿½");
 		String id = "test@test.com";
 		Map<String,String> map = fileutils.saveFile(request);
 		

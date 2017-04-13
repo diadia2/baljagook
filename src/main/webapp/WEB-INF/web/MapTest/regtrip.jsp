@@ -69,39 +69,6 @@
          $('#datetimepicker2').data("DateTimePicker").minDate($('#start').val());
       });
       
-      var sortIndex;	// 선택된 div index의 listLonLat 좌표값
-      var sortNum;		// 타임라인 div index 번호
-	      /* 타임라인 판넬 드래그 */
-		jQuery(function($) {
-			var panelList = $('#draggablePanelList');
-			panelList.sortable({
-        		start: function(event, ui) { 
-        		      sortIndex = listLonLat[ui.item.index()];
-        		      sortNum = ui.item.index();
-       			},
-       			stop: function(event, ui) { 
-       			    if(sortNum != ui.item.index()){
-			      		   for(var i=0; i<listLonLat.length; i++){
-								if(listLonLat[i].lat == sortIndex.lat && listLonLat[i].lng == sortIndex.lng){
-								    sortNum = i;
-								}
-							}
-	      		     	    listLonLat.splice(sortNum, 1);
-	      		     	    sortNum = ui.item.index();
-	      		     		listLonLat.splice(sortNum,0,sortIndex);
-	      		     		initialize();
-       			    }
-     			},
-				handle : '.panel-heading',
-				update : function() {
-					$('.panel', panelList).each(function(index, elem) {
-						var $listItem = $(elem), newIndex = $listItem.index();
-						//판넬 리스트 번호 관련
-						// Persist the new indices.
-					});
-				}
-			});
-		});
    });
    
 
@@ -191,8 +158,19 @@ body {
     // 시간별 좌표 불러오기
     var listLonLat = new Array();
     <c:forEach items="${list}" var="list">
-    	listLonLat.push({lat:${list.lat},lng:${list.lon}});
+    	listLonLat.push({lat:${list.lat},lng:${list.lon},idk:${list.idk}});
     </c:forEach>
+    var checkpointList = new Array();
+    <c:forEach items="${checkpointList}" var="checkpointList">
+    	checkpointList.push({idx:${checkpointList.idx}, coordinatesidx:${checkpointList.coordinatesidx}, title:'${checkpointList.title}', content:'${checkpointList.content}'});
+    </c:forEach>
+    var photoList = new Array();
+    <c:forEach items="${photoList}" var="photoList">
+    	photoList.push({checkpointidx:${photoList.checkpointidx}, oriname:'${photoList.oriname}', newname:'${photoList.newname}'});
+    </c:forEach>
+    console.log(listLonLat);
+    console.log(checkpointList);
+    console.log(photoList);
 
     var initLonLat = listLonLat[listLonLat.length-1];
     var zoom = 13;
@@ -321,12 +299,15 @@ body {
 	function addTimeLine(){
 		$('#draggablePanelList').children().remove();
 		for(var i=0; i<checkMarker.length; i++){
-			$('#draggablePanelList').append('<div id="addTimeInfo" class="panel panel-info" onClick="goZoomIn('+checkMarker[i].position.lat()+", "+checkMarker[i].position.lng()+')"><div class="panel-heading"><input class="form-control" type="text" value="'+(i+1)+'번"/></div><div class="panel-body"><input type="text" class="form-control" value="위도:'+listLonLat[i].lat+',경도:'+listLonLat[i].lng+'"/></div></div>');
+		    if(checkMarker[i].title != ""){
+				$('#draggablePanelList').append('<div id="addTimeInfo" class="panel panel-info" onClick="goZoomIn('+checkMarker[i].position.lat()+", "+checkMarker[i].position.lng()+')"><div class="panel-heading"><input class="form-control" type="text" value="'+checkMarker[i].title+'"/></div><div class="panel-body"><input type="text" class="form-control" value="'+checkMarker[i].content+'"/></div></div>');
+		    }
 		} 
 	}    
 	var checkMarker = new Array();
 	var num;
 	var infowindow;
+	var filename;
 	function addLineMarker(){
 		
 		if(checkMarker != null){
@@ -335,36 +316,119 @@ body {
 			}
 		} 
 		for(var i=0; i<listLonLat.length; i++){
-			
+			var flagNum=0;
 			num = i;
 			
-			checkMarker.push(new google.maps.Marker({
-		    position: listLonLat[i],
-		    map: map,
-		    num :i
-		
-		}));
- 		   
-		  var listener3 = google.maps.event.addListener(map, 'click', function(){
-			if(infowindow != null){
-				  infowindow.close();
-			  }
-		  });
-		  var listener1 = google.maps.event.addListener(checkMarker[i], 'click', function(){
-			  if(infowindow != null){
-				  infowindow.close();
-			  }
-			  infowindow = new google.maps.InfoWindow({
-				    content: (this.num+1)+". "+(this.position.lat()).toFixed(7).toString()+", "+(this.position.lng()).toFixed(7).toString()+
-				    '<br/><input type="button" value="출발설정" onClick="startCheck('+
-				    		this.position.lat().toString()+", "+this.position.lng().toString()+')"/><input type="button" value="도착설정" onClick="endCheck('+
-				    		this.position.lat().toString()+", "+this.position.lng().toString()+')"/><input type="button" value="위치삭제" onClick="removeSpot('+
-				    		(this.position.lat()).toFixed(7).toString()+", "+(this.position.lng()).toFixed(7).toString()+')"/>'
-				  }); 
-			  infowindow.open(map, this);
-		  });  
+				for(var j=0; j<checkpointList.length; j++){
+				    
+					
+				    if(listLonLat[i].idk == checkpointList[j].coordinatesidx){
+						filename = null;
+					
+						for(var k=0; k<photoList.length; k++){
+							if(checkpointList[j].idx == photoList[k].checkpointidx){
+							    filename = photoList[k].newname;
+							} 
+						}
+					
+				    	if(filename != null){
+						    	checkMarker.push(new google.maps.Marker({
+							    position: listLonLat[i],
+							    map: map,
+							    num :i,
+							    title:checkpointList[j].title,
+							    content:checkpointList[j].content,
+							    filename:filename
+							}));
+					 		   
+							  var listener2 = google.maps.event.addListener(map, 'click', function(){
+								if(infowindow != null){
+									  infowindow.close();
+								  }
+							  });
+							  var listener4 = google.maps.event.addListener(checkMarker[num], 'click', function(){
+								  if(infowindow != null){
+									  infowindow.close();
+								  }
+								  infowindow = new google.maps.InfoWindow({
+									    content: '<img src="${ pageContext.request.contextPath }/resources/photo/'+this.filename+'" width="200px" height="200px"/><br/>'+
+											    (this.num+1)+". "+this.title+'<br/>'+this.content+
+											    '<br/><input type="button" value="출발설정" onClick="startCheck('+
+									    		this.position.lat().toString()+", "+this.position.lng().toString()+')"/><input type="button" value="도착설정" onClick="endCheck('+
+									    		this.position.lat().toString()+", "+this.position.lng().toString()+')"/><input type="button" value="위치삭제" onClick="removeSpot('+
+									    		(this.position.lat()).toFixed(7).toString()+", "+(this.position.lng()).toFixed(7).toString()+')"/>'
+									  }); 
+								  infowindow.open(map, this);
+							  });
+				    	    
+				    	} else {
+									checkMarker.push(new google.maps.Marker({
+									    position: listLonLat[i],
+									    map: map,
+									    num :i,
+									    title:checkpointList[j].title,
+									    content:checkpointList[j].content
+									}));
+						 		   
+								  var listener3 = google.maps.event.addListener(map, 'click', function(){
+									if(infowindow != null){
+										  infowindow.close();
+									  }
+								  });
+								  var listener1 = google.maps.event.addListener(checkMarker[num], 'click', function(){
+									  if(infowindow != null){
+										  infowindow.close();
+									  }
+									  infowindow = new google.maps.InfoWindow({
+										    content: (this.num+1)+". "+this.title+'<br/>'+this.content+
+										    '<br/><input type="button" value="출발설정" onClick="startCheck('+
+										    		this.position.lat().toString()+", "+this.position.lng().toString()+')"/><input type="button" value="도착설정" onClick="endCheck('+
+										    		this.position.lat().toString()+", "+this.position.lng().toString()+')"/><input type="button" value="위치삭제" onClick="removeSpot('+
+										    		(this.position.lat()).toFixed(7).toString()+", "+(this.position.lng()).toFixed(7).toString()+')"/>'
+										  }); 
+									  infowindow.open(map, this);
+								  });	
+				    		}
+				    break;
+			 	  } else {
+			 	      flagNum++;
+			 	  }
+				}
+					
+					if(flagNum == checkpointList.length){
+					    
+						    checkMarker.push(new google.maps.Marker({
+							    position: listLonLat[i],
+							    map: map,
+							    num :i,
+							    icon : "http://openmap2.tmap.co.kr/point.png",
+							    title:"",
+							    content:""
+							}));
+				 		   
+						  var listener3 = google.maps.event.addListener(map, 'click', function(){
+							if(infowindow != null){
+								  infowindow.close();
+							  }
+						  });
+						  var listener1 = google.maps.event.addListener(checkMarker[num], 'click', function(){
+							  if(infowindow != null){
+								  infowindow.close();
+							  }
+							  infowindow = new google.maps.InfoWindow({
+								    content: (this.num+1)+". "+(this.position.lat()).toFixed(7).toString()+", "+(this.position.lng()).toFixed(7).toString()+
+								    '<br/><input type="button" value="출발설정" onClick="startCheck('+
+								    		this.position.lat().toString()+", "+this.position.lng().toString()+')"/><input type="button" value="도착설정" onClick="endCheck('+
+								    		this.position.lat().toString()+", "+this.position.lng().toString()+')"/><input type="button" value="위치삭제" onClick="removeSpot('+
+								    		(this.position.lat()).toFixed(7).toString()+", "+(this.position.lng()).toFixed(7).toString()+')"/>'
+								  }); 
+							  infowindow.open(map, this);
+						  });	
+			 	 	 }
+			    
+			}
 		}
-	} 
+	 
 	
 	// 마커 선택하여 위치삭제
 	function removeSpot(lat, lng){
@@ -1040,7 +1104,7 @@ body {
 					<br /> <br />
 					<div class="col-md-12"
 						style="height: 696px; overflow: auto; border: solid;">
-						<br />--------------------------------------------
+						<br />
 						<div id="draggablePanelList" class="list-unstyled"></div>
 					</div>
 

@@ -440,7 +440,6 @@ public class MymapController {
 	@RequestMapping("/map/getMyplace.do")
 	@ResponseBody
 	public RegcoordinatesVO getMyplace(@RequestParam("checkpointidx") String checkpointidx) {
-		System.out.println(checkpointidx);
 		CheckpointVO checkpointVO = mymapService.selectCheckPointByIdx(checkpointidx);
 		RegcoordinatesVO regcoordinateVO = mymapService.getRegcoordinatesInfoByIdx(checkpointVO.getRegcoordinatesidx());
 
