@@ -170,9 +170,8 @@
 				    $('#datetimepicker2')
 					    .data("DateTimePicker").minDate(
 						    $('#start').val());
-				}); */
-						
-	});
+				});			
+			});
 
     function myPlace(checkpointidx) {
 
@@ -189,7 +188,6 @@
 	}
 
     }
-
 </script>
 <script>
 /*------------------비밀번호 변경-------------------------*/		
