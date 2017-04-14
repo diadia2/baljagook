@@ -997,8 +997,8 @@ body {
 			lonlat1 += "/";
 			lonlat2 += listLonLat[i].lng.toFixed(7);
 			lonlat2 += "/";
-			lonlat3 += listLinLat[i].idk;
-			lonlat3 += "/";
+			lonlat3 += listLonLat[i].idk;
+			lonlat3 += "/"; 
 	    }
 	    tag1 = "<input type='hidden' value='"+lonlat1+"' name='lat'/>";
 	    tag2 = "<input type='hidden' value='"+lonlat2+"' name='lng'/>";
@@ -1034,7 +1034,10 @@ body {
 		
 	    $('#map_div').append("<input type='hidden' value='${city}' name='city'/>");
 	    $('#map_div').append("<input type='hidden' value='${theme}' name='theme'/>");
-	    document.inputform.submit();
+	    
+	    console.log(checkMarker);
+	    console.log(markerlonlat1);
+//	    document.inputform.submit();
 	}
 	
 	
