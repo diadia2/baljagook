@@ -180,10 +180,75 @@ body {
 	margin-bottom: 0;
 }
 </style>
+<!-- jquery -->
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <script type="text/javascript">
 	function goSearch(){
 	    location.href = "${ pageContext.request.contextPath }/map/search.do?searchtext="+$('#searchtext').val();
 	}
+</script>
+<script>
+	$(document).ready(function() {
+/*------------------------로그인------------------------*/
+		$('#loginForm').on('submit', function(e) {
+			console.log('loginForm submitted');
+			e.preventDefault();
+			
+			var loginInfo = {
+					'email' : $('#loginForm input[name=email]').val(),
+					'password' : $('#loginForm input[name=password]').val()
+			};
+			var dataJSON = JSON.stringify(loginInfo);
+			
+			$.ajax({
+				type : 'POST',
+				data : dataJSON,
+				url : '${ pageContext.request.contextPath }/authenticate.do',
+				contentType : 'application/json',
+				dataType : 'json',
+				success : (function(data) {
+					if(data['redirectUrl'] != null) {
+						window.location.href = '${ pageContext.request.contextPath }/'+data['redirectUrl'];
+					} else {
+						alert(data['message']);
+					}
+				})
+			});
+			
+		});
+
+/*-----------------------회원가입------------------------*/
+		$('#registerForm').on('submit', function(e) {
+			console.log('registerForm submitted');
+			e.preventDefault();
+		
+			var newMember = {
+					'email' : $('#registerForm input[name=email]').val(),
+					'userid' : $('#registerForm input[name=userid]').val(),
+					'password' : $('#registerForm input[name=password]').val()
+			};
+			var dataJSON = JSON.stringify(newMember);
+			
+			$.ajax({
+				type : 'POST',
+				data : dataJSON,
+				url : '${ pageContext.request.contextPath }/registerNewMember.do',
+				contentType : 'application/json',
+				dataType : "json",
+				success : function(data) {
+					if(data["emailExists"]) {
+						alert('이미 이메일이 존재합니다.');
+					} else if(data["useridExists"]) {
+						alert('이미 아이디가 존재합니다.');
+					} else {
+						alert('입력하신 이메일로 인증메일을 전송합니다. 이메일 인증 후 로그인하실 수 있습니다.');
+						window.location.href = '${ pageContext.request.contextPath }/main.do';
+					}
+				}
+			});
+		});
+	});
 </script>
 </head>
 <body>
@@ -217,11 +282,15 @@ body {
 						data-toggle="dropdown" aria-expanded="false"><span>메뉴</span> <span
 							class="caret"></span> </a>
 						<ul class="dropdown-menu">
-							<li><a data-toggle="modal" data-target="#loginModal"
-								data-backdrop="static" data-keyboard="false">로그인</a></li>
-							<li><a href="${ pageContext.request.contextPath }/member/mypage.do">마이페이지</a></li>
-							<li class="divider"></li>
-							<li><a href="#">로그아웃</a></li>
+							<c:if test="${empty sessionScope.user }">
+								<li><a data-toggle="modal" data-target="#loginModal"
+									data-backdrop="static" data-keyboard="false">로그인</a></li>
+							</c:if>
+							<c:if test="${not empty sessionScope.user }">
+								<li><a href="${ pageContext.request.contextPath }/member/mypage.do">마이페이지</a></li>
+								<li class="divider"></li>
+								<li><a href="${ pageContext.request.contextPath }/logout.do">로그아웃</a></li>
+							</c:if>
 						</ul></li>
 				</ul>
 			</div>
@@ -244,6 +313,7 @@ body {
 					</button>
 				</div>
 				<div class="modal-body">
+					<form id="loginForm">
 					<div class="container-fluid">
 						<div class="row">
 							<br /> <br /> <br />
@@ -255,7 +325,7 @@ body {
 								<i class="fa fa-user fa-2x" aria-hidden="true"></i>
 							</div>
 							<div class="col-md-11 form-group">
-								<input type="text" class="form-control modal-text"
+								<input type="text" name="email" class="form-control modal-text"
 									placeholder="Email or username">
 							</div>
 						</div>
@@ -264,7 +334,7 @@ body {
 								<i class="fa fa-lock fa-2x" aria-hidden="true"></i>
 							</div>
 							<div class="col-md-11 form-group">
-								<input type="password" class="form-control modal-text"
+								<input type="password" name="password" class="form-control modal-text"
 									placeholder="Password">
 							</div>
 						</div>
@@ -278,11 +348,11 @@ body {
 								</div>
 							</div>
 							<div class="col-md-12">
-								<button type="button" class="btn btn-primary col-md-12">Sign
-									In</button>
+								<button type="submit" class="btn btn-primary col-md-12">로그인</button>
 							</div>
 						</div>
 					</div>
+					</form>
 				</div>
 				<div class="modal-footer text-center">
 					<button class="dropdown-item btn btn-primary" type="button"
@@ -315,56 +385,59 @@ body {
 					</button>
 				</div>
 				<div class="modal-body">
-					<div class="container-fluid">
-						<div class="row">
-							<br /> <br /> <br />
-							<h5 class="col-md-12 text-center">Create a new account</h5>
-							<br /> <br /> <br />
+					<form id="registerForm">
+						<div class="container-fluid">
+							<div class="row">
+								<br /> <br /> <br />
+								<h5 class="col-md-12 text-center">Create a new account</h5>
+								<br /> <br /> <br />
+							</div>
+							<div class="row">
+								<div class="col-md-1">
+									<i class="fa fa-envelope fa-2x" aria-hidden="true"></i>
+								</div>
+								<div class="col-md-11 form-group">
+									<input type="text" name="email" class="form-control modal-text"
+										placeholder="Email address">
+								</div>
+								<div class="col-md-1">
+									<i class="fa fa-user fa-2x" aria-hidden="true"></i>
+								</div>
+								<div class="col-md-11 form-group">
+									<input type="text" name="userid" class="form-control modal-text"
+										placeholder="User name">
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-1">
+									<i class="fa fa-lock fa-2x" aria-hidden="true"></i>
+								</div>
+								<div class="col-md-11 form-group">
+									<input type="password" name="password" class="form-control modal-text"
+										placeholder="Password">
+								</div>
+								<div class="col-md-1">
+									<i class="fa fa-lock fa-2x" aria-hidden="true"></i>
+								</div>
+								<div class="col-md-11 form-group">
+									<input type="password" class="form-control modal-text"
+										placeholder="Confirm password ">
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-12">
+									<button type="submit" class="btn btn-primary col-md-12">회원가입</button>
+								</div>
+								<br /> <br />
+								<div class="col-md-12">
+									<button type="button" class="btn btn-default col-md-12">연동
+										버튼</button>
+								</div>
+							</div>
 						</div>
-						<div class="row">
-							<div class="col-md-1">
-								<i class="fa fa-envelope fa-2x" aria-hidden="true"></i>
-							</div>
-							<div class="col-md-11 form-group">
-								<input type="text" class="form-control modal-text"
-									placeholder="Email address">
-							</div>
-							<div class="col-md-1">
-								<i class="fa fa-user fa-2x" aria-hidden="true"></i>
-							</div>
-							<div class="col-md-11 form-group">
-								<input type="text" class="form-control modal-text"
-									placeholder="User name">
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-md-1">
-								<i class="fa fa-lock fa-2x" aria-hidden="true"></i>
-							</div>
-							<div class="col-md-11 form-group">
-								<input type="password" class="form-control modal-text"
-									placeholder="Password">
-							</div>
-							<div class="col-md-1">
-								<i class="fa fa-lock fa-2x" aria-hidden="true"></i>
-							</div>
-							<div class="col-md-11 form-group">
-								<input type="password" class="form-control modal-text"
-									placeholder="Confirm password ">
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-md-12">
-								<button type="button" class="btn btn-primary col-md-12">Sign
-									Up</button>
-							</div>
-							<br /> <br />
-							<div class="col-md-12">
-								<button type="button" class="btn btn-default col-md-12">연동
-									버튼</button>
-							</div>
-						</div>
-					</div>
+					</form>
+				</div>
+			</div>
 				</div>
 				<div class="modal-footer">
 					<div class="col-md-4"></div>

@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8" session="true"%>
 <%@include file="/WEB-INF/share.jsp" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
@@ -145,7 +145,7 @@
 			});
 
 			/* datetimepicker부분 */
-			$('#datetimepicker1').datetimepicker({
+ 			$('#datetimepicker1').datetimepicker({
 			    useCurrent : false,
 			    sideBySide : true,
 			    maxDate : moment(),
@@ -170,8 +170,9 @@
 				    $('#datetimepicker2')
 					    .data("DateTimePicker").minDate(
 						    $('#start').val());
-				});
-		    });
+				}); */
+						
+	});
 
     function myPlace(checkpointidx) {
 
@@ -180,7 +181,7 @@
 
     }
 
-    function deleteMymap(mymapidx, type) {
+     function deleteMymap(mymapidx, type) {
 	console.log(mymapidx);
 	console.log(type);
 	if (confirm("삭제 하시겠습니까?")) {
@@ -188,29 +189,142 @@
 	}
 
     }
-</script>
 
+</script>
+<script>
+/*------------------비밀번호 변경-------------------------*/		
+$(document).ready(function () {
+	$('#changePassForm').on('submit', function(e) {
+		console.log('changePassForm submitted');
+		e.preventDefault();
+		
+		var newPassInfo = {
+				'currentPassword' : $('#changePassForm input[name=currentPassword]').val(),
+				'newPassword' : $('#changePassForm input[name=newPassword]').val()
+		};
+		var dataJSON = JSON.stringify(newPassInfo);
+		
+		$.ajax({
+			type : 'POST',
+			data : dataJSON,
+			url : '${ pageContext.request.contextPath }/changePassword.do',
+			contentType : 'application/json',
+			dataType : 'json',
+			success : (function(data) {
+				alert(data['message']);
+				if(data['redirectUrl'] != null) {
+					window.location.href = '${ pageContext.request.contextPath }/'+data['redirectUrl'];
+				}
+			})
+		});
+	});		
+});
+</script>
+<script>
+/*------------------회원 탈퇴-------------------------*/
+function deactivateAccount() {
+	if(confirm("탈퇴하시겠습니까?ㅠㅠ")) {
+		
+		$.ajax({
+			type : 'POST',
+			url : '${ pageContext.request.contextPath }/deactivate.do',
+			contentType : 'application/json',
+			dataType : 'json',
+			success : (function(data) {
+				alert(data['message']);
+				window.location.href = '${ pageContext.request.contextPath }/'+data['redirectUrl'];
+			})
+		});
+	};
+};
+
+/*------------------프로필사진 변경-------------------------*/
+	function uploadImage() {
+		$("#chooseImage").click();
+	}
+
+	$(document).on("change", "#chooseImage", function() {
+		var file_data = $("#chooseImage").prop("files")[0];
+		var form_data = new FormData();
+		form_data.append("file", file_data);
+
+		$.ajax({
+		    url: "${ pageContext.request.contextPath }/uploadPhoto.do",
+		    cache: false,
+		    contentType: false,
+		    processData: false,
+		    data: form_data,
+		    type: 'post',
+		    success: function (data) {
+				$("#profileImage").prop("src", "https://s3.ap-northeast-2.amazonaws.com/baljagook/profileImage/"+data);
+			}
+	    });
+	})		
+		
+</script>
 </head>
 <body>
 	<header>
 		<jsp:include page="/top.do" />
 	</header>
+	
+	<!-- 비밀번호 변경 Modal -->
+	<div class="modal fade" id="changePassModal" tabindex="-1" role="dialog"
+		 aria-labelledby="changePassModalTitle" aria-hidden="true">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="changePassModalTitle"
+					style="padding-left: 48%;">비밀번호 변경</h5>
+				<!-- x버튼 -->
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>	
+			</div>
+			<div class="modal-body">
+				<form id="changePassForm">						
+					<div class="row">
+						<div class="col-md-12 form-group">
+							<input type="password" name="currentPassword" class="form-control modal-text"
+								placeholder="기존 비밀번호">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12 form-group">
+							<input type="password" name="newPassword" class="form-control modal-text"
+								placeholder="새로운 비밀번호">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12 form-group">
+							<input type="password" name="newPasswordConfirm" class="form-control modal-text"
+								placeholder="새로운 비밀번호 확인">
+						</div>
+					</div>
+					<div class="col-md-12">
+						<button type="submit" class="btn btn-primary col-md-12">비밀번호 변경</button>
+					</div>				
+				</form>
+			</div>
+		</div>	 
+	</div>
+	
 	<section>
 		<div class="container">
 			<div class="menuleft">
 				<div class="div_img">
-					<img
-						src="${pageContext.request.contextPath }/resources/images/DAMNIT.png" />
-					<div class="div_btn">
-						<img
-							src="${pageContext.request.contextPath }/resources/images/img.png" />
+					<img id="profileImage" src="https://s3.ap-northeast-2.amazonaws.com/baljagook/profileImage/${imageName}" width="80" height="80"/>
+					<div style="height:0px;overflow:hidden">
+						<input id="chooseImage" type="file"/>
 					</div>
+					<button onclick="uploadImage();">사진 업로드</button>
 				</div>
-				<div class="div_name">Soonil</div>
+				<div class="div_name">${sessionScope.user}</div>
 				<div class="menus">
 					<ul>
-						<li><a href="#!">비밀번호변경</a></li>
-						<li><a href="#!">계정탈퇴</a></li>
+						<li><a data-toggle="modal" data-target="#changePassModal"
+							   data-backdrop="static" data-keyboard="false">비밀번호변경</a></li>
+						<li><a onclick="deactivateAccount();">계정탈퇴</a></li>
 					</ul>
 				</div>
 			</div>

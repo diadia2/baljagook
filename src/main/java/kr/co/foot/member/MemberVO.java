@@ -8,6 +8,7 @@ public class MemberVO {
 	private int status;
 	private String regdate;
 	private String photo;
+	private String code;
 	
 	public MemberVO(){
 		
@@ -59,6 +60,14 @@ public class MemberVO {
 
 	public void setPhoto(String photo) {
 		this.photo = photo;
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
 	}
 
 	@Override
