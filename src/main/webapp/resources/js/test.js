@@ -38,6 +38,10 @@
 			streetViewControl: false
 		});
 
+		var camera = document.getElementById('camera');
+		var location = document.getElementById('location');
+		map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(camera);
+		map.controls[google.maps.ControlPosition.TOP_LEFT].push(location);
 		
 		if(listLonLat.length != 0){
 			var initflightPlanCoordinates = listLonLat;
@@ -69,7 +73,7 @@
 						var mymapPath = new google.maps.Polyline({
 							path : mymapCoordinates,
 							geodesic : true,
-							strokeColor : '#FF0000',
+							strokeColor : '#0000FF',
 							strokeOpacity : 1.0,
 							strokeWeight : 3
 						});
@@ -86,7 +90,8 @@
 							
 						checkPointMarker.push(new google.maps.Marker({
 					   	 	position: mymapCheckpointList[i].mymapCheckpoint[j],
-					    	map: map
+					   	 	map: map,
+							icon : "http://maps.google.com/mapfiles/kml/paddle/blu-circle-lv.png"
 						}));
 					  
 					  var listener6 = google.maps.event.addListener(map, 'click', function(){

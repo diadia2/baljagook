@@ -328,7 +328,7 @@
 					favoritePlaceLonLat = new google.maps.Marker({
 						map : map,
 						position : Fplace,
-						icon : "https://developers.skplanetx.com/upload/tmap/marker/pin_b_m_a.png"
+						icon : "http://maps.google.com/mapfiles/kml/paddle/blu-circle-lv.png"
 					});
 					var listener3 = google.maps.event.addListener(map, 'click', function(){
 						if(infowindow != null){
@@ -430,7 +430,7 @@
 					var mymapPath = new google.maps.Polyline({
 						path : mymapCoordinates,
 						geodesic : true,
-						strokeColor : '#FF0000',
+						strokeColor : '#0000FF',
 						strokeOpacity : 1.0,
 						strokeWeight : 3
 					});
@@ -446,7 +446,8 @@
 						
 					checkPointMarker.push(new google.maps.Marker({
 				   	 	position: mymapCheckpointList[i].mymapCheckpoint[j],
-				    	map: map
+				    	map: map,
+						icon : "http://maps.google.com/mapfiles/kml/paddle/blu-circle-lv.png"
 					}));
 				  
 				  var listener6 = google.maps.event.addListener(map, 'click', function(){
