@@ -103,8 +103,8 @@ public class MyPageController {
 			MultipartFile uploadedImage = request.getFile(itr.next());
 			
 			// 아마존 S3 설정
-			BasicAWSCredentials credentials = new BasicAWSCredentials("AKIAIDJ4XNVOC5GH6EJA",
-					"ZArbDAeB5+CGaoi81X845XQ2CK6AgGmuoauQ2Hym");
+			BasicAWSCredentials credentials = new BasicAWSCredentials("",
+					"");
 			AmazonS3 s3Client = AmazonS3ClientBuilder.standard()
 					.withCredentials(new AWSStaticCredentialsProvider(credentials)).build();
 			String bucketName = "baljagook";

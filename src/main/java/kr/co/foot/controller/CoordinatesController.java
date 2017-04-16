@@ -34,7 +34,7 @@ public class CoordinatesController {
    @Autowired
    private MymapService mymapService;
 
-   @RequestMapping(value = "/setCoordinatesPOST", method = RequestMethod.POST)
+   @RequestMapping(value = "/setCoordinatesPOST.do", method = RequestMethod.POST)
    public void setCoordinatesPOST(HttpServletRequest request, @RequestParam("lon") String lon,
          @RequestParam("lat") String lat, @RequestParam("email") String email,
          @RequestParam("timestamp") String timestamp, @RequestParam("accuracy") String accuracy) {
