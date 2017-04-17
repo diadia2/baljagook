@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.co.foot.checkpoint.CheckpointVO;
+import kr.co.foot.coordinates.CoordinatesService;
 import kr.co.foot.favoritemap.FavoritemapVO;
 import kr.co.foot.favoriteplace.FavoriteplaceVO;
 import kr.co.foot.hashtag.HashtagVO;
@@ -29,6 +30,7 @@ import kr.co.foot.like.LikeDTO;
 import kr.co.foot.like.LikeVO;
 import kr.co.foot.mymap.MymapService;
 import kr.co.foot.mymap.MymapVO;
+import kr.co.foot.photo.PhotoVO;
 import kr.co.foot.regcoordinates.RegcoordinatesVO;
 import kr.co.foot.regmap.RegmapVO;
 
@@ -37,6 +39,8 @@ public class MymapController {
 
    @Autowired
    private MymapService mymapService;
+   @Autowired
+   private CoordinatesService coordinatesService;
    
    @RequestMapping("/map/regMymap.do")
    public String regMyMap(@RequestParam("title") String title,
@@ -127,18 +131,29 @@ public class MymapController {
       
       String markerlat = request.getParameter("markerlat");
       String markerlon = request.getParameter("markerlng");
+      String markeridx = request.getParameter("markeridx");
       String[] markerlatArr = markerlat.split("/");
       String[] markerlonArr = markerlon.split("/");
+      String[] markeridxArr = markeridx.split("/");
       
       String getpaneltitle = request.getParameter("paneltitle");
       String getpanelcontent = request.getParameter("panelcontent");
       String[] ptitleArr = getpaneltitle.split("/");
       String[] pcontentArr = getpanelcontent.split("/");
       
+      String photoCheckPointIdx = request.getParameter("photoCheckPointIdx");
+      String photoOriName = request.getParameter("photoOriName");
+      String photoNewName = request.getParameter("photoNewName");
+      String[] photoCheckPointIdxArr = photoCheckPointIdx.split("/");
+      String[] photoOriNameArr = photoOriName.split("/");
+      String[] photoNewNameArr = photoNewName.split("/");
+      
+      
       // 占쏙옙커 占쏙옙占쏙옙占쏙옙큼 for占쏙옙
       for(int i=0; i<markerlatArr.length; i++){
          String checkPointLat = markerlatArr[i];
          String checkPointLon = markerlonArr[i];
+         String checkPointIdx = markeridxArr[i];
          String paneltitle = ptitleArr[i];
          String panelcontent = pcontentArr[i];
          
@@ -150,6 +165,26 @@ public class MymapController {
                checkpointVO.setTitle(paneltitle);
                checkpointVO.setContent(panelcontent);
                mymapService.insertCheckpoint(checkpointVO);
+               CheckpointVO cpVO = mymapService.selectCheckPoint(regList.get(j).getIdx());
+               System.out.println(cpVO);
+               for(int k=0; k<photoCheckPointIdxArr.length; k++){
+            	   String pcpi = photoCheckPointIdxArr[k];
+            	   String pon = photoOriNameArr[k];
+            	   String pnn = photoNewNameArr[k];
+            	   System.out.println(pcpi);
+            	   System.out.println(pon);
+            	   System.out.println(pnn);
+            	   System.out.println(checkPointIdx);
+            	   if(checkPointIdx.equals(pcpi)){
+            		   PhotoVO photoVO = new PhotoVO();
+            		   photoVO.setOriname(pon);
+            		   photoVO.setNewname(pnn);
+            		   photoVO.setCheckpointidx(cpVO.getIdx());
+            		   coordinatesService.insertPhoto(photoVO);
+            		   break;
+            	   }
+
+               }
             }
          }
       }
@@ -333,11 +368,19 @@ public class MymapController {
       List<CheckpointVO> checkpointVO = new ArrayList<CheckpointVO>();
       for(int i=0; i<regcoordinatesList.size(); i++){
          CheckpointVO cpVO = mymapService.selectCheckPoint(regcoordinatesList.get(i).getIdx());
-         if(cpVO.getIdx()==0 || cpVO==null){
-            
-         } else{
-            checkpointVO.add(cpVO);
+         if(cpVO!=null){
+        	 checkpointVO.add(cpVO);
          }
+      }
+      for(CheckpointVO vo : checkpointVO){
+    	  System.out.println(vo);
+      }
+      List<PhotoVO> photoList = new ArrayList<PhotoVO>();
+      for(int i=0; i<checkpointVO.size(); i++){
+    	  PhotoVO photoVO = mymapService.selectPhoto(checkpointVO.get(i).getIdx());
+    	  if(photoVO != null){
+    		  photoList.add(photoVO);
+    	  }
       }
       
       // 조회 수 증가
@@ -350,6 +393,7 @@ public class MymapController {
       model.addAttribute("hashtagList", hashtagList);
       model.addAttribute("regcoordinatesList", regcoordinatesList);
       model.addAttribute("checkpointVO", checkpointVO);
+      model.addAttribute("photoList", photoList);
        
       return "search/detail";
    }
@@ -363,7 +407,8 @@ public class MymapController {
    @ResponseBody
    public String getFavoritePlace(@RequestParam("idx") String idx,
                            @RequestParam("placename") String placename){
-      
+      System.out.println(idx);
+      System.out.println(placename);
       // 占쏙옙占쏙옙占쏙옙 占쏙옙커
       int checkpointidx = Integer.parseInt(idx);
       // 占쏙옙占쏙옙占쏙옙占싱듸옙

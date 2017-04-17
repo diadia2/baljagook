@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.foot.reglogin.RegLoginDAO">
+
+    <insert id="registerNewMember" parameterType="MemberVO">
+        insert into t_member(email, password, userid, status, regdate, code) values(#{email}, #{password}, #{userid}, #{status}, #{regdate}, #{code})
+    </insert>
+    
+    <insert id="insertMemberAuthority" parameterType="String">
+        insert into authorities(email, authority) values(#{email}, 'ROLE_USER')
+    </insert>
+    
+    <select id="findByEmail" parameterType="String" resultType="String">
+        select email from t_member where email = #{email}
+    </select>
+    
+    <select id="findByUserid" parameterType="String" resultType="String">
+        select userid from t_member where userid = #{userid}
+    </select>
+    
+    <select id="findByCode" parameterType="String" resultType="String">
+        select email from t_member where code = #{code}
+    </select>
+    
+    <select id="authenticateLogin" parameterType="LoginDTO" resultType="String">
+        select userid from t_member where email = #{email} and password = #{password} and status = 1
+    </select>
+    
+    <update id="verifyEmail" parameterType="String">
+        update t_member set status = 1 where email = #{email}
+    </update>
+</mapper>

@@ -51,17 +51,17 @@ public class MobileController {
 		
 		userid = "test@test.com";
 		if(userid != null) {
-			//내계획
+			//�닿���
 			myPlanList = memberService.selectMymapListByuseridForPlan(userid);
 			
-			//즐찾지도
+			//利�李얠���
 			List<FavoritemapVO> favMapListRef = mymapService.selectRegmapidx(userid);
 			for (int i = 0; i < favMapListRef.size(); i++) {
 				MymapVO mymapVO = mymapService.selectMymapByRegmapIdx(favMapListRef.get(i).getRegmapidx());
 				favMapList.add(mymapVO);
 			}
 			
-			//즐찾장소
+			//利�李얠�μ��
 			favPlaceList = mymapService.selectcheckpoint(userid);
 							
 		}
@@ -76,8 +76,11 @@ public class MobileController {
 	
 	@RequestMapping("m/insert.do")
 	public void insertData(HttpServletRequest request) throws IllegalStateException, IOException{
-		System.out.println("����");
+		System.out.println("진입");
 		String id = "test@test.com";
+		if(request == null){
+			System.out.println("널뜸");
+		}
 		Map<String,String> map = fileutils.saveFile(request);
 		
 		CoordinatesVO testCoord = new CoordinatesVO();

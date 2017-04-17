@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans:beans xmlns="http://www.springframework.org/schema/security"
 	xmlns:beans="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:c="http://www.springframework.org/schema/c"
 	xsi:schemaLocation="
         http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
@@ -15,7 +16,7 @@
 		<intercept-url pattern="/images/**" access="permitAll" />
 		<intercept-url pattern="/css/**" access="permitAll" /> -->
 <!-- 		<intercept-url pattern="/**" access="hasRole('ROLE_ADMIN')" /> -->
-		<intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')" />
+<!-- 		<intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')" /> -->
 		<!-- <intercept-url pattern="/**" access="permitAll" /> -->
 		<!-- <intercept-url pattern="/users/**"
 			access="hasAnyRole('ROLE_ADMIN','ROLE_USER')" />
@@ -30,6 +31,10 @@
 			invalidate-session="true" /> -->
 
 	</http>
+	
+<!-- 	<beans:bean id="bCryptPasswordEncoder"
+          		class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"
+          		c:strength="100"/>	 -->
 	
 	<beans:bean id="authenticationSuccessHandler" class="kr.co.foot.common.CustomAuthenticationSuccessHandler"></beans:bean>
 	
