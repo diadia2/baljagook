@@ -30,6 +30,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.sun.xml.internal.messaging.saaj.packaging.mime.MessagingException;
 
 import kr.co.foot.member.MemberVO;
+import kr.co.foot.mypage.MyPageService;
 import kr.co.foot.reglogin.LoginDTO;
 import kr.co.foot.reglogin.MemberDTO;
 import kr.co.foot.reglogin.RegLoginService;
@@ -43,6 +44,9 @@ public class RegLoginController {
 	
 	@Autowired
 	private RegLoginService service;
+
+	@Autowired
+	private MyPageService myPageService;	
 	
 	//로그인 인증
 	@RequestMapping(value="/authenticate.do", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
@@ -122,6 +126,41 @@ public class RegLoginController {
 		return errorMap; 
 	}
 	
+	//비밀번호 분실 시 입력한 이메일로 임시비밀번호 전송
+	@RequestMapping(value="/recoverPassword.do", method=RequestMethod.POST,  consumes=MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public HashMap<String, String> recoverPassword(@RequestBody MemberDTO memberData) {
+		
+		HashMap<String, String> resultMap = new HashMap<String, String>();
+		
+		String inputEmail = memberData.getEmail();
+		System.out.println(inputEmail);
+		
+		String emailDB = service.findByEmail(inputEmail);
+		
+		if(emailDB == null) {
+			resultMap.put("errorMessage", "입력하신 이메일은 회원가입된 이메일이 아닙니다.");
+			return resultMap;
+		} else {
+			String tempPassword = CommonUtils.getRandomString().substring(0, 7);
+			try {
+				sendTempPassword(inputEmail, tempPassword);
+			} catch (AddressException e) {
+				e.printStackTrace();
+			} catch (javax.mail.MessagingException e) {
+				e.printStackTrace();
+			} catch (MessagingException e) {
+				e.printStackTrace();
+			}
+			MemberVO targetMember = myPageService.findByEmail(emailDB);
+			targetMember.setPassword(tempPassword);
+			myPageService.changePassword(targetMember);
+			resultMap.put("successMessage", "입력하신 이메일로 임시비밀번호를 전송해드렸습니다. 확인 후 다시 로그인해주세요.");
+			return resultMap;
+		}
+	}
+	
+	
 	//사용자 링크 클릭 시 인증코드 확인
 	@RequestMapping(value="/confirm.do", method=RequestMethod.GET)
 	public ModelAndView confirmCode(@RequestParam("code") String code, Model model) {
@@ -159,22 +198,55 @@ public class RegLoginController {
 		}
 	}
 	
+	//임시비밀번호 이메일로 전송
+	public void sendTempPassword(String email, String tempPassword) throws AddressException, javax.mail.MessagingException, MessagingException {
+		String to = email;
+		String from = "threebaljagook@gmail.com";
+		final String username = "threebaljagook@gmail.com";
+		final String password = "";
+		
+		Properties props = new Properties();
+		props.put("mail.smtp.host", "smtp.gmail.com");
+		props.put("mail.smtp.socketFactory.port", "465");
+		props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+		props.put("mail.smtp.auth", "true");
+		props.put("mail.smtp.port", "465");
+		
+		Session session = Session.getInstance(props, new javax.mail.Authenticator() {
+			protected PasswordAuthentication getPasswordAuthentication() {
+				return new PasswordAuthentication(username, password);
+			}
+		});
+		
+		Message message = new MimeMessage(session);
+		message.setFrom(new InternetAddress(from));
+		message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
+		message.setSubject("발자국 회원 임시비밀번호 전송");
+		message.setContent(
+				"<h1>임시비밀번호는 다음과 같습니다. 이 임시비밀번호로 로그인하신 후, 마이페이지에서 비밀번호를 변경해주시기 바랍니다.</h1>"
+				+"<br/>"
+				+"임시비밀번호 : "+tempPassword,
+				"text/html; charset=UTF-8");
+		Transport.send(message);
+		
+		System.out.println("임시비밀번호 이메일 전송 성공!");
+	}
+	
 	//인증 이메일 전송
 	public void sendVerificationEmail(String email, String code, String contextPath) throws AddressException, javax.mail.MessagingException, MessagingException {
 		String to = email;
 		String from = "threebaljagook@gmail.com";
-		final String username = "baljagook";
-		final String password = "Baljagook3!";
+		final String username = "threebaljagook@gmail.com";
+		final String password = "";
 		
 		String server = "http://localhost:8000";
 		
-		String host = "express-relay.jangosmtp.net";
-		
 		Properties props = new Properties();
+		props.put("mail.smtp.host", "smtp.gmail.com");
+		props.put("mail.smtp.socketFactory.port", "465");
+		props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
 		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable", "true");
-		props.put("mail.smtp.host", host);
-		props.put("mail.smtp.port", "25");
+		props.put("mail.smtp.port", "465");
 		
 		Session session = Session.getInstance(props, new javax.mail.Authenticator() {
 			protected PasswordAuthentication getPasswordAuthentication() {

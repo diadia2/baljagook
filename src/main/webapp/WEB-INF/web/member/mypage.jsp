@@ -196,25 +196,32 @@ $(document).ready(function () {
 		console.log('changePassForm submitted');
 		e.preventDefault();
 		
-		var newPassInfo = {
-				'currentPassword' : $('#changePassForm input[name=currentPassword]').val(),
-				'newPassword' : $('#changePassForm input[name=newPassword]').val()
-		};
-		var dataJSON = JSON.stringify(newPassInfo);
+		var inputNewPw = $('#changePassForm input[name=newPassword]').val();
+		var inputNewPwConfirm = $('#changePassForm input[name=newPasswordConfirm]').val();
 		
-		$.ajax({
-			type : 'POST',
-			data : dataJSON,
-			url : '${ pageContext.request.contextPath }/changePassword.do',
-			contentType : 'application/json',
-			dataType : 'json',
-			success : (function(data) {
-				alert(data['message']);
-				if(data['redirectUrl'] != null) {
-					window.location.href = '${ pageContext.request.contextPath }/'+data['redirectUrl'];
-				}
-			})
-		});
+		if(inputNewPw != inputNewPwConfirm) {
+			alert('비밀번호가 일치하지 않습니다');
+		} else {
+			var newPassInfo = {
+					'currentPassword' : $('#changePassForm input[name=currentPassword]').val(),
+					'newPassword' : $('#changePassForm input[name=newPassword]').val()
+			};
+			var dataJSON = JSON.stringify(newPassInfo);
+			
+			$.ajax({
+				type : 'POST',
+				data : dataJSON,
+				url : '${ pageContext.request.contextPath }/changePassword.do',
+				contentType : 'application/json',
+				dataType : 'json',
+				success : (function(data) {
+					alert(data['message']);
+					if(data['redirectUrl'] != null) {
+						window.location.href = '${ pageContext.request.contextPath }/'+data['redirectUrl'];
+					}
+				})
+			});			
+		}
 	});		
 });
 </script>

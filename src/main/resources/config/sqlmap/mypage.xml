@@ -16,6 +16,9 @@
     <select id="findByUserid" parameterType="String" resultType="MemberVO">
         select * from t_member where userid = #{userid}
     </select>
+    <select id="findByEmail" parameterType="String" resultType="MemberVO">
+        select * from t_member where email = #{email}
+    </select>    
     <select id="getEmailByUserid" parameterType="String" resultType="String">
         select email from t_member where userid = #{userid}
     </select>	

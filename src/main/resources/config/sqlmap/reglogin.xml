@@ -16,7 +16,7 @@
     
     <select id="findByUserid" parameterType="String" resultType="String">
         select userid from t_member where userid = #{userid}
-    </select>
+    </select>    
     
     <select id="findByCode" parameterType="String" resultType="String">
         select email from t_member where code = #{code}
