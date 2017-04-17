@@ -269,16 +269,18 @@
     // 시간별 좌표 불러오기
     var listLonLat = new Array();
 	var checkpoint = new Array();
-	var checkpointidx = new Array();
 	<c:forEach items="${regcoordinatesList}" var="regcoordinatesList">
-	  	listLonLat.push({lat:${regcoordinatesList.lat},lng:${regcoordinatesList.lon}});
+	  	listLonLat.push({lat:${regcoordinatesList.lat},lng:${regcoordinatesList.lon}, idx:${regcoordinatesList.idx}});
 	  	<c:forEach items="${checkpointVO}" var="checkpointVO">
 	  		<c:if test="${regcoordinatesList.idx == checkpointVO.regcoordinatesidx}">
-	  			checkpoint.push({lat:${regcoordinatesList.lat},lng:${regcoordinatesList.lon}});
-	  			checkpointidx.push({idx:${checkpointVO.idx}});
+	  			checkpoint.push({lat:${regcoordinatesList.lat},lng:${regcoordinatesList.lon},checkpointidx:${checkpointVO.idx}, title:'${checkpointVO.title}', content:'${checkpointVO.content}'});
 	  		</c:if>
 		</c:forEach>
 	</c:forEach>
+	var photoList = new Array();
+    <c:forEach items="${photoList}" var="photoList">
+    	photoList.push({checkpointidx:${photoList.checkpointidx}, oriname:'${photoList.oriname}', newname:'${photoList.newname}'});
+    </c:forEach>
     
     var center = listLonLat[listLonLat.length-1];
     var zoom = 13;
@@ -346,8 +348,9 @@
 	var checkMarker = new Array();
 	var num;
 	var infowindow;
+	var filename;
 	function addLineMarker(){
-		
+		console.log(checkpoint);
 	    if(listLonLat.length == 0){
 			return;
 	    }
@@ -360,32 +363,75 @@
 		for(var i=0; i<checkpoint.length; i++){
 			
 			num = i;
+		    filename = null;
 			
-			checkMarker.push(new google.maps.Marker({
-		    position: checkpoint[i],
-		    map: map,
-		    num : i,
-		    idx : checkpointidx[i]
-		
-		}));
-		  
-		  var listener3 = google.maps.event.addListener(map, 'click', function(){
-			if(infowindow != null){
-				  infowindow.close();
-			  }
-		  });
-		  var listener1 = google.maps.event.addListener(checkMarker[i], 'click', function(){
-			  if(infowindow != null){
-				  infowindow.close();
-			  }
-			  infowindow = new google.maps.InfoWindow({
-				    content: (this.num+1)+". "+(this.position.lat()).toFixed(7).toString()+", "+(this.position.lng()).toFixed(7).toString()+
-				    '<br/><input type="button" value="출발설정" onClick="startCheck('+
-				    		this.position.lat().toString()+", "+this.position.lng().toString()+')"/><input type="button" value="도착설정" onClick="endCheck('+
-				    		this.position.lat().toString()+", "+this.position.lng().toString()+')"/><input type="button" value="즐겨찾기등록" onClick="getFavoritePlace('+this.idx.idx+')"/>'
+			for(j=0; j<photoList.length; j++){
+			    console.log(checkpoint[i]);
+			    console.log(photoList[j]);
+			    if(checkpoint[i].checkpointidx == photoList[j].checkpointidx){
+					filename = photoList[j].newname;
+					break;
+			    }
+			}
+			
+			if(filename != null){
+				checkMarker.push(new google.maps.Marker({
+				    position: checkpoint[i],
+				    map: map,
+				    num : i,
+				    idx : checkpoint[i].checkpointidx,
+				    filename : filename,
+				    title : checkpoint[j].title,
+				   	content : checkpoint[j].content
+				}));
+				  
+				  var listener3 = google.maps.event.addListener(map, 'click', function(){
+					if(infowindow != null){
+						  infowindow.close();
+					  }
+				  });
+				  var listener1 = google.maps.event.addListener(checkMarker[i], 'click', function(){
+					  if(infowindow != null){
+						  infowindow.close();
+					  }
+					  infowindow = new google.maps.InfoWindow({
+						    content: '<img src="${ pageContext.request.contextPath }/resources/photo/'+this.filename+'" width="200px" height="200px"/><br/>'+
+						    (this.num+1)+". "+this.title+'<br/>'+this.content+
+						    '<br/><input type="button" value="출발설정" onClick="startCheck('+
+						    		this.position.lat().toString()+", "+this.position.lng().toString()+')"/><input type="button" value="도착설정" onClick="endCheck('+
+						    		this.position.lat().toString()+", "+this.position.lng().toString()+')"/><input type="button" value="즐겨찾기등록" onClick="getFavoritePlace('+this.idx+')"/>'
+						  }); 
+					  infowindow.open(map, this);
 				  }); 
-			  infowindow.open(map, this);
-		  });  
+			} else {
+			    checkMarker.push(new google.maps.Marker({
+				    position: checkpoint[i],
+				    map: map,
+				    num : i,
+				    idx : checkpoint[i].checkpointidx,
+				    title : checkpoint[j].title,
+				   	content : checkpoint[j].content
+				}));
+			    
+				  var listener3 = google.maps.event.addListener(map, 'click', function(){
+					if(infowindow != null){
+						  infowindow.close();
+					  }
+				  });
+				  var listener1 = google.maps.event.addListener(checkMarker[i], 'click', function(){
+					  if(infowindow != null){
+						  infowindow.close();
+					  }
+					  infowindow = new google.maps.InfoWindow({
+						    content: (this.num+1)+". "+this.title+'<br/>'+this.content+
+						    '<br/><input type="button" value="출발설정" onClick="startCheck('+
+						    		this.position.lat().toString()+", "+this.position.lng().toString()+')"/><input type="button" value="도착설정" onClick="endCheck('+
+						    		this.position.lat().toString()+", "+this.position.lng().toString()+')"/><input type="button" value="즐겨찾기등록" onClick="getFavoritePlace('+this.idx+')"/>'
+						  }); 
+					  infowindow.open(map, this);
+				  }); 
+			}  
+			 
 		}
 	} 
 	
@@ -399,7 +445,8 @@
 			return;
 	    }
 	    
-
+		alert(idx);
+		alert(placename);
 	    $.ajax({
 		    type: 'POST' , 
 		    url: '${ pageContext.request.contextPath }/map/getFavoritePlace.do',

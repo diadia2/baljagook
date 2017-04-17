@@ -4,9 +4,11 @@
 
 	<typeAliases>
 		<typeAlias type="kr.co.foot.board.vo.CommentVO" alias="CommentVO" />
-		<typeAlias type="kr.co.foot.board.vo.MemberVO" alias="MemberVO" />
+<!-- 		<typeAlias type="kr.co.foot.board.vo.MemberVO" alias="MemberVO" /> -->
 		<typeAlias type="kr.co.foot.board.vo.RegMapVO" alias="RegMapVO" />
 		<typeAlias type="kr.co.foot.like.LikeVO" alias="LikeVO" />
+		<typeAlias type="kr.co.foot.member.MemberVO" alias="MemberVO" />
+		<typeAlias type="kr.co.foot.reglogin.LoginDTO" alias="LoginDTO" />
 	</typeAliases>
 
 	<!-- <mappers>
