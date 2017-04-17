@@ -65,8 +65,10 @@
 
         if (wScroll > 0) {
             $('.navbar-default').addClass('sticky');
+            $('.aa').addClass('add');
         } else {
             $('.navbar-default').removeClass('sticky');
+            $('.aa').removeClass('add');
         }
 
         // Scroll top 
