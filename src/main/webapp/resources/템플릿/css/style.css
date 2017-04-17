@@ -169,7 +169,7 @@ Version: 1.0
     font-weight: 400;
     line-height: 30px;
     letter-spacing: 0px;
-    color: #000000;
+    color: #fff;
     padding: 25px 19px;
     text-transform: uppercase;
 }
@@ -3402,7 +3402,4 @@ Pricing Table Page
     left: -35px;
     font-size: 18px;
     color: #606060;
-}
-ul.nav.navbar-nav.col-md-3.aa.add>li>a {
-    color: white;
 }

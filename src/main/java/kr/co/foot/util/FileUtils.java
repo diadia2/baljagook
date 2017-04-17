@@ -20,7 +20,7 @@ public class FileUtils {
 	private static final String filePath = "C:/Users/User/workspace/baljagook/src/main/webapp/resources/photo/";
      
 	public Map<String, String> saveFile(HttpServletRequest request) throws IllegalStateException, IOException{
-		System.out.println("¡¯¿‘2");
+		
 		String oriFileName = null;
     	String oriFileExtension = null;
     	String newFileName = null;
