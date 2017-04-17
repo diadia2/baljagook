@@ -348,7 +348,8 @@ body {
 							    num :i,
 							    title:checkpointList[j].title,
 							    content:checkpointList[j].content,
-							    filename:filename
+							    filename:filename,
+							    checkpointList:checkpointList[j].idx
 							}));
 					 		   
 							  var listener2 = google.maps.event.addListener(map, 'click', function(){
@@ -377,7 +378,8 @@ body {
 									    map: map,
 									    num :i,
 									    title:checkpointList[j].title,
-									    content:checkpointList[j].content
+									    content:checkpointList[j].content,
+									    checkpointList:checkpointList[j].idx
 									}));
 						 		   
 								  var listener3 = google.maps.event.addListener(map, 'click', function(){
@@ -396,6 +398,7 @@ body {
 										    		this.position.lat().toString()+", "+this.position.lng().toString()+')"/><input type="button" value="위치삭제" onClick="removeSpot('+
 										    		(this.position.lat()).toFixed(7).toString()+", "+(this.position.lng()).toFixed(7).toString()+')"/>'
 										  }); 
+									  console.log(infowindow);
 									  infowindow.open(map, this);
 								  });	
 				    		}
@@ -411,9 +414,10 @@ body {
 							    position: listLonLat[i],
 							    map: map,
 							    num :i,
-							    icon : "http://openmap2.tmap.co.kr/point.png",
-							    title:"",
-							    content:""
+							    icon : {
+								    url: 'http://openmap2.tmap.co.kr/point.png'
+								  },
+							    title:""
 							}));
 				 		   
 						  var listener3 = google.maps.event.addListener(map, 'click', function(){
@@ -737,7 +741,7 @@ body {
 		startMarkers = [];
 		startMarker = new google.maps.Marker({
 			position : location,
-			label : "출발",
+			icon : 'http://openmap2.tmap.co.kr/start.png',
 			draggable : true,
 			map : map
 		});
@@ -761,7 +765,7 @@ body {
 		endMarkers = [];
 		endMarker = new google.maps.Marker({
 			position : location,
-			label : "도착",
+			icon : 'http://openmap2.tmap.co.kr/arrival.png',
 			draggable : true,
 			map : map
 		});
@@ -997,8 +1001,8 @@ body {
 			lonlat1 += "/";
 			lonlat2 += listLonLat[i].lng.toFixed(7);
 			lonlat2 += "/";
-			lonlat3 += listLinLat[i].idk;
-			lonlat3 += "/";
+			lonlat3 += listLonLat[i].idk;
+			lonlat3 += "/"; 
 	    }
 	    tag1 = "<input type='hidden' value='"+lonlat1+"' name='lat'/>";
 	    tag2 = "<input type='hidden' value='"+lonlat2+"' name='lng'/>";
@@ -1010,16 +1014,23 @@ body {
 		// checkMarker 좌표
 	    var markerlonlat1 = "";
 	    var markerlonlat2 = "";
+	    var markerlonlat3 = "";
 	    for(var i=0; i<checkMarker.length; i++){
-			markerlonlat1 += checkMarker[i].position.lat().toFixed(7);
-			markerlonlat1 += "/";
-			markerlonlat2 += checkMarker[i].position.lng().toFixed(7);
-			markerlonlat2 += "/";
+			if(checkMarker[i].title != "" && checkMarker[i].content != ""){
+				markerlonlat1 += checkMarker[i].position.lat().toFixed(7);
+				markerlonlat1 += "/";
+				markerlonlat2 += checkMarker[i].position.lng().toFixed(7);
+				markerlonlat2 += "/";
+				markerlonlat3 += checkMarker[i].checkpointList;
+				markerlonlat3 += "/";
+			}
 	    }
 		checkpoint1 = "<input type='hidden' value='"+markerlonlat1+"' name='markerlat'/>";
 		checkpoint2 = "<input type='hidden' value='"+markerlonlat2+"' name='markerlng'/>";
+		checkpoint3 = "<input type='hidden' value='"+markerlonlat3+"' name='markeridx'/>";
 		$('#map_div').append(checkpoint1);
 		$('#map_div').append(checkpoint2);
+		$('#map_div').append(checkpoint3);
 	    
 		var rightTitle = "";
 		var rightContent = "";		
@@ -1034,7 +1045,25 @@ body {
 		
 	    $('#map_div').append("<input type='hidden' value='${city}' name='city'/>");
 	    $('#map_div').append("<input type='hidden' value='${theme}' name='theme'/>");
-	    document.inputform.submit();
+	    
+	    var photoCheckPointIdx = "";
+	    var photoOriName = "";
+	    var photoNewName = "";
+	    for(var i=0; i<photoList.length; i++){
+			photoCheckPointIdx += photoList[i].checkpointidx;
+			photoCheckPointIdx += "/";
+			photoOriName += photoList[i].oriname;
+			photoOriName += "/";
+			photoNewName += photoList[i].newname;
+			photoNewName += "/";
+	    }
+	    $('#map_div').append("<input type='hidden' value='"+photoCheckPointIdx+"' name='photoCheckPointIdx'/>");
+	    $('#map_div').append("<input type='hidden' value='"+photoOriName+"' name='photoOriName'/>");
+	    $('#map_div').append("<input type='hidden' value='"+photoNewName+"' name='photoNewName'/>");
+	    
+	    console.log(checkMarker);
+	    console.log(photoList);
+	    document.inputform.submit(); 
 	}
 	
 	
@@ -1140,11 +1169,11 @@ body {
 					<span id="dragStart" draggable="true"
 						ondragstart="return dragStart(event)"
 						ondragend="return startDragEnd(event)"> <img
-						src="https://developers.skplanetx.com/upload/tmap/marker/pin_b_m_a.png" />출발
+						src="http://openmap2.tmap.co.kr/start.png" />출발
 					</span> <span id="dragEnd" draggable="true"
 						ondragstart="return dragStart(event)"
 						ondragend="return endDragEnd(event)"> <img
-						src="https://developers.skplanetx.com/upload/tmap/marker/pin_b_m_a.png" />도착
+						src="http://openmap2.tmap.co.kr/arrival.png" />도착
 					</span> <span><input type="button" value="자가용"
 						onclick="findLoadAgain()" /></span> <span><input type="button"
 						value="대중교통" onclick="calculateAndDisplayRoute()" /></span> <span><input

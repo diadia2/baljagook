@@ -3,6 +3,9 @@ package kr.co.foot.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +19,7 @@ import kr.co.foot.favoriteplace.FavoriteplaceVO;
 import kr.co.foot.member.MemberService;
 import kr.co.foot.mymap.MymapService;
 import kr.co.foot.mymap.MymapVO;
+import kr.co.foot.mypage.MyPageService;
 import kr.co.foot.regcoordinates.RegcoordinatesVO;
 
 @Controller
@@ -25,15 +29,25 @@ public class MemberController {
 	private MemberService memberService;
 	@Autowired
 	private MymapService mymapService;
+	@Autowired
+	private MyPageService myPageService;
+	
 	
 	//마이페이지 선택
 	@RequestMapping("/member/mypage.do")
-	public String myPage(Model model){
+	public String myPage(HttpServletRequest request, Model model){
 		
-		String userid = "test@test.com";
+		HttpSession session = request.getSession(true);
+		String userid = (String) session.getAttribute("user");
 		
 		List<MymapVO> mymapList = memberService.selectMymapListByuserid(userid); 
 		model.addAttribute("mymapList", mymapList);
+		
+		String imageName = myPageService.getImageName(userid);
+		if(imageName == null) {
+			imageName = "profile-icon-9.png";
+		}
+		model.addAttribute("imageName", imageName);
 		
 		return "member/mypage";
 	}

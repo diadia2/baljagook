@@ -68,8 +68,24 @@
             width:100%;height:70%;background:#fff;position:absolute;z-index:98;bottom:0px;
             display:none;
         }
+        #camera{
+        	float:right;
+        	bottom:0;
+        	right:0;
+        	margin-right:5%;
+        	margin-bottom:7%;
+        	position:absolute;
+        }
+        #location{
+        	float:right;
+        	bottom:0;
+        	right:0;
+        	margin-right:5%;
+        	margin-bottom:25%;
+        	position:absolute;
+        }
     </style>
-
+  
 <script type="text/javascript" src="${pageContext.request.contextPath }/resources/js/test.js"></script>
 <%-- <script type="text/javascript" src="${pageContext.request.contextPath }/resources/js/mobile/main/map.js"></script> --%>
 <script type="text/javascript">
@@ -198,8 +214,12 @@
 		map = new google.maps.Map(document.getElementById('map'), {
 			zoom : 16,
 			center : new google.maps.LatLng(latitude, longitude),
-			mapTypeId : google.maps.MapTypeId.ROADMAP
+			mapTypeId : google.maps.MapTypeId.ROADMAP,
+			mapTypeControl: false,
+			zoomControl: false,
+			streetViewControl: false
 		});
+		map.setOptions({passiveLogo: false});
 		var startLat = "";
 		var startLng = "";
 		var endLat = "";
@@ -212,6 +232,11 @@
 			endLng = map.getBounds().getNorthEast().lng(); */
 
 		});
+		
+/* 		var camera = document.getElementById('camera');
+		var location = document.getElementById('location');
+        map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(camera);
+        map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(location); */
 	}
 
 	function showError(error) {
@@ -468,7 +493,7 @@
 							  }
 					  	});
 					var listener1 = 
-						google.maps.event.addListener(favoritePlaceLonLat, 'click', function() {
+						google.maps.event.addListener(favPlace, 'click', function() {
 							if(infowindow != null){
 								infowindow.close();
 						  	} 
@@ -491,6 +516,51 @@
 		    goZoomIn(lat, lon);
 		    initialize();
 		} 
+
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function() {
+	$('#agree01').change(function() {
+        if($(this).is(":checked")) {
+            var flag = $(this).is(":checked");
+            Android.showMyValue(flag);
+            
+        } else{
+        	var flag = $(this).is(":checked");
+            Android.showMyValue(flag);
+        }  
+    });
+});
+
+function returnCheck(){
+	$('#agree01').attr("checked",false);
+}
+
+function getAndroidFlag(flag){
+	 $('#agree01').val(flag);
+}
+
+function takepicture(){
+    Android.takePicture();
+}
+
+function getCurPorition(){
+    Android.getCurPosition();
+}
+
+function returnCurPosition(lat, lon){
+    var curMarker = new Array();
+    var center = new google.maps.LatLng(lat, lon);
+    map.setCenter(center);
+    map.setZoom(15);
+	curMarker.push(new google.maps.Marker({
+	    position: center,
+		map: map,
+		center : center
+	}));
+}
 
 </script>
 </head>
@@ -680,7 +750,9 @@
 
 
 		<section id="container" style="height: 89%; padding: 0;">
-			<div id="map" style="width: 100%; height: 100%;"></div>
+			<div id="map" style="width: 100%; height: 100%; position:absolute;"></div>
+				<div id=location><a href="javascript:getCurPorition()"><img src="${pageContext.request.contextPath }/resources/images/location.png"/></a></div>
+				<div id=camera><a href="javascript:takepicture()"><img src="${pageContext.request.contextPath }/resources/images/camera.png"/></a></div>
 
 
 
@@ -709,6 +781,7 @@
 
 	</div>
 	<!--wrap_end-->
+	
 
 
 </body>
