@@ -16,7 +16,7 @@
 		<intercept-url pattern="/images/**" access="permitAll" />
 		<intercept-url pattern="/css/**" access="permitAll" /> -->
 <!-- 		<intercept-url pattern="/**" access="hasRole('ROLE_ADMIN')" /> -->
-		<intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')" />
+<!-- 		<intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')" /> -->
 		<!-- <intercept-url pattern="/**" access="permitAll" /> -->
 		<!-- <intercept-url pattern="/users/**"
 			access="hasAnyRole('ROLE_ADMIN','ROLE_USER')" />

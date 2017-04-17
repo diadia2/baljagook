@@ -1,18 +1,24 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@include file="/WEB-INF/share.jsp"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Search List</title>
-
-<link rel="stylesheet"
-	href="${ pageContext.request.contextPath }/resources/css/sub.css">
-	
 <script type="text/javascript">
 	$(function() {
+		$("#btn").click(function() {//chaining!
+			console.log(this);
+			$(this).css({
+				"color" : "blue"
+			}).slideUp(1000).slideDown(1000, function() {
+				$(this).css({
+					"background" : "yellow"
+				});
+			});
+		});
+		
 		var json = {
 			searchtext : "${searchtext}",
 			moreCount : "${moreCount}"
@@ -23,7 +29,7 @@
 			data : json,
 			success : callback
 		});
-		 var num = 1;
+		var num = 1;
 		$("#more").click(function() {
 			num++;
 			var json = {
@@ -99,55 +105,118 @@
 		<jsp:include page="/top.do" />
 	</header>
 	<section>
-		<div class="container">
-			<div class="search_box">
-				<div class="sub_box">
-					<span>도시</span>
-					<ul>
-						<li><input type="checkbox" value="" /> 서울 <input
-							type="checkbox" value="" /> 경기 <input type="checkbox" value="" />
-							강원 <input type="checkbox" value="" /> 충청 <input type="checkbox"
-							value="" /> 전라 <input type="checkbox" value="" /> 경상 <input
-							type="checkbox" value="" /> 제주 <input type="checkbox" value="" />
-							부산 <input type="checkbox" value="" /> 인천 <input type="checkbox"
-							value="" /> 광주 <input type="checkbox" value="" /> 대전 <input
-							type="checkbox" value="" /> 대구 <input type="checkbox" value="" />
-							울산</li>
-					</ul>
+		<!-- Check Box Section -->
+		<div class="page-header" id="home">
+			<!-- defult.css page-header 에 사진 정보 있음 -->
+			<div class="header-caption">
+				<div class="header-caption-contant">
+					<div class="container">
+						<div class="row">
+							<div class="col-xs-12">
+								<div class="header-caption-inner">
+									<h1>Result</h1>
+									<table class="table">
+										<tr>
+											<th><p>City</p></th>
+											<td><p>
+													<input type="checkbox" value="" /> 서울
+												</p></td>
+											<td><p>
+													<input type="checkbox" value="" /> 서울
+												</p></td>
+											<td><p>
+													<input type="checkbox" value="" /> 서울
+												</p></td>
+											<td><p>
+													<input type="checkbox" value="" /> 서울
+												</p></td>
+											<td><p>
+													<input type="checkbox" value="" /> 서울
+												</p></td>
+											<td><p>
+													<input type="checkbox" value="" /> 서울
+												</p></td>
+											<td><p>
+													<input type="checkbox" value="" /> 서울
+												</p></td>
+											<td><p>
+													<input type="checkbox" value="" /> 서울
+												</p></td>
+											<td><p>
+													<input type="checkbox" value="" /> 서울
+												</p></td>
+										</tr>
+										<tr>
+											<th><p>Theme</p></th>
+											<td><p>
+													<input type="checkbox" value="" /> 서울
+												</p></td>
+											<td><p>
+													<input type="checkbox" value="" /> 서울
+												</p></td>
+											<td><p>
+													<input type="checkbox" value="" /> 서울
+												</p></td>
+											<td><p>
+													<input type="checkbox" value="" /> 서울
+												</p></td>
+											<td><p>
+													<input type="checkbox" value="" /> 서울
+												</p></td>
+											<td><p>
+													<input type="checkbox" value="" /> 서울
+												</p></td>
+										</tr>
+										<tr>
+											<th><p>Weather</p></th>
+											<td><p>
+													<input type="checkbox" value="" /> 서울
+												</p></td>
+											<td><p>
+													<input type="checkbox" value="" /> 서울
+												</p></td>
+											<td><p>
+													<input type="checkbox" value="" /> 서울
+												</p></td>
+										</tr>
+										<tr>
+											<th><p>Term</p></th>
+											<td><p>
+													<input type="checkbox" value="" /> 서울
+												</p></td>
+											<td><p>
+													<input type="checkbox" value="" /> 서울
+												</p></td>
+											<td><p>
+													<input type="checkbox" value="" /> 서울
+												</p></td>
+										</tr>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
-				<div class="sub_box">
-					<span class="sess">테마</span>
-					<ul>
-						<li><input type="checkbox" value="" /> 식도락 <input
-							type="checkbox" value="" /> 가족 <input type="checkbox" value="" />
-							커플</li>
-					</ul>
-				</div>
-				<div class="sub_box">
-					<span>계절</span>
-					<ul>
-						<li><input type="checkbox" value="" /> 봄 <input
-							type="checkbox" value="" /> 여름 <input type="checkbox" value="" />
-							가을 <input type="checkbox" value="" /> 겨울</li>
-					</ul>
-				</div>
-				<div class="sub_box">
-					<span>기간</span>
-					<ul>
-						<li><input type="checkbox" value="" /> 하루 <input
-							type="checkbox" value="" /> 2박3일 <input type="checkbox" value="" />
-							3박~</li>
-					</ul>
-				</div>
-			</div>
-			<div id="search_list"></div>
-			
-			<div class="paging">
-
-				<button id="more">more</button>
-
 			</div>
 		</div>
+			<div>
+		<button class="btn btn-default h" id="btn">
+			<i class="fa fa-heart h" aria-hidden="true"></i>
+		</button>
+		
+		<button class="btn btn-default h" style="color: red;">
+			<i class="fa fa-heart h" aria-hidden="true"></i>
+		</button>
+
+	</div>
+		<!-- End Check Box Section -->
+		<!-- Search List Section -->
+		<div class="container"><b>검색결과 : 총 9 건</b></div>
+		<div id="search_list"></div>
+		<div>
+			<button id="more">more</button>
+		</div>
+		<!-- End Search List Section -->
 	</section>
 	<footer>
 		<jsp:include page="/bottom.do" />
