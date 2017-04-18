@@ -33,6 +33,11 @@ public class MyPageDAOImp implements MyPageDAO {
 		MemberVO member = sst.selectOne("kr.co.foot.mypage.MyPageDAO.findByUserid", userid);
 		return member;
 	}
+
+	public MemberVO findByEmail(String email) {
+		MemberVO member = sst.selectOne("kr.co.foot.mypage.MyPageDAO.findByEmail", email);
+		return member;
+	}	
 	
 	public String getEmailByUserid(String userid) {
 		String email = sst.selectOne("kr.co.foot.mypage.MyPageDAO.getEmailByUserid", userid);

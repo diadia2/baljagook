@@ -185,7 +185,7 @@ body {
 	    location.href = "${ pageContext.request.contextPath }/map/search.do?searchtext="+$('#searchtext').val();
 	}
 </script>
-<script>
+<script> 
 	$(document).ready(function() {
 /*------------------------로그인------------------------*/
 		$('#loginForm').on('submit', function(e) {
@@ -215,36 +215,117 @@ body {
 			
 		});
 
+/*------------------------이메일 형식 체크------------------------*/
+	function validateEmail(inputEmail) {
+		var mailFormat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+	
+		if (inputEmail.match(mailFormat)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+/*-----------------------비밀번호 형식 체크------------------------*/
+	function validatePassword(inputPassword) {
+		var passwordFormat = /^[a-zA-Z-0-9!@#$%^&*]{5,15}$/;
+		
+		if (inputPassword.match(passwordFormat)) {
+			return true;
+		} else {
+			return false;
+		}
+	
+	}
+/*-----------------------아이디(userid) 형식 체크------------------------*/
+	function validateUserid(inputUserid) {
+		var useridFormat = /^[a-zA-Z-0-9]{5,10}$/;
+		
+		if (inputUserid.match(useridFormat)) {
+			return true;
+		} else {
+			return false;
+		}
+}
 /*-----------------------회원가입------------------------*/
 		$('#registerForm').on('submit', function(e) {
 			console.log('registerForm submitted');
 			e.preventDefault();
 		
-			var newMember = {
-					'email' : $('#registerForm input[name=email]').val(),
-					'userid' : $('#registerForm input[name=userid]').val(),
-					'password' : $('#registerForm input[name=password]').val()
-			};
-			var dataJSON = JSON.stringify(newMember);
+			var inputEmail = $('#registerForm input[name=email]').val();
+			var inputUserid = $('#registerForm input[name=userid]').val();
+			var inputPw = $('#registerForm input[name=password]').val();
+			var inputConfirmPw = $('#registerForm input[name=confirmPassword]').val();
 			
+			if(!(validateEmail(inputEmail))) {
+				alert('입력하신 이메일은 형식에 맞지 않습니다.');
+			} else {
+				if(!(validateUserid(inputUserid))) {
+					alert('아이디 형식이 맞지 않습니다(길이: 5-10, 공백/특수문자 제외)');
+				} else {
+					if(!(validatePassword(inputPw))) {
+						alert('비밀번호 형식이 맞지 않습니다(길이: 5-15, 특수문자(!@#$%^&*만 가능), 공백 제외)');
+					} else {
+						if(inputPw != inputConfirmPw) {
+							alert('비밀번호가 일치하지 않습니다. 다시 입력해주세요');
+						} else {
+							var newMember = {
+									'email' : $('#registerForm input[name=email]').val(),
+									'userid' : $('#registerForm input[name=userid]').val(),
+									'password' : $('#registerForm input[name=password]').val()
+							};
+							var dataJSON = JSON.stringify(newMember);
+							
+							$.ajax({
+								type : 'POST',
+								data : dataJSON,
+								url : '${ pageContext.request.contextPath }/registerNewMember.do',
+								contentType : 'application/json',
+								dataType : "json",
+								success : function(data) {
+									if(data["emailExists"]) {
+										alert('이미 이메일이 존재합니다.');
+									} else if(data["useridExists"]) {
+										alert('이미 아이디가 존재합니다.');
+									} else {
+										alert('입력하신 이메일로 인증메일을 전송합니다. 이메일 인증 후 로그인하실 수 있습니다.');
+										window.location.href = '${ pageContext.request.contextPath }/main.do';
+									}
+								}
+							});				
+						}						
+					}
+				}
+			}
+			
+		});
+/*-----------------------비밀번호 찾기------------------------*/
+		$('#recoverPassForm').on('submit', function(e) {
+			console.log('recoverPassForm submitted');
+			e.preventDefault();
+		
+			var emailData = {
+					'email' : $('#recoverPassForm input[name=email]').val()
+			};
+			var dataJSON = JSON.stringify(emailData);
+				
 			$.ajax({
 				type : 'POST',
 				data : dataJSON,
-				url : '${ pageContext.request.contextPath }/registerNewMember.do',
+				url : '${ pageContext.request.contextPath }/recoverPassword.do',
 				contentType : 'application/json',
 				dataType : "json",
 				success : function(data) {
-					if(data["emailExists"]) {
-						alert('이미 이메일이 존재합니다.');
-					} else if(data["useridExists"]) {
-						alert('이미 아이디가 존재합니다.');
+					
+					if(data['errorMessage'] != null) {
+						alert(data['errorMessage']);	
 					} else {
-						alert('입력하신 이메일로 인증메일을 전송합니다. 이메일 인증 후 로그인하실 수 있습니다.');
+						alert(data['successMessage']);
 						window.location.href = '${ pageContext.request.contextPath }/main.do';
 					}
 				}
-			});
+			});				
 		});
+	
 	});
 </script>
 </head>
@@ -294,6 +375,36 @@ body {
 		</div>
 	</nav>
 	<!-- 상단바 끝 -->
+	
+	<!-- 비밀번호 찾기 Modal -->
+	<div class="modal fade" id="recoverPassModal" tabindex="-1" role="dialog"
+		 aria-labelledby="recoverPassModalTitle" aria-hidden="true">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="recoverPassModalTitle"
+					style="padding-left: 48%;">비밀번호 변경</h5>
+				<!-- x버튼 -->
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>	
+			</div>
+			<div class="modal-body">
+				<form id="recoverPassForm">						
+					<div class="row">
+						<div class="col-md-12 form-group">
+							<input type="text" name="email" class="form-control modal-text"
+								placeholder="이메일">
+						</div>
+					</div>
+					<div class="col-md-12">
+						<button type="submit" class="btn btn-primary col-md-12">임시비밀번호 받기</button>
+					</div>				
+				</form>
+			</div>
+		</div>	 
+	</div>	
+	
 
 	<!-- 로그인 Modal -->
 	<div class="modal fade" id="loginModal" tabindex="-1" role="dialog"
@@ -352,16 +463,15 @@ body {
 					</form>
 				</div>
 				<div class="modal-footer text-center">
-					<button class="dropdown-item btn btn-primary" type="button"
-						data-toggle="modal" data-target="#passwordModal"
+					<button id="recoverPassword" class="dropdown-item btn btn-primary" type="button"
+						data-toggle="modal" data-target="#recoverPassModal"
 						data-dismiss="modal" data-backdrop="static" data-keyboard="false">
-						<i class="fa fa-question" aria-hidden="true"></i>&nbsp;Lost
-						Password
+						<i class="fa fa-question" aria-hidden="true"></i>&nbsp;비밀번호 찾기
 					</button>
 					<button class="dropdown-item btn btn-primary" type="button"
 						data-toggle="modal" data-target="#signUpModal"
 						data-dismiss="modal" data-backdrop="static" data-keyboard="false">
-						<i class="fa fa-user-plus"></i>&nbsp;Sign Up
+						<i class="fa fa-user-plus"></i>&nbsp;회원가입
 					</button>
 				</div>
 			</div>
@@ -417,7 +527,7 @@ body {
 									<i class="fa fa-lock fa-2x" aria-hidden="true"></i>
 								</div>
 								<div class="col-md-11 form-group">
-									<input type="password" class="form-control modal-text"
+									<input type="password" name="confirmPassword" class="form-control modal-text"
 										placeholder="Confirm password ">
 								</div>
 							</div>

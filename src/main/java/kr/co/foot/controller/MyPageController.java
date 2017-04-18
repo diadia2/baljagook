@@ -1,4 +1,4 @@
-package kr.co.foot.mypage;
+package kr.co.foot.controller;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,6 +26,8 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 
 import kr.co.foot.member.MemberVO;
+import kr.co.foot.mypage.MyPageService;
+import kr.co.foot.mypage.PasswordDTO;
 import kr.co.foot.reglogin.LoginDTO;
 import kr.co.foot.reglogin.RegLoginService;
 import kr.co.foot.util.CommonUtils;
