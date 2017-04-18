@@ -84,6 +84,14 @@
         	margin-bottom:25%;
         	position:absolute;
         }
+    	#lpop{
+    		margin-right:20%;
+        	margin-bottom:50%;
+	    	bottom:0;
+        	right:0;
+	    	float:right;
+    		position:absolute;
+    	}
     </style>
   
 <script type="text/javascript" src="${pageContext.request.contextPath }/resources/js/test.js"></script>
@@ -105,49 +113,54 @@
 		$("#hidden_favMap").hide();
 		$("#hidden_favPlace").hide();
 		$("#hidden_myPlan").hide();
+		$("#lpop").hide();
 
 // 		즐겨찾기한 지도 목록 보기
 		$("#show_favMap").click(function() {			
-			$("#hidden_favMap").slideToggle('slow');
-			var nowText = $(this).find(".menu_te").text();
-
-			if (nowText == "▲") {
-				$(this).find(".menu_te").text("▼");
-			} else {
-				$(this).find(".menu_te").text("▲");
-			}
+			$("#hidden_favMap").slideToggle('fast');
+			show_favMap();
+			$("#hidden_favPlace").slideUp('fast');
+			$("#show_favPlace").find(".menu_te").text("▼");
+			$("#hidden_myPlan").slideUp('fast');
+			$("#show_myPlan").find(".menu_te").text("▼");
 		});
 
 //		즐겨찾기한 장소 목록 보기		
 		$("#show_favPlace").click(function() {
-			$("#hidden_favPlace").slideToggle('slow');
-			var nowText = $(this).find(".menu_te").text();
-
-			if (nowText == "▲") {
-				$(this).find(".menu_te").text("▼");
-			} else {
-				$(this).find(".menu_te").text("▲");
-			}
+			$("#hidden_favPlace").slideToggle('fast');
+			show_favPlace();
+			$("#hidden_favMap").slideUp('fast');
+			$("#show_favMap").find(".menu_te").text("▼");
+			$("#hidden_myPlan").slideUp('fast');
+			$("#show_myPlan").find(".menu_te").text("▼");
 		});
 
 //		내계획 목록 보기
 		$("#show_myPlan").click(function() {			
-			$("#hidden_myPlan").slideToggle('slow');
-			var nowText = $(this).find(".menu_te").text();
-
-			if (nowText == "▲") {
-				$(this).find(".menu_te").text("▼");
-			} else {
-				$(this).find(".menu_te").text("▲");
-			}
+			$("#hidden_myPlan").slideToggle('fast');
+			show_myPlan();
+			$("#hidden_favMap").slideUp('fast');
+			$("#show_favMap").find(".menu_te").text("▼");
+			$("#hidden_favPlace").slideUp('fast');
+			$("#show_favPlace").find(".menu_te").text("▼");
 		});
 
 		$("#openNavi").click(function() {
-			$("#navDiv").slideDown("slow");
+		    if(infowindow != null){
+				infowindow.close();
+		  	}
+			$("#navDiv").fadeIn("fast");
+			$("#header").fadeOut("fast");
+			$("#bottomDiv").hide();
 		});
 
 		$("#closeNavi").click(function() {
-			$("#navDiv").slideUp("slow");
+		    if(infowindow != null){
+				infowindow.close();
+	  		}
+		    $("#navDiv").fadeOut("fast");
+			$("#header").fadeIn("fast");
+			$("#bottomDiv").show();
 		});
 
 		$(".coupon_tab_btn span").click(function() {
@@ -165,51 +178,45 @@
 		$("#clsNav2").click(function() {
 			$("#bottomDiv").hide();
 		});
+		
+		$(".btnx").click(function() {
+		    $("#lpop").hide();
+		});
+		
+		$("#bottomDiv").hide();
+		
 	});
+	
+	function show_favMap(){
+	    var hidden_favMap_text = $("#show_favMap").find(".menu_te").text();
 
-	var latitude = "";
-	var longitude = "";
-
-	function getLocation() {
-		var options = {
-			// 가능한 경우, 높은 정확도의 위치(예를 들어, GPS 등) 를 읽어오려면 true로 설정
-			// 그러나 이 기능은 배터리 지속 시간에 영향을 미친다. 
-			enableHighAccuracy : true, // 대략적인 값이라도 상관 없음: 기본값
-
-			// 위치 정보가 충분히 캐시되었으면, 이 프로퍼티를 설정하자, 
-			// 위치 정보를 강제로 재확인하기 위해 사용하기도 하는 이 값의 기본 값은 0이다.
-			maximumAge : 3000, // 5분이 지나기 전까지는 수정되지 않아도 됨
-
-			// 위치 정보를 받기 위해 얼마나 오랫동안 대기할 것인가?
-			// 기본값은 Infinity이므로 getCurrentPosition()은 무한정 대기한다.
-			timeout : 15000
-		// 15초 이상 기다리지 않는다.
-		}
-
-		if (navigator.geolocation) {
-			navigator.geolocation.getCurrentPosition(showPosition, showError,
-					options);
+		if (hidden_favMap_text == "▼") {
+			$("#show_favMap").find(".menu_te").text("▲");
 		} else {
-			alert("이 브라우저에서는 위치 추적을 할 수 없습니다.");
+			$("#show_favMap").find(".menu_te").text("▼");
 		}
 	}
-	getLocation();
+	function show_favPlace(){
+	    var show_favPlace_text = $("#show_favPlace").find(".menu_te").text();
 
-	function showPosition(position) {
-		latitude = position.coords.latitude;
-		longitude = position.coords.longitude;
-		latitude == "37.530806";
-		longitude == "126.8482816";
-		if (latitude == "") {
-			//좌표 못가져오면 서울시 좌표로 고정
-			latitude == "37.5664101";
-			longitude == "126.9783282";
-
+		if (show_favPlace_text == "▼") {
+			$("#show_favPlace").find(".menu_te").text("▲");
+		} else {
+			$("#show_favPlace").find(".menu_te").text("▼");
 		}
-		get_map(latitude, longitude);
-
 	}
+	function show_myPlan(){
+	    var show_myPlan_text = $("#show_myPlan").find(".menu_te").text();
+
+		if (show_myPlan_text == "▼") {
+			$("#show_myPlan").find(".menu_te").text("▲");
+		} else {
+			$("#show_myPlan").find(".menu_te").text("▼");
+		}
+	}
+
 	function get_map(latitude, longitude) {
+	    tmap = new Tmap.Map({div:'map_div', width:'0px', height:'0px'});
 		var locations = new Array();
 		map = new google.maps.Map(document.getElementById('map'), {
 			zoom : 16,
@@ -224,43 +231,98 @@
 		var startLng = "";
 		var endLat = "";
 		var endLng = "";
-
-		google.maps.event.addListener(map, 'idle', function() {
-/* 			startLat = map.getBounds().getSouthWest().lat();
-			startLng = map.getBounds().getSouthWest().lng();
-			endLat = map.getBounds().getNorthEast().lat();
-			endLng = map.getBounds().getNorthEast().lng(); */
-
-		});
-		
-/* 		var camera = document.getElementById('camera');
-		var location = document.getElementById('location');
-        map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(camera);
-        map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(location); */
+ 		var listener3 = google.maps.event.addListener(map, 'click', function(mouseEvent){
+ 		    $("#navDiv").fadeOut("fast");
+		 	$("#header").fadeIn("fast"); 
+			if(infowindow != null){
+				  infowindow.close();
+			  }
+			  
+			infowindow = new google.maps.InfoWindow({
+				  content: '<a href="javascript:startSpot('+mouseEvent.latLng.lat()+','+mouseEvent.latLng.lng()
+					    +')"><img src="http://openmap2.tmap.co.kr/start.png"/></a>&nbsp;&nbsp;&nbsp;<a href="javascript:endSpot('+mouseEvent.latLng.lat()+','+mouseEvent.latLng.lng()
+						+')"><img src="http://openmap2.tmap.co.kr/arrival.png"/></a>&nbsp;&nbsp;&nbsp;<br/>'+"출발/도착을 선택하세요"
+			});
+			
+			  var center = new google.maps.LatLng(mouseEvent.latLng.lat().toFixed(7), mouseEvent.latLng.lng().toFixed(7));
+			  infowindow.setPosition(center);
+			  infowindow.open(map, this);
+		  });  
+ 		var listener4 = google.maps.event.addListener(map, 'drag', function(){
+ 		   if(infowindow != null){
+			  infowindow.close();
+		  }
+ 		});
 	}
 
-	function showError(error) {
-		switch (error.code) {
-		case error.PERMISSION_DENIED:
-			get_map("37.5664101", "126.9783282");
-			alert("위치추적을 거부했습니다.");
-			break;
-		case error.POSITION_UNAVAILABLE:
-			alert("Location information is unavailable.");
-			get_map("37.5664101", "126.9783282");
-			break;
-		case error.TIMEOUT:
-			alert("TIME OUT")
-			get_map("37.5664101", "126.9783282");
-			break;
-		case error.UNKNOWN_ERROR:
-			alert("알수 없는 오류가 발생되어 지도 데이터를 불러올수 없습니다.");
-			break;
-		}
-	}
-
-	function goSearchs() {
-		location.href = "./search.html";
+	window.onload=function(){
+	    //위치정보를 확인할 수 있는 브라우저인지 확인
+	    if(navigator.geolocation == undefined){
+	        alert("위치 정보 기능을 지원하지 않습니다!")
+	        return;
+	    }
+	    
+	    navigator.geolocation.getCurrentPosition(success, fail);
+	 }
+	function success(position) { //성공시
+	    log("위치정보 확인 성공!");
+	    /* for(var property in position.coords) { //반복문 돌면서 출력
+	        log("Key 값:"+property+" 정보:"+position.coords[property]);
+	    } */
+	    var lat=position.coords["latitude"];
+	    var lon=position.coords["longitude"];
+	    get_map(lat, lon);
+	 }
+	//실패시
+ function fail(err){
+    switch (err.code){
+        case err.PERMISSION_DENIED:
+            msg = "사용자 거부";
+        break;
+ 
+        case err.PERMISSION_UNAVAILABLE:
+            msg = "지리정보를 얻을 수 없음";
+        break;
+ 
+        case err.TIMEOUT:
+            msg = "시간초과";
+        break;
+ 
+        case err.UNKNOWN_ERROR:
+            msg = "알 수 없는 오류 발생";
+        break;
+    }
+        log(msg);
+ }
+ function log(msg){
+    get_map("37.5664101", "126.9783282");
+  }
+ 
+ function resetFindRoad(){
+     if(startLocation != null || endLocation != null){
+	     lineReset();
+	     startLocation = null;
+	     endLocation = null;
+	     startMarker.setMap(null); 
+	 	 endMarker.setMap(null);
+	 	 $("#bottomDiv").hide();
+	 	 $("#navDiv").fadeOut("fast");
+	 	 $("#header").fadeIn("fast");
+	 	 if(infowindow != null){
+			  infowindow.close();
+		 }
+     }
+ }
+ 
+//기존 길찾기 라인 삭제
+	function lineReset(){
+		$('#addinfo').children().remove();			// 길찾기 정보 리셋
+		for(var i=0; i<flightPaths.length; i++)		// 자동차 라인 리셋
+			  flightPaths[i].setMap(null);
+		if(directionsDisplay!=null)					// 교통수단 라인 리셋
+			directionsDisplay.setMap(null);
+		for(var i=0; i<flightPathsWalk.length; i++)	// 도보 라인 리셋
+			flightPathsWalk[i].setMap(null);
 	}
 </script>
 
@@ -276,8 +338,11 @@
 				mymapidx : mymapidx
 		    },
 		    success: function(data) {
+			console.log(data);
 		    	$('.btn_slide_close').click();
-				console.log(data);
+/* 		    	var center = new google.maps.LatLng(data[0][0].lat, data[0][0].lon);
+		        map.setCenter(center);
+		        map.setZoom(15); */
 				var mymapLonLat = new Array();
 				var mymapCheckpoint = new Array();
 				for(var i=0; i<data[0].length; i++){
@@ -550,16 +615,341 @@ function getCurPorition(){
     Android.getCurPosition();
 }
 
-function returnCurPosition(lat, lon){
-    var curMarker = new Array();
+var curMarker;
+var checkLat
+var checkLon;
+var checkaccuracy;
+function returnCurPosition(lat, lon, accuracy){
+    if(curMarker != null){
+		curMarker.setMap(null);
+    }
     var center = new google.maps.LatLng(lat, lon);
     map.setCenter(center);
     map.setZoom(15);
-	curMarker.push(new google.maps.Marker({
+	curMarker  = new google.maps.Marker({
 	    position: center,
 		map: map,
-		center : center
-	}));
+		center : center,
+		accuracy : accuracy
+	});
+	
+	var listener1 = google.maps.event.addListener(curMarker, 'click', function() {
+			if(confirm("체크 포인트로 저장하시겠습니까?")){
+/* 			    var setTitle = prompt("제목을 입력하세요");
+			    var setContent = prompt("내용을 입력하세요"); */
+			    
+			    $(".lpop").show();
+			    
+			    checkLat = this.position.lat().toFixed(7);
+			    checkLon = this.position.lng().toFixed(7);
+			    checkaccuracy = this.accuracy;
+  			    $.ajax({
+				    type: 'POST' , 
+				    url: '${ pageContext.request.contextPath }/m/setCheckpoint.do',
+				    dataType : 'json',
+				    data : {
+						setTitle : setTitle,
+						setContent : setContent,
+						lat : checkLat,
+						lon : checkLon,
+						accuracy : accuracy
+				    },
+				    success: function(data) {
+						alert(data);
+			        }
+				});  
+			}
+	});	
+}
+
+function regCheckpoint(){
+    alert(checkaccuracy);
+    alert(checkLat);
+    alert(checkLon);
+    alert($('#checktitle').val());
+    alert($('#checkcontent').val());
+    
+	    $.ajax({
+		    type: 'POST' , 
+		    url: '${ pageContext.request.contextPath }/m/setCheckpoint.do',
+		    dataType : 'json',
+		    data : {
+				setTitle : $('#checktitle').val(),
+				setContent : $('#checkcontent').val(),
+				lat : checkLat,
+				lon : checkLon,
+				accuracy : checkaccuracy
+		    },
+		    success: function(data) {
+				alert(data);
+				$("#lpop").hide();
+	    }
+	});  
+    
+}
+
+</script>
+
+
+<script type="text/javascript">
+
+/* 자동차 길찾기 */
+
+	var first, second;					// 길찾기 첫번째, 두번째 좌표
+	var startMarker, endMarker;			// 길찾기 시작마커, 도착마커
+	var startMarkers = [];
+	var endMarkers = [];				// 도착 좌표
+	var startLocation, endLocation;		// 길찾기 시작좌표, 도착좌표
+	
+	function startSpot(lat, lng){
+	    startLocation = {lat:lat,lng:lng};
+	    if(infowindow != null){
+			infowindow.close();
+	    }
+		if(startMarker != null){
+		    startMarker.setMap(null);
+		}
+		startMarker = new google.maps.Marker({
+			position : startLocation,
+			icon : 'http://openmap2.tmap.co.kr/start.png',
+			map : map
+		});
+		if(startLocation != null && endLocation != null){
+		    $("#navDiv").fadeIn("fast");
+			$("#header").fadeOut("fast");
+		    if($('#tab1').css("background-color") == 'rgb(85, 164, 37)'){
+				searchRoute(startLocation, endLocation);
+		    }
+		    if($('#tab2').css("background-color") == 'rgb(85, 164, 37)'){
+				calculateAndDisplayRoute();
+		    }
+		    if($('#tab3').css("background-color") == 'rgb(85, 164, 37)'){
+				searchRouteWalking(startLocation, endLocation);
+	    	}
+		}
+	}
+	
+	function endSpot(lat, lng){
+	    endLocation = {lat:lat,lng:lng};
+	    if(infowindow != null){
+			infowindow.close();
+   		}
+		if(endMarker != null){
+		    endMarker.setMap(null);
+		}
+		endMarker = new google.maps.Marker({
+			position : endLocation,
+			icon : 'http://openmap2.tmap.co.kr/arrival.png',
+			map : map
+		});
+		if(startLocation != null && endLocation != null){
+		    $("#navDiv").fadeIn("fast");
+			$("#header").fadeOut("fast");
+			if($('#tab1').css("background-color") == 'rgb(85, 164, 37)'){
+				searchRoute(startLocation, endLocation);
+		    }
+		    if($('#tab2').css("background-color") == 'rgb(85, 164, 37)'){
+				calculateAndDisplayRoute();
+		    }
+		    if($('#tab3').css("background-color") == 'rgb(85, 164, 37)'){
+				searchRouteWalking(startLocation, endLocation);
+	    	}
+		}
+	}
+	
+	function searchRoute(latlng1, latlng2) {
+		lineReset();
+		
+		var routeFormat = new Tmap.Format.KML({
+			extractStyles : true,
+			extractAttributes : true
+		});
+		
+		var lonlat1 = googleToTmap(new Tmap.LonLat(latlng1.lng, latlng1.lat));
+		var lonlat2 = googleToTmap(new Tmap.LonLat(latlng2.lng, latlng2.lat));
+		
+		var urlStr = "https://apis.skplanetx.com/tmap/routes?version=1&format=xml";
+		urlStr += "&startX=" + lonlat1.lon;
+		urlStr += "&startY=" + lonlat1.lat;
+		urlStr += "&endX=" + lonlat2.lon;
+		urlStr += "&endY=" + lonlat2.lat;
+		urlStr += "&appKey=bac4f916-3297-3be4-93ff-e37ae88b8f42";
+		var prtcl = new Tmap.Protocol.HTTP({
+			url : urlStr,
+			format : routeFormat
+		}); 
+		routeLayer = new Tmap.Layer.Vector("route", {
+			protocol : prtcl,
+			strategies : [ new Tmap.Strategy.Fixed() ]
+		});  
+
+		routeLayer.events.register("featuresadded", routeLayer, getLoad);
+		tmap.addLayer(routeLayer);
+	}
+	
+	function findLoadAgain(){
+		lineReset();
+		searchRoute(startLocation, endLocation);
+	}
+</script>
+
+<script type="text/javascript">
+
+/* 도보 길찾기 */
+ 
+ 	function forWalk(){
+		lineReset();
+		searchRouteWalking(startLocation, endLocation);
+	}
+ 
+	function searchRouteWalking(latlng1, latlng2) {
+		lineReset();
+		
+		var routeFormat = new Tmap.Format.KML({
+			extractStyles : true,
+			extractAttributes : true
+		});
+		 
+		var lonlat1 = googleToTmap(new Tmap.LonLat(latlng1.lng, latlng1.lat));
+		var lonlat2 = googleToTmap(new Tmap.LonLat(latlng2.lng, latlng2.lat));
+		
+		var startName = "출발";
+	    var endName = "도착";
+	    
+		var urlStr = "https://apis.skplanetx.com/tmap/routes/pedestrian?version=1&format=xml";
+		urlStr += "&startX=" + lonlat1.lon;
+		urlStr += "&startY=" + lonlat1.lat;
+		urlStr += "&endX=" + lonlat2.lon;
+		urlStr += "&endY=" + lonlat2.lat;
+		urlStr += "&startName="+encodeURIComponent(startName);
+        urlStr += "&endName="+encodeURIComponent(endName);
+		urlStr += "&appKey=bac4f916-3297-3be4-93ff-e37ae88b8f42";
+		var prtcl = new Tmap.Protocol.HTTP({
+			url : urlStr,
+			format : routeFormat
+		}); 
+		routeLayerWalk = new Tmap.Layer.Vector("route", {
+			protocol : prtcl,
+			strategies : [ new Tmap.Strategy.Fixed() ]
+		});  
+
+		routeLayerWalk.events.register("featuresadded", routeLayerWalk, getLoadWalk);
+		tmap.addLayer(routeLayerWalk);
+	} 
+	
+
+</script>
+
+<script type="text/javascript">
+
+/* 대중교통 길찾기 */
+
+	var directionsDisplay;
+	var directionsService;
+	
+	function calculateAndDisplayRoute() {
+		lineReset();
+		directionsDisplay = new google.maps.DirectionsRenderer;
+		directionsService = new google.maps.DirectionsService;		
+		
+		var selectedMode = "TRANSIT";
+		directionsService.route({
+			origin : startLocation,
+			destination : endLocation, 
+			travelMode : google.maps.TravelMode[selectedMode]
+		}, function(response, status) {
+			if (status == google.maps.DirectionsStatus.OK) {
+				directionsDisplay.setDirections(response);
+				console.log(directionsDisplay);
+				console.log(response);
+			} else {
+				window.alert('Directions request failed due to ' + status);
+			}
+		});
+		directionsDisplay.setMap(map);
+		 directionsDisplay.setPanel(document.getElementById('addinfo'));
+	}
+
+</script>
+
+<script type="text/javascript">
+
+//자동차 길찾기 좌표 포맷
+function getLoad(e){
+	$('#addinfo').children().remove();
+	for(var i=0; i<routeLayer.features.length; i++){
+		if(routeLayer.features[i].attributes.turnType == "200"){
+/*출발*/		$('#addinfo').append('<div class="InfoAppend"><mark style="background:yellow">'+((routeLayer.features[i].attributes.totalDistance)/1000).toFixed(1)+'km. 약 '+((routeLayer.features[i].attributes.totalTime)/60).toFixed(0)+'분</mark></div>');
+			$('#addinfo').append('<div class="InfoAppend"><span style="float:right;margin-right:25px;width:22px;text-align:center;position:absolute;"><img src="http://openmap2.tmap.co.kr/start.png" /></span><span style="margin-left:30px"> '+routeLayer.features[i].attributes.description+'</span></div>');
+/*도착*/		} else if(routeLayer.features[i].attributes.turnType == "201"){
+			$('#addinfo').append('<div class="InfoAppend"><span style="float:right;margin-right:25px;width:22px;text-align:center;position:absolute;"><img src="http://openmap2.tmap.co.kr/arrival.png"/></span><span style="margin-left:30px"> '+routeLayer.features[i].attributes.description+'</span></div>');				
+/*좌회전*/	} else if(routeLayer.features[i].attributes.turnType == "12" || routeLayer.features[i].attributes.turnType == "16" || routeLayer.features[i].attributes.turnType == "17"){
+			$('#addinfo').append('<div class="InfoAppend"><span style="float:right;margin-right:25px;width:30px;text-align:center;position:absolute;"><img src="${ pageContext.request.contextPath }/resources/images/left.PNG" /></span><span style="margin-left:30px">'+routeLayer.features[i].attributes.description+'</span></div>');				
+/*우회전*/	} else if(routeLayer.features[i].attributes.turnType == "13" || routeLayer.features[i].attributes.turnType == "18" || routeLayer.features[i].attributes.turnType == "19"){
+			$('#addinfo').append('<div class="InfoAppend"><span style="float:right;margin-right:25px;width:30px;text-align:center;position:absolute;"><img src="${ pageContext.request.contextPath }/resources/images/right.PNG" /></span><span style="margin-left:30px">'+routeLayer.features[i].attributes.description+'</span></div>');				
+/*유턴*/		} else if(routeLayer.features[i].attributes.turnType == "14"){
+			$('#addinfo').append('<div class="InfoAppend"><span style="float:right;margin-right:25px;width:30px;text-align:center;position:absolute;"><img src="${ pageContext.request.contextPath }/resources/images/uturn.PNG"/></span><span style="margin-left:30px">'+routeLayer.features[i].attributes.description+'</span></div>');				
+/*직진*/		} else if(routeLayer.features[i].attributes.turnType == "11" || routeLayer.features[i].attributes.turnType == "51"){
+			$('#addinfo').append('<div class="InfoAppend"><span style="float:right;margin-right:25px;width:30px;text-align:center;position:absolute;"><img src="${ pageContext.request.contextPath }/resources/images/go.PNG"/></span><span style="margin-left:30px">'+routeLayer.features[i].attributes.description+'</span></div>');				
+/*그외*/		} else {
+			$('#addinfo').append('<div class="InfoAppend"><span style="float:right;margin-right:25px;width:30px;text-align:center;position:absolute;"><img src="${pageContext.request.contextPath }/resources/images/mobile/navi_tap01.png"/></span><span style="margin-left:30px">'+routeLayer.features[i].attributes.description+'</span></div>');
+		}
+	}
+	
+	for(var i=0; i<routeLayer.features.length; i++){
+		if(routeLayer.features[i].geometry.components == null){
+			var xy = tmapToGoogle(new Tmap.LonLat(routeLayer.features[i].geometry.x, routeLayer.features[i].geometry.y));
+			var x = xy.lat;
+			var y = xy.lon;
+			addLine(x,y,i);
+		} else {
+			for(var j=0; j<routeLayer.features[i].geometry.components.length; j++){
+				var xy = tmapToGoogle(new Tmap.LonLat(routeLayer.features[i].geometry.components[j].x, routeLayer.features[i].geometry.components[j].y));
+				var x = xy.lat;
+				var y = xy.lon;
+				addLine(x,y,i); 
+			} 
+		}
+	}
+}
+	
+// 도보 길찾기 좌표 포맷
+function getLoadWalk(e){
+
+	$('#addinfo').children().remove();
+	for(var i=0; i<routeLayerWalk.features.length; i++){
+		if(routeLayerWalk.features[i].attributes.turnType == "200"){
+/*출발*/		$('#addinfo').append('<div class="InfoAppend"><mark style="background:yellow">'+((routeLayerWalk.features[i].attributes.totalDistance)/1000).toFixed(1)+'km. 약 '+((routeLayerWalk.features[i].attributes.totalTime)/60).toFixed(0)+'분</mark></div>');
+			$('#addinfo').append('<div class="InfoAppend"><span style="float:right;margin-right:25px;width:22px;text-align:center;position:absolute;"><img src="http://openmap2.tmap.co.kr/start.png" /></span><span style="margin-left:30px"> '+routeLayerWalk.features[i].attributes.description+'</span></div>');
+/*도착*/		} else if(routeLayerWalk.features[i].attributes.turnType == "201"){
+			$('#addinfo').append('<div class="InfoAppend"><span style="float:right;margin-right:25px;width:22px;text-align:center;position:absolute;"><img src="http://openmap2.tmap.co.kr/arrival.png"/></span><span style="margin-left:30px"> '+routeLayerWalk.features[i].attributes.description+'</span></div>');				
+/*좌회전*/	} else if(routeLayerWalk.features[i].attributes.turnType == "12" || routeLayerWalk.features[i].attributes.turnType == "16" || routeLayerWalk.features[i].attributes.turnType == "17"){
+			$('#addinfo').append('<div class="InfoAppend"><span style="float:right;margin-right:25px;width:30px;text-align:center;position:absolute;"><img src="${ pageContext.request.contextPath }/resources/images/left.PNG" /></span><span style="margin-left:30px">'+routeLayerWalk.features[i].attributes.description+'</span></div>');				
+/*우회전*/	} else if(routeLayerWalk.features[i].attributes.turnType == "13" || routeLayerWalk.features[i].attributes.turnType == "18" || routeLayerWalk.features[i].attributes.turnType == "19"){
+			$('#addinfo').append('<div class="InfoAppend"><span style="float:right;margin-right:25px;width:30px;text-align:center;position:absolute;"><img src="${ pageContext.request.contextPath }/resources/images/right.PNG" /></span><span style="margin-left:30px">'+routeLayerWalk.features[i].attributes.description+'</span></div>');				
+/*유턴*/		} else if(routeLayerWalk.features[i].attributes.turnType == "14"){
+			$('#addinfo').append('<div class="InfoAppend"><span style="float:right;margin-right:25px;width:30px;text-align:center;position:absolute;"><img src="${ pageContext.request.contextPath }/resources/images/uturn.PNG"/></span><span style="margin-left:30px">'+routeLayerWalk.features[i].attributes.description+'</span></div>');				
+/*직진*/		} else if(routeLayerWalk.features[i].attributes.turnType == "11"){
+			$('#addinfo').append('<div class="InfoAppend"><span style="float:right;margin-right:25px;width:30px;text-align:center;position:absolute;"><img src="${ pageContext.request.contextPath }/resources/images/go.PNG"/></span><span style="margin-left:30px">'+routeLayerWalk.features[i].attributes.description+'</span></div>');				
+/*그외*/		} else {
+			$('#addinfo').append('<div class="InfoAppend"><span style="float:right;margin-right:25px;width:30px;text-align:center;position:absolute;"><img src="${pageContext.request.contextPath }/resources/images/mobile/navi_tap03.png"/></span><span style="margin-left:30px">'+routeLayerWalk.features[i].attributes.description+'</span></div>');
+		}
+	}
+	for(var i=0; i<routeLayerWalk.features.length; i++){
+		if(routeLayerWalk.features[i].geometry.components == null){
+			var xy = tmapToGoogle(new Tmap.LonLat(routeLayerWalk.features[i].geometry.x, routeLayerWalk.features[i].geometry.y));
+			var x = xy.lat;
+			var y = xy.lon;
+			addLineWalk(x,y,i);
+		} else {
+			for(var j=0; j<routeLayerWalk.features[i].geometry.components.length; j++){
+				var xy = tmapToGoogle(new Tmap.LonLat(routeLayerWalk.features[i].geometry.components[j].x, routeLayerWalk.features[i].geometry.components[j].y));
+				var x = xy.lat;
+				var y = xy.lon;
+				addLineWalk(x,y,i); 
+			} 
+		}
+	}
 }
 
 </script>
@@ -633,13 +1023,13 @@ function returnCurPosition(lat, lon){
 
 					<!-- 즐겨찾기한 지도 목록 보기 -->
 					<li id="show_favMap"><a href="#!"> <img
-							src="${pageContext.request.contextPath }/resources/images/mobile/icon_menu2.png" alt="즐찾지도" /> <span>즐찾지도</span>
-					</a> <span class="menu_te">▲</span></li>
+							src="${pageContext.request.contextPath }/resources/images/mobile/icon_menu2.png" alt="즐찾지도" /> <span>Map</span>
+					</a> <span class="menu_te">▼</span></li>
 					<li id="hidden_favMap">
 						<div id="favMapList" style="width: 100%; max-height: 200px; overflow: hidden; overflow-y: auto;">
 							<ul class="sub_depth01 clearfix">
 								<c:forEach items="${ favMapList }" var="favMap">
-									<li onclick="displayFavMap(${ favMap.idx });"><a>${ favMap.title }</a></li>
+									<li onclick="displayFavMap(${ favMap.idx });"><a><span style="text-align: left">⊙  ${ favMap.title }</span></a></li>
 								</c:forEach> 
 							</ul>
 						</div>
@@ -647,29 +1037,28 @@ function returnCurPosition(lat, lon){
 
 					<!-- 즐겨찾기한 장소 목록 보기 -->
 					<li id="show_favPlace"><a href="#!"> <img
-							src="${pageContext.request.contextPath }/resources/images/mobile/icon_menu3.png" alt="즐찾장소" /> <span>즐찾장소</span>
-					</a> <span class="menu_te">▲</span></li>
+							src="${pageContext.request.contextPath }/resources/images/mobile/icon_menu3.png" alt="즐찾장소" /> <span>Place</span>
+					</a> <span class="menu_te">▼</span></li>
 					<li id="hidden_favPlace">
 						<div id="favPlaceList"
 							style="width: 100%; max-height: 200px; overflow: hidden; overflow-y: auto;">
 							<ul class="sub_depth01 clearfix">
 								<c:forEach items="${ favPlaceList }" var="favPlace">
-									<li onclick="displayFavPlace(${ favPlace.checkpointidx });"><a>${ favPlace.placename }</a></li>
+									<li onclick="displayFavPlace(${ favPlace.checkpointidx });"><a><span style="text-align: left">⊙  ${ favPlace.placename }</span></a></li>
 								</c:forEach>
 							</ul>
 						</div>
 					</li>
 
 					<!-- 내 여행계획 보기 -->
-					<li id="show_myPlan"><a href="#!"> <img
-							src="${pageContext.request.contextPath }/resources/images/mobile/icon_menu1.png" alt="내계획" /> <span>내계획</span>
-					</a> <span class="menu_te">▲</span></li>
+					<li id="show_myPlan"><a href="#!"> <img src="${pageContext.request.contextPath }/resources/images/mobile/icon_menu1.png" alt="내계획" /> <span>My Plan</span>
+					</a> <span class="menu_te">▼</span></li>
 					<li id="hidden_myPlan">
 						<div id="myPlanList"
 							style="width: 100%; max-height: 200px; overflow: hidden; overflow-y: auto;">
 							<ul class="sub_depth01 clearfix">
 								<c:forEach items="${ myPlanList }" var="myPlan">
-									<li onclick="displayMyPlan(${ myPlan.idx });"><a>${ myPlan.title }</a></li>
+									<li onclick="displayMyPlan(${ myPlan.idx });"><a><span style="text-align: left">⊙  ${ myPlan.title }</span></a></li>
 								</c:forEach>
 							</ul>
 						</div>
@@ -694,52 +1083,27 @@ function returnCurPosition(lat, lon){
 
 		<div style="" id="navDiv">
 			<div id="closeNavi" class="btnNavi"
-				style="width: 100%; height: 20px; font-weight: bold; background-color: white; padding-top: 10px; padding-left: 10px;">
-				<div style="width: 85%; display: inline-block;">서초구 저기동 저기 어디?
+				style="width: 100%; height: 10px; font-weight: bold; background-color: white; padding-top: 3px;">
+				<div style="width: 100%; display: inline-block; text-align: center">▼
 				</div>
-
-
-				<span
-					style="float: right; margin-right: 25px; width: 20px; text-align: center; position: absolute;"
-					id="clsNav">X</span>
 			</div>
 			<div class="coupon_tab_btn">
-				<span class="tab_btn tab01 active"> <a href="#!">자가용</a>
-				</span> <span class="tab_btn tab02"> <a href="#!">대중교통</a>
-				</span> <span class="tab_btn tab03"> <a href="#!">도보</a>
+				<span class="tab_btn tab01 active" id="tab1"> <a href="javascript:findLoadAgain()">
+					<img src="${pageContext.request.contextPath }/resources/images/mobile/navi_tap01.png"/>자가용</a>
+				</span> 
+				<span class="tab_btn tab02" id="tab2"> <a href="javascript:calculateAndDisplayRoute()">
+					<img src="${pageContext.request.contextPath }/resources/images/mobile/navi_tap02.png"/>대중교통</a>
+				</span> 
+				<span class="tab_btn tab03" id="tab3"> <a href="javascript:forWalk()">
+					<img src="${pageContext.request.contextPath }/resources/images/mobile/navi_tap03.png"/>도보</a>
 				</span>
 
 
 			</div>
 
-			<div
-				style="width: 100%; overflow: hidden; overflow-y: auto; height: 83%;">
+			<div style="width: 100%; overflow: hidden; overflow-y: auto; height: 83%;">
 
-				<ul class="foot_depth01 clearfix">
-
-					<li><a href="#!"> <span>장소1</span>
-					</a></li>
-
-					<li><a href="#!"> <span>장소1</span>
-					</a></li>
-					<li><a href="#!"> <span>장소1</span>
-					</a></li>
-					<li><a href="#!"> <span>장소1</span>
-					</a></li>
-					<li><a href="#!"> <span>장소1</span>
-					</a></li>
-					<li><a href="#!"> <span>장소1</span>
-					</a></li>
-					<li><a href="#!"> <span>장소1</span>
-					</a></li>
-					<li><a href="#!"> <span>장소1</span>
-					</a></li>
-					<li><a href="#!"> <span>장소1</span>
-					</a></li>
-					<li><a href="#!"> <span>장소1</span>
-					</a></li>
-
-				</ul>
+				<ul class="foot_depth01 clearfix" id="addinfo"></ul>
 
 			</div>
 
@@ -758,15 +1122,9 @@ function returnCurPosition(lat, lon){
 
 
 			<div id="bottomDiv" class="btnNavi"
-				style="width: 100%; height: 60px; bottom: 0px; font-size: 30px; font-weight: bold; display: block; position: fixed; background-color: white; opacity: 0.8; padding-top: 10px; padding-left: 10px;">
+				style="width: 100%; height: 20px; bottom: 0px; font-size: 20px; font-weight: bold; display: block; position: fixed; background-color: white; opacity: 0.8;">
 
-				<div style="width: 85%; display: inline-block;" id="openNavi">
-					서초구 저기동 저기 어디?</div>
-
-				<span
-					style="float: right; margin-right: 25px; width: 20px; text-align: center; position: absolute;"
-					id="clsNav2">X</span>
-
+				<div style="width: 100%; display: inline-block; text-align: center" id="openNavi">▲</div>
 			</div>
 
 
@@ -781,8 +1139,16 @@ function returnCurPosition(lat, lon){
 
 	</div>
 	<!--wrap_end-->
+	<div id="map_div"></div>
 	
-
-
+	<div class="lpop" id="lpop" style="background: white;">
+			<div class="btnx" style="text-align: right">×&nbsp;&nbsp;</div>
+				<input type="text" name="title" id="checktitle" placeholder="여행제목" /><br/>
+				<input type="text" name="content" id="checkcontent" placeholder="여행내용" /><br/>
+				<div style="text-align: right;" onclick="javascript:regCheckpoint()">
+					<button id="reg">등록하기</button>
+				</div>
+			</div>
+	
 </body>
 </html>

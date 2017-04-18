@@ -1,7 +1,10 @@
 package kr.co.foot.controller;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
@@ -11,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import kr.co.foot.checkpoint.CheckpointVO;
@@ -37,7 +41,7 @@ public class MobileController {
 	
 	@Autowired
 	private MymapService mymapService;
-
+	@Autowired
 	private FileUtils fileutils;
 
 	
@@ -51,17 +55,17 @@ public class MobileController {
 		
 		userid = "test@test.com";
 		if(userid != null) {
-			//내계획
+			//�닿���
 			myPlanList = memberService.selectMymapListByuseridForPlan(userid);
 			
-			//즐찾지도
+			//利�李얠���
 			List<FavoritemapVO> favMapListRef = mymapService.selectRegmapidx(userid);
 			for (int i = 0; i < favMapListRef.size(); i++) {
 				MymapVO mymapVO = mymapService.selectMymapByRegmapIdx(favMapListRef.get(i).getRegmapidx());
 				favMapList.add(mymapVO);
 			}
 			
-			//즐찾장소
+			//利�李얠�μ��
 			favPlaceList = mymapService.selectcheckpoint(userid);
 							
 		}
@@ -76,7 +80,6 @@ public class MobileController {
 	
 	@RequestMapping("m/insert.do")
 	public void insertData(HttpServletRequest request) throws IllegalStateException, IOException{
-		System.out.println("����");
 		String id = "test@test.com";
 		Map<String,String> map = fileutils.saveFile(request);
 		
@@ -97,13 +100,45 @@ public class MobileController {
 		coordinatesService.insertCheckpoint(checkpoint);
 		
 		int checkpointidx = coordinatesService.selectCheckpointidx(coordinatesidx);
-		System.out.println(checkpointidx);
 		PhotoVO photo = new PhotoVO();
 		photo.setNewname(map.get("newFileName"));
 		photo.setOriname(map.get("oriFileName"));
 		photo.setCheckpointidx(checkpointidx);
-		System.out.println(photo);
 		coordinatesService.insertPhoto(photo);
 		
+	}
+	
+	@RequestMapping("/m/setCheckpoint.do")
+	@ResponseBody
+	public String setCheckpoint(HttpServletRequest request) throws Exception{
+		
+		String id = "test@test.com";
+		String title = request.getParameter("setTitle");
+		String content = request.getParameter("setContent");
+		String lat = request.getParameter("lat");
+		String lon = request.getParameter("lon");
+		String accuracy = request.getParameter("accuracy");
+		
+		Calendar cal = Calendar.getInstance();
+	    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	    String today = sdf.format(cal.getTime());
+	    String timestamp = String.valueOf(sdf.parse(today).getTime()/1000);
+	    
+	    CoordinatesVO testCoord = new CoordinatesVO();
+		testCoord.setAccuracy(accuracy);
+		testCoord.setLat(lat);
+		testCoord.setLon(lon);
+		testCoord.setTimestamp(timestamp);
+		testCoord.setEmail(id);
+		coordinatesService.setCoordinates(testCoord);
+		
+		int coordinatesidx = coordinatesService.selectidx(timestamp);
+		CheckpointVO checkpoint = new CheckpointVO();
+		checkpoint.setContent(content);
+		checkpoint.setTitle(title);
+		checkpoint.setCoordinatesidx(coordinatesidx);
+		coordinatesService.insertCheckpoint(checkpoint);
+		
+		return "complete";
 	}
 }

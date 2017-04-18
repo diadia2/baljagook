@@ -141,7 +141,7 @@ public class CoordinatesController {
    @ResponseBody
    public Object mapAgain(@RequestParam("start") String start, @RequestParam("end") String end, Model model) throws ParseException{
       
-      String id = "ghosdi0624@naver.com";
+      String id = "test@test.com";
       
       start += ":00";
       end += ":00";
@@ -151,7 +151,8 @@ public class CoordinatesController {
       
       SimpleDateFormat time2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
       String endTime = String.valueOf(time2.parse(end).getTime()/1000);
-      
+      System.out.println("startTime: "+startTime);
+      System.out.println("endTime: "+endTime);
       List<CoordinatesVO> list = coordinatesService.getLonLat(startTime, endTime, id);
       
       List<CheckpointVO> checkpointList = new ArrayList<CheckpointVO>();

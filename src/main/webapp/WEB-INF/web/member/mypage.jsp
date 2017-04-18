@@ -348,6 +348,7 @@ function deactivateAccount() {
 					</div>
 				</div>
 			</div>
+			
 			<div class="lpop">
 				<span class="btnx">×</span>
 				<div class="contentview">
