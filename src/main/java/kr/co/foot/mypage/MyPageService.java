@@ -9,6 +9,7 @@ public interface MyPageService {
 	public void insertImageName(MemberVO memberVO);
 	public String getImageName(String userid);
 	public MemberVO findByUserid(String userid);
+	public MemberVO findByEmail(String email);
 	public String getEmailByUserid(String userid);
 
 }

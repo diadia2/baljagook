@@ -32,6 +32,11 @@ public class MyPageServiceImp implements MyPageService {
 		MemberVO member = dao.findByUserid(userid);
 		return member;
 	}
+
+	public MemberVO findByEmail(String email) {
+		MemberVO member = dao.findByEmail(email);
+		return member;
+	}
 	
 	public String getEmailByUserid(String userid) {
 		String email = dao.getEmailByUserid(userid);

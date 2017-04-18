@@ -9,5 +9,6 @@ public interface MyPageDAO {
 	public void insertImageName(MemberVO memberVO);
 	public String getImageName(String userid);
 	public MemberVO findByUserid(String userid);
+	public MemberVO findByEmail(String Email);
 	public String getEmailByUserid(String userid);
 }

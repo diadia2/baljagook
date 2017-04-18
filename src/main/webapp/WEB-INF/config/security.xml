@@ -16,9 +16,14 @@
 		<intercept-url pattern="/images/**" access="permitAll" />
 		<intercept-url pattern="/css/**" access="permitAll" /> -->
 <!-- 		<intercept-url pattern="/**" access="hasRole('ROLE_ADMIN')" /> -->
+<<<<<<< HEAD
 <intercept-url pattern="/**" access="permitAll" />
 		<!-- <intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')" /> -->
 		<!-- <intercept-url pattern="/**" access="permitAll" /> -->
+=======
+		<intercept-url pattern="/**" access="permitAll" />
+		<intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')" />
+>>>>>>> 193f80db797f065ab38d290d45ecdb1a43e5de05
 		<!-- <intercept-url pattern="/users/**"
 			access="hasAnyRole('ROLE_ADMIN','ROLE_USER')" />
 		<intercept-url pattern="/bbs/**"
