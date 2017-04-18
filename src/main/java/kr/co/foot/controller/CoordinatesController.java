@@ -141,7 +141,7 @@ public class CoordinatesController {
    @ResponseBody
    public Object mapAgain(@RequestParam("start") String start, @RequestParam("end") String end, Model model) throws ParseException{
       
-      String id = "ghosdi0624@naver.com";
+      String id = "good@good.com";
       
       start += ":00";
       end += ":00";

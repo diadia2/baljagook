@@ -172,7 +172,7 @@ body {
     </c:forEach>
     var checkpointList = new Array();
     <c:forEach items="${checkpointList}" var="checkpointList">
-    	checkpointList.push({idx:${checkpointList.idx}, coordinatesidx:${checkpointList.coordinatesidx}, title:'${checkpointList.title}', content:'${checkpointList.content}'});
+    	checkpointList.push({idx:${checkpointList.idx}, coordinatesidx:${checkpointList.coordinatesidx}, title:'${checkpointList.title}', content:'${checkpointList.content}'};
     </c:forEach>
     var photoList = new Array();
     <c:forEach items="${photoList}" var="photoList">

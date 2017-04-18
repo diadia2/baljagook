@@ -959,6 +959,10 @@
 	function goSearch(){
 	    location.href = "${ pageContext.request.contextPath }/map/search.do?searchtext="+$('#searchtext').val();
 	}
+	
+	
+	//followBtn
+	
 	</script>
 
 
@@ -1009,6 +1013,7 @@
 			<div class="col-md-10">
 				<div class="col-md-12" style="text-align: center;">
 					<strong>${ mymapVO.title }</strong> <span style="font-size: 6pt">by ${ mymapVO.userid }</span>
+					<button id="followBtn">follow</button>
 				</div>
 				<br /> <br />
 				<div class="col-md-12" style="text-align: center;">
