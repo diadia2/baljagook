@@ -13,7 +13,9 @@ import javax.mail.Transport;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,7 @@ import com.sun.xml.internal.messaging.saaj.packaging.mime.MessagingException;
 
 import kr.co.foot.member.MemberVO;
 import kr.co.foot.mypage.MyPageService;
+import kr.co.foot.reglogin.AutoLoginDTO;
 import kr.co.foot.reglogin.LoginDTO;
 import kr.co.foot.reglogin.MemberDTO;
 import kr.co.foot.reglogin.RegLoginService;
@@ -48,30 +51,105 @@ public class RegLoginController {
 	@Autowired
 	private MyPageService myPageService;	
 	
-	//로그인 인증
-	@RequestMapping(value="/authenticate.do", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
+	//세션 체크
+	@RequestMapping(value="/checkSession.do", method=RequestMethod.GET)
 	@ResponseBody
-	public HashMap<String, String> authenticate(@RequestBody LoginDTO loginData, HttpServletRequest request) {
+	public HashMap<String, Boolean> checkSession(HttpServletRequest request) {
 		
-		HashMap<String, String> dataMap = new HashMap<String, String>();
-		String loginUserid = service.findByEmailPass(loginData);
-		if(loginUserid != null) {
-			HttpSession session = request.getSession(true);
-			session.setAttribute("user", loginUserid);
-			dataMap.put("redirectUrl", "main.do");
+		HashMap<String, Boolean> dataMap = new HashMap<String, Boolean>();
+		
+		HttpSession session = request.getSession();
+		String userid = (String) session.getAttribute("user");
+		System.out.println("세션에 로그인된 아이디: " +userid);
+		
+		if(userid != null) {
+			dataMap.put("checkSession", true);
 		} else {
-			dataMap.put("message", "이메일 또는 비밀번호가 틀렸습니다.");
+			dataMap.put("checkSession", false);
 		}
 		
 		return dataMap;
 	}
 	
+	//로그인 인증
+	@RequestMapping(value="/authenticate.do", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public HashMap<String, String> authenticate(@RequestBody LoginDTO loginData, HttpServletRequest request, HttpServletResponse response) {
+		
+		HashMap<String, String> dataMap = new HashMap<String, String>();
+
+		Cookie[] cookies = request.getCookies();
+		for(int i=0; i<cookies.length; i++) {
+			Cookie c = cookies[i];
+			
+			//먼저 자동로그인 쿠키가 있는지 확인
+			if(c.getName().equals("token")) {
+				String token = c.getValue();
+				String email = service.getEmailByToken(token);
+				String userid = service.getUseridByEmail(email);
+				HttpSession session = request.getSession(true);
+				session.setAttribute("user", userid);
+			
+			//자동로그인 쿠키가 없다면	
+			} else {
+				
+				//데이터베이스의 회원정보로 로그인 입력정보가 맞는지 확인
+				String loginUserid = service.findByEmailPass(loginData);
+				if(loginUserid != null) {
+					HttpSession session = request.getSession(true);
+					session.setAttribute("user", loginUserid);
+					dataMap.put("redirectUrl", "main.do");
+					
+					//자동로그인 toggle을 선택하면 자동로그인 쿠키 설정
+					if(loginData.getAutoLogin().equals("true")) {
+						String token = CommonUtils.getRandomString();
+						Cookie cToken = new Cookie("token", token);
+						cToken.setMaxAge(60*60*24*7);
+						response.addCookie(cToken);
+						
+						AutoLoginDTO autoLoginDTO = new AutoLoginDTO();
+						autoLoginDTO.setEmail(loginData.getEmail());
+						autoLoginDTO.setToken(token);
+						service.insertAutoLoginData(autoLoginDTO);
+					}			
+					
+				} else {
+					dataMap.put("message", "이메일 또는 비밀번호가 틀렸습니다.");
+				}		
+			}
+		}
+		
+		return dataMap;
+		
+	}
+	
 	//로그아웃
 	@RequestMapping(value="/logout.do")
-	public String logout(HttpServletRequest request) {
+	public String logout(HttpServletRequest request, HttpServletResponse response) {
 		HttpSession session = request.getSession(true);
-		session.invalidate();
 		
+		//세션 무효화
+		session.invalidate();
+
+		Cookie[] cookies = request.getCookies();
+		//쿠키가 존재하면
+		if(cookies != null) {
+			for(int i=0; i<cookies.length; i++) {
+				Cookie c = cookies[i];
+				//자동로그인 쿠키가 있으면
+				if(c.getName().equals("token")) {
+					if(c.getValue() != null) {
+						String token = c.getValue();
+						//데이터베이스에 저장된 자동로그인 쿠키(토큰)를 지우고
+						service.deleteAutoLoginData(token);
+						//자동로그인 쿠키 무효화
+						c.setMaxAge(0);
+						c.setValue(null);
+						response.addCookie(c);
+					}
+				}
+			}
+		}
 		return "redirect:/";
 	}
 	

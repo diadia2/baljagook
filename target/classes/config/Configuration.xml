@@ -9,6 +9,7 @@
 		<typeAlias type="kr.co.foot.like.LikeVO" alias="LikeVO" />
 		<typeAlias type="kr.co.foot.member.MemberVO" alias="MemberVO" />
 		<typeAlias type="kr.co.foot.reglogin.LoginDTO" alias="LoginDTO" />
+		<typeAlias type="kr.co.foot.reglogin.AutoLoginDTO" alias="AutoLoginDTO" />
 	</typeAliases>
 
 	<!-- <mappers>

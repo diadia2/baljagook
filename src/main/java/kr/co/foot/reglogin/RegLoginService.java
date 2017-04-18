@@ -10,4 +10,8 @@ public interface RegLoginService {
 	public String findByCode(String code);
 	public void verifyEmail(String email);
 	public String findByUserid(String userid);
+	public void insertAutoLoginData(AutoLoginDTO autoLoginDTO);
+	public String getEmailByToken(String token);
+	public String getUseridByEmail(String email);
+	public void deleteAutoLoginData(String token);
 }

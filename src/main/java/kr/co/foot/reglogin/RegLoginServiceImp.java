@@ -39,4 +39,22 @@ public class RegLoginServiceImp implements RegLoginService {
 	public void verifyEmail(String email) {
 		dao.verifyEmail(email);
 	}
+	
+	public void insertAutoLoginData(AutoLoginDTO autoLoginDTO) {
+		dao.insertAutoLoginData(autoLoginDTO);
+	}
+	
+	public String getEmailByToken(String token) {
+		String email = dao.getEmailByToken(token);
+		return email;
+	}
+	
+	public String getUseridByEmail(String email) {
+		String userid = dao.getUseridByEmail(email);
+		return userid;
+	}
+	
+	public void deleteAutoLoginData(String token) {
+		dao.deleteAutoLoginData(token);
+	}
 }
