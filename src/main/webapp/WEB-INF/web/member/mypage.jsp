@@ -188,6 +188,18 @@
 	}
 
     }
+     
+/*-----------------------비밀번호 형식 체크------------------------*/
+	function validatePassword(inputPassword) {
+		var passwordFormat = /^[a-zA-Z-0-9!@#$%^&*]{5,15}$/;
+ 		
+		if (inputPassword.match(passwordFormat)) {
+			return true;
+		} else {
+			return false;
+		}
+	}	     
+     
 </script>
 <script>
 /*------------------비밀번호 변경-------------------------*/		
@@ -199,28 +211,32 @@ $(document).ready(function () {
 		var inputNewPw = $('#changePassForm input[name=newPassword]').val();
 		var inputNewPwConfirm = $('#changePassForm input[name=newPasswordConfirm]').val();
 		
-		if(inputNewPw != inputNewPwConfirm) {
-			alert('비밀번호가 일치하지 않습니다');
+		if(!validatePassword(inputNewPw)) {
+			alert('비밀번호 형식이 맞지 않습니다(길이: 5-15, 특수문자(!@#$%^&*만 가능), 공백 제외)');
 		} else {
-			var newPassInfo = {
-					'currentPassword' : $('#changePassForm input[name=currentPassword]').val(),
-					'newPassword' : $('#changePassForm input[name=newPassword]').val()
-			};
-			var dataJSON = JSON.stringify(newPassInfo);
-			
-			$.ajax({
-				type : 'POST',
-				data : dataJSON,
-				url : '${ pageContext.request.contextPath }/changePassword.do',
-				contentType : 'application/json',
-				dataType : 'json',
-				success : (function(data) {
-					alert(data['message']);
-					if(data['redirectUrl'] != null) {
-						window.location.href = '${ pageContext.request.contextPath }/'+data['redirectUrl'];
-					}
-				})
-			});			
+			if(inputNewPw != inputNewPwConfirm) {
+				alert('비밀번호가 일치하지 않습니다');
+			} else {
+				var newPassInfo = {
+						'currentPassword' : $('#changePassForm input[name=currentPassword]').val(),
+						'newPassword' : $('#changePassForm input[name=newPassword]').val()
+				};
+				var dataJSON = JSON.stringify(newPassInfo);
+				
+				$.ajax({
+					type : 'POST',
+					data : dataJSON,
+					url : '${ pageContext.request.contextPath }/changePassword.do',
+					contentType : 'application/json',
+					dataType : 'json',
+					success : (function(data) {
+						alert(data['message']);
+						if(data['redirectUrl'] != null) {
+							window.location.href = '${ pageContext.request.contextPath }/'+data['redirectUrl'];
+						}
+					})
+				});			
+			}			
 		}
 	});		
 });

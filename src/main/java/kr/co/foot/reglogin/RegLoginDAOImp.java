@@ -43,4 +43,22 @@ public class RegLoginDAOImp implements RegLoginDAO {
 	public void verifyEmail(String email) {
 		sst.update("kr.co.foot.reglogin.RegLoginDAO.verifyEmail", email);
 	}
+	
+	public void insertAutoLoginData(AutoLoginDTO autoLoginDTO) {
+		sst.insert("kr.co.foot.reglogin.RegLoginDAO.insertAutoLoginEmail", autoLoginDTO);
+	}
+	
+	public String getEmailByToken(String token) {
+		String email = sst.selectOne("kr.co.foot.reglogin.RegLoginDAO.getEmailByToken", token);
+		return email;
+	}
+	
+	public String getUseridByEmail(String email) {
+		String userid = sst.selectOne("kr.co.foot.reglogin.RegLoginDAO.getUseridByEmail", email);
+		return userid;
+	}
+	
+	public void deleteAutoLoginData(String token) {
+		sst.delete("kr.co.foot.reglogin.RegLoginDAO.deleteAutoLoginData", token);
+	}
 }

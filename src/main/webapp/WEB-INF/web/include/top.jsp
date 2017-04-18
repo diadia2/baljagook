@@ -185,16 +185,77 @@ body {
 	    location.href = "${ pageContext.request.contextPath }/map/search.do?searchtext="+$('#searchtext').val();
 	}
 </script>
-<script> 
+<script>
+
+/*-----------------------세션에 아이디가 있는지 확인------------------------*/
+	var check;
+	function checkSession() {
+		$.ajax({
+			type : 'GET',
+			url : '${ pageContext.request.contextPath }/checkSession.do',
+			dataType : 'json',
+			async : false,
+			success : function(data) {
+ 				check = data['checkSession'];
+			}
+		});
+	};
+
+/*-----------------------페이지 onload 시 쿠키 확인------------------------*/
+	function checkAutoLoginCookie() {
+		checkSession();
+		
+		if(check) {
+			console.log('세션에 이미 로그인 되어있음');
+		} else {
+			console.log('쿠키 있는지 확인할게');
+			if(Cookies.get('token') != null ) {
+				console.log('쿠키 있음');
+				
+				var loginInfo = {
+						'email' : null,
+						'password' : null,
+						'autoLogin' : null
+				};
+				var dataJSON = JSON.stringify(loginInfo);
+				
+	    			$.ajax({
+						type : 'POST',
+						data : dataJSON,
+						url : '${ pageContext.request.contextPath }/authenticate.do',
+						contentType : 'application/json',
+						dataType : 'json',
+						success : (function() {
+ 							window.location.href = '${ pageContext.request.contextPath }/main.do';	
+ 						})
+					});	
+			} else {
+				console.log('쿠키 없음');
+			}				
+		}
+	}
+
 	$(document).ready(function() {
+		var autoLogin="false";
+
+/*-----------------------자동로그인 Toggle 확인------------------------*/
+		$('#toggleButton').change(function() {
+			console.log('checking autologin');
+			console.log($(this).is(":checked"));
+			if($(this).is(":checked")) {
+				autoLogin = "true";
+			}
+		});
+		
 /*------------------------로그인------------------------*/
 		$('#loginForm').on('submit', function(e) {
 			console.log('loginForm submitted');
-			e.preventDefault();
+			e.preventDefault();			
 			
 			var loginInfo = {
 					'email' : $('#loginForm input[name=email]').val(),
-					'password' : $('#loginForm input[name=password]').val()
+					'password' : $('#loginForm input[name=password]').val(),
+					'autoLogin' : autoLogin
 			};
 			var dataJSON = JSON.stringify(loginInfo);
 			
@@ -325,11 +386,13 @@ body {
 				}
 			});				
 		});
+		
+	
 	
 	});
 </script>
 </head>
-<body>
+<body onload="checkAutoLoginCookie()">
 	<!-- 상단 바 -->
 	<nav class="navbar navbar-default navbar-fixed-top">
 		<div class="container-fluid">
@@ -404,7 +467,6 @@ body {
 			</div>
 		</div>	 
 	</div>	
-	
 
 	<!-- 로그인 Modal -->
 	<div class="modal fade" id="loginModal" tabindex="-1" role="dialog"
@@ -425,7 +487,7 @@ body {
 					<div class="container-fluid">
 						<div class="row">
 							<br /> <br /> <br />
-							<h5 class="col-md-12 text-center">Sign in to your account</h5>
+							<h5 class="col-md-12 text-center">로그인하세요^^</h5>
 							<br /> <br /> <br />
 						</div>
 						<div class="row">
@@ -434,7 +496,7 @@ body {
 							</div>
 							<div class="col-md-11 form-group">
 								<input type="text" name="email" class="form-control modal-text"
-									placeholder="Email or username">
+									placeholder="이메일">							
 							</div>
 						</div>
 						<div class="row">
@@ -443,13 +505,13 @@ body {
 							</div>
 							<div class="col-md-11 form-group">
 								<input type="password" name="password" class="form-control modal-text"
-									placeholder="Password">
+									placeholder="비밀번호">							
 							</div>
 						</div>
 						<div class="row">
 							<div class="col-md-12 text-right">
 								<div class="toggle-button toggle-button--ilma">
-									<input id="toggleButton" type="checkbox"> <label
+									<input id="toggleButton" type="checkbox" > <label
 										for="toggleButton" data-on-text="AutoLogin"
 										data-off-text="Off" style="font-weight: bold; color: #CED2DA;"></label>
 									<div class="toggle-button__icon"></div>
@@ -545,21 +607,20 @@ body {
 					</form>
 				</div>
 			</div>
-				</div>
-				<div class="modal-footer">
-					<div class="col-md-4"></div>
-					<div class="col-md-4 text-center">
-						<button class="dropdown-item btn btn-primary" type="button"
-							data-toggle="modal" data-target="#loginModal"
-							data-dismiss="modal" data-backdrop="static" data-keyboard="false">
-							<i class="fa fa-sign-in" aria-hidden="true"></i>&nbsp;Sign In
-						</button>
-					</div>
-					<div class="col-md-4"></div>
-				</div>
+		</div>
+		<div class="modal-footer">
+			<div class="col-md-4"></div>
+			<div class="col-md-4 text-center">
+				<button class="dropdown-item btn btn-primary" type="button"
+					data-toggle="modal" data-target="#loginModal"
+					data-dismiss="modal" data-backdrop="static" data-keyboard="false">
+					<i class="fa fa-sign-in" aria-hidden="true"></i>&nbsp;Sign In
+				</button>
 			</div>
+			<div class="col-md-4"></div>
 		</div>
 	</div>
+
 	<!-- 비밀번호찾기 Modal -->
 	<div class="modal fade" id="passwordModal" tabindex="-1" role="dialog"
 		aria-labelledby="passwordModalTitle" aria-hidden="true">

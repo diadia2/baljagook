@@ -29,4 +29,20 @@
     <update id="verifyEmail" parameterType="String">
         update t_member set status = 1 where email = #{email}
     </update>
+    
+    <insert id="insertAutoLoginEmail" parameterType="AutoLoginDTO">
+        insert into t_autologin(email, token) values(#{email}, #{token})
+    </insert>
+    
+    <select id="getEmailByToken" parameterType="String" resultType="String">
+        select email from t_autologin where token = #{token} 
+    </select>
+    
+    <select id="getUseridByEmail" parameterType="String" resultType="String">
+        select userid from t_member where email = #{email}
+    </select>
+    
+    <delete id="deleteAutoLoginData" parameterType="String">
+        delete from t_autologin where token = #{token}
+    </delete>
 </mapper>
