@@ -66,20 +66,20 @@
 			<artifactId>spring-security-core</artifactId>
 			<version>${spring.security.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-web</artifactId>
 			<version>${spring.security.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-config</artifactId>
 			<version>${spring.security.version}</version>
 			<scope>runtime</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-taglibs</artifactId>
@@ -224,7 +224,7 @@
 			<artifactId>aspectjweaver</artifactId>
 			<version>1.8.10</version>
 		</dependency>
-		
+
 		<!-- https://mvnrepository.com/artifact/junit/junit --><!-- 단위 테스트할려고 -->
 		<dependency>
 			<groupId>junit</groupId>
@@ -241,17 +241,31 @@
 
 		<!-- https://mvnrepository.com/artifact/com.sun.mail/javax.mail -->
 		<dependency>
-		    <groupId>com.sun.mail</groupId>
-		    <artifactId>javax.mail</artifactId>
-		    <version>1.5.6</version>
+			<groupId>com.sun.mail</groupId>
+			<artifactId>javax.mail</artifactId>
+			<version>1.5.6</version>
 		</dependency>
-		
+
 		<!-- Amazon Web Service -->
 		<dependency>
 			<groupId>com.amazonaws</groupId>
 			<artifactId>aws-java-sdk</artifactId>
 			<version>1.11.109</version>
-		</dependency>		
+		</dependency>
+
+		<!-- spring-websocket -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-websocket</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+
+		<!-- spring-messaging -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-messaging</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
 
 	</dependencies>
 

@@ -26,15 +26,15 @@
 
 .coupon_tab_btn{ text-align: center; padding: 3%; }
 .coupon_tab_btn .tab_btn{ background: #dcdcdc;  display: inline-block; width: 32%; }
-.coupon_tab_btn .tab_btn a{ display: block; color: #777777; display: block; font-size: 0.93em; padding: 10% 0; font-weight: bold; text-indent: 27%; }
+.coupon_tab_btn .tab_btn a{ display: block; color: #777777; font-size: 0.93em; padding: 10% 0; font-weight: bold;}
 .coupon_tab_btn .tab_btn.active{ background: #55a425; }
 .coupon_tab_btn .tab_btn.active a{ color: #fff; }
-.coupon_tab_btn .tab01 a{ background: url('../images/navi_tap01.png') 5% center no-repeat; background-size: 35%; }
-.coupon_tab_btn .tab01.active a{ background: url('../images/navi_tap01_on.png') 5% center no-repeat; background-size: 35%; }
-.coupon_tab_btn .tab02 a{ background: url('../images/navi_tap02.png') 5% center no-repeat; background-size: 35%; }
-.coupon_tab_btn .tab02.active a{ background: url('../images/navi_tap02_on.png') 5% center no-repeat; background-size: 35%; }
-.coupon_tab_btn .tab03 a{ background: url('../images/navi_tap03.png') 5% center no-repeat; background-size: 35%; }
-.coupon_tab_btn .tab03.active a{ background: url('../images/navi_tap03_on.png') 5% center no-repeat; background-size: 35%; }
+.coupon_tab_btn .tab01 a{ background: url('../images/mobile/navi_tap01.png') 5% center no-repeat; background-size: 35%; }
+.coupon_tab_btn .tab01.active a{ background: url('../images/mobile/navi_tap01_on.png') 5% center no-repeat; background-size: 35%; }
+.coupon_tab_btn .tab02 a{ background: url('../images/mobile/navi_tap02.png') 5% center no-repeat; background-size: 35%; }
+.coupon_tab_btn .tab02.active a{ background: url('../images/mobile/navi_tap02_on.png') 5% center no-repeat; background-size: 35%; }
+.coupon_tab_btn .tab03 a{ background: url('../images/mobile/navi_tap03.png') 5% center no-repeat; background-size: 35%; }
+.coupon_tab_btn .tab03.active a{ background: url('../images/mobile/navi_tap03_on.png') 5% center no-repeat; background-size: 35%; }
 
 .coupon_tab_con{ display: none; }
 

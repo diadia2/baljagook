@@ -4,7 +4,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:mybatis="http://mybatis.org/schema/mybatis-spring"
 	xmlns:p="http://www.springframework.org/schema/p" xmlns:aop="http://www.springframework.org/schema/aop"
-	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:websocket="http://www.springframework.org/schema/websocket"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans 
         http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/security
@@ -18,7 +18,8 @@
         http://mybatis.org/schema/mybatis-spring 
         http://mybatis.org/schema/mybatis-spring.xsd
         http://www.springframework.org/schema/tx
-    	http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+    	http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+    	http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket.xsd">
 
 	<security:global-method-security
 		pre-post-annotations="enabled" />
@@ -44,7 +45,7 @@
 					</list>
 				</property>
 			</bean>
-			
+
 			<bean
 				class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
 				<property name="supportedMediaTypes">
@@ -97,4 +98,11 @@
 		</property>
 	</bean>
 
+	<!-- websocket/sockjs -->
+	<websocket:handlers>
+		<websocket:mapping handler="echoHandler" path="/echo"/>
+		<websocket:sockjs />
+	</websocket:handlers>
+	<bean id="echoHandler" class="kr.co.foot.common.EchoHandler"/>
+	
 </beans>

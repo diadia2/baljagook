@@ -168,11 +168,11 @@ body {
     // 시간별 좌표 불러오기
     var listLonLat = new Array();
     <c:forEach items="${list}" var="list">
-    	listLonLat.push({lat:${list.lat},lng:${list.lon},idk:${list.idk}});
+    	listLonLat.push({lat:${list.lat},lng:${list.lon},idk:${list.idk}, accuracy:${list.accuracy}});
     </c:forEach>
     var checkpointList = new Array();
     <c:forEach items="${checkpointList}" var="checkpointList">
-    	checkpointList.push({idx:${checkpointList.idx}, coordinatesidx:${checkpointList.coordinatesidx}, title:'${checkpointList.title}', content:'${checkpointList.content}'});
+    	checkpointList.push({idx:${checkpointList.idx}, coordinatesidx:${checkpointList.coordinatesidx}, title:'${checkpointList.title}', content:'${checkpointList.content}'};
     </c:forEach>
     var photoList = new Array();
     <c:forEach items="${photoList}" var="photoList">
@@ -349,7 +349,8 @@ body {
 							    title:checkpointList[j].title,
 							    content:checkpointList[j].content,
 							    filename:filename,
-							    checkpointList:checkpointList[j].idx
+							    checkpointList:checkpointList[j].idx,
+							    accuracy:listLonLat[i].accuracy
 							}));
 					 		   
 							  var listener2 = google.maps.event.addListener(map, 'click', function(){
@@ -363,7 +364,7 @@ body {
 								  }
 								  infowindow = new google.maps.InfoWindow({
 									    content: '<img src="${ pageContext.request.contextPath }/resources/photo/'+this.filename+'" width="200px" height="200px"/><br/>'+
-											    (this.num+1)+". "+this.title+'<br/>'+this.content+
+											    (this.num+1)+". "+this.title+'<br/>'+this.content+this.accuracy+'<br/>'+
 											    '<br/><input type="button" value="출발설정" onClick="startCheck('+
 									    		this.position.lat().toString()+", "+this.position.lng().toString()+')"/><input type="button" value="도착설정" onClick="endCheck('+
 									    		this.position.lat().toString()+", "+this.position.lng().toString()+')"/><input type="button" value="위치삭제" onClick="removeSpot('+
@@ -379,7 +380,8 @@ body {
 									    num :i,
 									    title:checkpointList[j].title,
 									    content:checkpointList[j].content,
-									    checkpointList:checkpointList[j].idx
+									    checkpointList:checkpointList[j].idx,
+									    accuracy:listLonLat[i].accuracy
 									}));
 						 		   
 								  var listener3 = google.maps.event.addListener(map, 'click', function(){
@@ -392,7 +394,7 @@ body {
 										  infowindow.close();
 									  }
 									  infowindow = new google.maps.InfoWindow({
-										    content: (this.num+1)+". "+this.title+'<br/>'+this.content+
+										    content: (this.num+1)+". "+this.title+'<br/>'+this.content+this.accuracy+
 										    '<br/><input type="button" value="출발설정" onClick="startCheck('+
 										    		this.position.lat().toString()+", "+this.position.lng().toString()+')"/><input type="button" value="도착설정" onClick="endCheck('+
 										    		this.position.lat().toString()+", "+this.position.lng().toString()+')"/><input type="button" value="위치삭제" onClick="removeSpot('+
@@ -417,7 +419,8 @@ body {
 							    icon : {
 								    url: 'http://openmap2.tmap.co.kr/point.png'
 								  },
-							    title:""
+							    title:"",
+							    accuracy:listLonLat[i].accuracy
 							}));
 				 		   
 						  var listener3 = google.maps.event.addListener(map, 'click', function(){
@@ -430,7 +433,7 @@ body {
 								  infowindow.close();
 							  }
 							  infowindow = new google.maps.InfoWindow({
-								    content: (this.num+1)+". "+(this.position.lat()).toFixed(7).toString()+", "+(this.position.lng()).toFixed(7).toString()+
+								    content: (this.num+1)+". "+(this.position.lat()).toFixed(7).toString()+", "+(this.position.lng()).toFixed(7).toString()+'<br/>'+this.accuracy+
 								    '<br/><input type="button" value="출발설정" onClick="startCheck('+
 								    		this.position.lat().toString()+", "+this.position.lng().toString()+')"/><input type="button" value="도착설정" onClick="endCheck('+
 								    		this.position.lat().toString()+", "+this.position.lng().toString()+')"/><input type="button" value="위치삭제" onClick="removeSpot('+

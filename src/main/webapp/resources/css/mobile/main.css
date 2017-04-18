@@ -162,6 +162,13 @@
 .foot_depth01 > li > ul.depth02 > li > a{ vertical-align:middle; display:block; line-height:34px; color:#fff; padding:0 18px; }
 .foot_depth01 > li > ul.depth02 > li > a img{ width:30px; vertical-align:middle; }
 
+.foot_depth01 > div{ 
+	
+	float: left; border-bottom:1px solid grey; box-sizing: border-box; 
+	position:relative; display:inline-block;  padding: 7% 0; width:100%;
+}
+.foot_depth01 > div:first-child{ padding: 3% 0; }
+
 
 
 
