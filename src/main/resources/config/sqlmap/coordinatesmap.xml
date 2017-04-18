@@ -7,11 +7,7 @@
    </insert>
    
    <select id="getLonLat" parameterType="kr.co.foot.coordinates.TimeStampVO" resultType="kr.co.foot.coordinates.CoordinatesVO">
-<<<<<<< HEAD
        select idk, lon, lat, timestamp, accuracy, email from t_coordinates where accuracy <![CDATA[<]]> 70 and email = #{id} and timestamp between #{startTime} and #{endTime} group by timestamp order by idk DESC
-=======
-       select idk, lon, lat, timestamp, accuracy, email from t_coordinates where accuracy <![CDATA[<]]> 100 and email = #{id} and timestamp between #{startTime} and #{endTime} group by lon order by idk DESC
->>>>>>> 193f80db797f065ab38d290d45ecdb1a43e5de05
    </select>
    
    <select id="selectidx" parameterType="String" resultType="int">
