@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8" session="true"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
@@ -979,19 +979,31 @@ function getLoadWalk(e){
 		<aside id="side_menu">
 
 			<!-- 로그인 안되었을 때 -->
-			<div class="user_info">
-				<div class="user_img" id="user_img">
-					<a href="${pageContext.request.contextPath }/resources/images/mobile/login.html"> <img src="${pageContext.request.contextPath }/resources/images/mobile/user_no_img.png"
-						alt="유저이미지" />
-					</a>
+			<c:if test="${ empty sessionScope.user }">
+				<div class="user_info">
+					<div class="user_img" id="user_img">
+						<a href="${pageContext.request.contextPath }/m/login.do"> <img src="${pageContext.request.contextPath }/resources/images/mobile/user_no_img.png"
+							alt="유저이미지" />
+						</a>
+					</div>
+					<div class="user_txt" style="vertical-align: middle;">
+						<a href="${pageContext.request.contextPath }/m/login.do"><strong class="login_txt01">로그인을
+								해주세요.</strong></a>
+	
+					</div>
 				</div>
-				<div class="user_txt" style="vertical-align: middle;">
-					<a href="./login.html"><strong class="login_txt01">로그인을
-							해주세요.</strong></a>
-
+			</c:if>
+			
+			<!-- 로그인 되어있을 때 -->
+			<c:if test="${ not empty sessionScope.user }">
+				<div class="user_info">
+					<div class="user_img" id="user_img">
+            			<label>ID : ${ sessionScope.user } </label>
+            			<br/>
+            			<a href="${ pageContext.request.contextPath }/m/logout.do">로그아웃</a>
+					</div>
 				</div>
-			</div>
-
+			</c:if>
 
 
 			<!-- 로그인 안되었을 때 -->
@@ -1069,11 +1081,13 @@ function getLoadWalk(e){
 
 
 				</ul>
-				<div class="register_btn">
-					<label for="agree01" class="ios_check"><input
-						type="checkbox" id="agree01" class="ios-switch green  bigswitch"><span><span></span></span>
-						<span class="t_xt">실시간 기록</span> </label>
-				</div>
+				<c:if test="${ not empty sessionScope.user }">
+					<div class="register_btn">
+						<label for="agree01" class="ios_check"><input
+							type="checkbox" id="agree01" class="ios-switch green  bigswitch"><span><span></span></span>
+							<span class="t_xt">실시간 기록</span> </label>
+					</div>
+				</c:if>
 
 			</nav>
 			<a href="#!" class="btn_slide_close"><img
