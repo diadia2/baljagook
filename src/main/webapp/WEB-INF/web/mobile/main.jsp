@@ -42,6 +42,7 @@
 	src="${pageContext.request.contextPath }/resources/js/mobile/jquery.swipebox.js"></script>
 <link href="${pageContext.request.contextPath }/resources/js/mobile/swipebox.css"
 	rel="stylesheet" type="text/css" />
+<script src="${pageContext.request.contextPath}/resources/js/js.cookie.js"></script>	
 
 
 <!-- Add fancyBox main JS and CSS files -->
@@ -108,8 +109,10 @@
 		map.setCenter(center);
 	}	
 	
-	
 	$(document).ready(function() {
+		
+		checkAutoLoginCookie();		
+		
 		$("#hidden_favMap").hide();
 		$("#hidden_favPlace").hide();
 		$("#hidden_myPlan").hide();
@@ -973,7 +976,7 @@ function checkAutoLoginCookie() {
 					contentType : 'application/json',
 					dataType : 'json',
 					success : (function() {
-							window.location.href = '${ pageContext.request.contextPath }/m/main.do';	
+ 							window.location.href = '${ pageContext.request.contextPath }/m/main.do';	
 						})
 				});	
 		} else {
@@ -986,20 +989,29 @@ function checkAutoLoginCookie() {
 	function goSearch() {
 		location.href="${ pageContext.request.contextPath }/m/search.do";
 	}
+	function showLoginForm() {
+		location.href="${ pageContext.request.contextPath }/m/login.do";
+	}
 </script>
 </head>
-<body onload="checkAutoLoginCookie()">
-	<div class="side_menu_bg"></div>
-	<div class="layer_bg"></div>
-
+<body>
+		<div class="side_menu_bg"></div>
+		<div class="layer_bg"></div>
 	<div id="wrap" style="height: 100%;">
 
 		<header id="header" class="clearfix">
-			<a href="#!" class="gnb_menu"> <span class="left"></span> <span
-				class="center"></span> <span class="right"></span>
-			</a>
+			<c:if test="${ empty sessionScope.user }">
+				<a href="javascript:showLoginForm()" class="gnb_menu"> <span class="left"></span> <span
+					class="center"></span> <span class="right"></span>
+				</a>
+			</c:if>
+			<c:if test="${ not empty sessionScope.user }">
+				<a href="#!" class="gnb_menu"> <span class="left"></span> <span
+					class="center"></span> <span class="right"></span>
+				</a>			
+			</c:if>
 			<h2 class="page_tit">
-				<a href="./main.html"><img src="${pageContext.request.contextPath }/resources/images/mobile/logo.png" alt="로고"
+				<a href="${ pageContext.request.contextPath }/m/main.do"><img src="${ pageContext.request.contextPath }/resources/images/mobile/logo.png" alt="로고"
 					class="logo" style="height: 60px;" /></a>
 			</h2>
 

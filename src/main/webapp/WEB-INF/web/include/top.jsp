@@ -186,7 +186,6 @@ body {
 	}
 </script>
 <script>
-
 /*-----------------------세션에 아이디가 있는지 확인------------------------*/
 	var check;
 	function checkSession() {
@@ -205,7 +204,11 @@ body {
 	function checkAutoLoginCookie() {
 		checkSession();
 		
-		if(check) {
+/* 		console.log('지우기 전 쿠키 : ' +Cookies.get('token'));
+		Cookies.remove('token', { path: '${pageContext.request.contextPath}'});
+		console.log('지우기  쿠키 : ' +Cookies.get('token')); */
+		
+ 		if(check) {
 			console.log('세션에 이미 로그인 되어있음');
 		} else {
 			console.log('쿠키 있는지 확인할게');
@@ -226,16 +229,17 @@ body {
 						contentType : 'application/json',
 						dataType : 'json',
 						success : (function() {
- 							window.location.href = '${ pageContext.request.contextPath }/main.do';	
+  							window.location.href = '${ pageContext.request.contextPath }/main.do';	
  						})
 					});	
 			} else {
 				console.log('쿠키 없음');
 			}				
 		}
-	}
+	} 
 
 	$(document).ready(function() {
+		checkAutoLoginCookie();
 		var autoLogin="false";
 
 /*-----------------------자동로그인 Toggle 확인------------------------*/
@@ -392,7 +396,7 @@ body {
 	});
 </script>
 </head>
-<body onload="checkAutoLoginCookie()">
+<body>
 	<!-- 상단 바 -->
 	<nav class="navbar navbar-default navbar-fixed-top">
 		<div class="container-fluid">
