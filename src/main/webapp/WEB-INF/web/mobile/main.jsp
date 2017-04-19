@@ -992,6 +992,17 @@ function checkAutoLoginCookie() {
 	function showLoginForm() {
 		location.href="${ pageContext.request.contextPath }/m/login.do";
 	}
+	$(document).ready(function() {
+		$("#noUser_show_favMap").click(function() {			
+			showLoginForm();
+		});
+		$("#noUser_show_favPlace").click(function() {			
+			showLoginForm();
+		});
+		$("#noUser_show_myPlan").click(function() {			
+			showLoginForm();
+		});		
+	});	
 </script>
 </head>
 <body>
@@ -1000,16 +1011,9 @@ function checkAutoLoginCookie() {
 	<div id="wrap" style="height: 100%;">
 
 		<header id="header" class="clearfix">
-			<c:if test="${ empty sessionScope.user }">
-				<a href="javascript:showLoginForm()" class="gnb_menu"> <span class="left"></span> <span
-					class="center"></span> <span class="right"></span>
-				</a>
-			</c:if>
-			<c:if test="${ not empty sessionScope.user }">
 				<a href="#!" class="gnb_menu"> <span class="left"></span> <span
 					class="center"></span> <span class="right"></span>
 				</a>			
-			</c:if>
 			<h2 class="page_tit">
 				<a href="${ pageContext.request.contextPath }/m/main.do"><img src="${ pageContext.request.contextPath }/resources/images/mobile/logo.png" alt="로고"
 					class="logo" style="height: 60px;" /></a>
@@ -1069,16 +1073,22 @@ function checkAutoLoginCookie() {
 			<nav id="gnb">
 				<ul class="depth01 clearfix">
 
-
+				
 					<li><a href="#!"> <img src="${pageContext.request.contextPath }/resources/images/mobile/icon_menu1.png"
 							alt="즐겨찾기" /> <span>즐겨찾기</span>
 					</a> <img class="menu_rg" src="${pageContext.request.contextPath }/resources/images/mobile/icon_menu4.png" alt="검색"
-						onclick="goSearch();" /></li>
-
-
+						onclick=
+							<c:if test='${ empty sessionScope.user }'>  "showLoginForm();" </c:if>
+							<c:if test='${ not empty sessionScope.user }'>  "goSearch();" </c:if>
+							/></li>
 
 					<!-- 즐겨찾기한 지도 목록 보기 -->
-					<li id="show_favMap"><a href="#!"> <img
+					<li id=
+							<c:if test='${ empty sessionScope.user }'>  "noUser_show_favMap" </c:if>
+							<c:if test='${ not empty sessionScope.user }'>  "show_favMap" </c:if>
+							>					
+
+					<a href="#!"> <img
 							src="${pageContext.request.contextPath }/resources/images/mobile/icon_menu2.png" alt="즐찾지도" /> <span>Map</span>
 					</a> <span class="menu_te">▼</span></li>
 					<li id="hidden_favMap">
@@ -1092,7 +1102,11 @@ function checkAutoLoginCookie() {
 					</li>
 
 					<!-- 즐겨찾기한 장소 목록 보기 -->
-					<li id="show_favPlace"><a href="#!"> <img
+					<li id=
+							<c:if test='${ empty sessionScope.user }'>  "noUser_show_favPlace" </c:if>
+							<c:if test='${ not empty sessionScope.user }'>  "show_favPlace" </c:if>
+					>
+					<a href="#!"> <img
 							src="${pageContext.request.contextPath }/resources/images/mobile/icon_menu3.png" alt="즐찾장소" /> <span>Place</span>
 					</a> <span class="menu_te">▼</span></li>
 					<li id="hidden_favPlace">
@@ -1107,7 +1121,11 @@ function checkAutoLoginCookie() {
 					</li>
 
 					<!-- 내 여행계획 보기 -->
-					<li id="show_myPlan"><a href="#!"> <img src="${pageContext.request.contextPath }/resources/images/mobile/icon_menu1.png" alt="내계획" /> <span>My Plan</span>
+					<li id=
+							<c:if test='${ empty sessionScope.user }'>  "noUser_show_myPlan" </c:if>
+							<c:if test='${ not empty sessionScope.user }'>  "show_myPlan" </c:if>
+					>
+					<a href="#!"> <img src="${pageContext.request.contextPath }/resources/images/mobile/icon_menu1.png" alt="내계획" /> <span>My Plan</span>
 					</a> <span class="menu_te">▼</span></li>
 					<li id="hidden_myPlan">
 						<div id="myPlanList"
