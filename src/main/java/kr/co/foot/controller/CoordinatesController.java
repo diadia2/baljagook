@@ -62,9 +62,9 @@ public class CoordinatesController {
          @RequestParam("hashtag") String hashtag,
          @RequestParam("content") String content, Model model, HttpSession session) throws ParseException{
       
-//      String id = session.getAttribute("email");
+      String id = (String)session.getAttribute("user");
       
-      String id = "ghosdi0624@naver.com";
+//      String id = "test@test.com";
       
       start += ":00";
       end += ":00";
@@ -139,9 +139,9 @@ public class CoordinatesController {
    // ajax
    @RequestMapping("/map/mapAgain.do")
    @ResponseBody
-   public Object mapAgain(@RequestParam("start") String start, @RequestParam("end") String end, Model model) throws ParseException{
+   public Object mapAgain(@RequestParam("start") String start, @RequestParam("end") String end, Model model, HttpSession session) throws ParseException{
 
-      String id = "test@test.com";
+	  String id = (String)session.getAttribute("user");
 
       
       start += ":00";

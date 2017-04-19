@@ -623,6 +623,10 @@ var checkLat
 var checkLon;
 var checkaccuracy;
 function returnCurPosition(lat, lon, accuracy){
+    if(lat == 0 || lon == 0){
+		alert('GPS가 꺼져있거나 단말기와 GPS 수신 연동중입니다.');
+		return;
+    }
     if(curMarker != null){
 		curMarker.setMap(null);
     }
@@ -698,6 +702,11 @@ function regCheckpoint(){
 			icon : 'http://openmap2.tmap.co.kr/start.png',
 			map : map
 		});
+		var listenerStartMarker = google.maps.event.addListener(startMarker, 'click', function(){
+			if(confirm('길찾기를 종료하시겠습니까?')){
+			    resetFindRoad();
+			}
+		});
 		if(startLocation != null && endLocation != null){
 		    $("#navDiv").fadeIn("fast");
 			$("#header").fadeOut("fast");
@@ -725,6 +734,11 @@ function regCheckpoint(){
 			position : endLocation,
 			icon : 'http://openmap2.tmap.co.kr/arrival.png',
 			map : map
+		});
+		var listenerEndMarker = google.maps.event.addListener(endMarker, 'click', function(){
+			if(confirm('길찾기를 종료하시겠습니까?')){
+			    resetFindRoad();
+			}
 		});
 		if(startLocation != null && endLocation != null){
 		    $("#navDiv").fadeIn("fast");

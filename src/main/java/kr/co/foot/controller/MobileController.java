@@ -142,8 +142,8 @@ public class MobileController {
 	}
 	
 	@RequestMapping("m/insert.do")
-	public void insertData(HttpServletRequest request) throws IllegalStateException, IOException{
-		String id = "test@test.com";
+	public void insertData(HttpServletRequest request, HttpSession session) throws IllegalStateException, IOException{
+		String userid = (String)session.getAttribute("user");
 		Map<String,String> map = fileutils.saveFile(request);
 		
 		CoordinatesVO testCoord = new CoordinatesVO();
@@ -151,7 +151,7 @@ public class MobileController {
 		testCoord.setLat(map.get("lat"));
 		testCoord.setLon(map.get("lon"));
 		testCoord.setTimestamp(map.get("timestamp"));
-		testCoord.setEmail(id);
+		testCoord.setEmail(userid);
 		coordinatesService.setCoordinates(testCoord);
 	
 		
@@ -173,9 +173,9 @@ public class MobileController {
 	
 	@RequestMapping("/m/setCheckpoint.do")
 	@ResponseBody
-	public String setCheckpoint(HttpServletRequest request) throws Exception{
+	public String setCheckpoint(HttpServletRequest request, HttpSession session) throws Exception{
 		
-		String id = "test@test.com";
+		String userid = (String)session.getAttribute("user");
 		String title = request.getParameter("setTitle");
 		String content = request.getParameter("setContent");
 		String lat = request.getParameter("lat");
@@ -192,7 +192,7 @@ public class MobileController {
 		testCoord.setLat(lat);
 		testCoord.setLon(lon);
 		testCoord.setTimestamp(timestamp);
-		testCoord.setEmail(id);
+		testCoord.setEmail(userid);
 		coordinatesService.setCoordinates(testCoord);
 		
 		int coordinatesidx = coordinatesService.selectidx(timestamp);
