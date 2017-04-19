@@ -637,37 +637,18 @@ function returnCurPosition(lat, lon, accuracy){
 			if(confirm("체크 포인트로 저장하시겠습니까?")){
 /* 			    var setTitle = prompt("제목을 입력하세요");
 			    var setContent = prompt("내용을 입력하세요"); */
-			    
+			    document.lpopform.title.value="";
+				document.lpopform.content.value="";
 			    $(".lpop").show();
 			    
 			    checkLat = this.position.lat().toFixed(7);
 			    checkLon = this.position.lng().toFixed(7);
-			    checkaccuracy = this.accuracy;
-  			    $.ajax({
-				    type: 'POST' , 
-				    url: '${ pageContext.request.contextPath }/m/setCheckpoint.do',
-				    dataType : 'json',
-				    data : {
-						setTitle : setTitle,
-						setContent : setContent,
-						lat : checkLat,
-						lon : checkLon,
-						accuracy : accuracy
-				    },
-				    success: function(data) {
-						alert(data);
-			        }
-				});  
+			    checkaccuracy = this.accuracy;  
 			}
 	});	
 }
 
 function regCheckpoint(){
-    alert(checkaccuracy);
-    alert(checkLat);
-    alert(checkLon);
-    alert($('#checktitle').val());
-    alert($('#checkcontent').val());
     
 	    $.ajax({
 		    type: 'POST' , 
@@ -1206,14 +1187,16 @@ function checkAutoLoginCookie() {
 	<!--wrap_end-->
 	<div id="map_div"></div>
 	
-	<div class="lpop" id="lpop" style="background: white;">
-			<div class="btnx" style="text-align: right">×&nbsp;&nbsp;</div>
-				<input type="text" name="title" id="checktitle" placeholder="여행제목" /><br/>
-				<input type="text" name="content" id="checkcontent" placeholder="여행내용" /><br/>
-				<div style="text-align: right;" onclick="javascript:regCheckpoint()">
-					<button id="reg">등록하기</button>
-				</div>
+	<form name="lpopform">
+	<div class="lpop" id="lpop" style="background: white; border: 1px solid">
+		<div class="btnx" style="text-align: right">×&nbsp;&nbsp;</div>
+			<input type="text" name="title" id="checktitle" placeholder="여행제목" /><br/>
+			<textarea rows="7" cols="24" name="content" id="checkcontent" placeholder="여행내용"></textarea><br/>
+			<div style="text-align: right;">
+				<input type="reset" value="다시쓰기"/>
+				<input type="button" id="reg" onclick="javascript:regCheckpoint()" value="등록하기"/>
 			</div>
-	
+		</div>
+	</form>
 </body>
 </html>
