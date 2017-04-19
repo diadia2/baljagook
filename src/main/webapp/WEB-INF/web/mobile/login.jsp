@@ -40,54 +40,6 @@
 	<![endif]-->
 	
 <script>
-/*-----------------------세션에 아이디가 있는지 확인------------------------*/
-var check;
-function checkSession() {
-	$.ajax({
-		type : 'GET',
-		url : '${ pageContext.request.contextPath }/checkSession.do',
-		dataType : 'json',
-		async : false,
-		success : function(data) {
-				check = data['checkSession'];
-		}
-	});
-};
-
-/*-----------------------페이지 onload 시 쿠키 확인------------------------*/
-function checkAutoLoginCookie() {
-	checkSession();
-	
-	if(check) {
-		console.log('세션에 이미 로그인 되어있음');
-	} else {
-		console.log('쿠키 있는지 확인할게');
-		if(Cookies.get('token') != null ) {
-			console.log('쿠키 있음');
-			
-			var loginInfo = {
-					'email' : null,
-					'password' : null,
-					'autoLogin' : null
-			};
-			var dataJSON = JSON.stringify(loginInfo);
-			
-    			$.ajax({
-					type : 'POST',
-					data : dataJSON,
-					url : '${ pageContext.request.contextPath }/authenticate.do',
-					contentType : 'application/json',
-					dataType : 'json',
-					success : (function() {
-							window.location.href = '${ pageContext.request.contextPath }/m/main.do';	
-						})
-				});	
-		} else {
-			console.log('쿠키 없음');
-		}				
-	}
-}
-
 $(document).ready(function() {
 	var autoLogin="false";
 

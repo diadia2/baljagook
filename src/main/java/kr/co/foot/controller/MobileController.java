@@ -69,6 +69,12 @@ public class MobileController {
 		return mav;
 	}
 	
+	@RequestMapping("m/search.do")
+	public ModelAndView showSearchPage() {
+		ModelAndView mav = new ModelAndView("mobile/search");
+		return mav;
+	}	
+	
 	@RequestMapping("m/logout.do")
 	public ModelAndView logout(HttpServletRequest request, HttpServletResponse response) {
 		HttpSession session = request.getSession(true);
