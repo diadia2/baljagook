@@ -278,7 +278,8 @@
 	 }
 	//실패시
  function fail(err){
-    switch (err.code){
+    var msg;
+	switch (err.code){
         case err.PERMISSION_DENIED:
             msg = "사용자 거부";
         break;

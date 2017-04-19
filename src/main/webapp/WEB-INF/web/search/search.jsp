@@ -12,6 +12,22 @@
 	href="${ pageContext.request.contextPath }/resources/css/sub.css">
 	
 <script type="text/javascript">
+/*-----------------------세션 아이디 확인 후 가져오기------------------------*/
+	var sessionUserid;
+	function checkSession() {
+		$.ajax({
+			type : 'GET',
+			url : '${ pageContext.request.contextPath }/getSessionUserid.do',
+			dataType : 'json',
+			async : false,
+			success : function(data) {
+				console.log(data['sessionUserid']);
+				sessionUserid = data['sessionUserid'];
+			}
+		});
+	};
+	
+/*-------------------------------검색 부분--------------------------------*/	
 	$(function() {
 		var json = {
 			searchtext : "${searchtext}",
@@ -52,7 +68,7 @@
 		console.log(check.checked);
 
 		var dataObj = {
-			"userid" : "test@test.com",
+			"userid" : sessionUserid,
 			"mymapidxRef" : mymapidxRef
 		};
 		var dataJSON = JSON.stringify(dataObj);

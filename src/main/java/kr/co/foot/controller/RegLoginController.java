@@ -71,6 +71,28 @@ public class RegLoginController {
 		return dataMap;
 	}
 	
+	//세션 아이디 가져오기
+	@RequestMapping(value="/getSessionUserid.do", method=RequestMethod.GET)
+	@ResponseBody
+	public HashMap<String, String> getSessionUserid(HttpServletRequest request) {
+		
+		HashMap<String, String> dataMap = new HashMap<String, String>();
+		
+		HttpSession session = request.getSession();
+		String userid = (String) session.getAttribute("user");
+		System.out.println("세션에 로그인된 아이디: " +userid);
+		
+		if(userid != null) {
+			dataMap.put("sessionUserid", userid);
+		} else {
+			dataMap.put("sessionUserid", null);
+		}
+		
+		return dataMap;
+	}	
+	
+	
+	
 	//로그인 인증
 	@RequestMapping(value="/authenticate.do", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
