@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8" session="true"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
@@ -932,10 +932,63 @@ function getLoadWalk(e){
 		}
 	}
 }
+</script>
+<script>
+/*-----------------------세션에 아이디가 있는지 확인------------------------*/
+var check;
+function checkSession() {
+	$.ajax({
+		type : 'GET',
+		url : '${ pageContext.request.contextPath }/checkSession.do',
+		dataType : 'json',
+		async : false,
+		success : function(data) {
+				check = data['checkSession'];
+		}
+	});
+};
 
+/*-----------------------페이지 onload 시 쿠키 확인------------------------*/
+function checkAutoLoginCookie() {
+	checkSession();
+	
+	if(check) {
+		console.log('세션에 이미 로그인 되어있음');
+	} else {
+		console.log('쿠키 있는지 확인할게');
+		if(Cookies.get('token') != null ) {
+			console.log('쿠키 있음');
+			
+			var loginInfo = {
+					'email' : null,
+					'password' : null,
+					'autoLogin' : null
+			};
+			var dataJSON = JSON.stringify(loginInfo);
+			
+    			$.ajax({
+					type : 'POST',
+					data : dataJSON,
+					url : '${ pageContext.request.contextPath }/authenticate.do',
+					contentType : 'application/json',
+					dataType : 'json',
+					success : (function() {
+							window.location.href = '${ pageContext.request.contextPath }/m/main.do';	
+						})
+				});	
+		} else {
+			console.log('쿠키 없음');
+		}				
+	}
+}
+</script>
+<script>
+	function goSearch() {
+		location.href="${ pageContext.request.contextPath }/m/search.do";
+	}
 </script>
 </head>
-<body>
+<body onload="checkAutoLoginCookie()">
 	<div class="side_menu_bg"></div>
 	<div class="layer_bg"></div>
 
@@ -955,24 +1008,34 @@ function getLoadWalk(e){
 		</header>
 		<!--header_end-->
 
-
-
 		<aside id="side_menu">
 
 			<!-- 로그인 안되었을 때 -->
-			<div class="user_info">
-				<div class="user_img" id="user_img">
-					<a href="${pageContext.request.contextPath }/resources/images/mobile/login.html"> <img src="${pageContext.request.contextPath }/resources/images/mobile/user_no_img.png"
-						alt="유저이미지" />
-					</a>
+			<c:if test="${ empty sessionScope.user }">
+				<div class="user_info">
+					<div class="user_img" id="user_img">
+						<a href="${pageContext.request.contextPath }/m/login.do"> <img src="${pageContext.request.contextPath }/resources/images/mobile/user_no_img.png"
+							alt="유저이미지" />
+						</a>
+					</div>
+					<div class="user_txt" style="vertical-align: middle;">
+						<a href="${pageContext.request.contextPath }/m/login.do"><strong class="login_txt01">로그인을
+								해주세요.</strong></a>
+	
+					</div>
 				</div>
-				<div class="user_txt" style="vertical-align: middle;">
-					<a href="./login.html"><strong class="login_txt01">로그인을
-							해주세요.</strong></a>
-
+			</c:if>
+			
+			<!-- 로그인 되어있을 때 -->
+			<c:if test="${ not empty sessionScope.user }">
+				<div class="user_info">
+					<div class="user_img" id="user_img">
+            			<label>ID : ${ sessionScope.user } </label>
+            			<br/>
+            			<a href="${ pageContext.request.contextPath }/m/logout.do">로그아웃</a>
+					</div>
 				</div>
-			</div>
-
+			</c:if>
 
 
 			<!-- 로그인 안되었을 때 -->
@@ -998,7 +1061,7 @@ function getLoadWalk(e){
 					<li><a href="#!"> <img src="${pageContext.request.contextPath }/resources/images/mobile/icon_menu1.png"
 							alt="즐겨찾기" /> <span>즐겨찾기</span>
 					</a> <img class="menu_rg" src="${pageContext.request.contextPath }/resources/images/mobile/icon_menu4.png" alt="검색"
-						onclick="goSearchs();" /></li>
+						onclick="goSearch();" /></li>
 
 
 
@@ -1050,11 +1113,13 @@ function getLoadWalk(e){
 
 
 				</ul>
-				<div class="register_btn">
-					<label for="agree01" class="ios_check"><input
-						type="checkbox" id="agree01" class="ios-switch green  bigswitch"><span><span></span></span>
-						<span class="t_xt">실시간 기록</span> </label>
-				</div>
+				<c:if test="${ not empty sessionScope.user }">
+					<div class="register_btn">
+						<label for="agree01" class="ios_check"><input
+							type="checkbox" id="agree01" class="ios-switch green  bigswitch"><span><span></span></span>
+							<span class="t_xt">실시간 기록</span> </label>
+					</div>
+				</c:if>
 
 			</nav>
 			<a href="#!" class="btn_slide_close"><img
