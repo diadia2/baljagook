@@ -188,6 +188,9 @@
 		
 		$("#bottomDiv").hide();
 		
+		
+		Android.sessionId('${id}');
+		
 	});
 	
 	function show_favMap(){

@@ -36,18 +36,19 @@ public class CoordinatesController {
 
    @RequestMapping(value = "/setCoordinatesPOST.do", method = RequestMethod.POST)
    public void setCoordinatesPOST(HttpServletRequest request, @RequestParam("lon") String lon,
-         @RequestParam("lat") String lat, @RequestParam("email") String email,
-         @RequestParam("timestamp") String timestamp, @RequestParam("accuracy") String accuracy) {
-
+         @RequestParam("lat") String lat,
+         @RequestParam("timestamp") String timestamp, @RequestParam("accuracy") String accuracy, HttpSession session) {
+	   
+	  String userid = (String)session.getAttribute("user");
       testCoord.setLat(lat);
       testCoord.setLon(lon);
-      testCoord.setEmail(email);
+      testCoord.setEmail(userid);
       testCoord.setTimestamp(timestamp);
       testCoord.setAccuracy(accuracy);
 
       System.out.println(lat);
       System.out.println(lon);
-      System.out.println(email);
+      System.out.println(userid);
       System.out.println(timestamp);
       System.out.println(accuracy);
 

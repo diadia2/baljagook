@@ -132,7 +132,7 @@ public class MobileController {
 			favPlaceList = mymapService.selectcheckpoint(userid);
 							
 		}
-		
+		model.addAttribute("id", userid);
 		model.addAttribute("myPlanList", myPlanList);
 		model.addAttribute("favMapList", favMapList);
 		model.addAttribute("favPlaceList", favPlaceList);
@@ -143,7 +143,8 @@ public class MobileController {
 	
 	@RequestMapping("m/insert.do")
 	public void insertData(HttpServletRequest request, HttpSession session) throws IllegalStateException, IOException{
-		String userid = (String)session.getAttribute("user");
+		String userid = request.getParameter("userid");
+		System.out.println(userid);
 		Map<String,String> map = fileutils.saveFile(request);
 		
 		CoordinatesVO testCoord = new CoordinatesVO();
