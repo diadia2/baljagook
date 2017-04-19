@@ -415,7 +415,7 @@ body {
 			<div class="collapse navbar-collapse" id="target">
 				<!-- 검색바 -->
 				<form class="navbar-form navbar-nav">
-					<input type="text" class="form-control" placeholder="Search" id="searchtext"
+					<input type="text" class="form-control" placeholder="검색" id="searchtext"
 						size="50%" style="text-align: center;" onKeyPress="if (event.keyCode==13){ goSearch();event.returnValue=false}"/>&nbsp;&nbsp; <a href="javascript:goSearch()"><i
 						class="fa fa-search fa-2x" aria-hidden="true"></i></a>
 				</form>

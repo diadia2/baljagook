@@ -95,11 +95,11 @@ $(document).ready(function(){
 <div id="wrap" style="height:100%;">	
 
     <section id="container" class="search-content area"  style="height:89%;padding:0;top:0px;">	 	
-		<form action="./list.html" method="post" name="form" id="form">
+<!-- 		<form action="./list.html" method="post" name="form" id="form"> -->
 			<fieldset>
 				<legend>검색</legend>
 				<div class="search-box">
-                    <a href="./main.html"><img src="./images/left_arrowi.png" style="float:left;" /></a>
+                    <a href="${ pageContext.request.contextPath }/m/main.do"><img src="${ pageContext.request.contextPath }/resources/images/mobile/left_arrowi.png" style="float:left;" /></a>
 					
 					
 					<input type="hidden" name="mode" value="3">
@@ -107,6 +107,8 @@ $(document).ready(function(){
 					<button type="button" class="btn_search" style="background:#00a9c7;float:right;" ><img src="${ pageContext.request.contextPath }/resources/images/mobile/icon_menu4.png"></button>
 				</div>
                 <div class="search-box-btn">▼</div>
+                
+<!-- -----------------------------------------필터 부분-------------------------------------------- -->                
                 <div class="search-box2">
                     <ul>
                         <li>
@@ -142,6 +144,9 @@ $(document).ready(function(){
                         </li>
                     </ul>
                 </div>
+                
+                
+<!-- -----------------------------------------검색 결과 조회 리스트-------------------------------------------- -->                
                 <div class="search-box3">
                     <div class="listDiv" >
                         <span>도/시</span>
@@ -165,7 +170,7 @@ $(document).ready(function(){
                 </div>
 
 			</fieldset>
-		</form>
+<!-- 		</form> -->
     </section><!-- //container End -->
     <!-- footer -->
 	</section><!-- //container End -->
