@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.foot.message">
+	
+	<insert id="insertMessage" parameterType="MessageVO">
+		insert into t_message(fromId, toId, contents, regdate) values (#{fromId}, #{toId}, #{contents}, now());
+	</insert>
+	
+	<select id="selectFromMessage" parameterType="MessageVO" resultType="MessageVO">
+		select * from t_message where fromId= #{fromId}
+	</select>
+	
+	<select id="selectToMessage" parameterType="MessageVO" resultType="MessageVO">
+		select * from t_message where toId= #{toId}
+	</select>
+	
+	<update id="readMessage"  parameterType="int">
+		update t_message set
+		isread=1 where idx = #{idx}
+	</update>
+	
+	<delete id="deleteMessage" parameterType="int">
+		delete from t_message
+		where idx = #{idx}
+	</delete>
+	
+	<select id="noReadMessage" parameterType="MessageVO" resultType="int">
+		select count(*) from t_message where toId=#{toId} and isread=0;
+	</select>
+	
+</mapper>

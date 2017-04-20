@@ -393,6 +393,18 @@ body {
 		
 	
 	
+	
+	/* sock */
+	var socket = new SockJS('/Baljagook/endpoint');
+	var client = Stomp.over(socket);
+	client.connect({}, function(frame) {
+		console.log('connected stomp over sockjs');
+		client.subscribe('/subscribe/echo', function(message) {
+			console.log(message);
+			$('#alarm').text("new");
+		});
+
+	});
 	});
 </script>
 </head>
@@ -421,6 +433,7 @@ body {
 				</form>
 <!--  sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss-->
 				<label>ID : ${sessionScope.user} </label>
+				<label>알림: <span id="alarm"></span> </label>
 				<ul class="nav navbar-nav navbar-right">
 					<!-- 우상단 드롭 메뉴 -->
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
