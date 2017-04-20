@@ -57,10 +57,16 @@ public class PageController {
 	 * ModelAndView mav = new ModelAndView("/map/mapDetail"); return mav; }
 	 */
 	
-	@RequestMapping("/chat.do")
+/*	@RequestMapping("/chat.do")
 	public ModelAndView chat() {
 		ModelAndView mav = new ModelAndView("/websocket/websocketEx");
 		return mav;
+	}*/
+	
+	@RequestMapping("/chat.do")
+	public ModelAndView chat() {
+		ModelAndView mav = new ModelAndView("/websocket/websocketEx2");
+		return mav;
 	}
-
+	
 }

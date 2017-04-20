@@ -38,8 +38,8 @@ public class CoordinatesController {
    public void setCoordinatesPOST(HttpServletRequest request, @RequestParam("lon") String lon,
          @RequestParam("lat") String lat,
          @RequestParam("timestamp") String timestamp, @RequestParam("accuracy") String accuracy, HttpSession session) {
-	   
-	  String userid = (String)session.getAttribute("user");
+      
+     String userid = (String)session.getAttribute("user");
       testCoord.setLat(lat);
       testCoord.setLon(lon);
       testCoord.setEmail(userid);
@@ -80,25 +80,32 @@ public class CoordinatesController {
       
       List<CheckpointVO> checkpointList = new ArrayList<CheckpointVO>();
       for(int i=0; i<list.size(); i++){
-    	  CheckpointVO checkpointVO = mymapService.selectCheckpointByCoorIdx(list.get(i).getIdk());
-    	  if(checkpointVO != null){
-    		  checkpointList.add(checkpointVO);
-    	  }
+         CheckpointVO checkpointVO = mymapService.selectCheckpointByCoorIdx(list.get(i).getIdk());
+         if(checkpointVO != null){
+            checkpointList.add(checkpointVO);
+         }
       }
-      
-      CheckpointVO checkpointVO = mymapService.selectCheckpointByCoorIdx(1006);
-      checkpointList.add(checkpointVO);
-      CheckpointVO checkpointVO1 = mymapService.selectCheckpointByCoorIdx(1007);
-      checkpointList.add(checkpointVO1);
+
       System.out.println("=====================");
       List<PhotoVO> photoList = new ArrayList<PhotoVO>();
       if(checkpointList != null){
+<<<<<<< HEAD
 	      for(int i=0; i<checkpointList.size(); i++){
+	    	  System.out.println(checkpointList.get(i).getIdx());
 	    	  PhotoVO photoVO = mymapService.selectPhoto(checkpointList.get(i).getIdx());
 	    	  if(photoVO != null){
 	    		  photoList.add(photoVO);
 	    	  }
 	      }
+=======
+         for(int i=0; i<checkpointList.size(); i++){
+            System.out.println(checkpointList.get(i).getIdx());
+            PhotoVO photoVO = mymapService.selectPhoto(checkpointList.get(i).getIdx());
+            if(photoVO != null){
+               photoList.add(photoVO);
+            }
+         }
+>>>>>>> ba0d9575784ac1b7f7215622f06b54a05ad93c8a
       } 
 /*      String[] cityArr = request.getParameterValues("city");
       String city = "";
@@ -142,7 +149,7 @@ public class CoordinatesController {
    @ResponseBody
    public Object mapAgain(@RequestParam("start") String start, @RequestParam("end") String end, Model model, HttpSession session) throws ParseException{
 
-	  String id = (String)session.getAttribute("user");
+     String id = (String)session.getAttribute("user");
 
       
       start += ":00";
@@ -159,25 +166,20 @@ public class CoordinatesController {
       
       List<CheckpointVO> checkpointList = new ArrayList<CheckpointVO>();
       for(int i=0; i<list.size(); i++){
-    	  CheckpointVO checkpointVO = mymapService.selectCheckpointByCoorIdx(list.get(i).getIdk());
-    	  if(checkpointVO != null){
-    		  checkpointList.add(checkpointVO);
-    	  }
+         CheckpointVO checkpointVO = mymapService.selectCheckpointByCoorIdx(list.get(i).getIdk());
+         if(checkpointVO != null){
+            checkpointList.add(checkpointVO);
+         }
       }
-      
-      CheckpointVO checkpointVO = mymapService.selectCheckpointByCoorIdx(1006);
-      checkpointList.add(checkpointVO);
-      CheckpointVO checkpointVO1 = mymapService.selectCheckpointByCoorIdx(1007);
-      checkpointList.add(checkpointVO1);
       
       List<PhotoVO> photoList = new ArrayList<PhotoVO>();
       if(checkpointList != null){
-	      for(int i=0; i<checkpointList.size(); i++){
-	    	  PhotoVO photoVO = mymapService.selectPhoto(checkpointList.get(i).getIdx());
-	    	  if(photoVO != null){
-	    		  photoList.add(photoVO);
-	    	  }
-	      }
+         for(int i=0; i<checkpointList.size(); i++){
+            PhotoVO photoVO = mymapService.selectPhoto(checkpointList.get(i).getIdx());
+            if(photoVO != null){
+               photoList.add(photoVO);
+            }
+         }
       } 
 
       model.addAttribute("list", list);

@@ -25,6 +25,8 @@ import kr.co.foot.checkpoint.CheckpointVO;
 import kr.co.foot.coordinates.CoordinatesService;
 import kr.co.foot.favoritemap.FavoritemapVO;
 import kr.co.foot.favoriteplace.FavoriteplaceVO;
+import kr.co.foot.follow.FollowService;
+import kr.co.foot.follow.FollowVO;
 import kr.co.foot.hashtag.HashtagVO;
 import kr.co.foot.like.LikeDTO;
 import kr.co.foot.like.LikeVO;
@@ -41,6 +43,9 @@ public class MymapController {
    private MymapService mymapService;
    @Autowired
    private CoordinatesService coordinatesService;
+   
+   @Autowired
+   private FollowService followservice;
    
    @RequestMapping("/map/regMymap.do")
    public String regMyMap(@RequestParam("title") String title,
@@ -349,9 +354,7 @@ public class MymapController {
       int mymapidx = Integer.parseInt(request.getParameter("mymapidx"));
       SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd HH:mm");
       
-      // mympaidx占쏙옙 t_mymap 占쌀뤄옙占쏙옙占쏙옙
       MymapVO mymapVO = mymapService.selectMymap(mymapidx);
-      // mymapidx占쏙옙 t_regmap 占쌀뤄옙占쏙옙占쏙옙
       RegmapVO regmapVO = mymapService.getRegmapList(mymapidx);
       
       String start = regmapVO.getSdate();
@@ -386,6 +389,17 @@ public class MymapController {
       // 조회 수 증가
       mymapService.increaseViewCnt(mymapidx);
       
+      //following?
+      FollowVO followVO = new FollowVO();
+      HttpSession session = request.getSession(true);
+      String followId = (String) session.getAttribute("user");
+      int isFollow=1;
+      if(followId !=null){
+    	  followVO.setFollowId(followId);
+    	  followVO.setFollowedId(mymapVO.getUserid());
+    	  isFollow = followservice.isFollowed(followVO);
+      }
+      model.addAttribute("isFollow", isFollow);
       model.addAttribute("mymapidx", mymapidx);
       model.addAttribute("mymapVO", mymapVO);
       model.addAttribute("sdate", sdate);
