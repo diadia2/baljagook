@@ -85,15 +85,12 @@ public class CoordinatesController {
     		  checkpointList.add(checkpointVO);
     	  }
       }
-      
-      CheckpointVO checkpointVO = mymapService.selectCheckpointByCoorIdx(1006);
-      checkpointList.add(checkpointVO);
-      CheckpointVO checkpointVO1 = mymapService.selectCheckpointByCoorIdx(1007);
-      checkpointList.add(checkpointVO1);
+
       System.out.println("=====================");
       List<PhotoVO> photoList = new ArrayList<PhotoVO>();
       if(checkpointList != null){
 	      for(int i=0; i<checkpointList.size(); i++){
+	    	  System.out.println(checkpointList.get(i).getIdx());
 	    	  PhotoVO photoVO = mymapService.selectPhoto(checkpointList.get(i).getIdx());
 	    	  if(photoVO != null){
 	    		  photoList.add(photoVO);
@@ -164,11 +161,6 @@ public class CoordinatesController {
     		  checkpointList.add(checkpointVO);
     	  }
       }
-      
-      CheckpointVO checkpointVO = mymapService.selectCheckpointByCoorIdx(1006);
-      checkpointList.add(checkpointVO);
-      CheckpointVO checkpointVO1 = mymapService.selectCheckpointByCoorIdx(1007);
-      checkpointList.add(checkpointVO1);
       
       List<PhotoVO> photoList = new ArrayList<PhotoVO>();
       if(checkpointList != null){
