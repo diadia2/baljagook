@@ -33,7 +33,7 @@ public class MemberController {
 	private MyPageService myPageService;
 	
 	
-	//마이페이지 선택
+	//留��댄���댁� ����
 	@RequestMapping("/member/mypage.do")
 	public String myPage(HttpServletRequest request, Model model){
 		
@@ -52,14 +52,14 @@ public class MemberController {
 		return "member/mypage";
 	}
 	
-	//내여행/내계획 선택 ajax
+	//�댁�ы��/�닿��� ���� ajax
 	@RequestMapping("/member/resetMypage.do")
 	@ResponseBody
-	public List<MymapVO> resetMypage(@RequestParam("header") String header){
+	public List<MymapVO> resetMypage(@RequestParam("header") String header, HttpSession session){
 		
-		String userid = "test@test.com";
+		String userid = (String) session.getAttribute("user");
 		
-		if(header.equals("내계획")){
+		if(header.equals("�닿���")){
 			List<MymapVO> mymapList = memberService.selectMymapListByuseridForPlan(userid);
 			return mymapList;
 		}
@@ -69,12 +69,12 @@ public class MemberController {
 		
 	}
 	
-	//MAP 선택 ajax
+	//MAP ���� ajax
 	@RequestMapping("/member/resetMypageTwo.do")
 	@ResponseBody
-	public List<MymapVO> resetMypageTwo(@RequestParam("header") String header){
+	public List<MymapVO> resetMypageTwo(@RequestParam("header") String header, HttpSession session){
 		
-		String userid = "test@test.com";
+		String userid = (String) session.getAttribute("user");
 		
 		List<FavoritemapVO> favoritemapList = mymapService.selectRegmapidx(userid);
 		List<MymapVO> mymapList = new ArrayList<MymapVO>();
@@ -88,12 +88,12 @@ public class MemberController {
 		
 	}
 	
-	//장소 선택 ajax
+	//�μ�� ���� ajax
 	@RequestMapping("/member/resetMypageThree.do")
 	@ResponseBody
-	public List<FavoriteplaceVO> resetMypageThree(@RequestParam("header") String header){
+	public List<FavoriteplaceVO> resetMypageThree(@RequestParam("header") String header, HttpSession session){
 		
-		String userid = "test@test.com";
+		String userid = (String) session.getAttribute("user");
 		
 		List<FavoriteplaceVO> favoriteplaceList = memberService.selectFavoriteMapByuserid(userid);
 		
@@ -101,7 +101,7 @@ public class MemberController {
 		
 	}
 	
-	//favorite장소 새창 띄우기
+	//favorite�μ�� ��李� ���곌린
 	@RequestMapping("/member/favoritePlace.do")
 	public String favoritePlace(@RequestParam("checkpointidx") String checkpointidx,
 								Model model){

@@ -316,9 +316,9 @@
 				var initflightPath = new google.maps.Polyline({
 					path : initflightPlanCoordinates,
 					geodesic : true,
-					strokeColor : '#000000',
+					strokeColor : '#FF0000',
 					strokeOpacity : 1.0,
-					strokeWeight : 2
+					strokeWeight : 4
 				});
 				initflightPath.setMap(null);
 				
@@ -760,9 +760,9 @@
 		startMarkers = [];
 		startMarker = new google.maps.Marker({
 			position : location,
-			label : "출발",
 			draggable : true,
-			map : map
+			map : map,
+			icon : "http://openmap2.tmap.co.kr/start.png"
 		});
 		startMarker.addListener('dragend', startResetPlace);
 		startLocation = location;
@@ -784,9 +784,9 @@
 		endMarkers = [];
 		endMarker = new google.maps.Marker({
 			position : location,
-			label : "도착",
 			draggable : true,
-			map : map
+			map : map,
+			icon : "http://openmap2.tmap.co.kr/arrival.png"
 		}); 
 		endMarker.addListener('dragend', endResetPlace);
 		endLocation = location;
@@ -1110,11 +1110,11 @@
 				<span id="dragStart" draggable="true"
 					ondragstart="return dragStart(event)"
 					ondragend="return startDragEnd(event)"> <img
-					src="https://developers.skplanetx.com/upload/tmap/marker/pin_b_m_a.png" />출발
+					src="http://openmap2.tmap.co.kr/start.png" />출발
 				</span> <span id="dragEnd" draggable="true"
 					ondragstart="return dragStart(event)"
 					ondragend="return endDragEnd(event)"> <img
-					src="https://developers.skplanetx.com/upload/tmap/marker/pin_b_m_a.png" />도착
+					src="http://openmap2.tmap.co.kr/arrival.png" />도착
 				</span> <span><input type="button" value="자가용"
 					onclick="findLoadAgain()" /></span> <span><input type="button"
 					value="대중교통" onclick="calculateAndDisplayRoute()" /></span> <span><input

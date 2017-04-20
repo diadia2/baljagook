@@ -12,6 +12,7 @@
 		<typeAlias type="kr.co.foot.follow.FollowVO" alias="FollowVO" />
 		<typeAlias type="kr.co.foot.message.MessageVO" alias="MessageVO" />
 		
+		<typeAlias type="kr.co.foot.reglogin.AutoLoginDTO" alias="AutoLoginDTO" />
 	</typeAliases>
 
 	<!-- <mappers>

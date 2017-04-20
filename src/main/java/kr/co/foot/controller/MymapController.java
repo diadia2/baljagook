@@ -51,10 +51,10 @@ public class MymapController {
    public String regMyMap(@RequestParam("title") String title,
                      @RequestParam("content") String content,
                      @RequestParam("start") String start,
-                     @RequestParam("end") String end,
+                     @RequestParam("end") String end, HttpSession session,
                      HttpServletRequest request) throws Exception{
       
-      String userid = "test@test.com";
+	  String userid = (String)session.getAttribute("user");
       int type = 1;  
       
       Calendar cal = Calendar.getInstance();
@@ -200,10 +200,10 @@ public class MymapController {
    
    @RequestMapping("/map/planMymap.do")
    public String planMymap(@RequestParam("title") String title,
-                     @RequestParam("content") String content,
+                     @RequestParam("content") String content, HttpSession session,
                      HttpServletRequest request) throws ParseException{
       
-      String userid = "test@test.com";
+	  String userid = (String)session.getAttribute("user");
       
       // t_mymap占쏙옙 占쏙옙占쏙옙占싫� 占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙
       Calendar cal = Calendar.getInstance();
@@ -420,13 +420,13 @@ public class MymapController {
    @RequestMapping("/map/getFavoritePlace.do")
    @ResponseBody
    public String getFavoritePlace(@RequestParam("idx") String idx,
-                           @RequestParam("placename") String placename){
+                           @RequestParam("placename") String placename, HttpSession session){
       System.out.println(idx);
       System.out.println(placename);
       // 占쏙옙占쏙옙占쏙옙 占쏙옙커
       int checkpointidx = Integer.parseInt(idx);
       // 占쏙옙占쏙옙占쏙옙占싱듸옙
-      String userid = "test@test.com";
+      String userid = (String)session.getAttribute("user");
       // 占쏙옙占쏙옙 占쏙옙占싱듸옙占� 占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙杉占� 占쏙옙커占쏙옙 占쏙옙회
       List<FavoriteplaceVO> compareCheckPointidx = mymapService.selectcheckpoint(userid);
       // 占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙占� 占쏙옙커占쏙옙 占쏙옙占쏙옙 占쏙옙占쏙옙占� 占쏙옙커占쏙옙 占쏙옙占쏙옙 占쏙옙占쏙옙 체크
@@ -449,10 +449,10 @@ public class MymapController {
    
    @RequestMapping("/map/getFavoriteMap.do")
    @ResponseBody
-   public String getFavoriteMap(@RequestParam("mymapidx") String mymapidxstr){
+   public String getFavoriteMap(@RequestParam("mymapidx") String mymapidxstr, HttpSession session){
       
       // 占쏙옙占쏙옙 占쏙옙占싱듸옙
-      String userid = "test@test.com";
+	   String userid = (String)session.getAttribute("user");
       // 占쏙옙占쏙옙占쏙옙 占쏙옙 mymapidx 占쏙옙
       int mymapidx = Integer.parseInt(mymapidxstr);
       // mymapidx占쏙옙占쏙옙占쏙옙 regmapidx 占쌀뤄옙占쏙옙占쏙옙
@@ -476,9 +476,9 @@ public class MymapController {
    
    
    @RequestMapping("/map/plantrip.do")
-   public String plantrip(Model model){
+   public String plantrip(Model model, HttpSession session){
       
-      String userid = "test@test.com";
+	   String userid = (String)session.getAttribute("user");
       List<FavoriteplaceVO> favoriteplaceList = mymapService.selectcheckpoint(userid);
       List<FavoritemapVO> favoritemapList = mymapService.selectRegmapidx(userid);
       

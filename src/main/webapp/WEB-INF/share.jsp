@@ -40,6 +40,8 @@
 	src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 <!-- checkbox -->
 <link href="${pageContext.request.contextPath }/resources/css/Checkbox.css" rel="stylesheet">
+<!-- jquery cookie -->
+<script src="${pageContext.request.contextPath}/resources/js/js.cookie.js"></script>
 </head>
 <body>
 
