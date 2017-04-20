@@ -239,7 +239,7 @@ body {
 	} 
 
 	$(document).ready(function() {
-		checkAutoLoginCookie();
+/* 		checkAutoLoginCookie(); */
 		var autoLogin="false";
 
 /*-----------------------자동로그인 Toggle 확인------------------------*/

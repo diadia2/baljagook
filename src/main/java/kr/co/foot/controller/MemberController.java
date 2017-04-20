@@ -45,7 +45,7 @@ public class MemberController {
 		
 		String imageName = myPageService.getImageName(userid);
 		if(imageName == null) {
-			imageName = "profile-icon-9.png";
+			imageName = "defaultImage.png";
 		}
 		model.addAttribute("imageName", imageName);
 		

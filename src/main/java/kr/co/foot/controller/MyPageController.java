@@ -19,12 +19,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import com.amazonaws.auth.AWSStaticCredentialsProvider;
-import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-import com.amazonaws.services.s3.model.PutObjectRequest;
-
 import kr.co.foot.member.MemberVO;
 import kr.co.foot.mypage.MyPageService;
 import kr.co.foot.mypage.PasswordDTO;
@@ -91,42 +85,34 @@ public class MyPageController {
 		}
 		return dataMap;
 	}
+
+//	private static final String filePath = "/Users/mac/Documents/workspace/baljagook/src/main/webapp/resources/photo/profileImage/";		
+	private static final String filePath = "/var/lib/tomcat8/webapps/baljagook/resources/photo/profileImage/";	
 	
 	//프로필사진 변경
 	@RequestMapping(value = "/uploadPhoto.do", method = RequestMethod.POST)
 	@ResponseBody
-	public String uploadPhoto(MultipartHttpServletRequest request, Model model) {
-		
+	public String uploadPhoto(MultipartHttpServletRequest request, Model model) throws IllegalStateException, IOException {
+
 		HttpSession session = request.getSession(true);
+		
+		File file = new File(filePath);
+		if(file.exists() == false) {
+			file.mkdirs();
+		}
+		
 		String userid = (String) session.getAttribute("user");
 		String imageName = "";
 		Iterator<String> itr = request.getFileNames();
+		
+		
+		
 		if(itr.hasNext()) {
 			MultipartFile uploadedImage = request.getFile(itr.next());
 			
-			// 아마존 S3 설정
-			BasicAWSCredentials credentials = new BasicAWSCredentials("",
-					"");
-			AmazonS3 s3Client = AmazonS3ClientBuilder.standard()
-					.withCredentials(new AWSStaticCredentialsProvider(credentials)).build();
-			String bucketName = "baljagook";
-			String folderName = "profileImage";
 			imageName = CommonUtils.getRandomString()+uploadedImage.getOriginalFilename();
-			String key = folderName + "/" + imageName;
-
-			System.out.println(key);
-
-			// 아마존 S3에 업로드
-			try {
-				File memberImage = multipartToFile(uploadedImage);
-				PutObjectRequest imageFile = new PutObjectRequest(bucketName, key, memberImage);
-				s3Client.putObject(imageFile);
-
-			} catch (IllegalStateException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			file = new File(filePath+imageName);
+			uploadedImage.transferTo(file);
 			
 			// DB에 imageName 추가
 			MemberVO memberVO = new MemberVO();
@@ -138,15 +124,6 @@ public class MyPageController {
 		
 		return imageName;
 		
-	}
-
-	// 업로드된 MultipartFile을 File 객체로 변환
-	public File multipartToFile(MultipartFile multipart) throws IllegalStateException, IOException {
-
-		File convFile = new File(multipart.getOriginalFilename());
-		multipart.transferTo(convFile);
-		return convFile;
-
 	}	
 	
 }
