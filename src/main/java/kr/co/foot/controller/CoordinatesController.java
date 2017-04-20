@@ -96,6 +96,10 @@ public class CoordinatesController {
 	    		  photoList.add(photoVO);
 	    	  }
 	      }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 1154c3927d58684b52210093ee652924861dd6f1
       } 
 /*      String[] cityArr = request.getParameterValues("city");
       String city = "";
