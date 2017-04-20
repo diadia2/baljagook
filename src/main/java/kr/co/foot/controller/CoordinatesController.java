@@ -89,13 +89,14 @@ public class CoordinatesController {
       System.out.println("=====================");
       List<PhotoVO> photoList = new ArrayList<PhotoVO>();
       if(checkpointList != null){
-         for(int i=0; i<checkpointList.size(); i++){
-            System.out.println(checkpointList.get(i).getIdx());
-            PhotoVO photoVO = mymapService.selectPhoto(checkpointList.get(i).getIdx());
-            if(photoVO != null){
-               photoList.add(photoVO);
-            }
-         }
+	      for(int i=0; i<checkpointList.size(); i++){
+	    	  System.out.println(checkpointList.get(i).getIdx());
+	    	  PhotoVO photoVO = mymapService.selectPhoto(checkpointList.get(i).getIdx());
+	    	  if(photoVO != null){
+	    		  photoList.add(photoVO);
+	    	  }
+	      }
+
       } 
 /*      String[] cityArr = request.getParameterValues("city");
       String city = "";

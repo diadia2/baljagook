@@ -277,7 +277,7 @@ function deactivateAccount() {
 		    data: form_data,
 		    type: 'post',
 		    success: function (data) {
-				$("#profileImage").prop("src", "https://s3.ap-northeast-2.amazonaws.com/baljagook/profileImage/"+data);
+				$("#profileImage").prop("src", "${ pageContext.request.contextPath }/resources/photo/profileImage/"+data);
 			}
 	    });
 	})		
@@ -334,7 +334,7 @@ function deactivateAccount() {
 		<div class="container">
 			<div class="menuleft">
 				<div class="div_img">
-					<img id="profileImage" src="https://s3.ap-northeast-2.amazonaws.com/baljagook/profileImage/${imageName}" width="80" height="80"/>
+ 					<img id="profileImage" src="${ pageContext.request.contextPath }/resources/photo/profileImage/${ imageName }" width="80" height="80"/>
 					<div style="height:0px;overflow:hidden">
 						<input id="chooseImage" type="file"/>
 					</div>
