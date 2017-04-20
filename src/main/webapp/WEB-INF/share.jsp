@@ -32,6 +32,12 @@
 <!-- 데이트피커 -->
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
+<!-- sockjs -->
+<script type="text/javascript"
+	src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.2/sockjs.min.js"></script>
+<!-- stomp -->
+<script type="text/javascript"
+	src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 <!-- checkbox -->
 <link href="${pageContext.request.contextPath }/resources/css/Checkbox.css" rel="stylesheet">
 </head>

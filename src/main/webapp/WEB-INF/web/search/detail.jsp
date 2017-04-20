@@ -959,13 +959,56 @@
 	function goSearch(){
 	    location.href = "${ pageContext.request.contextPath }/map/search.do?searchtext="+$('#searchtext').val();
 	}
+
+	function toFollow(followedId) {
+		console.log(followedId);
+		var data = {"followedId" : followedId};
+		
+		$.ajax({
+			url : "${ pageContext.request.contextPath }/toFollow.do",
+			type : "POST",
+			data : data,
+			success : function(data) {
+				console.log(this);
+				$("#followBtn").attr("disabled","disabled");
+				/* $("#likeCnt" + mymapidxRef).html(data[mymapidxRef]); */
+			}
+		});
+	}
 	
+	function toMsg() {
+		window.open('${ pageContext.request.contextPath }/message/message.do', '메세지창', 'width=200, heght=200, status=no, toolbar=no');
+	}
+	 
+	$(function() {
+		if("${isFollow}"){
+			$("#followBtn").attr("disabled","disabled");
+		}
+		
+		
+
+		/* sock */
+		var socket = new SockJS('/Baljagook/endpoint');
+		var client = Stomp.over(socket);
+		client.connect({}, function(frame) {
+			console.log('connected stomp over sockjs');
+			client.subscribe('/subscribe/echo', function(message) {
+				console.log(message);
+				$('#alarm').append(message.body + '<br>');
+			});
+
+		});
+		$('#message').click(function() {
+			var data = {
+				name : "${sessionScope.user}"
+			};
+			client.send('/app/echo', {}, JSON.stringify(data));
+		});
 	
-	//followBtn
+		
+	});
 	
 	</script>
-
-
 <body> 
 	<div>상단바 자리</div>
 	<!-- 상단 바 -->
@@ -1013,7 +1056,15 @@
 			<div class="col-md-10">
 				<div class="col-md-12" style="text-align: center;">
 					<strong>${ mymapVO.title }</strong> <span style="font-size: 6pt">by ${ mymapVO.userid }</span>
-					<button id="followBtn">follow</button>
+					<button id="followBtn" onclick="toFollow('${ mymapVO.userid }')" >follow</button><!-- 팝업에 인자 넘겨주기- 귀찮당 -->
+					
+					<form action="${ pageContext.request.contextPath }/message/insertMessage.do" method="POST">
+						<input type="text" name="contents">
+						<input type="hidden" name="toId" value="${ mymapVO.userid }">
+						<input type="hidden" name="fromId" value="${sessionScope.user }">
+						<input type="submit" id="message">
+					</form>
+					<button id="msgBtn" onclick="toMsg()">message</button>
 				</div>
 				<br /> <br />
 				<div class="col-md-12" style="text-align: center;">

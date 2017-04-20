@@ -36,18 +36,19 @@ public class CoordinatesController {
 
    @RequestMapping(value = "/setCoordinatesPOST.do", method = RequestMethod.POST)
    public void setCoordinatesPOST(HttpServletRequest request, @RequestParam("lon") String lon,
-         @RequestParam("lat") String lat, @RequestParam("email") String email,
-         @RequestParam("timestamp") String timestamp, @RequestParam("accuracy") String accuracy) {
-
+         @RequestParam("lat") String lat,
+         @RequestParam("timestamp") String timestamp, @RequestParam("accuracy") String accuracy, HttpSession session) {
+      
+     String userid = (String)session.getAttribute("user");
       testCoord.setLat(lat);
       testCoord.setLon(lon);
-      testCoord.setEmail(email);
+      testCoord.setEmail(userid);
       testCoord.setTimestamp(timestamp);
       testCoord.setAccuracy(accuracy);
 
       System.out.println(lat);
       System.out.println(lon);
-      System.out.println(email);
+      System.out.println(userid);
       System.out.println(timestamp);
       System.out.println(accuracy);
 
@@ -62,9 +63,9 @@ public class CoordinatesController {
          @RequestParam("hashtag") String hashtag,
          @RequestParam("content") String content, Model model, HttpSession session) throws ParseException{
       
-//      String id = session.getAttribute("email");
+      String id = (String)session.getAttribute("user");
       
-      String id = "ghosdi0624@naver.com";
+//      String id = "test@test.com";
       
       start += ":00";
       end += ":00";
@@ -79,25 +80,22 @@ public class CoordinatesController {
       
       List<CheckpointVO> checkpointList = new ArrayList<CheckpointVO>();
       for(int i=0; i<list.size(); i++){
-    	  CheckpointVO checkpointVO = mymapService.selectCheckpointByCoorIdx(list.get(i).getIdk());
-    	  if(checkpointVO != null){
-    		  checkpointList.add(checkpointVO);
-    	  }
+         CheckpointVO checkpointVO = mymapService.selectCheckpointByCoorIdx(list.get(i).getIdk());
+         if(checkpointVO != null){
+            checkpointList.add(checkpointVO);
+         }
       }
-      
-      CheckpointVO checkpointVO = mymapService.selectCheckpointByCoorIdx(1006);
-      checkpointList.add(checkpointVO);
-      CheckpointVO checkpointVO1 = mymapService.selectCheckpointByCoorIdx(1007);
-      checkpointList.add(checkpointVO1);
+
       System.out.println("=====================");
       List<PhotoVO> photoList = new ArrayList<PhotoVO>();
       if(checkpointList != null){
-	      for(int i=0; i<checkpointList.size(); i++){
-	    	  PhotoVO photoVO = mymapService.selectPhoto(checkpointList.get(i).getIdx());
-	    	  if(photoVO != null){
-	    		  photoList.add(photoVO);
-	    	  }
-	      }
+         for(int i=0; i<checkpointList.size(); i++){
+            System.out.println(checkpointList.get(i).getIdx());
+            PhotoVO photoVO = mymapService.selectPhoto(checkpointList.get(i).getIdx());
+            if(photoVO != null){
+               photoList.add(photoVO);
+            }
+         }
       } 
 /*      String[] cityArr = request.getParameterValues("city");
       String city = "";
@@ -139,9 +137,10 @@ public class CoordinatesController {
    // ajax
    @RequestMapping("/map/mapAgain.do")
    @ResponseBody
-   public Object mapAgain(@RequestParam("start") String start, @RequestParam("end") String end, Model model) throws ParseException{
-      
-      String id = "good@good.com";
+   public Object mapAgain(@RequestParam("start") String start, @RequestParam("end") String end, Model model, HttpSession session) throws ParseException{
+
+     String id = (String)session.getAttribute("user");
+
       
       start += ":00";
       end += ":00";
@@ -151,30 +150,26 @@ public class CoordinatesController {
       
       SimpleDateFormat time2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
       String endTime = String.valueOf(time2.parse(end).getTime()/1000);
-      
+      System.out.println("startTime: "+startTime);
+      System.out.println("endTime: "+endTime);
       List<CoordinatesVO> list = coordinatesService.getLonLat(startTime, endTime, id);
       
       List<CheckpointVO> checkpointList = new ArrayList<CheckpointVO>();
       for(int i=0; i<list.size(); i++){
-    	  CheckpointVO checkpointVO = mymapService.selectCheckpointByCoorIdx(list.get(i).getIdk());
-    	  if(checkpointVO != null){
-    		  checkpointList.add(checkpointVO);
-    	  }
+         CheckpointVO checkpointVO = mymapService.selectCheckpointByCoorIdx(list.get(i).getIdk());
+         if(checkpointVO != null){
+            checkpointList.add(checkpointVO);
+         }
       }
-      
-      CheckpointVO checkpointVO = mymapService.selectCheckpointByCoorIdx(1006);
-      checkpointList.add(checkpointVO);
-      CheckpointVO checkpointVO1 = mymapService.selectCheckpointByCoorIdx(1007);
-      checkpointList.add(checkpointVO1);
       
       List<PhotoVO> photoList = new ArrayList<PhotoVO>();
       if(checkpointList != null){
-	      for(int i=0; i<checkpointList.size(); i++){
-	    	  PhotoVO photoVO = mymapService.selectPhoto(checkpointList.get(i).getIdx());
-	    	  if(photoVO != null){
-	    		  photoList.add(photoVO);
-	    	  }
-	      }
+         for(int i=0; i<checkpointList.size(); i++){
+            PhotoVO photoVO = mymapService.selectPhoto(checkpointList.get(i).getIdx());
+            if(photoVO != null){
+               photoList.add(photoVO);
+            }
+         }
       } 
 
       model.addAttribute("list", list);

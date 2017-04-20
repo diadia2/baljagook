@@ -1,9 +1,7 @@
 
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,6 +11,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import kr.co.foot.board.vo.CommentVO;
+import kr.co.foot.follow.FollowVO;
 import kr.co.foot.mymap.MymapVO;
 
 @RunWith(SpringJUnit4ClassRunner.class) // JUnit으로 실시간 테스트 할거야
@@ -32,7 +31,7 @@ public class DBTest {
 		System.out.println(list);
 	}
 	
-	@Test
+	/*@Test*/
 	public void 리스트부른당() {
 		String pageSize = "5";
 		HashMap<String, Object> search = new HashMap<String, Object>();
@@ -42,6 +41,15 @@ public class DBTest {
 		
 		List<MymapVO> mymapList = sqlSessionTemplate.selectList("kr.co.foot.mymap.MymapDAO.selectMymapList2", search);
 		System.out.println(mymapList);
+	}
+	
+	@Test
+	public void followsel() {
+		FollowVO followVO = new FollowVO();
+		followVO.setFollowId("user1");
+		List<FollowVO> list = sqlSessionTemplate.selectList("kr.co.foot.follow.selectFollowed" ,followVO);
+
+		System.out.println(list);
 	}
 	
 }
