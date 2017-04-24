@@ -51,7 +51,7 @@ public class RegLoginController {
 	@Autowired
 	private MyPageService myPageService;	
 	
-	//�몄�� 泥댄��
+	//세션 체크
 	@RequestMapping(value="/checkSession.do", method=RequestMethod.GET)
 	@ResponseBody
 	public HashMap<String, Boolean> checkSession(HttpServletRequest request) {
@@ -60,7 +60,7 @@ public class RegLoginController {
 		
 		HttpSession session = request.getSession();
 		String userid = (String) session.getAttribute("user");
-		System.out.println("�몄���� 濡�洹몄�몃�� ���대��: " +userid);
+		System.out.println("세션에 로그인된 아이디: " +userid);
 		
 		if(userid != null) {
 			dataMap.put("checkSession", true);
@@ -71,7 +71,7 @@ public class RegLoginController {
 		return dataMap;
 	}
 	
-	//�몄�� ���대�� 媛��몄�ㅺ린
+	//세션 아이디 가져오기
 	@RequestMapping(value="/getSessionUserid.do", method=RequestMethod.GET)
 	@ResponseBody
 	public HashMap<String, String> getSessionUserid(HttpServletRequest request) {
@@ -80,7 +80,7 @@ public class RegLoginController {
 		
 		HttpSession session = request.getSession();
 		String userid = (String) session.getAttribute("user");
-		System.out.println("�몄���� 濡�洹몄�몃�� ���대��: " +userid);
+		System.out.println("세션에 로그인된 아이디: " +userid);
 		
 		if(userid != null) {
 			dataMap.put("sessionUserid", userid);
@@ -93,7 +93,7 @@ public class RegLoginController {
 	
 	
 	
-	//濡�洹몄�� �몄�
+	//로그인 인증
 	@RequestMapping(value="/authenticate.do", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public HashMap<String, String> authenticate(@RequestBody LoginDTO loginData, HttpServletRequest request, HttpServletResponse response) {
@@ -104,25 +104,25 @@ public class RegLoginController {
 		for(int i=0; i<cookies.length; i++) {
 			Cookie c = cookies[i];
 			
-			//癒쇱�� ����濡�洹몄�� 荑��ㅺ� ����吏� ����
+			//먼저 자동로그인 쿠키가 있는지 확인
 			if(c.getName().equals("token")) {
 				String token = c.getValue();
 				String email = service.getEmailByToken(token);
 				String userid = service.getUseridByEmail(email);
 				HttpSession session = request.getSession(true);
 				session.setAttribute("user", userid);
-				System.out.println(session.getAttribute("user"));
-			//����濡�洹몄�� 荑��ㅺ� ���ㅻ㈃	
+			
+			//자동로그인 쿠키가 없다면	
 			} else {
 				
-				//�곗�댄�곕��댁�ㅼ�� ������蹂대� 濡�洹몄�� ���μ��蹂닿� 留���吏� ����
+				//데이터베이스의 회원정보로 로그인 입력정보가 맞는지 확인
 				String loginUserid = service.findByEmailPass(loginData);
 				if(loginUserid != null) {
 					HttpSession session = request.getSession(true);
 					session.setAttribute("user", loginUserid);
 					dataMap.put("redirectUrl", "main.do");
 					
-					//����濡�洹몄�� toggle�� ������硫� ����濡�洹몄�� 荑��� �ㅼ��
+					//자동로그인 toggle을 선택하면 자동로그인 쿠키 설정
 					if(loginData.getAutoLogin().equals("true")) {
 						String token = CommonUtils.getRandomString();
 						Cookie cToken = new Cookie("token", token);
@@ -136,7 +136,7 @@ public class RegLoginController {
 					}			
 					
 				} else {
-					dataMap.put("message", "�대��� ���� 鍮�諛�踰��멸� ���몄�듬����.");
+					dataMap.put("message", "이메일 또는 비밀번호가 틀렸습니다.");
 				}		
 			}
 		}
@@ -145,26 +145,26 @@ public class RegLoginController {
 		
 	}
 	
-	//濡�洹몄����
+	//로그아웃
 	@RequestMapping(value="/logout.do")
 	public String logout(HttpServletRequest request, HttpServletResponse response) {
 		HttpSession session = request.getSession(true);
 		
-		//�몄�� 臾댄�⑦��
+		//세션 무효화
 		session.invalidate();
 
 		Cookie[] cookies = request.getCookies();
-		//荑��ㅺ� 議댁�ы��硫�
+		//쿠키가 존재하면
 		if(cookies != null) {
 			for(int i=0; i<cookies.length; i++) {
 				Cookie c = cookies[i];
-				//����濡�洹몄�� 荑��ㅺ� ���쇰㈃
+				//자동로그인 쿠키가 있으면
 				if(c.getName().equals("token")) {
 					if(c.getValue() != null) {
 						String token = c.getValue();
-						//�곗�댄�곕��댁�ㅼ�� ���λ�� ����濡�洹몄�� 荑���(����)瑜� 吏��곌�
+						//데이터베이스에 저장된 자동로그인 쿠키(토큰)를 지우고
 						service.deleteAutoLoginData(token);
-						//����濡�洹몄�� 荑��� 臾댄�⑦��
+						//자동로그인 쿠키 무효화
 						c.setMaxAge(0);
 						c.setValue(null);
 						response.addCookie(c);
@@ -175,19 +175,19 @@ public class RegLoginController {
 		return "redirect:/";
 	}
 	
-	//����媛���
+	//회원가입
 	@RequestMapping(value="/registerNewMember.do", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public HashMap<String, Boolean> registerNewMember(@RequestBody MemberDTO memberData, HttpServletRequest request) throws ParseException {
 		
-		//email ���� userid 以�蹂듭���� ��蹂� �닿린
+		//email 또는 userid 중복에러 정보 담기
 		HashMap<String, Boolean> errorMap = new HashMap<String, Boolean>();
 		
 		String inputEmail = memberData.getEmail();
 		String inputUserid = memberData.getUserid();
 		String code = CommonUtils.getRandomString();
 				
-		//���� ��媛� 援ы��湲�
+		//현재 시간 구하기
 	    Calendar cal = Calendar.getInstance();
 	    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	    String today = sdf.format(cal.getTime());
@@ -226,7 +226,7 @@ public class RegLoginController {
 		return errorMap; 
 	}
 	
-	//鍮�諛�踰��� 遺��� �� ���ν�� �대��쇰� ����鍮�諛�踰��� ����
+	//비밀번호 분실 시 입력한 이메일로 임시비밀번호 전송
 	@RequestMapping(value="/recoverPassword.do", method=RequestMethod.POST,  consumes=MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public HashMap<String, String> recoverPassword(@RequestBody MemberDTO memberData) {
@@ -239,7 +239,7 @@ public class RegLoginController {
 		String emailDB = service.findByEmail(inputEmail);
 		
 		if(emailDB == null) {
-			resultMap.put("errorMessage", "���ν���� �대��쇱�� ����媛����� �대��쇱�� ��������.");
+			resultMap.put("errorMessage", "입력하신 이메일은 회원가입된 이메일이 아닙니다.");
 			return resultMap;
 		} else {
 			String tempPassword = CommonUtils.getRandomString().substring(0, 7);
@@ -255,13 +255,13 @@ public class RegLoginController {
 			MemberVO targetMember = myPageService.findByEmail(emailDB);
 			targetMember.setPassword(tempPassword);
 			myPageService.changePassword(targetMember);
-			resultMap.put("successMessage", "���ν���� �대��쇰� ����鍮�諛�踰��몃�� ���≫�대���몄�듬����. ���� �� �ㅼ�� 濡�洹몄�명�댁＜�몄��.");
+			resultMap.put("successMessage", "입력하신 이메일로 임시비밀번호를 전송해드렸습니다. 확인 후 다시 로그인해주세요.");
 			return resultMap;
 		}
 	}
 	
 	
-	//�ъ�⑹�� 留��� �대┃ �� �몄�肄��� ����
+	//사용자 링크 클릭 시 인증코드 확인
 	@RequestMapping(value="/confirm.do", method=RequestMethod.GET)
 	public ModelAndView confirmCode(@RequestParam("code") String code, Model model) {
 		String emailDB = service.findByCode(code);
@@ -278,7 +278,7 @@ public class RegLoginController {
 		}
 	}	
 	
-	//email 以�蹂� ����
+	//email 중복 확인
 	public boolean emailAlreadyExists(String email) {
 		String emailDB = service.findByEmail(email);
 		if(emailDB != null) {
@@ -288,7 +288,7 @@ public class RegLoginController {
 		}
 	}
 	
-	//userid 以�蹂� ����
+	//userid 중복 확인
 	public boolean useridAlreadyExists(String userid) {
 		String useridDB = service.findByUserid(userid);
 		if(useridDB != null) {
@@ -298,7 +298,7 @@ public class RegLoginController {
 		}
 	}
 	
-	//����鍮�諛�踰��� �대��쇰� ����
+	//임시비밀번호 이메일로 전송
 	public void sendTempPassword(String email, String tempPassword) throws AddressException, javax.mail.MessagingException, MessagingException {
 		String to = email;
 		String from = "threebaljagook@gmail.com";
@@ -321,18 +321,18 @@ public class RegLoginController {
 		Message message = new MimeMessage(session);
 		message.setFrom(new InternetAddress(from));
 		message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
-		message.setSubject("諛���援� ���� ����鍮�諛�踰��� ����");
+		message.setSubject("발자국 회원 임시비밀번호 전송");
 		message.setContent(
-				"<h1>����鍮�諛�踰��몃�� �ㅼ��怨� 媛��듬����. �� ����鍮�諛�踰��몃� 濡�洹몄�명���� ��, 留��댄���댁����� 鍮�諛�踰��몃�� 蹂�寃쏀�댁＜��湲� 諛�������.</h1>"
+				"<h1>임시비밀번호는 다음과 같습니다. 이 임시비밀번호로 로그인하신 후, 마이페이지에서 비밀번호를 변경해주시기 바랍니다.</h1>"
 				+"<br/>"
-				+"����鍮�諛�踰��� : "+tempPassword,
+				+"임시비밀번호 : "+tempPassword,
 				"text/html; charset=UTF-8");
 		Transport.send(message);
 		
-		System.out.println("����鍮�諛�踰��� �대��� ���� �깃났!");
+		System.out.println("임시비밀번호 이메일 전송 성공!");
 	}
 	
-	//�몄� �대��� ����
+	//인증 이메일 전송
 	public void sendVerificationEmail(String email, String code, String contextPath) throws AddressException, javax.mail.MessagingException, MessagingException {
 		String to = email;
 		String from = "threebaljagook@gmail.com";
@@ -357,14 +357,14 @@ public class RegLoginController {
 		Message message = new MimeMessage(session);
 		message.setFrom(new InternetAddress(from));
 		message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
-		message.setSubject("諛���援� ����媛��� �몄� �대���");
+		message.setSubject("발자국 회원가입 인증 이메일");
 		message.setContent(
-				"<h1>諛���援��� 媛����댁＜���� 媛��ы�⑸����. ���� 留��щ�� �대┃����硫� �몄���李④� 留�臾대━�⑸����.</h1>"
+				"<h1>발자국에 가입해주셔서 감사합니다. 아래 링크를 클릭하시면 인증절차가 마무리됩니다.</h1>"
 				+"<br/>"
 				+server+contextPath+"/confirm.do?code="+code,
 				"text/html; charset=UTF-8");
 		Transport.send(message);
 		
-		System.out.println("�몄� �대��� ���� �깃났!");
+		System.out.println("인증 이메일 전송 성공!");
 	}
 }
