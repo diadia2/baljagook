@@ -13,6 +13,7 @@ import kr.co.foot.like.LikeVO;
 import kr.co.foot.photo.PhotoVO;
 import kr.co.foot.regcoordinates.RegcoordinatesVO;
 import kr.co.foot.regmap.RegmapVO;
+import kr.co.foot.report.ReportVO;
 
 @Service
 public class MymapServiceImp implements MymapService {
@@ -235,5 +236,9 @@ public class MymapServiceImp implements MymapService {
 		return photoVO;
 	}
 	
+	@Override
+	public void reportMap(ReportVO reportVO) {
+		mymapDAO.reportMap(reportVO);
+	}
 
 }

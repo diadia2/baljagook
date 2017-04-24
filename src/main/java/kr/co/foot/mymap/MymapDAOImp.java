@@ -15,6 +15,7 @@ import kr.co.foot.like.LikeVO;
 import kr.co.foot.photo.PhotoVO;
 import kr.co.foot.regcoordinates.RegcoordinatesVO;
 import kr.co.foot.regmap.RegmapVO;
+import kr.co.foot.report.ReportVO;
 
 @Repository
 public class MymapDAOImp implements MymapDAO {
@@ -237,6 +238,11 @@ public class MymapDAOImp implements MymapDAO {
 		PhotoVO photoVO = sqlSessionTemplate.selectOne("kr.co.foot.mymap.MymapDAO.selectPhoto", checkpoinidx);
 		
 		return photoVO;
+	}
+	
+	@Override
+	public void reportMap(ReportVO reportVO) {
+		sqlSessionTemplate.insert("kr.co.foot.mymap.MymapDAO.reportMap", reportVO);
 	}
 	
 }

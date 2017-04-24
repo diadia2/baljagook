@@ -686,7 +686,7 @@ body {
 					<button class="dropdown-item btn btn-primary" type="button"
 						data-toggle="modal" data-target="#signUpModal"
 						data-dismiss="modal" data-backdrop="static" data-keyboard="false">
-						<i class="fa fa-user-plus"></i>&nbsp;Sign Up
+						<i class="fa fa-user-plus"></i>&nbsp;회원가입
 					</button>
 				</div>
 			</div>

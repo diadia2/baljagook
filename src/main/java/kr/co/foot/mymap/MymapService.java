@@ -10,6 +10,7 @@ import kr.co.foot.like.LikeVO;
 import kr.co.foot.photo.PhotoVO;
 import kr.co.foot.regcoordinates.RegcoordinatesVO;
 import kr.co.foot.regmap.RegmapVO;
+import kr.co.foot.report.ReportVO;
 
 public interface MymapService {
 
@@ -41,5 +42,6 @@ public interface MymapService {
 	public List<MymapVO> selectMymapByuserid(String userid);
 	public CheckpointVO selectCheckpointByCoorIdx(int idx);
 	public PhotoVO selectPhoto(int idx);
+	public void reportMap(ReportVO reportVO);
 
 }

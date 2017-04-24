@@ -1140,9 +1140,38 @@
 				<a href="#"><i class="fa fa-eye fa-2x" aria-hidden="true"></i></a>
 				<a href="#"><i class="fa fa-exclamation-triangle fa-2x" aria-hidden="true"></i></a>
 				수정하면서 위치 바꿀예정
+				<a href="javascript:showReportForm();">신고하기</a>
 			</div>
 		</div>
 	</div>
+	
+	<!-- 신고하기 Modal -->
+	<div id="reportMapModal" class="modal">
+		<div class="modal-content">
+			<div class="modal-header">
+				<span id="closeReportMapModal" class="close">&times;</span>
+				<h2>신고하기</h2>
+			</div>
+			<form id="reportMapForm" action="${ pageContext.request.contextPath }/report.do" method="POST">
+				<input type="hidden" name="reportedMapIdx" value="${ mymapVO.idx }">
+				<input type="hidden" name="reportedMapOwner" value="${ mymapVO.userid }">
+				<textarea id="reportReason" class="text" cols="80" rows="20" name="reportReason" placeholder="신고 이유를 작성해주세요" ></textarea>
+				<br/>
+				<button type="submit">신고하기</button> 
+			</form>
+		</div>
+	</div>
+<script>
+	function showReportForm() {
+		$('#reportMapModal').modal('show');
+	}
+	$(document).ready(function() {
+		$('#closeReportMapModal').click(function() {
+			$('#reportMapModal').modal('hide');
+		});
+				
+	});	
+</script>	
 		
 		<!-- 댓글 부분 -->
 	<div class="container">

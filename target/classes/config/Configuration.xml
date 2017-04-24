@@ -11,6 +11,7 @@
 		<typeAlias type="kr.co.foot.reglogin.LoginDTO" alias="LoginDTO" />
 		<typeAlias type="kr.co.foot.follow.FollowVO" alias="FollowVO" />
 		<typeAlias type="kr.co.foot.message.MessageVO" alias="MessageVO" />
+		<typeAlias type="kr.co.foot.faq.FaqVO" alias="FaqVO" />
 		
 		<typeAlias type="kr.co.foot.reglogin.AutoLoginDTO" alias="AutoLoginDTO" />
 	</typeAliases>

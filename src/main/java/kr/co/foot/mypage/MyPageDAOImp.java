@@ -15,6 +15,10 @@ public class MyPageDAOImp implements MyPageDAO {
 	public void deactivateAccount(String userid) {
 		sst.update("kr.co.foot.mypage.MyPageDAO.deactivateAccount", userid);
 	}
+	
+	public void insertDeactivatedate(DeactivateDTO deactivateDTO) {
+		sst.update("kr.co.foot.mypage.MyPageDAO.insertDeactivatedate", deactivateDTO);
+	}
 
 	public void changePassword(MemberVO memberVO) {
 		sst.update("kr.co.foot.mypage.MyPageDAO.changePassword", memberVO);
