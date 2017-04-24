@@ -35,6 +35,7 @@ import kr.co.foot.mymap.MymapVO;
 import kr.co.foot.photo.PhotoVO;
 import kr.co.foot.regcoordinates.RegcoordinatesVO;
 import kr.co.foot.regmap.RegmapVO;
+import kr.co.foot.report.ReportVO;
 
 @Controller
 public class MymapController {
@@ -536,13 +537,13 @@ public class MymapController {
 //	Like
 	@RequestMapping(value="/like.do", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public HashMap<Integer, Integer> like(@RequestBody LikeDTO likeDTO, HttpServletRequest request) throws Exception {
+	public HashMap<Integer, Integer> like(@RequestBody LikeDTO likeDTO, HttpServletRequest request, HttpSession session) throws Exception {
 		
 		System.out.println("like 컨트롤러로 들어옴");
 		System.out.println(likeDTO);
 		
 		//검색페이지에 나온 mymapidx를 통해 해당 게시물의 regmapidx 추출
-		String userid = likeDTO.getUserid();
+		String userid = (String) session.getAttribute("user");
 		int mymapidx = likeDTO.getMymapidxRef();
 		int regmapidx = mymapService.getRegmapIdx(mymapidx);
 	
@@ -571,13 +572,13 @@ public class MymapController {
 //	Unlike	
 	@RequestMapping(value="/unlike.do", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public HashMap<Integer, Integer> unlike(@RequestBody LikeDTO likeDTO, HttpServletRequest request) throws Exception {
+	public HashMap<Integer, Integer> unlike(@RequestBody LikeDTO likeDTO, HttpServletRequest request, HttpSession session) throws Exception {
 		
 		System.out.println("like 컨트롤러로 들어옴");
 		System.out.println(likeDTO);
 		
 		//검색페이지에 나온 mymapidx를 통해 해당 게시물의 regmapidx 추출
-		String userid = likeDTO.getUserid();
+		String userid = (String) session.getAttribute("user");
 		int mymapidx = likeDTO.getMymapidxRef();
 		int regmapidx = mymapService.getRegmapIdx(mymapidx);
 	
@@ -601,7 +602,34 @@ public class MymapController {
 		likeMap.put(mymapidx, likeCnt);
 			
 		return likeMap;
-	}   
+	}
+	
+	//신고하기
+	@RequestMapping(value="/report.do", method=RequestMethod.POST)
+	public String reportMap(@RequestParam("reportedMapIdx") int mymapidx,
+							@RequestParam("reportedMapOwner") String owner,
+							@RequestParam("reportReason") String reason, HttpSession session) throws ParseException {
+		
+		Calendar cal = Calendar.getInstance();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String today = sdf.format(cal.getTime());
+		String regdate = String.valueOf(sdf.parse(today).getTime()/1000);		
+
+		String userid = (String) session.getAttribute("user");
+		int regmapidx = mymapService.getRegmapIdx(mymapidx);
+		reason = reason.replace("\n", "<br />\n");
+		
+		ReportVO reportVO = new ReportVO();
+		reportVO.setUserid(userid);
+		reportVO.setReason(reason);
+		reportVO.setOwner(owner);
+		reportVO.setRegmapidx(regmapidx);
+		reportVO.setRegdate(regdate);
+		
+		mymapService.reportMap(reportVO);
+		
+		return "redirect:/map/detail.do?mymapidx="+mymapidx;
+	}
    
    
 }

@@ -18,6 +18,7 @@ import kr.co.foot.member.MemberVO;
 import kr.co.foot.photo.PhotoVO;
 import kr.co.foot.regcoordinates.RegcoordinatesVO;
 import kr.co.foot.regmap.RegmapVO;
+import kr.co.foot.report.ReportVO;
 
 @Repository
 public class MymapDAOImp implements MymapDAO {
@@ -303,6 +304,11 @@ public class MymapDAOImp implements MymapDAO {
 		int totalAdv = sqlSessionTemplate.selectOne("kr.co.foot.mymap.MymapDAO.selectTotalAdv");
 		
 		return totalAdv;
+	}
+	
+	@Override
+	public void reportMap(ReportVO reportVO) {
+		sqlSessionTemplate.insert("kr.co.foot.mymap.MymapDAO.reportMap", reportVO);
 	}
 	
 }

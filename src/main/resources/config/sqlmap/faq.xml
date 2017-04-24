@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.foot.faq.FaqDAO">
+    
+    <insert id="insertFAQ" parameterType="FaqVO">
+        insert into t_faq(title, content, regdate) values(#{title}, #{content}, #{regdate})
+    </insert>
+    
+    <select id="getFAQList" resultType="FaqVO">
+        select * from t_faq;
+    </select>
+    
+    <delete id="removeFAQ" parameterType="int">
+        delete from t_faq where idx = #{idx}
+    </delete>
+    
+    <update id="editFAQ" parameterType="FaqVO">
+        update t_faq set title = #{title}, content = #{content} where idx = #{idx} 
+    </update>
+    
+    <select id="getFAQByIdx" parameterType="int" resultType="FaqVO">
+        select * from t_faq where idx = #{idx}
+    </select>
+
+</mapper>

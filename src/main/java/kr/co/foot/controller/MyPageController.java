@@ -2,6 +2,9 @@ package kr.co.foot.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -20,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import kr.co.foot.member.MemberVO;
+import kr.co.foot.mypage.DeactivateDTO;
 import kr.co.foot.mypage.MyPageService;
 import kr.co.foot.mypage.PasswordDTO;
 import kr.co.foot.reglogin.LoginDTO;
@@ -38,13 +42,23 @@ public class MyPageController {
 	//회원탈퇴
 	@RequestMapping(value="/deactivate.do", method=RequestMethod.POST)
 	@ResponseBody
-	public HashMap<String, String> deactivateAccount(HttpServletRequest request) {
+	public HashMap<String, String> deactivateAccount(HttpServletRequest request) throws ParseException {
+		
+		Calendar cal = Calendar.getInstance();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String today = sdf.format(cal.getTime());
+		String deactivatedate = String.valueOf(sdf.parse(today).getTime()/1000);		
 		
 		HttpSession session = request.getSession(true);
 		String userid = (String) session.getAttribute("user");
 		
-		service.deactivateAccount(userid);
+		DeactivateDTO deactivateDTO = new DeactivateDTO();
+		deactivateDTO.setUserid(userid);
+		deactivateDTO.setDeactivatedate(deactivatedate);
 		
+		service.deactivateAccount(userid);
+		service.insertDeactivatedate(deactivateDTO);
+	
 		session.invalidate();
 		
 		HashMap<String, String> dataMap = new HashMap<String, String>();

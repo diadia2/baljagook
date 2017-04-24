@@ -9,6 +9,7 @@ public class MemberVO {
 	private String regdate;
 	private String photo;
 	private String code;
+	private String deactivatedate;
 	
 	public MemberVO(){
 		
@@ -70,10 +71,19 @@ public class MemberVO {
 		this.code = code;
 	}
 
+	public String getDeactivatedate() {
+		return deactivatedate;
+	}
+
+	public void setDeactivatedate(String deactivatedate) {
+		this.deactivatedate = deactivatedate;
+	}
+
 	@Override
 	public String toString() {
-		return "memberVO [email=" + email + ", password=" + password + ", userid=" + userid + ", status=" + status
-				+ ", regdate=" + regdate + ", photo=" + photo + ", toString()=" + super.toString() + "]";
+		return "MemberVO [email=" + email + ", password=" + password + ", userid=" + userid + ", status=" + status
+				+ ", regdate=" + regdate + ", photo=" + photo + ", code=" + code + ", deactivatedate=" + deactivatedate
+				+ "]";
 	}
 	
 }

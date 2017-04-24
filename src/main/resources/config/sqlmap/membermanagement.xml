@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.foot.managemember.MemberManagementDAO">
+   <select id="getRegularMemberList" resultType="MemberVO">
+       select * from t_member where status = 1
+   </select>
+   <select id="getBlindedMemberList" resultType="MemberVO">
+       select * from t_member where status = 3
+   </select>
+   <select id="getDeactivatedMemberList" resultType="MemberVO">
+       select * from t_member where status = 2
+   </select>
+   <select id="getMyMapCntByUserid" parameterType="String" resultType="int">
+       select count(*) from t_myMap where type = 1 and userid = #{userid}
+   </select>
+   <select id="getMyPlanCntByUserid" parameterType="String" resultType="int">
+       select count(*) from t_myMap where type = 2 and userid = #{userid}
+   </select>
+   <select id="getReportCntByUserid" parameterType="String" resultType="int">
+       select count(*) from t_report where owner = #{userid}
+   </select>
+   <select id="getReportByUserid" parameterType="String" resultType="kr.co.foot.report.ReportVO">
+       select * from t_report where owner = #{userid}
+   </select>
+   <update id="updateMemberStatus" parameterType="MemberVO">
+       update t_member set status = #{status} where userid = #{userid} 
+   </update>
+   <delete id="deleteMember" parameterType="String">
+       delete from t_member where userid = #{userid}
+   </delete>
+</mapper>
