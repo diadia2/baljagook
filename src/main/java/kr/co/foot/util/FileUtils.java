@@ -17,9 +17,9 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 @Component("fileUtils")
 public class FileUtils {
     
-// private static final String filePath = "C:/Users/User/workspace/baljagook/src/main/webapp/resources/photo/";
+   private static final String filePath = "C:/Users/User/workspace/baljagook/src/main/webapp/resources/advphoto/";
 // private static final String filePath = "/Users/mac/Documents/workspace/baljagook/src/main/webapp/resources/photo/";
-   private static final String filePath = "/var/lib/tomcat8/webapps/baljagook/resources/photo/";
+// private static final String filePath = "/var/lib/tomcat8/webapps/baljagook/resources/photo/";
    public Map<String, String> saveFile(HttpServletRequest request) throws IllegalStateException, IOException{
       
       String oriFileName = null;
@@ -70,8 +70,8 @@ public class FileUtils {
 
       Map<String, String> map = new HashMap<String, String>();
       map.put("oriFileName", oriFileName);
-      map.put("oriFileExtension", oriFileExtension);
       map.put("newFileName", newFileName);
+      map.put("oriFileExtension", oriFileExtension);
       map.put("lat", lat);
       map.put("lon", lon);
       map.put("accuracy", accuracy);
@@ -80,5 +80,45 @@ public class FileUtils {
       map.put("content", content);
        
       return map;
+   }
+   
+   
+   public Map<String, String> regAdvPhoto(HttpServletRequest request) throws IllegalStateException, IOException{
+	   
+	   String oriFileName = null;
+       String oriFileExtension = null;
+       String newFileName = null;
+       
+       File file = new File(filePath);
+       if(file.exists() == false){
+            file.mkdirs();
+        }
+       
+       MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest)request;
+       MultipartFile multipartFile = null;
+       
+       Iterator<String> iter = multipartHttpServletRequest.getFileNames();
+      
+       while(iter.hasNext()){
+          
+          multipartFile = multipartHttpServletRequest.getFile(iter.next());
+          
+          if(multipartFile.isEmpty() == false){
+             oriFileName = multipartFile.getOriginalFilename();
+               oriFileExtension = oriFileName.substring(oriFileName.lastIndexOf("."));
+               newFileName = CommonUtils.getRandomString()+oriFileExtension;
+               
+               file = new File(filePath+newFileName);
+               multipartFile.transferTo(file);
+          }
+          
+       }
+       
+       Map<String, String> map = new HashMap<String, String>();
+       map.put("oriFileName", oriFileName);
+       map.put("newFileName", newFileName);
+       
+       return map;
+	   
    }
 }

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!doctype html>
 <html lang="en">
 <head>
@@ -62,6 +63,12 @@
 	                    <a href="${pageContext.request.contextPath }/admin/boardlist.do">
 	                        <i class="material-icons">library_books</i>
 	                        <p>Board List</p>
+	                    </a>
+	                </li>
+	               	<li>
+	                    <a href="${pageContext.request.contextPath }/admin/adv.do">
+	                        <i class="material-icons">location_on</i>
+	                        <p>Add advertisement</p>
 	                    </a>
 	                </li>
 	                <li>
@@ -145,12 +152,13 @@
 									<i class="material-icons">content_copy</i>
 								</div>
 								<div class="card-content">
-									<p class="category">Used Space</p>
-									<h3 class="title">49/50<small>GB</small></h3>
+									<p class="category">Total</p>
+									<p class="category">Member</p>
+									<h3 class="title"><small>총</small> ${ totalmember }<small>명</small></h3> 
 								</div>
 								<div class="card-footer">
-									<div class="stats">
-										<i class="material-icons text-danger">warning</i> <a href="#pablo">Get More Space...</a>
+									<div class="stats"> 
+										<i class="material-icons">date_range</i> Number of Members
 									</div>
 								</div>
 							</div>
@@ -161,12 +169,13 @@
 									<i class="material-icons">store</i>
 								</div>
 								<div class="card-content">
-									<p class="category">Revenue</p>
-									<h3 class="title">$34,245</h3>
+									<p class="category">Total</p>
+									<p class="category">Map</p>
+									<h3 class="title"><small>총</small> ${ totalmap }<small>개</small></h3>
 								</div>
 								<div class="card-footer">
 									<div class="stats">
-										<i class="material-icons">date_range</i> Last 24 Hours
+										<i class="material-icons">date_range</i> Number of Maps
 									</div>
 								</div>
 							</div>
@@ -177,12 +186,13 @@
 									<i class="material-icons">info_outline</i>
 								</div>
 								<div class="card-content">
-									<p class="category">Fixed Issues</p>
-									<h3 class="title">75</h3>
+									<p class="category">Total</p>
+									<p class="category">Ads</p>
+									<h3 class="title">${ totalAdv }<small>건</small></h3>
 								</div>
 								<div class="card-footer">
 									<div class="stats">
-										<i class="material-icons">local_offer</i> Tracked from Github
+										<i class="material-icons">local_offer</i> Advertisement
 									</div>
 								</div>
 							</div>
@@ -194,12 +204,13 @@
 									<i class="fa fa-twitter"></i>
 								</div>
 								<div class="card-content">
-									<p class="category">Followers</p>
-									<h3 class="title">+245</h3>
+									<p class="category">Total</p>
+									<p class="category">Reg maps</p>
+									<h3 class="title"><small>총</small> ${ totalregmap }<small>개</small></h3>
 								</div>
 								<div class="card-footer">
 									<div class="stats">
-										<i class="material-icons">update</i> Just Updated
+										<i class="material-icons">update</i> number of Plan
 									</div>
 								</div>
 							</div>
@@ -213,12 +224,12 @@
 									<div class="ct-chart" id="dailySalesChart"></div>
 								</div>
 								<div class="card-content">
-									<h4 class="title">Daily Sales</h4>
-									<p class="category"><span class="text-success"><i class="fa fa-long-arrow-up"></i> 55%  </span> increase in today sales.</p>
+									<h4 class="title">Daily New Members</h4>
+									<p class="category">일일 가입자 현황</p>
 								</div>
 								<div class="card-footer">
 									<div class="stats">
-										<i class="material-icons">access_time</i> updated 4 minutes ago
+										<i class="material-icons">access_time</i> updated in  ${ dateFrom } ~ ${ dateTo }
 									</div>
 								</div>
 							</div>
@@ -484,47 +495,31 @@
 						<div class="col-lg-6 col-md-12">
 							<div class="card">
 	                            <div class="card-header" data-background-color="orange">
-	                                <h4 class="title">Employees Stats</h4>
-	                                <p class="category">New employees on 15th September, 2016</p>
+	                                <h4 class="title">The Most Active Users</h4>
+	                                <p class="category">여행 지도를 가장 많이 업데이트한 유저</p>
 	                            </div>
 	                            <div class="card-content table-responsive">
 	                                <table class="table table-hover">
 	                                    <thead class="text-warning">
-	                                        <th>ID</th>
-	                                    	<th>Name</th>
-	                                    	<th>Salary</th>
-	                                    	<th>Country</th>
+	                                        <th>Rank</th>
+	                                    	<th>email</th>
+	                                    	<th>maps</th>
+	                                    	<th>id</th>
 	                                    </thead>
 	                                    <tbody>
-	                                        <tr>
-	                                        	<td>1</td>
-	                                        	<td>Dakota Rice</td>
-	                                        	<td>$36,738</td>
-	                                        	<td>Niger</td>
-	                                        </tr>
-	                                        <tr>
-	                                        	<td>2</td>
-	                                        	<td>Minerva Hooper</td>
-	                                        	<td>$23,789</td>
-	                                        	<td>Curaçao</td>
-	                                        </tr>
-	                                        <tr>
-	                                        	<td>3</td>
-	                                        	<td>Sage Rodriguez</td>
-	                                        	<td>$56,142</td>
-	                                        	<td>Netherlands</td>
-	                                        </tr>
-	                                        <tr>
-	                                        	<td>4</td>
-	                                        	<td>Philip Chaney</td>
-	                                        	<td>$38,735</td>
-	                                        	<td>Korea, South</td>
-	                                        </tr>
+		                                    <c:forEach var="memberList" items="${ memberList }" varStatus="i">
+		                                    	<tr>
+		                                        	<td>${ i.index + 1 }</td>
+		                                        	<td>${ memberList.email }</td>
+		                                        	<td>${ memberList.status }<small>건</small></td>
+		                                        	<td>${ memberList.userid }</td>
+	                                        	</tr>
+		                                    </c:forEach>
 	                                    </tbody>
 	                                </table>
 	                            </div>
 	                        </div>
-						</div>
+						</div> 
 					</div>
 				</div>
 			</div>
@@ -582,4 +577,16 @@
 	<!-- Material Dashboard DEMO methods, don't include it in your project! -->
 	<script src="${pageContext.request.contextPath }/resources/admin/assets/js/demo.js"></script>
 
+	<script type="text/javascript">
+		
+		var memberCount = [];
+		<c:forEach items="${dailyMemberCount}" var="dailyMemberCount">
+			memberCount.push(${dailyMemberCount});
+	    </c:forEach>
+    	$(document).ready(function(){
+
+			// Javascript method's body can be found in assets/js/demos.js
+        	demo.initDashboardPageCharts();
+    	});
+	</script>
 </html>

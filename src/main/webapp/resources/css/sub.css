@@ -1,5 +1,5 @@
 /*
-검색 결과, 마이페이지, 소개글, 공지사항, FAQ 전용 css
+寃��� 寃곌낵, 留��댄���댁�, ��媛�湲�, 怨듭��ы��, FAQ ���� css
 */
 
 .container  {
@@ -11,7 +11,7 @@
 }
 
 
-/* 검색결과 페이지 */
+/* 寃���寃곌낵 ���댁� */
 
 
 .container  .search_box{
@@ -169,7 +169,7 @@
 }
 
 
-/* 마이페이지 */
+/* 留��댄���댁� */
 
 .container .menuleft {
 	display:inline-block;
@@ -357,12 +357,12 @@
 	float:right;
 	margin:5px;
 	font-size:large;
-	border:solid 1px #000;
+/* 	border:solid 1px #000; */
 	width:25px;
 	height:25px;
-	border-radius:50%;
-	-webkit-transition: -webkit-transform .2s ease-in-out;
-    transition: transform .2s ease-in-out;
+/*	border-radius:50%;
+ 	-webkit-transition: -webkit-transform .2s ease-in-out;
+    transition: transform .2s ease-in-out; */
 	padding:0;
 	text-align:center;
 	font-weight:bold;
@@ -374,8 +374,8 @@
 
 
 .container .lpop .btnx:hover{
-	-webkit-transform: rotate(180deg);
-    transform: rotate(180deg);
+/* 	-webkit-transform: rotate(180deg);
+    transform: rotate(180deg); */
 	background:#dbf923;
 }
 
@@ -492,7 +492,7 @@
 	*/
 }
 
-/* 게시판 부분 */
+/* 寃����� 遺�遺� */
 
 .container .div_list {
 
@@ -572,7 +572,7 @@
 }
 
 
-/* view 부분 */
+/* view 遺�遺� */
 
 .container .div_view {
 	padding-top:10px;

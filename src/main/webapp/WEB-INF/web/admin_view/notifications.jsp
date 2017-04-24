@@ -63,6 +63,12 @@
 	                        <p>Board List</p>
 	                    </a>
 	                </li>
+	                <li>
+	                    <a href="${pageContext.request.contextPath }/admin/adv.do">
+	                        <i class="material-icons">location_on</i>
+	                        <p>Add advertisement</p>
+	                    </a>
+	                </li>
 	                <li class="active">
 	                    <a href="${pageContext.request.contextPath }/admin/notifications.do">
 	                        <i class="material-icons text-gray">notifications</i>

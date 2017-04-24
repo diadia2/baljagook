@@ -2,16 +2,19 @@ package kr.co.foot.mymap;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import kr.co.foot.advertisement.AdvertisementVO;
 import kr.co.foot.checkpoint.CheckpointVO;
 import kr.co.foot.favoritemap.FavoritemapVO;
 import kr.co.foot.favoriteplace.FavoriteplaceVO;
 import kr.co.foot.hashtag.HashtagVO;
 import kr.co.foot.like.LikeVO;
+import kr.co.foot.member.MemberVO;
 import kr.co.foot.photo.PhotoVO;
 import kr.co.foot.regcoordinates.RegcoordinatesVO;
 import kr.co.foot.regmap.RegmapVO;
@@ -238,6 +241,69 @@ public class MymapDAOImp implements MymapDAO {
 		PhotoVO photoVO = sqlSessionTemplate.selectOne("kr.co.foot.mymap.MymapDAO.selectPhoto", checkpoinidx);
 		
 		return photoVO;
+	}
+
+	@Override
+	public int getTotalMember() {
+
+		int totalmember = sqlSessionTemplate.selectOne("kr.co.foot.mymap.MymapDAO.getTotalMember");
+		
+		return totalmember;
+	}
+
+	@Override
+	public int getTotalMap(int type) {
+
+		int totalmap = sqlSessionTemplate.selectOne("kr.co.foot.mymap.MymapDAO.getTotalMap", type);
+		
+		return totalmap;
+	}
+
+	@Override
+	public List<MymapVO> getMymapListHighRank() {
+
+		List<MymapVO> mymapList = sqlSessionTemplate.selectList("kr.co.foot.mymap.MymapDAO.getMymapListHighRank");
+		
+		return mymapList;
+	}
+
+	@Override
+	public MemberVO getMemberInfo(String userid) {
+		
+		MemberVO memberVO = sqlSessionTemplate.selectOne("kr.co.foot.mymap.MymapDAO.getMemberInfo", userid);
+		
+		return memberVO;
+	}
+
+	@Override
+	public void insertAdvertisement(AdvertisementVO advertisementVO) {
+
+		sqlSessionTemplate.insert("kr.co.foot.mymap.MymapDAO.insertAdvertisement", advertisementVO);
+		
+	}
+
+	@Override
+	public List<AdvertisementVO> selectAdvertisementList() {
+
+		List<AdvertisementVO> AdvertisementList = sqlSessionTemplate.selectList("kr.co.foot.mymap.MymapDAO.selectAdvertisementList");
+		
+		return AdvertisementList;
+	}
+
+	@Override
+	public int selectMemberCount(Map<String, String> map) {
+
+		int count = sqlSessionTemplate.selectOne("kr.co.foot.mymap.MymapDAO.selectMemberCount",map);
+		
+		return count;
+	}
+
+	@Override
+	public int selectTotalAdv() {
+
+		int totalAdv = sqlSessionTemplate.selectOne("kr.co.foot.mymap.MymapDAO.selectTotalAdv");
+		
+		return totalAdv;
 	}
 	
 	@Override
