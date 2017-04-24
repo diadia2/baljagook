@@ -1,5 +1,6 @@
 package kr.co.foot.controller;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -23,6 +24,7 @@ import kr.co.foot.member.MemberVO;
 import kr.co.foot.mymap.MymapService;
 import kr.co.foot.mymap.MymapVO;
 import kr.co.foot.util.FileUtils;
+import kr.co.foot.util.GetToken;
 
 
 
@@ -37,7 +39,7 @@ public class AdminController {
    private FileUtils fileutils;
 
    @RequestMapping("/admin/dashboard.do")
-   public String dashboard(Model model) throws ParseException{
+   public String dashboard(Model model) throws ParseException, FileNotFoundException, IOException{
 	   
 	   int totalmember = mymapService.getTotalMember();
 	   int totalmap = mymapService.getTotalMap(1);
@@ -64,6 +66,7 @@ public class AdminController {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		String today = sdf.format(cal.getTime());
 		String regdate = (String.valueOf(sdf.parse(today).getTime()/1000));
+		String dateToday = sdf.format(new Date(Long.valueOf((Integer.parseInt(regdate))+"000")));
 		String dateTo = sdf.format(new Date(Long.valueOf(((Integer.parseInt(regdate))-86400)+"000")));
 		List<Integer> dailyMemberCount = new ArrayList<Integer>();
 		List<String> dateList = new ArrayList<String>();
@@ -80,6 +83,9 @@ public class AdminController {
 	   
 		String dateFrom = sdf.format(new Date(Long.valueOf(regdate+"000")));
 		
+		GetToken getToken = new GetToken();
+		
+		model.addAttribute("dateToday", dateToday);
 		model.addAttribute("dailyMemberCount", dailyMemberCount);
 		model.addAttribute("dateFrom", dateFrom);
 		model.addAttribute("dateTo", dateTo);

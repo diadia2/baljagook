@@ -27,7 +27,32 @@
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
     <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300|Material+Icons' rel='stylesheet' type='text/css'>
 </head>
+<script type="text/javascript">
+/* 
+function start() {
+  // Initializes the client with the API key and the Translate API.
+  gapi.client.init({
+    'apiKey': 'AIzaSyAF05JCFoefu9jROxjM8TcHc8GIR6YDhuU',
+    'discoveryDocs': ['https://www.googleapis.com/discovery/v1/apis/translate/v2/rest'],
+  }).then(function() {
+    // Executes an API request, and returns a Promise.
+    // The method name `language.translations.list` comes from the API discovery.
+    return gapi.client.language.translations.list({
+      q: 'hello world',
+      source: 'en',
+      target: 'de',
+    });
+  }).then(function(response) {
+    console.log(response.result.data.translations[0].translatedText);
+  }, function(reason) {
+    console.log('Error: ' + reason.result.error.message);
+  });
+};
 
+// Loads the JavaScript client library and invokes `start` afterwards.
+gapi.load('client', start);
+ */
+</script>
 <body>
 
 	<div class="wrapper">
@@ -241,12 +266,12 @@
 									<div class="ct-chart" id="emailsSubscriptionChart"></div>
 								</div>
 								<div class="card-content">
-									<h4 class="title">Email Subscriptions</h4>
-									<p class="category">Last Campaign Performance</p>
+									<h4 class="title">WebLog Analytics</h4>
+									<p class="category">금일 로그 현황</p>
 								</div>
 								<div class="card-footer">
 									<div class="stats">
-										<i class="material-icons">access_time</i> campaign sent 2 days ago
+										<i class="material-icons">access_time</i> today  ${ dateToday } 
 									</div>
 								</div>
 
@@ -580,13 +605,26 @@
 	<script type="text/javascript">
 		
 		var memberCount = [];
+		var hits;
+		var users;
+		var accessToken = 'ya29.Gls2BMzerRQy7yEd2LH-G-abHGGcTyTlT3cYZeOyqDYWg8o2s2IjJunWW-wwh7c_bGzvvVYrsZDQeAZI5rmE3WrFfgAAYz47XQw_E5Ygph2EsnFO46YfterjIAPP';
 		<c:forEach items="${dailyMemberCount}" var="dailyMemberCount">
 			memberCount.push(${dailyMemberCount});
 	    </c:forEach>
     	$(document).ready(function(){
-
-			// Javascript method's body can be found in assets/js/demos.js
-        	demo.initDashboardPageCharts();
+			/* 
+		    	$.ajax({
+				    type: 'GET', 
+				    url: 'https://www.googleapis.com/analytics/v3/data/ga?ids=ga%3A148780410&start-date=7daysAgo&end-date=today&metrics=ga%3Asessions%2Cga%3Ahits&access_token='+accessToken,
+				    dataType : 'json',
+				    success: function(data) {
+						users = data.rows[0][0];
+						hits = data.rows[0][1];
+			        }
+				}); */
+						demo.initDashboardPageCharts();
     	});
+    	
+    	
 	</script>
 </html>
