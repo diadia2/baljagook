@@ -45,9 +45,7 @@ public interface MymapService {
 	public List<MymapVO> selectMymapByuserid(String userid);
 	public CheckpointVO selectCheckpointByCoorIdx(int idx);
 	public PhotoVO selectPhoto(int idx);
-<<<<<<< HEAD
 	public void reportMap(ReportVO reportVO);
-=======
 	public int getTotalMember();
 	public int getTotalMap(int type);
 	public List<MymapVO> getMymapListHighRank();
@@ -56,6 +54,5 @@ public interface MymapService {
 	public List<AdvertisementVO> selectAdvertisementList();
 	public Integer selectMemberCount(Map<String, String> map);
 	public int selectTotalAdv();
->>>>>>> 4bbc06d782115154739c44fec5b08104457fb01b
 
 }

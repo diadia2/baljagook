@@ -235,9 +235,9 @@
 	                        <p>Board List</p>
 	                    </a>
 	                </li>
-<<<<<<< HEAD
+
 	                <li class="active">
-=======
+
 	                <li>
 	                    <a href="${pageContext.request.contextPath }/admin/adv.do">
 	                        <i class="material-icons">location_on</i>
@@ -245,7 +245,7 @@
 	                    </a>
 	                </li>
 	                <li>
->>>>>>> 4bbc06d782115154739c44fec5b08104457fb01b
+
 	                    <a href="${pageContext.request.contextPath }/admin/notifications.do">
 	                        <i class="material-icons text-gray">notifications</i>
 	                        <p>Notifications</p>

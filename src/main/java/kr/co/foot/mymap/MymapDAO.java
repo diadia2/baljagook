@@ -45,9 +45,7 @@ public interface MymapDAO {
 	public List<MymapVO> selectMymapByuserid(String userid);
 	public CheckpointVO selectCheckpointByCoorIdx(int coordinatesidx);
 	public PhotoVO selectPhoto(int checkpoinidx);
-<<<<<<< HEAD
 	public void reportMap(ReportVO reportVO);
-=======
 	public int getTotalMember();
 	public int getTotalMap(int type);
 	public List<MymapVO> getMymapListHighRank();
@@ -56,7 +54,6 @@ public interface MymapDAO {
 	public List<AdvertisementVO> selectAdvertisementList();
 	public int selectMemberCount(Map<String, String> map);
 	public int selectTotalAdv();
->>>>>>> 4bbc06d782115154739c44fec5b08104457fb01b
 
 
 }

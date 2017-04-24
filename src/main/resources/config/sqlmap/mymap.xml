@@ -138,11 +138,10 @@
        select idx, checkpointidx, oriname, newname from t_photo where checkpointidx = #{checkpointidx}
    </select>
    
-<<<<<<< HEAD
    <insert id="reportMap" parameterType="kr.co.foot.report.ReportVO">
        insert into t_report(userid, regmapidx, reason, owner, regdate) values(#{userid}, #{regmapidx}, #{reason}, #{owner}, #{regdate})
    </insert>
-=======
+
    <select id="getTotalMember" resultType="int">
        select count(email) from t_member where status = 1
    </select>
@@ -174,5 +173,5 @@
    <select id="selectTotalAdv" resultType="int">
        select count(idx) from t_advertisement
    </select>
->>>>>>> 4bbc06d782115154739c44fec5b08104457fb01b
+
 </mapper>

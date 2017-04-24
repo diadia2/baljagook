@@ -1,43 +1,30 @@
 package kr.co.foot.controller;
 
-<<<<<<< HEAD
-=======
 import java.io.IOException;
->>>>>>> 4bbc06d782115154739c44fec5b08104457fb01b
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-<<<<<<< HEAD
-import java.util.HashMap;
-import java.util.List;
-=======
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
->>>>>>> 4bbc06d782115154739c44fec5b08104457fb01b
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-<<<<<<< HEAD
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-=======
-import org.springframework.web.bind.annotation.RequestMapping;
->>>>>>> 4bbc06d782115154739c44fec5b08104457fb01b
 
 import kr.co.foot.advertisement.AdvertisementVO;
 import kr.co.foot.coordinates.CoordinatesService;
-<<<<<<< HEAD
 import kr.co.foot.faq.FaqDTO;
 import kr.co.foot.faq.FaqService;
 import kr.co.foot.faq.FaqVO;
@@ -45,13 +32,9 @@ import kr.co.foot.managemember.MemberManagementService;
 import kr.co.foot.managemember.MemberManagementVO;
 import kr.co.foot.member.MemberVO;
 import kr.co.foot.mymap.MymapService;
-import kr.co.foot.report.ReportVO;
-=======
-import kr.co.foot.member.MemberVO;
-import kr.co.foot.mymap.MymapService;
 import kr.co.foot.mymap.MymapVO;
 import kr.co.foot.util.FileUtils;
->>>>>>> 4bbc06d782115154739c44fec5b08104457fb01b
+
 
 
 
@@ -63,13 +46,11 @@ public class AdminController {
    @Autowired
    private MymapService mymapService;
    @Autowired
-<<<<<<< HEAD
    private FaqService faqService;
    @Autowired
    private MemberManagementService memberManagementService;
-=======
+
    private FileUtils fileutils;
->>>>>>> 4bbc06d782115154739c44fec5b08104457fb01b
 
    @RequestMapping("/admin/dashboard.do")
    public String dashboard(Model model) throws ParseException{
@@ -297,7 +278,6 @@ public class AdminController {
 	   faqService.removeFAQ(idx);
    }
    
-<<<<<<< HEAD
    @RequestMapping(value="/getFAQByIdx.do", method=RequestMethod.POST)
    @ResponseBody
    public HashMap<String,String> getFAQByIdx(@RequestParam("idx") int idx) {
@@ -313,7 +293,6 @@ public class AdminController {
    }
    
    
-=======
    @RequestMapping("/admin/regAdv.do")
    public String regAdv(HttpServletRequest request, Model model) throws IllegalStateException, IOException{
 	   
@@ -351,6 +330,5 @@ public class AdminController {
 	   return "admin_view/adv";
    }
    
->>>>>>> 4bbc06d782115154739c44fec5b08104457fb01b
    
 }
