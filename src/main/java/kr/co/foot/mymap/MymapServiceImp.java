@@ -1,15 +1,18 @@
 package kr.co.foot.mymap;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import kr.co.foot.advertisement.AdvertisementVO;
 import kr.co.foot.checkpoint.CheckpointVO;
 import kr.co.foot.favoritemap.FavoritemapVO;
 import kr.co.foot.favoriteplace.FavoriteplaceVO;
 import kr.co.foot.hashtag.HashtagVO;
 import kr.co.foot.like.LikeVO;
+import kr.co.foot.member.MemberVO;
 import kr.co.foot.photo.PhotoVO;
 import kr.co.foot.regcoordinates.RegcoordinatesVO;
 import kr.co.foot.regmap.RegmapVO;
@@ -233,6 +236,69 @@ public class MymapServiceImp implements MymapService {
 		PhotoVO photoVO = mymapDAO.selectPhoto(checkpoinidx);
 		
 		return photoVO;
+	}
+
+	@Override
+	public int getTotalMember() {
+		
+		int totalmember = mymapDAO.getTotalMember();
+		
+		return totalmember;
+	}
+
+	@Override
+	public int getTotalMap(int type) {
+
+		int totalmap = mymapDAO.getTotalMap(type);
+		
+		return totalmap;
+	}
+
+	@Override
+	public List<MymapVO> getMymapListHighRank() {
+
+		List<MymapVO> mymapList = mymapDAO.getMymapListHighRank();
+		
+		return mymapList;
+	}
+
+	@Override
+	public MemberVO getMemberInfo(String userid) {
+
+		MemberVO memberVO = mymapDAO.getMemberInfo(userid);
+		
+		return memberVO;
+	}
+
+	@Override
+	public void insertAdvertisement(AdvertisementVO advertisementVO) {
+
+		mymapDAO.insertAdvertisement(advertisementVO);
+		
+	}
+
+	@Override
+	public List<AdvertisementVO> selectAdvertisementList() {
+
+		List<AdvertisementVO> AdvertisementList = mymapDAO.selectAdvertisementList();
+		
+		return AdvertisementList;
+	}
+
+	@Override
+	public Integer selectMemberCount(Map<String, String> map) {
+
+		int count = mymapDAO.selectMemberCount(map);
+		
+		return count;
+	}
+
+	@Override
+	public int selectTotalAdv() {
+		
+		int totalAdv = mymapDAO.selectTotalAdv();
+		
+		return totalAdv;
 	}
 	
 

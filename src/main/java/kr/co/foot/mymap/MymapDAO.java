@@ -1,12 +1,15 @@
 package kr.co.foot.mymap;
 
 import java.util.List;
+import java.util.Map;
 
+import kr.co.foot.advertisement.AdvertisementVO;
 import kr.co.foot.checkpoint.CheckpointVO;
 import kr.co.foot.favoritemap.FavoritemapVO;
 import kr.co.foot.favoriteplace.FavoriteplaceVO;
 import kr.co.foot.hashtag.HashtagVO;
 import kr.co.foot.like.LikeVO;
+import kr.co.foot.member.MemberVO;
 import kr.co.foot.photo.PhotoVO;
 import kr.co.foot.regcoordinates.RegcoordinatesVO;
 import kr.co.foot.regmap.RegmapVO;
@@ -41,6 +44,14 @@ public interface MymapDAO {
 	public List<MymapVO> selectMymapByuserid(String userid);
 	public CheckpointVO selectCheckpointByCoorIdx(int coordinatesidx);
 	public PhotoVO selectPhoto(int checkpoinidx);
+	public int getTotalMember();
+	public int getTotalMap(int type);
+	public List<MymapVO> getMymapListHighRank();
+	public MemberVO getMemberInfo(String userid);
+	public void insertAdvertisement(AdvertisementVO advertisementVO);
+	public List<AdvertisementVO> selectAdvertisementList();
+	public int selectMemberCount(Map<String, String> map);
+	public int selectTotalAdv();
 
 
 }

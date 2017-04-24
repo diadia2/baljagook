@@ -1,6 +1,5 @@
 type = ['','info','success','warning','danger'];
 
-
 demo = {
     initPickColor: function(){
         $('.pick-class-label').click(function(){
@@ -61,10 +60,8 @@ demo = {
         /* ----------==========     Daily Sales Chart initialization    ==========---------- */
 
         dataDailySalesChart = {
-            labels: ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
-            series: [
-                [12, 17, 7, 17, 23, 18, 38]
-            ]
+            labels: ['1', '2', '3', '4', '5', '6', '7(일전)'],
+            series: [ memberCount ]
         };
 
         optionsDailySalesChart = {
@@ -72,7 +69,7 @@ demo = {
                 tension: 0
             }),
             low: 0,
-            high: 50, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
+            high: 8, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
             chartPadding: { top: 0, right: 0, bottom: 0, left: 0},
         }
 

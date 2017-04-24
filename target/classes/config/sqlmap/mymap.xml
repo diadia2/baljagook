@@ -137,4 +137,36 @@
    <select id="selectPhoto" parameterType="int" resultType="kr.co.foot.photo.PhotoVO">
        select idx, checkpointidx, oriname, newname from t_photo where checkpointidx = #{checkpointidx}
    </select>
+   
+   <select id="getTotalMember" resultType="int">
+       select count(email) from t_member where status = 1
+   </select>
+   
+   <select id="getTotalMap" resultType="int" parameterType="int">
+       select count(idx) from t_myMap where type = #{type}
+   </select>
+   
+   <select id="getMymapListHighRank" resultType="kr.co.foot.mymap.MymapVO">
+       select count(userid) idx, userid from t_myMap group by userid order by count(userid) DESC LIMIT 0,5
+   </select>
+   
+   <select id="getMemberInfo" parameterType="String" resultType="kr.co.foot.member.MemberVO">
+       select email, userid from t_member where userid = #{userid}
+   </select>
+   
+   <insert id="insertAdvertisement" parameterType="kr.co.foot.advertisement.AdvertisementVO">
+       insert into t_advertisement (lat, lon, name, detail, oriname, newname) values (#{lat}, #{lon}, #{name}, #{detail}, #{oriname}, #{newname})
+   </insert>
+   
+   <select id="selectAdvertisementList" resultType="kr.co.foot.advertisement.AdvertisementVO">
+       select idx, lat, lon, name, detail, oriname, newname from t_advertisement
+   </select>
+   
+   <select id="selectMemberCount" parameterType="HashMap" resultType="int">
+       select count(status) from t_member where regdate <![CDATA[<]]> #{regdate} and regdate <![CDATA[>=]]> #{yesterday} and status = 1
+   </select>
+   
+   <select id="selectTotalAdv" resultType="int">
+       select count(idx) from t_advertisement
+   </select>
 </mapper>
