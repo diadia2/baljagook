@@ -455,8 +455,7 @@ public class AdminController {
 	   
 	   return "admin_view/adv";
    }
-   
-<<<<<<< HEAD
+
    @RequestMapping("/admin/changeAdvDetail.do")
    @ResponseBody
    public String changeAdvDetail(HttpServletRequest request){
@@ -500,7 +499,8 @@ public class AdminController {
 		mymapService.deleteSpots(weekAgo);
 	   
 	   return "complete";
-=======
+   }
+   
    @RequestMapping(value="/admin/deleteMember.do", method=RequestMethod.POST)
    @ResponseBody
    public void deleteMember(@RequestParam("userid") String userid) {
@@ -532,7 +532,6 @@ public class AdminController {
 	   DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 	   String time = df.format(dateObj);
 	   return time;
->>>>>>> 531e645e7ed3b693af17ef3cf7e9264b326d861b
    }
    
    

@@ -235,10 +235,6 @@
 	                        <p>Board List</p>
 	                    </a>
 	                </li>
-<<<<<<< HEAD
-=======
-	                
->>>>>>> 531e645e7ed3b693af17ef3cf7e9264b326d861b
 	                <li>
 	                    <a href="${pageContext.request.contextPath }/admin/adv.do">
 	                        <i class="material-icons">location_on</i>
