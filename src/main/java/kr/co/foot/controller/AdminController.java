@@ -1,6 +1,7 @@
 package kr.co.foot.controller;
 
 import java.io.IOException;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -33,6 +34,10 @@ import kr.co.foot.managemember.MemberManagementVO;
 import kr.co.foot.member.MemberVO;
 import kr.co.foot.mymap.MymapService;
 import kr.co.foot.mymap.MymapVO;
+import kr.co.foot.report.ReportVO;
+import kr.co.foot.reportedmap.BlindedMapDTO;
+import kr.co.foot.reportedmap.ReportedMapDTO;
+import kr.co.foot.reportedmap.ReportedMapService;
 import kr.co.foot.util.FileUtils;
 
 
@@ -49,8 +54,10 @@ public class AdminController {
    private FaqService faqService;
    @Autowired
    private MemberManagementService memberManagementService;
-
+   @Autowired
    private FileUtils fileutils;
+   @Autowired
+   private ReportedMapService reportedMapService;
 
    @RequestMapping("/admin/dashboard.do")
    public String dashboard(Model model) throws ParseException{
@@ -107,97 +114,175 @@ public class AdminController {
 	   return "admin_view/dashboard";
    }
    
-   @RequestMapping("/admin/memberlist.do")
-   public String memberlist(Model model){
-	   List<MemberManagementVO> regularMemberInfoList = new ArrayList<MemberManagementVO>();
-	   List<MemberManagementVO> blindedMemberInfoList = new ArrayList<MemberManagementVO>();
-	   List<MemberManagementVO> deactivatedMemberInfoList = new ArrayList<MemberManagementVO>();
-	   
-	   List<MemberVO> regularMemberList = memberManagementService.getRegularMemberList();
-	   List<MemberVO> blindedMemberList = memberManagementService.getBlindedMemberList();
-	   List<MemberVO> deactivatedMemberList = memberManagementService.getDeactivatedMemberList();
-	   
-	   if(regularMemberList.size() != 0) {	   
-		   for(int i=0; i<regularMemberList.size(); i++) {
-			   String email = regularMemberList.get(i).getEmail();
-			   String userid = regularMemberList.get(i).getUserid();
-			   String regdate = regularMemberList.get(i).getRegdate();
-			   int myMapCnt = memberManagementService.getMyMapCntByUserid(userid);
-			   int myPlanCnt = memberManagementService.getMyPlanCntByUserid(userid);
-			   int reportedMyMapCnt = memberManagementService.getReportCntByUserid(userid);
-			   int status = regularMemberList.get(i).getStatus();
-			   
-			   MemberManagementVO memberInfo = new MemberManagementVO();
-			   memberInfo.setEmail(email);
-			   memberInfo.setUserid(userid);
-			   memberInfo.setRegdate(regdate);
-			   memberInfo.setMyMapCnt(myMapCnt);
-			   memberInfo.setMyPlanCnt(myPlanCnt);
-			   memberInfo.setReportedMyMapCnt(reportedMyMapCnt);
-			   memberInfo.setStatus(status);
-			   
-			   regularMemberInfoList.add(i, memberInfo);
-		   }
-		   model.addAttribute("regularMemberInfoList", regularMemberInfoList);
-	   }
+	@RequestMapping("/admin/memberlist.do")
+	public String memberlist(Model model) {
+		List<MemberManagementVO> regularMemberInfoList = new ArrayList<MemberManagementVO>();
+		List<MemberManagementVO> blindedMemberInfoList = new ArrayList<MemberManagementVO>();
+		List<MemberManagementVO> deactivatedMemberInfoList = new ArrayList<MemberManagementVO>();
 
-	   if(blindedMemberList.size() != 0) {
-		   for(int i=0; i<blindedMemberList.size(); i++) {
-			   String email = blindedMemberList.get(i).getEmail();
-			   String userid = blindedMemberList.get(i).getUserid();
-			   String regdate = blindedMemberList.get(i).getRegdate();
-			   int myMapCnt = memberManagementService.getMyMapCntByUserid(userid);
-			   int myPlanCnt = memberManagementService.getMyPlanCntByUserid(userid);
-			   int reportedMyMapCnt = memberManagementService.getReportCntByUserid(userid);
-			   int status = blindedMemberList.get(i).getStatus();
-			   
-			   MemberManagementVO memberInfo = new MemberManagementVO();
-			   memberInfo.setEmail(email);
-			   memberInfo.setUserid(userid);
-			   memberInfo.setRegdate(regdate);
-			   memberInfo.setMyMapCnt(myMapCnt);
-			   memberInfo.setMyPlanCnt(myPlanCnt);
-			   memberInfo.setReportedMyMapCnt(reportedMyMapCnt);
-			   memberInfo.setStatus(status);
-			   
-			   blindedMemberInfoList.add(i, memberInfo);
-		   }
-		   model.addAttribute("blindedMemberInfoList", blindedMemberInfoList);
-	   }
-	   
-	   if(deactivatedMemberList.size() != 0) {
-		   for(int i=0; i<deactivatedMemberList.size(); i++) {
-			   String email = deactivatedMemberList.get(i).getEmail();
-			   String userid = deactivatedMemberList.get(i).getUserid();
-			   String regdate = deactivatedMemberList.get(i).getRegdate();
-			   String deactivatedate = deactivatedMemberList.get(i).getDeactivatedate();
-			   int myMapCnt = memberManagementService.getMyMapCntByUserid(userid);
-			   int myPlanCnt = memberManagementService.getMyPlanCntByUserid(userid);
-			   int reportedMyMapCnt = memberManagementService.getReportCntByUserid(userid);
-			   int status = blindedMemberList.get(i).getStatus();
-			   
-			   MemberManagementVO memberInfo = new MemberManagementVO();
-			   memberInfo.setEmail(email);
-			   memberInfo.setUserid(userid);
-			   memberInfo.setRegdate(regdate);
-			   memberInfo.setDeactivatedate(deactivatedate);
-			   memberInfo.setMyMapCnt(myMapCnt);
-			   memberInfo.setMyPlanCnt(myPlanCnt);
-			   memberInfo.setReportedMyMapCnt(reportedMyMapCnt);
-			   memberInfo.setStatus(status);
-			   
-			   deactivatedMemberInfoList.add(i, memberInfo);
-		   }
-		   model.addAttribute("deactivatedMemberInfoList", deactivatedMemberInfoList);
-	   }
-	   
-	   return "admin_view/memberlist";
-   }
+		List<MemberVO> regularMemberList = memberManagementService.getRegularMemberList();
+		List<MemberVO> blindedMemberList = memberManagementService.getBlindedMemberList();
+		List<MemberVO> deactivatedMemberList = memberManagementService.getDeactivatedMemberList();
+
+		if(regularMemberList.size() > 0) {
+			for (int i = 0; i < regularMemberList.size(); i++) {
+				String email = regularMemberList.get(i).getEmail();
+				String userid = regularMemberList.get(i).getUserid();
+				String regdate = convertTimestampToDate(regularMemberList.get(i).getRegdate());
+				int myMapCnt = memberManagementService.getMyMapCntByUserid(userid);
+				int myPlanCnt = memberManagementService.getMyPlanCntByUserid(userid);
+				int reportedMyMapCnt = memberManagementService.getReportCntByUserid(userid);
+				int status = regularMemberList.get(i).getStatus();
+	
+				MemberManagementVO memberInfo = new MemberManagementVO();
+				memberInfo.setEmail(email);
+				memberInfo.setUserid(userid);
+				memberInfo.setRegdate(regdate);
+				memberInfo.setMyMapCnt(myMapCnt);
+				memberInfo.setMyPlanCnt(myPlanCnt);
+				memberInfo.setReportedMyMapCnt(reportedMyMapCnt);
+				memberInfo.setStatus(status);
+	
+				regularMemberInfoList.add(i, memberInfo);
+			}
+		}
+
+		if(blindedMemberList.size() > 0) {
+		for (int j = 0; j < blindedMemberList.size(); j++) {
+			String email = blindedMemberList.get(j).getEmail();
+			String userid = blindedMemberList.get(j).getUserid();
+			String regdate = convertTimestampToDate(blindedMemberList.get(j).getRegdate());
+			int myMapCnt = memberManagementService.getMyMapCntByUserid(userid);
+			int myPlanCnt = memberManagementService.getMyPlanCntByUserid(userid);
+			int reportedMyMapCnt = memberManagementService.getReportCntByUserid(userid);
+			int status = blindedMemberList.get(j).getStatus();
+
+			MemberManagementVO memberInfo = new MemberManagementVO();
+			memberInfo.setEmail(email);
+			memberInfo.setUserid(userid);
+			memberInfo.setRegdate(regdate);
+			memberInfo.setMyMapCnt(myMapCnt);
+			memberInfo.setMyPlanCnt(myPlanCnt);
+			memberInfo.setReportedMyMapCnt(reportedMyMapCnt);
+			memberInfo.setStatus(status);
+
+			blindedMemberInfoList.add(j, memberInfo);
+		}
+		}
+
+		if(deactivatedMemberList.size() > 0) {
+		for (int k = 0; k < deactivatedMemberList.size(); k++) {
+			String email = deactivatedMemberList.get(k).getEmail();
+			String userid = deactivatedMemberList.get(k).getUserid();
+			String regdate = convertTimestampToDate(deactivatedMemberList.get(k).getRegdate());
+			String deactivatedate = convertTimestampToDate(deactivatedMemberList.get(k).getDeactivatedate());
+			int myMapCnt = memberManagementService.getMyMapCntByUserid(userid);
+			int myPlanCnt = memberManagementService.getMyPlanCntByUserid(userid);
+			int reportedMyMapCnt = memberManagementService.getReportCntByUserid(userid);
+			int status = blindedMemberList.get(k).getStatus();
+
+			MemberManagementVO memberInfo = new MemberManagementVO();
+			memberInfo.setEmail(email);
+			memberInfo.setUserid(userid);
+			memberInfo.setRegdate(regdate);
+			memberInfo.setDeactivatedate(deactivatedate);
+			memberInfo.setMyMapCnt(myMapCnt);
+			memberInfo.setMyPlanCnt(myPlanCnt);
+			memberInfo.setReportedMyMapCnt(reportedMyMapCnt);
+			memberInfo.setStatus(status);
+
+			deactivatedMemberInfoList.add(k, memberInfo);
+		}
+		}
+
+		model.addAttribute("regularMemberInfoList", regularMemberInfoList);
+		model.addAttribute("blindedMemberInfoList", blindedMemberInfoList);
+		model.addAttribute("deactivatedMemberInfoList", deactivatedMemberInfoList);
+
+		return "admin_view/memberlist";
+	}
    
    @RequestMapping("/admin/boardlist.do")
-   public String boardlist(){
+   public String boardlist(Model model){
+	   List<Integer> regmapidxList = new ArrayList<Integer>();
+	   List<Integer> blindedRegmapidx = new ArrayList<Integer>();
+	   List<ReportedMapDTO> reportedMapDTOList = reportedMapService.getReportedMapDTOList();
+	   List<MymapVO> blindedMapList = reportedMapService.getBlindedMap();
+	   
+	   for(int i=0; i< blindedMapList.size(); i++) {
+		   blindedRegmapidx.add(mymapService.getRegmapIdx(blindedMapList.get(i).getIdx()));
+	   }
+	   
+	   for(int i=0; i < reportedMapDTOList.size(); i++) {
+		   regmapidxList.add(i, reportedMapDTOList.get(i).getRegmapidx());   
+	   }
+	   
+	   for(int i=0; i < regmapidxList.size(); i++) {
+		   MymapVO reportedMymap = mymapService.selectMymapByRegmapIdx(regmapidxList.get(i));
+		   
+		   reportedMapDTOList.get(i).setTitle(reportedMymap.getTitle());
+		   reportedMapDTOList.get(i).setContent(reportedMymap.getContent());
+		   reportedMapDTOList.get(i).setUserid(reportedMymap.getUserid());
+		   reportedMapDTOList.get(i).setRegdate(convertTimestampToDate(reportedMymap.getRegdate()));
+		   reportedMapDTOList.get(i).setMymapidx(reportedMymap.getIdx());
+		   reportedMapDTOList.get(i).setRegmapidx(regmapidxList.get(i));
+	   }
+	   
+	   List<BlindedMapDTO> blindedMapDTOList = new ArrayList<BlindedMapDTO>();
+	   for(int i=0; i< blindedMapList.size(); i++) {
+		   BlindedMapDTO blindedMapDTO = new BlindedMapDTO();
+		   blindedMapDTO.setMymapidx(blindedMapList.get(i).getIdx());
+		   blindedMapDTO.setRegmapidx(mymapService.getRegmapIdx(blindedMapList.get(i).getIdx()));
+		   blindedMapDTO.setTitle(blindedMapList.get(i).getTitle());
+		   blindedMapDTO.setContent(blindedMapList.get(i).getContent());
+		   blindedMapDTO.setUserid(blindedMapList.get(i).getUserid());
+		   blindedMapDTO.setRegdate(convertTimestampToDate(blindedMapList.get(i).getRegdate()));
+		   for(int j=0; j<reportedMapDTOList.size(); j++) {		   
+			   if(reportedMapDTOList.get(j).getRegmapidx() == blindedMapDTO.getRegmapidx()) {
+				   blindedMapDTO.setCount(reportedMapDTOList.get(j).getCount());
+			   }
+		   }
+		   
+		   blindedMapDTOList.add(blindedMapDTO);
+	   }
+	   
+	   for(int i=0; i < reportedMapDTOList.size(); i++) {
+		   for(int j=0; j < blindedRegmapidx.size(); j++) {
+			   if(reportedMapDTOList.get(i).getRegmapidx() == blindedRegmapidx.get(j)) {
+				   reportedMapDTOList.remove(i);
+			   }
+		   }
+	   }	   
+	   
+	   model.addAttribute("blindedMapDTOList", blindedMapDTOList);
+	   model.addAttribute("reportedMapDTOList", reportedMapDTOList);	   
 	   
 	   return "admin_view/boardlist";
+   }  
+   
+   @RequestMapping(value="/admin/getReportList.do", method=RequestMethod.POST)
+   @ResponseBody
+   public List<ReportVO> getReportList(@RequestParam("regmapidx") int regmapidx) {
+	   List<ReportVO> reportList = reportedMapService.getReportList(regmapidx);
+	   HashMap<Integer, ReportVO> reportMap = new HashMap<Integer, ReportVO>();
+	   for(int i=0; i< reportList.size(); i++) {
+		   reportList.get(i).setRegdate(convertTimestampToDate(reportList.get(i).getRegdate()));
+		   reportMap.put(i, reportList.get(i));
+	   }
+	   
+	   return reportList;
+   }
+   
+   @RequestMapping(value="/admin/blindRegmap.do", method=RequestMethod.POST)
+   @ResponseBody
+   public void blindRegmap(@RequestParam("regmapidx") int regmapidx) {
+	   reportedMapService.blindRegmap(regmapidx);
+   }
+   
+   @RequestMapping(value="/admin/cancelBlind.do", method=RequestMethod.POST)
+   @ResponseBody
+   public void cancelBlind(@RequestParam("regmapidx") int regmapidx) {
+	   reportedMapService.cancelBlindRegmap(regmapidx);
    }
    
    @RequestMapping("/admin/adv.do")
@@ -328,6 +413,39 @@ public class AdminController {
 	   model.addAttribute("AdvertisementList",AdvertisementList);
 	   
 	   return "admin_view/adv";
+   }
+   
+   @RequestMapping(value="/admin/deleteMember.do", method=RequestMethod.POST)
+   @ResponseBody
+   public void deleteMember(@RequestParam("userid") String userid) {
+	   memberManagementService.deleteMember(userid);
+   }
+   
+   @RequestMapping(value="/admin/changeMemberStatus.do", method=RequestMethod.POST)
+   @ResponseBody
+   public void changeMemberStatus(@RequestParam("userid") String userid,
+		   						  @RequestParam("changedStatus") String changedStatus) {
+	   int status = 0;
+	   if(changedStatus.equalsIgnoreCase("regular")) {
+		   status = 1;
+	   } else if(changedStatus.equalsIgnoreCase("blinded")) {
+		   status = 3;
+	   }
+	   
+	   MemberVO statusChangedMember = new MemberVO();
+	   statusChangedMember.setUserid(userid);
+	   statusChangedMember.setStatus(status);
+	   
+	   memberManagementService.updateMemberStatus(statusChangedMember);
+	    
+   }
+   
+   public String convertTimestampToDate(String timestamp) {
+	   long timestampL = Long.parseLong(timestamp)*1000;
+	   Date dateObj = new Date(timestampL);
+	   DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+	   String time = df.format(dateObj);
+	   return time;
    }
    
    

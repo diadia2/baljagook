@@ -235,9 +235,7 @@
 	                        <p>Board List</p>
 	                    </a>
 	                </li>
-
-	                <li class="active">
-
+	                
 	                <li>
 	                    <a href="${pageContext.request.contextPath }/admin/adv.do">
 	                        <i class="material-icons">location_on</i>
@@ -251,7 +249,7 @@
 	                        <p>Notifications</p>
 	                    </a>
 	                </li>
-	                <li>
+	                <li class="active">
 	                    <a href="${pageContext.request.contextPath }/admin/faq.do">
 	                        <i class="material-icons">bubble_chart</i>
 	                        <p>FAQ</p>

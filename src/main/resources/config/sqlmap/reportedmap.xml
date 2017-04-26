@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.foot.reportedmap.ReportedMapDAO">
+	<select id="getReportListByRegmapidx" parameterType="int" resultType="kr.co.foot.report.ReportVO">
+	    select * from t_report where regmapidx = #{regmapidx}
+	</select>
+	<select id="getReportedMapDTOList" resultType="kr.co.foot.reportedmap.ReportedMapDTO">
+	    select regmapidx, count(*) as count from t_report group by regmapidx
+	</select>
+	<select id="getBlindedMap" resultType="kr.co.foot.mymap.MymapVO">
+	    select * from t_myMap where idx=(select mymapidx from t_regmap where blind=1)
+	</select>
+	<update id="blindRegmap" parameterType="int">
+	    update t_regmap set blind = 1 where idx = #{regmapidx}
+	</update>
+	<update id="cancelBlindRegmap" parameterType="int">
+	    update t_regmap set blind = 0 where idx = #{regmapidx}
+	</update>
+</mapper>

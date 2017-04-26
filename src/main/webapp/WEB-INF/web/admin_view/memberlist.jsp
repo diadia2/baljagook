@@ -26,6 +26,45 @@
     <!--     Fonts and icons     -->
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
     <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300|Material+Icons' rel='stylesheet' type='text/css'>
+	
+	<!-- jquery -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<script>
+	function changeStatus(newStatus, userid) {
+		var changedStatus = newStatus.value;
+ 		if(changedStatus == 'blinded') {
+ 			alert('블라인드 회원으로 변경하시겠습니까?');
+ 		} else if(changedStatus == 'regular') {
+ 			alert('정상 회원으로 변경하시겠습니까?');
+ 		}
+ 			
+		$.ajax({
+			type : 'POST',
+			data : jQuery.param({ userid: userid, changedStatus: changedStatus}),
+			url : '${ pageContext.request.contextPath }/admin/changeMemberStatus.do',
+			contentType : 'application/x-www-form-urlencoded; charset=UTF-8',
+			success : (function(data) {
+				alert('변경되었습니다.');
+				window.location.href = '${ pageContext.request.contextPath }/admin/memberlist.do';
+			})
+		});		
+	}
+
+	function deleteMember(userid) {
+		alert(userid + '님에 대한 회원 정보를 영구 삭제하시겠습니까?');
+		
+		$.ajax({
+			type : 'POST',
+			data : jQuery.param({ userid: userid}),
+			url : '${ pageContext.request.contextPath }/admin/deleteMember.do',
+			contentType : 'application/x-www-form-urlencoded; charset=UTF-8',
+			success : (function(data) {
+				alert('삭제되었습니다.');
+				window.location.href = '${ pageContext.request.contextPath }/admin/memberlist.do';				
+			})
+		});
+	}
+</script>
 </head>
 
 <body>
@@ -150,7 +189,6 @@
 	                        <div class="card">
 	                            <div class="card-header" data-background-color="purple">
 	                                <h4 class="title">정상 회원 목록</h4>
-	                                <p class="category">정상 회원 목록</p>
 	                            </div>
 	                            <div class="card-content table-responsive">
 	                                <table class="table">
@@ -160,7 +198,7 @@
 	                                    	<th>가입일</th>
 											<th>MyMap 수</th>
 											<th>MyPlan 수</th>
-											<th>신고된 MyMap 수</th>
+											<th>신고 수</th>
 											<th>상태 변경</th>
 											<th>영구 삭제</th>
 	                                    </thead>
@@ -174,8 +212,13 @@
 			                                        	<td>${ regularMemberInfoList.myMapCnt }</td>
 														<td>${ regularMemberInfoList.myPlanCnt }</td>
 														<td>${ regularMemberInfoList.reportedMyMapCnt }</td>
-														<td>${ regularMemberInfoList.status }</td>
-														<td><a href="#">회원정보 영구 삭제</a></td>
+														<td>
+														<select onchange="changeStatus(this, '${ regularMemberInfoList.userid }');">  <%-- onchange="changeRegularStatus('${ regularMemberInfoList.userid }');" --%>
+															<option value="regular">정상</option>
+															<option value="blinded">블라인드</option>
+														</select>
+														</td>
+														<td><button type="button" onclick="deleteMember('${ regularMemberInfoList.userid }');">회원정보 영구 삭제</button></td>
 			                                        </tr>
 		                                        </c:forEach>
 	                                        </c:if>
@@ -189,7 +232,6 @@
 	                        <div class="card">
 	                            <div class="card-header" data-background-color="purple">
 	                                <h4 class="title">블라인드 회원 목록</h4>
-	                                <p class="category">블라인드 회원 목록</p>
 	                            </div>
 	                            <div class="card-content table-responsive">
 	                                <table class="table">
@@ -199,7 +241,7 @@
 	                                    	<th>가입일</th>
 											<th>MyMap 수</th>
 											<th>MyPlan 수</th>
-											<th>신고된 MyMap 수</th>
+											<th>신고 수</th>
 											<th>상태 변경</th>
 											<th>영구 삭제</th>
 	                                    </thead>
@@ -213,8 +255,13 @@
 			                                        	<td>${ blindedMemberInfoList.myMapCnt }</td>
 														<td>${ blindedMemberInfoList.myPlanCnt }</td>
 														<td>${ blindedMemberInfoList.reportedMyMapCnt }</td>
-														<td>${ blindedMemberInfoList.status }</td>
-														<td><a href="#">회원정보 영구 삭제</a></td>
+														<td>
+														<select onchange="changeStatus(this, '${ blindedMemberInfoList.userid }');">
+															<option value="blinded">블라인드</option>
+															<option value="regular">정상</option>
+														</select>														
+														</td>
+														<td><button type="button" onclick="deleteMember('${ blindedMemberInfoList.userid }');">회원정보 영구 삭제</button></td>
 			                                        </tr>
 		                                        </c:forEach>
 	                                        </c:if>
@@ -228,7 +275,6 @@
 	                        <div class="card">
 	                            <div class="card-header" data-background-color="purple">
 	                                <h4 class="title">탈퇴 회원 목록</h4>
-	                                <p class="category">탈퇴 회원 목록</p>
 	                            </div>
 	                            <div class="card-content table-responsive">
 	                                <table class="table">
@@ -239,7 +285,7 @@
 	                                    	<th>탈퇴일</th>
 											<th>MyMap 수</th>
 											<th>MyPlan 수</th>
-											<th>신고된 MyMap 수</th>
+											<th>신고 수</th>
 											<th>상태 변경</th>
 											<th>영구 삭제</th>
 	                                    </thead>
@@ -254,8 +300,8 @@
 			                                        	<td>${ deactivatedMemberInfoList.myMapCnt }</td>
 														<td>${ deactivatedMemberInfoList.myPlanCnt }</td>
 														<td>${ deactivatedMemberInfoList.reportedMyMapCnt }</td>
-														<td>${ deactivatedMemberInfoList.status }</td>
-														<td><a href="#">회원정보 영구 삭제</a></td>
+														<td>탈퇴</td>
+														<td><button type="button" onclick="deleteMember('${ deactivatedMemberInfoList.userid }');">회원정보 영구 삭제</button></td>
 			                                        </tr>
 		                                        </c:forEach>
 	                                        </c:if>
