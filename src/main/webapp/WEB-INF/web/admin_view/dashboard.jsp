@@ -65,7 +65,7 @@ gapi.load('client', start);
 		    -->
 
 			<div class="logo">
-				<a href="http://www.creative-tim.com" class="simple-text">
+				<a href="${pageContext.request.contextPath }" class="simple-text">
 					발자국
 				</a>
 			</div>
@@ -136,15 +136,14 @@ gapi.load('client', start);
 							<li class="dropdown">
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 									<i class="material-icons">notifications</i>
-									<span class="notification">5</span>
+									<span class="notification">4</span>
 									<p class="hidden-lg hidden-md">Notifications</p>
 								</a>
 								<ul class="dropdown-menu">
 									<li><a href="#">Mike John responded to your email</a></li>
-									<li><a href="#">You have 5 new tasks</a></li>
+									<li><a href="#">You have 4 new tasks</a></li>
 									<li><a href="#">You're now friend with Andrew</a></li>
 									<li><a href="#">Another Notification</a></li>
-									<li><a href="#">Another One</a></li>
 								</ul>
 							</li>
 							<li>
@@ -244,7 +243,7 @@ gapi.load('client', start);
 
 					<div class="row">
 						<div class="col-md-4">
-							<div class="card">
+							<div class="card" style="height: 300px">
 								<div class="card-header card-chart" data-background-color="green">
 									<div class="ct-chart" id="dailySalesChart"></div>
 								</div>
@@ -261,13 +260,13 @@ gapi.load('client', start);
 						</div>
 
 						<div class="col-md-4">
-							<div class="card">
+							<div class="card" style="height: 300px">
 								<div class="card-header card-chart" data-background-color="orange">
 									<div class="ct-chart" id="emailsSubscriptionChart"></div>
 								</div>
 								<div class="card-content">
-									<h4 class="title">WebLog Analytics</h4>
-									<p class="category">금일 로그 현황</p>
+									<h4 class="title">Today Report</h4>
+									<p class="category">오늘의 현황</p>
 								</div>
 								<div class="card-footer">
 									<div class="stats">
@@ -279,17 +278,50 @@ gapi.load('client', start);
 						</div>
 
 						<div class="col-md-4">
-							<div class="card">
-								<div class="card-header card-chart" data-background-color="red">
-									<div class="ct-chart" id="completedTasksChart"></div>
+							<div class="card" style="height: 300px">
+								<div class="col-lg-6 col-md-6 col-sm-6">
+									<div class="card-content" style="border-bottom: 1px solid grey">
+										<p>페이지뷰 수</p>
+										<p class="category"> </p>
+										<h3 class="title">
+											<span id="pageCount"> </span><small>  view</small>
+										</h3>
+									</div>
+								</div> 
+								<div class="col-lg-6 col-md-6 col-sm-6">
+									<div class="card-content" style="border-bottom: 1px solid grey">
+										<p>평균 세션시간</p>
+										<p class="category"> </p>
+										<h3 class="title">
+											<span id="sessionCount"> </span><small> 초</small>
+										</h3>
+									</div>
 								</div>
-								<div class="card-content">
-									<h4 class="title">Completed Tasks</h4>
-									<p class="category">Last Campaign Performance</p>
+								
+								<div class="col-lg-6 col-md-6 col-sm-6">
+									<div class="card-content" style="border-bottom: 1px solid grey">
+										<p>유저당 세션 수</p>
+										<p class="category"> </p>
+										<h3 class="title">
+											<span id="sessionsPerUser"> </span><small> 회</small>
+										</h3>
+									</div>
+								</div>
+								<div class="col-lg-6 col-md-6 col-sm-6">
+									<div class="card-content" style="border-bottom: 1px solid grey">
+										<p>세션당 페이지수</p>
+										<p class="category"> </p>
+										<h3 class="title"> 
+											<span id="pagePerSession"> </span><small> view</small>
+										</h3>
+									</div>
+								</div>
+								<div class="col-lg-12">
+									<div class="card-content"></div>
 								</div>
 								<div class="card-footer">
 									<div class="stats">
-										<i class="material-icons">access_time</i> campaign sent 2 days ago
+										<i class="material-icons">access_time</i> today  ${ dateToday } 
 									</div>
 								</div>
 							</div>
@@ -302,24 +334,18 @@ gapi.load('client', start);
 								<div class="card-header" data-background-color="purple">
 									<div class="nav-tabs-navigation">
 										<div class="nav-tabs-wrapper">
-											<span class="nav-tabs-title">Tasks:</span>
+											<span class="nav-tabs-title">Info:</span>
 											<ul class="nav nav-tabs" data-tabs="tabs">
 												<li class="active">
 													<a href="#profile" data-toggle="tab">
 														<i class="material-icons">bug_report</i>
-														Bugs
+														광고업체
 													<div class="ripple-container"></div></a>
 												</li>
 												<li class="">
 													<a href="#messages" data-toggle="tab">
 														<i class="material-icons">code</i>
-														Website
-													<div class="ripple-container"></div></a>
-												</li>
-												<li class="">
-													<a href="#settings" data-toggle="tab">
-														<i class="material-icons">cloud</i>
-														Server
+														좌표컬럼 현황
 													<div class="ripple-container"></div></a>
 												</li>
 											</ul>
@@ -331,187 +357,50 @@ gapi.load('client', start);
 									<div class="tab-content">
 										<div class="tab-pane active" id="profile">
 											<table class="table">
-												<tbody>
-													<tr>
-														<td>
-															<div class="checkbox">
-																<label>
-																	<input type="checkbox" name="optionsCheckboxes" checked>
-																</label>
-															</div>
-														</td>
-														<td>Sign contract for "What are conference organizers afraid of?"</td>
-														<td class="td-actions text-right">
-															<button type="button" rel="tooltip" title="Edit Task" class="btn btn-primary btn-simple btn-xs">
-																<i class="material-icons">edit</i>
-															</button>
-															<button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-simple btn-xs">
-																<i class="material-icons">close</i>
-															</button>
-														</td>
-													</tr>
-													<tr>
-														<td>
-															<div class="checkbox">
-																<label>
-																	<input type="checkbox" name="optionsCheckboxes">
-																</label>
-															</div>
-														</td>
-														<td>Lines From Great Russian Literature? Or E-mails From My Boss?</td>
-														<td class="td-actions text-right">
-															<button type="button" rel="tooltip" title="Edit Task" class="btn btn-primary btn-simple btn-xs">
-																<i class="material-icons">edit</i>
-															</button>
-															<button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-simple btn-xs">
-																<i class="material-icons">close</i>
-															</button>
-														</td>
-													</tr>
-													<tr>
-														<td>
-															<div class="checkbox">
-																<label>
-																	<input type="checkbox" name="optionsCheckboxes">
-																</label>
-															</div>
-														</td>
-														<td>Flooded: One year later, assessing what was lost and what was found when a ravaging rain swept through metro Detroit
-														</td>
-														<td class="td-actions text-right">
-															<button type="button" rel="tooltip" title="Edit Task" class="btn btn-primary btn-simple btn-xs">
-																<i class="material-icons">edit</i>
-															</button>
-															<button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-simple btn-xs">
-																<i class="material-icons">close</i>
-															</button>
-														</td>
-													</tr>
-													<tr>
-														<td>
-															<div class="checkbox">
-																<label>
-																	<input type="checkbox" name="optionsCheckboxes" checked>
-																</label>
-															</div>
-														</td>
-														<td>Create 4 Invisible User Experiences you Never Knew About</td>
-														<td class="td-actions text-right">
-															<button type="button" rel="tooltip" title="Edit Task" class="btn btn-primary btn-simple btn-xs">
-																<i class="material-icons">edit</i>
-															</button>
-															<button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-simple btn-xs">
-																<i class="material-icons">close</i>
-															</button>
-														</td>
-													</tr>
+												<thead style="color:purple;">
+		                                        	<th width="20%">업체명</th>
+		                                    		<th width="75%">소개</th>
+		                                    		<th> Edit</th>
+	                                    		</thead>
+												<tbody id="advInfo">
+													<c:forEach var="AdvertisementList" items="${ AdvertisementList }" varStatus="i">
+														<tr>
+															<td><input type="text" class="form-control" value="${ AdvertisementList.name }" readonly="readonly"/></td>
+															<td><input type="text" class="form-control" value="${ AdvertisementList.detail }"/></td>
+															<td class="td-actions text-right">
+																<button type="button" rel="tooltip" title="Edit Task" class="btn btn-primary btn-simple btn-xs" onclick="editAdv('${ AdvertisementList.idx }',${ i.index })">
+																	<i class="material-icons">edit</i>
+																</button>
+																<button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-simple btn-xs" onclick="deleteAdv('${ AdvertisementList.idx }')">
+																	<i class="material-icons">close</i>
+																</button>
+															</td>
+														</tr>
+													</c:forEach>
 												</tbody>
 											</table>
 										</div>
 										<div class="tab-pane" id="messages">
 											<table class="table">
+												<thead style="color:purple;">
+		                                        	<th width="16%"></th>
+		                                        	<th width="28%">A week ago</th>
+		                                    		<th width="28%">Today</th>
+		                                    		<th width="28%">Total</th>
+	                                    		</thead>
 												<tbody>
 													<tr>
-														<td>
-															<div class="checkbox">
-																<label>
-																	<input type="checkbox" name="optionsCheckboxes" checked>
-																</label>
-															</div>
-														</td>
-														<td>Flooded: One year later, assessing what was lost and what was found when a ravaging rain swept through metro Detroit
-														</td>
-														<td class="td-actions text-right">
-															<button type="button" rel="tooltip" title="Edit Task" class="btn btn-primary btn-simple btn-xs">
-																<i class="material-icons">edit</i>
-															</button>
-															<button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-simple btn-xs">
-																<i class="material-icons">close</i>
-															</button>
-														</td>
-													</tr>
-													<tr>
-														<td>
-															<div class="checkbox">
-																<label>
-																	<input type="checkbox" name="optionsCheckboxes">
-																</label>
-															</div>
-														</td>
-														<td>Sign contract for "What are conference organizers afraid of?"</td>
-														<td class="td-actions text-right">
-															<button type="button" rel="tooltip" title="Edit Task" class="btn btn-primary btn-simple btn-xs">
-																<i class="material-icons">edit</i>
-															</button>
-															<button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-simple btn-xs">
-																<i class="material-icons">close</i>
-															</button>
-														</td>
+														<td>수집된 좌표</td>
+														<td>${ weekAgoCoordinatesCount }</td>
+														<td>${ todayCoordinatesCount }</td>
+														<td>${ totalCoordinatesCount }</td>
 													</tr>
 												</tbody>
 											</table>
+											<br/><br/>
+											<button type="button" class="btn btn-primary btn-block" onclick="deleteSpots()">CLICK to delete spots before a week</button>
 										</div>
-										<div class="tab-pane" id="settings">
-											<table class="table">
-												<tbody>
-													<tr>
-														<td>
-															<div class="checkbox">
-																<label>
-																	<input type="checkbox" name="optionsCheckboxes">
-																</label>
-															</div>
-														</td>
-														<td>Lines From Great Russian Literature? Or E-mails From My Boss?</td>
-														<td class="td-actions text-right">
-															<button type="button" rel="tooltip" title="Edit Task" class="btn btn-primary btn-simple btn-xs">
-																<i class="material-icons">edit</i>
-															</button>
-															<button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-simple btn-xs">
-																<i class="material-icons">close</i>
-															</button>
-														</td>
-													</tr>
-													<tr>
-														<td>
-															<div class="checkbox">
-																<label>
-																	<input type="checkbox" name="optionsCheckboxes" checked>
-																</label>
-															</div>
-														</td>
-														<td>Flooded: One year later, assessing what was lost and what was found when a ravaging rain swept through metro Detroit
-														</td>
-														<td class="td-actions text-right">
-															<button type="button" rel="tooltip" title="Edit Task" class="btn btn-primary btn-simple btn-xs">
-																<i class="material-icons">edit</i>
-															</button>
-															<button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-simple btn-xs">
-																<i class="material-icons">close</i>
-															</button>
-														</td>
-													</tr>
-													<tr>
-														<td>
-															<div class="checkbox">
-																<label>
-																	<input type="checkbox" name="optionsCheckboxes">
-																</label>
-															</div>
-														</td>
-														<td>Sign contract for "What are conference organizers afraid of?"</td>
-														<td class="td-actions text-right">
-															<button type="button" rel="tooltip" title="Edit Task" class="btn btn-primary btn-simple btn-xs">
-																<i class="material-icons">edit</i>
-															</button>
-															<button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-simple btn-xs">
-																<i class="material-icons">close</i>
-															</button>
-														</td>
-													</tr>
-												</tbody>
-											</table>
-										</div>
+										
 									</div>
 								</div>
 							</div>
@@ -605,26 +494,105 @@ gapi.load('client', start);
 	<script type="text/javascript">
 		
 		var memberCount = [];
-		var hits;
+		var todayMember = ${ todayMember };
 		var users;
-		var accessToken = 'ya29.Gls2BMzerRQy7yEd2LH-G-abHGGcTyTlT3cYZeOyqDYWg8o2s2IjJunWW-wwh7c_bGzvvVYrsZDQeAZI5rmE3WrFfgAAYz47XQw_E5Ygph2EsnFO46YfterjIAPP';
+		var newusers;
+		var sessionCount;
+		var AvgSessionTime;
+		var pagePerSession;
+		var hits;
+		var sessionsPerUser;
+		var accessToken = '${ accessToken }';
 		<c:forEach items="${dailyMemberCount}" var="dailyMemberCount">
 			memberCount.push(${dailyMemberCount});
 	    </c:forEach>
     	$(document).ready(function(){
-			/* 
+    	    console.log(accessToken);
+			 
 		    	$.ajax({
 				    type: 'GET', 
-				    url: 'https://www.googleapis.com/analytics/v3/data/ga?ids=ga%3A148780410&start-date=7daysAgo&end-date=today&metrics=ga%3Asessions%2Cga%3Ahits&access_token='+accessToken,
+				    url: 'https://www.googleapis.com/analytics/v3/data/ga?ids=ga%3A148780410&start-date=today&end-date=today&metrics=ga%3Ausers%2Cga%3AnewUsers%2Cga%3Asessions%2Cga%3AavgSessionDuration%2Cga%3ApageviewsPerSession%2Cga%3Ahits%2Cga%3AsessionsPerUser&access_token='
+					    +accessToken, 
 				    dataType : 'json',
 				    success: function(data) {
+						console.log(data);
 						users = data.rows[0][0];
-						hits = data.rows[0][1];
-			        }
-				}); */
+						newusers = data.rows[0][1];
+						sessionCount = data.rows[0][2];
+						AvgSessionTime = data.rows[0][3];
+						pagePerSession = data.rows[0][4];
+						hits = data.rows[0][5];
+						sessionsPerUser = data.rows[0][6];
 						demo.initDashboardPageCharts();
+ 						$('#pageCount').text(hits);
+						$('#sessionCount').text(
+											 (Math.floor(AvgSessionTime/60) > 9 ? Math.floor(AvgSessionTime/60) : '0'+Math.floor(AvgSessionTime/60))
+											+":"
+											+((AvgSessionTime%60).toFixed(0) > 9 ? (AvgSessionTime%60).toFixed(0) : '0'+(AvgSessionTime%60).toFixed(0))
+											);
+						$('#sessionsPerUser').text(Number(sessionsPerUser).toFixed(2));
+						$('#pagePerSession').text(Number(pagePerSession).toFixed(2));
+			        }
+				}); 
     	});
-    	
-    	
+	</script>
+	<script type="text/javascript">
+		
+	function editAdv(idx, i){
+	    
+	    if(confirm('현재 소개내용으로 수정 하시겠습니까?')){
+			var index = idx;
+			var newDetail = $('#advInfo').children().eq(i).children().eq(1).children().eq(0).children().eq(0).val();
+			
+			$.ajax({
+			    type: 'POST', 
+			    url: '${pageContext.request.contextPath}/admin/changeAdvDetail.do',
+			    data: {
+					index : index,
+					newDetail : newDetail
+			    },
+			    dataType : 'json',
+			    success: function(data) {
+					alert(data);
+		        }
+			}); 
+	    }
+	}
+	
+	function deleteAdv(idx){
+	    if(confirm('데이터를 삭제 하시겠습니까?')){
+			var index = idx;
+			
+			$.ajax({
+			    type: 'POST', 
+			    url: '${pageContext.request.contextPath}/admin/deleteAdv.do',
+			    data: {
+					index : index
+			    },
+			    dataType : 'json',
+			    success: function(data) {
+					alert(data);
+					location.href = '${pageContext.request.contextPath}/admin/dashboard.do'
+		        }
+			});
+			
+	    }
+	}
+	
+	function deleteSpots(){
+	    if(confirm('1주일 이상된 수집좌표를 모두 삭제 하시겠습니까?')){
+			
+			$.ajax({
+			    type: 'POST', 
+			    url: '${pageContext.request.contextPath}/admin/deleteSpots.do',
+			    dataType : 'json',
+			    success: function(data) {
+					alert(data);
+					location.href = '${pageContext.request.contextPath}/admin/dashboard.do'
+		        }
+			});
+	    }
+	}
+	
 	</script>
 </html>

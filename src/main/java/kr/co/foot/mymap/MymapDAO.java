@@ -54,6 +54,11 @@ public interface MymapDAO {
 	public List<AdvertisementVO> selectAdvertisementList();
 	public int selectMemberCount(Map<String, String> map);
 	public int selectTotalAdv();
+	public void updateDetail(AdvertisementVO advertisementVO);
+	public void deleteAdv(int index);
+	public int todayCoordinatesCount(String regdate);
+	public int weekAgoCoordinateCount(String weekAgo);
+	public void deleteSpots(String weekAgo);
 
 
 }

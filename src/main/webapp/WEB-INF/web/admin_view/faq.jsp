@@ -210,8 +210,8 @@
 		    -->
 
 			<div class="logo">
-				<a href="#!" class="simple-text">
-					발자국 로고
+				<a href="${pageContext.request.contextPath }" class="simple-text">
+					발자국
 				</a>
 			</div>
 
@@ -235,9 +235,6 @@
 	                        <p>Board List</p>
 	                    </a>
 	                </li>
-
-	                <li class="active">
-
 	                <li>
 	                    <a href="${pageContext.request.contextPath }/admin/adv.do">
 	                        <i class="material-icons">location_on</i>
@@ -251,7 +248,7 @@
 	                        <p>Notifications</p>
 	                    </a>
 	                </li>
-	                <li>
+	                <li class="active">
 	                    <a href="${pageContext.request.contextPath }/admin/faq.do">
 	                        <i class="material-icons">bubble_chart</i>
 	                        <p>FAQ</p>

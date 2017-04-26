@@ -310,5 +310,42 @@ public class MymapDAOImp implements MymapDAO {
 	public void reportMap(ReportVO reportVO) {
 		sqlSessionTemplate.insert("kr.co.foot.mymap.MymapDAO.reportMap", reportVO);
 	}
+
+	@Override
+	public void updateDetail(AdvertisementVO advertisementVO) {
+
+		sqlSessionTemplate.update("kr.co.foot.mymap.MymapDAO.updateDetail",advertisementVO);
+		
+	}
+
+	@Override
+	public void deleteAdv(int index) {
+
+		sqlSessionTemplate.delete("kr.co.foot.mymap.MymapDAO.deleteAdv",index);
+		
+	}
+
+	@Override
+	public int todayCoordinatesCount(String regdate) {
+
+		int todayCoordinatesCount = sqlSessionTemplate.selectOne("kr.co.foot.mymap.MymapDAO.todayCoordinatesCount",regdate);
+		
+		return todayCoordinatesCount;
+	}
+
+	@Override
+	public int weekAgoCoordinateCount(String weekAgo) {
+
+		int weekAgoCoordinatesCount = sqlSessionTemplate.selectOne("kr.co.foot.mymap.MymapDAO.weekAgoCoordinateCount",weekAgo);
+		
+		return weekAgoCoordinatesCount;
+	}
+
+	@Override
+	public void deleteSpots(String weekAgo) {
+
+		sqlSessionTemplate.delete("kr.co.foot.mymap.MymapDAO.deleteSpots",weekAgo);
+		
+	}
 	
 }

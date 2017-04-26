@@ -10,13 +10,19 @@ import com.google.api.services.analytics.AnalyticsScopes;
 
 public class GetToken {
 	
-	private static final String KEY_FILE_LOCATION = "C:/Users/User/workspace/baljagook/src/main/java/kr/co/foot/util/My Project-ffa385b75495.p12";
+	private static final String KEY_FILE_LOCATION = "C:/Users/User/workspace/baljagook/src/main/java/kr/co/foot/util/My Project-5ab8f062c393.json";
 	
-	public GetToken() throws FileNotFoundException, IOException{
+	public GetToken(){
+		
+	}
+	
+	public String token() throws FileNotFoundException, IOException{
 		GoogleCredential credential = GoogleCredential
 			    .fromStream(new FileInputStream(KEY_FILE_LOCATION))
 			    .createScoped(Collections.singleton(AnalyticsScopes.ANALYTICS_READONLY));
 			credential.refreshToken();
 			System.out.println(credential.getAccessToken());
+			
+			return credential.getAccessToken();
 	}
 }

@@ -167,11 +167,30 @@
    </select>
    
    <select id="selectMemberCount" parameterType="HashMap" resultType="int">
-       select count(status) from t_member where regdate <![CDATA[<]]> #{regdate} and regdate <![CDATA[>=]]> #{yesterday} and status = 1
+       select count(status) from t_member where regdate <![CDATA[<]]> #{regdate} and regdate <![CDATA[>=]]> #{yesterday} and status <![CDATA[>=]]> 1
    </select>
    
    <select id="selectTotalAdv" resultType="int">
        select count(idx) from t_advertisement
    </select>
+   
+   <update id="updateDetail" parameterType="kr.co.foot.advertisement.AdvertisementVO">
+       update t_advertisement set detail = #{detail} where idx = #{idx}
+   </update>
+   
+   <delete id="deleteAdv" parameterType="int">
+       delete from t_advertisement where idx = #{index}
+   </delete>
+   
+   <select id="todayCoordinatesCount" parameterType="String" resultType="int">
+       select count(idk) from t_coordinates where timestamp <![CDATA[>]]> #{regdate}
+   </select>
+   
+   <select id="weekAgoCoordinateCount" parameterType="String" resultType="int">
+       select count(idk) from t_coordinates where timestamp <![CDATA[<]]> #{weekAgo}
+   </select>
 
+   <delete id="deleteSpots" parameterType="String">
+       delete from t_coordinates where timestamp <![CDATA[<]]> #{weekAgo}
+   </delete>
 </mapper>

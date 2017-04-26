@@ -307,4 +307,41 @@ public class MymapServiceImp implements MymapService {
 		mymapDAO.reportMap(reportVO);
 	}
 
+	@Override
+	public void updateDetail(AdvertisementVO advertisementVO) {
+
+		mymapDAO.updateDetail(advertisementVO);
+		
+	}
+
+	@Override
+	public void deleteAdv(int index) {
+		
+		mymapDAO.deleteAdv(index);
+		
+	}
+
+	@Override
+	public int todayCoordinatesCount(String regdate) {
+
+		int todayCoordinatesCount = mymapDAO.todayCoordinatesCount(regdate);
+		
+		return todayCoordinatesCount;
+	}
+
+	@Override
+	public int weekAgoCoordinateCount(String weekAgo) {
+
+		int weekAgoCoordinatesCount = mymapDAO.weekAgoCoordinateCount(weekAgo);
+		
+		return weekAgoCoordinatesCount;
+	}
+
+	@Override
+	public void deleteSpots(String weekAgo) {
+
+		mymapDAO.deleteSpots(weekAgo);
+		
+	}
+
 }

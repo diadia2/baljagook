@@ -39,7 +39,6 @@ import kr.co.foot.util.GetToken;
 
 
 
-
 @Controller
 public class AdminController {
 
@@ -51,7 +50,7 @@ public class AdminController {
    private FaqService faqService;
    @Autowired
    private MemberManagementService memberManagementService;
-
+   @Autowired
    private FileUtils fileutils;
 
    @RequestMapping("/admin/dashboard.do")
@@ -78,12 +77,40 @@ public class AdminController {
 	   model.addAttribute("memberList", memberList);
 	   
 	   
-	   Calendar cal = Calendar.getInstance();
+	   	Calendar cal = Calendar.getInstance();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		String today = sdf.format(cal.getTime());
+		
+		// 오늘날짜
 		String regdate = (String.valueOf(sdf.parse(today).getTime()/1000));
+		
+		// 오늘 수집된 좌표수
+		int todayCoordinatesCount = mymapService.todayCoordinatesCount(regdate);
+		model.addAttribute("todayCoordinatesCount", todayCoordinatesCount);
+		
+		// 1주일 전까지 수집된 좌표수
+		String weekAgo = String.valueOf(((Integer.parseInt(regdate))-604800));
+		int weekAgoCoordinatesCount = mymapService.weekAgoCoordinateCount(weekAgo);
+		model.addAttribute("weekAgoCoordinatesCount", weekAgoCoordinatesCount);
+		
+		// 총 수집된 좌표수
+		int totalCoordinatesCount = mymapService.todayCoordinatesCount("0");
+		model.addAttribute("totalCoordinatesCount", totalCoordinatesCount);
+		
+		// 내일날짜
+		String tomorrow = String.valueOf(((Integer.parseInt(regdate))+86400));
+		Map<String, String> map1 = new HashMap<String,String>();
+		map1.put("yesterday", regdate);
+		map1.put("regdate", tomorrow);
+		// 오늘 가입자 수
+		int todayMember = mymapService.selectMemberCount(map1);
+		
+		// 오늘날짜 포맷
 		String dateToday = sdf.format(new Date(Long.valueOf((Integer.parseInt(regdate))+"000")));
+		// 어제날짜 포맷
 		String dateTo = sdf.format(new Date(Long.valueOf(((Integer.parseInt(regdate))-86400)+"000")));
+		
+		// 최근 일주일간 일일 가입자 수
 		List<Integer> dailyMemberCount = new ArrayList<Integer>();
 		List<String> dateList = new ArrayList<String>();
 		
@@ -97,18 +124,26 @@ public class AdminController {
 		      regdate = yesterday;
 	    }
 	   
+		// 일주일전 날짜 포맷
 		String dateFrom = sdf.format(new Date(Long.valueOf(regdate+"000")));
-		
+		// access_token 값 구하기
 		GetToken getToken = new GetToken();
+		String accessToken = getToken.token();
 		
+		model.addAttribute("accessToken", accessToken);
 		model.addAttribute("dateToday", dateToday);
+		model.addAttribute("todayMember",todayMember);
 		model.addAttribute("dailyMemberCount", dailyMemberCount);
 		model.addAttribute("dateFrom", dateFrom);
 		model.addAttribute("dateTo", dateTo);
 		
+		// 총 광고등록 수
 		int totalAdv = mymapService.selectTotalAdv();
-		
 		model.addAttribute("totalAdv", totalAdv);
+		
+		// 광고 목록
+		List<AdvertisementVO> AdvertisementList = mymapService.selectAdvertisementList();
+		model.addAttribute("AdvertisementList",AdvertisementList);
 		
 	   return "admin_view/dashboard";
    }
@@ -334,6 +369,51 @@ public class AdminController {
 	   model.addAttribute("AdvertisementList",AdvertisementList);
 	   
 	   return "admin_view/adv";
+   }
+   
+   @RequestMapping("/admin/changeAdvDetail.do")
+   @ResponseBody
+   public String changeAdvDetail(HttpServletRequest request){
+	   
+	   int index = Integer.parseInt(request.getParameter("index"));
+	   String newDetail = request.getParameter("newDetail");
+	   
+	   AdvertisementVO advertisementVO = new AdvertisementVO();
+	   advertisementVO.setDetail(newDetail);
+	   advertisementVO.setIdx(index);
+	   
+	   mymapService.updateDetail(advertisementVO);
+	   
+	   return "complete";
+   }
+   
+   @RequestMapping("/admin/deleteAdv.do")
+   @ResponseBody
+   public String deleteAdv(HttpServletRequest request){
+	   
+	   int index = Integer.parseInt(request.getParameter("index"));
+	   
+	   mymapService.deleteAdv(index);
+	   
+	   return "complete";
+   }
+
+   @RequestMapping("/admin/deleteSpots.do")
+   @ResponseBody
+   public String deleteSpots() throws ParseException{
+	   
+		Calendar cal = Calendar.getInstance();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		String today = sdf.format(cal.getTime());
+		
+		// 오늘날짜
+		String regdate = (String.valueOf(sdf.parse(today).getTime()/1000));
+		// 1주일 전까지 수집된 좌표수
+		String weekAgo = String.valueOf(((Integer.parseInt(regdate))-604800));
+		
+		mymapService.deleteSpots(weekAgo);
+	   
+	   return "complete";
    }
    
    

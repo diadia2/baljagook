@@ -80,7 +80,7 @@ demo = {
 
 
         /* ----------==========     Completed Tasks Chart initialization    ==========---------- */
-
+/*
         dataCompletedTasksChart = {
             labels: ['12am', '3pm', '6pm', '9pm', '12pm', '3am', '6am', '9am'],
             series: [
@@ -101,15 +101,15 @@ demo = {
 
         // start animation for the Completed Tasks Chart - Line Chart
         md.startAnimationForLineChart(completedTasksChart);
-
+*/
 
 
         /* ----------==========     Emails Subscription Chart initialization    ==========---------- */
 
         var dataEmailsSubscriptionChart = {
-          labels: ['접속인원','조회수'],
+          labels: ['사용자','신규방문자','세션','당일 가입자'],
           series: [
-            [users, hits]
+            [users, newusers, sessionCount, todayMember]
 
           ]
         };

@@ -39,7 +39,7 @@
 			-->
 
 			<div class="logo">
-				<a href="http://www.creative-tim.com" class="simple-text">
+				<a href="${pageContext.request.contextPath }" class="simple-text">
 					발자국
 				</a>
 			</div>
