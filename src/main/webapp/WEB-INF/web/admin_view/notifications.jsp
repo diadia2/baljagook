@@ -203,7 +203,7 @@
 	                            <div class="row">
 									<div class="col-md-8 col-md-offset-2">
 										<div class="col-md-4">
-		                                    <button class="btn btn-primary btn-block" onclick="demo.showNotification('top','left')">Top Left</button>
+		                                    <button class="btn btn-primary btn-block" onclick="demo.showNotification2('top','left')">Top Left</button>
 		                                </div>
 		                                <div class="col-md-4">
 		                                    <button class="btn btn-primary btn-block" onclick="demo.showNotification('top','center')">Top Center</button>
