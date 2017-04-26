@@ -1,15 +1,19 @@
 package kr.co.foot.mymap;
 
 import java.util.List;
+import java.util.Map;
 
+import kr.co.foot.advertisement.AdvertisementVO;
 import kr.co.foot.checkpoint.CheckpointVO;
 import kr.co.foot.favoritemap.FavoritemapVO;
 import kr.co.foot.favoriteplace.FavoriteplaceVO;
 import kr.co.foot.hashtag.HashtagVO;
 import kr.co.foot.like.LikeVO;
+import kr.co.foot.member.MemberVO;
 import kr.co.foot.photo.PhotoVO;
 import kr.co.foot.regcoordinates.RegcoordinatesVO;
 import kr.co.foot.regmap.RegmapVO;
+import kr.co.foot.report.ReportVO;
 
 public interface MymapService {
 
@@ -41,5 +45,19 @@ public interface MymapService {
 	public List<MymapVO> selectMymapByuserid(String userid);
 	public CheckpointVO selectCheckpointByCoorIdx(int idx);
 	public PhotoVO selectPhoto(int idx);
+	public void reportMap(ReportVO reportVO);
+	public int getTotalMember();
+	public int getTotalMap(int type);
+	public List<MymapVO> getMymapListHighRank();
+	public MemberVO getMemberInfo(String userid);
+	public void insertAdvertisement(AdvertisementVO advertisementVO);
+	public List<AdvertisementVO> selectAdvertisementList();
+	public Integer selectMemberCount(Map<String, String> map);
+	public int selectTotalAdv();
+	public void updateDetail(AdvertisementVO advertisementVO);
+	public void deleteAdv(int index);
+	public int todayCoordinatesCount(String regdate);
+	public int weekAgoCoordinateCount(String weekAgo);
+	public void deleteSpots(String weekAgo);
 
 }

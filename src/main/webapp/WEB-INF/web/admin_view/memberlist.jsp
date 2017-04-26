@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!doctype html>
 <html lang="en">
 <head>
@@ -25,6 +26,45 @@
     <!--     Fonts and icons     -->
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
     <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300|Material+Icons' rel='stylesheet' type='text/css'>
+	
+	<!-- jquery -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<script>
+	function changeStatus(newStatus, userid) {
+		var changedStatus = newStatus.value;
+ 		if(changedStatus == 'blinded') {
+ 			alert('블라인드 회원으로 변경하시겠습니까?');
+ 		} else if(changedStatus == 'regular') {
+ 			alert('정상 회원으로 변경하시겠습니까?');
+ 		}
+ 			
+		$.ajax({
+			type : 'POST',
+			data : jQuery.param({ userid: userid, changedStatus: changedStatus}),
+			url : '${ pageContext.request.contextPath }/admin/changeMemberStatus.do',
+			contentType : 'application/x-www-form-urlencoded; charset=UTF-8',
+			success : (function(data) {
+				alert('변경되었습니다.');
+				window.location.href = '${ pageContext.request.contextPath }/admin/memberlist.do';
+			})
+		});		
+	}
+
+	function deleteMember(userid) {
+		alert(userid + '님에 대한 회원 정보를 영구 삭제하시겠습니까?');
+		
+		$.ajax({
+			type : 'POST',
+			data : jQuery.param({ userid: userid}),
+			url : '${ pageContext.request.contextPath }/admin/deleteMember.do',
+			contentType : 'application/x-www-form-urlencoded; charset=UTF-8',
+			success : (function(data) {
+				alert('삭제되었습니다.');
+				window.location.href = '${ pageContext.request.contextPath }/admin/memberlist.do';				
+			})
+		});
+	}
+</script>
 </head>
 
 <body>
@@ -38,7 +78,7 @@
 			-->
 
 			<div class="logo">
-				<a href="http://www.creative-tim.com" class="simple-text">
+				<a href="${pageContext.request.contextPath }" class="simple-text">
 					발자국
 				</a>
 			</div>
@@ -62,6 +102,12 @@
 	                    <a href="${pageContext.request.contextPath }/admin/boardlist.do">
 	                        <i class="material-icons">library_books</i>
 	                        <p>Board List</p>
+	                    </a>
+	                </li>
+	                <li>
+	                    <a href="${pageContext.request.contextPath }/admin/adv.do">
+	                        <i class="material-icons">location_on</i>
+	                        <p>Add advertisement</p>
 	                    </a>
 	                </li>
 	                <li>
@@ -142,124 +188,130 @@
 	                    <div class="col-md-12">
 	                        <div class="card">
 	                            <div class="card-header" data-background-color="purple">
-	                                <h4 class="title">Simple Table</h4>
-	                                <p class="category">Here is a subtitle for this table</p>
+	                                <h4 class="title">정상 회원 목록</h4>
 	                            </div>
 	                            <div class="card-content table-responsive">
 	                                <table class="table">
 	                                    <thead class="text-primary">
-	                                    	<th>Name</th>
-	                                    	<th>Country</th>
-	                                    	<th>City</th>
-											<th>Salary</th>
+	                                    	<th>이메일</th>
+	                                    	<th>아이디</th>
+	                                    	<th>가입일</th>
+											<th>MyMap 수</th>
+											<th>MyPlan 수</th>
+											<th>신고 수</th>
+											<th>상태 변경</th>
+											<th>영구 삭제</th>
 	                                    </thead>
 	                                    <tbody>
-	                                        <tr>
-	                                        	<td>Dakota Rice</td>
-	                                        	<td>Niger</td>
-	                                        	<td>Oud-Turnhout</td>
-												<td class="text-primary">$36,738</td>
-	                                        </tr>
-	                                        <tr>
-	                                        	<td>Minerva Hooper</td>
-	                                        	<td>Curaçao</td>
-	                                        	<td>Sinaai-Waas</td>
-												<td class="text-primary">$23,789</td>
-	                                        </tr>
-	                                        <tr>
-	                                        	<td>Sage Rodriguez</td>
-	                                        	<td>Netherlands</td>
-	                                        	<td>Baileux</td>
-												<td class="text-primary">$56,142</td>
-	                                        </tr>
-	                                        <tr>
-	                                        	<td>Philip Chaney</td>
-	                                        	<td>Korea, South</td>
-	                                        	<td>Overland Park</td>
-												<td class="text-primary">$38,735</td>
-	                                        </tr>
-	                                        <tr>
-	                                        	<td>Doris Greene</td>
-	                                        	<td>Malawi</td>
-	                                        	<td>Feldkirchen in Kärnten</td>
-												<td class="text-primary">$63,542</td>
-	                                        </tr>
-	                                        <tr>
-	                                        	<td>Mason Porter</td>
-	                                        	<td>Chile</td>
-	                                        	<td>Gloucester</td>
-												<td class="text-primary">$78,615</td>
-	                                        </tr>
+	                                    	<c:if test="${ not empty regularMemberInfoList }">
+	                                    		<c:forEach var="regularMemberInfoList" items="${ regularMemberInfoList }" varStatus="loop">
+			                                        <tr>
+			                                        	<td>${ regularMemberInfoList.email }</td>
+			                                        	<td>${ regularMemberInfoList.userid }</td>
+			                                        	<td>${ regularMemberInfoList.regdate }</td>
+			                                        	<td>${ regularMemberInfoList.myMapCnt }</td>
+														<td>${ regularMemberInfoList.myPlanCnt }</td>
+														<td>${ regularMemberInfoList.reportedMyMapCnt }</td>
+														<td>
+														<select onchange="changeStatus(this, '${ regularMemberInfoList.userid }');">  <%-- onchange="changeRegularStatus('${ regularMemberInfoList.userid }');" --%>
+															<option value="regular">정상</option>
+															<option value="blinded">블라인드</option>
+														</select>
+														</td>
+														<td><button type="button" onclick="deleteMember('${ regularMemberInfoList.userid }');">회원정보 영구 삭제</button></td>
+			                                        </tr>
+		                                        </c:forEach>
+	                                        </c:if>
 	                                    </tbody>
 	                                </table>
-
+	                            </div>
+	                        </div>
+	                    </div>
+	                 
+	                    <div class="col-md-12">
+	                        <div class="card">
+	                            <div class="card-header" data-background-color="purple">
+	                                <h4 class="title">블라인드 회원 목록</h4>
+	                            </div>
+	                            <div class="card-content table-responsive">
+	                                <table class="table">
+	                                    <thead class="text-primary">
+	                                    	<th>이메일</th>
+	                                    	<th>아이디</th>
+	                                    	<th>가입일</th>
+											<th>MyMap 수</th>
+											<th>MyPlan 수</th>
+											<th>신고 수</th>
+											<th>상태 변경</th>
+											<th>영구 삭제</th>
+	                                    </thead>
+	                                    <tbody>
+	                                    	<c:if test="${ not empty blindedMemberInfoList }">
+	                                    		<c:forEach var="blindedMemberInfoList" items="${ blindedMemberInfoList }" varStatus="loop">
+			                                        <tr>
+			                                        	<td>${ blindedMemberInfoList.email }</td>
+			                                        	<td>${ blindedMemberInfoList.userid }</td>
+			                                        	<td>${ blindedMemberInfoList.regdate }</td>
+			                                        	<td>${ blindedMemberInfoList.myMapCnt }</td>
+														<td>${ blindedMemberInfoList.myPlanCnt }</td>
+														<td>${ blindedMemberInfoList.reportedMyMapCnt }</td>
+														<td>
+														<select onchange="changeStatus(this, '${ blindedMemberInfoList.userid }');">
+															<option value="blinded">블라인드</option>
+															<option value="regular">정상</option>
+														</select>														
+														</td>
+														<td><button type="button" onclick="deleteMember('${ blindedMemberInfoList.userid }');">회원정보 영구 삭제</button></td>
+			                                        </tr>
+		                                        </c:forEach>
+	                                        </c:if>
+	                                    </tbody>
+	                                </table>
 	                            </div>
 	                        </div>
 	                    </div>
 
 	                    <div class="col-md-12">
-	                        <div class="card card-plain">
+	                        <div class="card">
 	                            <div class="card-header" data-background-color="purple">
-	                                <h4 class="title">Table on Plain Background</h4>
-	                                <p class="category">Here is a subtitle for this table</p>
+	                                <h4 class="title">탈퇴 회원 목록</h4>
 	                            </div>
 	                            <div class="card-content table-responsive">
-	                                <table class="table table-hover">
-	                                    <thead>
-	                                        <th>ID</th>
-	                                    	<th>Name</th>
-	                                    	<th>Salary</th>
-	                                    	<th>Country</th>
-	                                    	<th>City</th>
+	                                <table class="table">
+	                                    <thead class="text-primary">
+	                                    	<th>이메일</th>
+	                                    	<th>아이디</th>
+	                                    	<th>가입일</th>
+	                                    	<th>탈퇴일</th>
+											<th>MyMap 수</th>
+											<th>MyPlan 수</th>
+											<th>신고 수</th>
+											<th>상태 변경</th>
+											<th>영구 삭제</th>
 	                                    </thead>
 	                                    <tbody>
-	                                        <tr>
-	                                        	<td>1</td>
-	                                        	<td>Dakota Rice</td>
-	                                        	<td>$36,738</td>
-	                                        	<td>Niger</td>
-	                                        	<td>Oud-Turnhout</td>
-	                                        </tr>
-	                                        <tr>
-	                                        	<td>2</td>
-	                                        	<td>Minerva Hooper</td>
-	                                        	<td>$23,789</td>
-	                                        	<td>Curaçao</td>
-	                                        	<td>Sinaai-Waas</td>
-	                                        </tr>
-	                                        <tr>
-	                                        	<td>3</td>
-	                                        	<td>Sage Rodriguez</td>
-	                                        	<td>$56,142</td>
-	                                        	<td>Netherlands</td>
-	                                        	<td>Baileux</td>
-	                                        </tr>
-	                                        <tr>
-	                                        	<td>4</td>
-	                                        	<td>Philip Chaney</td>
-	                                        	<td>$38,735</td>
-	                                        	<td>Korea, South</td>
-	                                        	<td>Overland Park</td>
-	                                        </tr>
-	                                        <tr>
-	                                        	<td>5</td>
-	                                        	<td>Doris Greene</td>
-	                                        	<td>$63,542</td>
-	                                        	<td>Malawi</td>
-	                                        	<td>Feldkirchen in Kärnten</td>
-	                                        </tr>
-	                                        <tr>
-	                                        	<td>6</td>
-	                                        	<td>Mason Porter</td>
-	                                        	<td>$78,615</td>
-	                                        	<td>Chile</td>
-	                                        	<td>Gloucester</td>
-	                                        </tr>
+	                                    	<c:if test="${ not empty deactivatedMemberInfoList }">
+	                                    		<c:forEach var="deactivatedMemberInfoList" items="${ deactivatedMemberInfoList }" varStatus="loop">
+			                                        <tr>
+			                                        	<td>${ deactivatedMemberInfoList.email }</td>
+			                                        	<td>${ deactivatedMemberInfoList.userid }</td>
+			                                        	<td>${ deactivatedMemberInfoList.regdate }</td>
+			                                        	<td>${ deactivatedMemberInfoList.deactivatedate }</td>
+			                                        	<td>${ deactivatedMemberInfoList.myMapCnt }</td>
+														<td>${ deactivatedMemberInfoList.myPlanCnt }</td>
+														<td>${ deactivatedMemberInfoList.reportedMyMapCnt }</td>
+														<td>탈퇴</td>
+														<td><button type="button" onclick="deleteMember('${ deactivatedMemberInfoList.userid }');">회원정보 영구 삭제</button></td>
+			                                        </tr>
+		                                        </c:forEach>
+	                                        </c:if>
 	                                    </tbody>
 	                                </table>
 	                            </div>
 	                        </div>
-	                    </div>
+	                    </div>		                    
+
+
 	                </div>
 	            </div>
 	        </div>

@@ -4,6 +4,9 @@
 	<update id="deactivateAccount" parameterType="String">
 	    update t_member set status = 2 where userid = #{userid}
 	</update>
+	<update id="insertDeactivatedate" parameterType="kr.co.foot.mypage.DeactivateDTO">
+	    update t_member set deactivatedate = #{deactivatedate} where userid=#{userid}
+	</update>
 	<update id="changePassword" parameterType="MemberVO">
 	    update t_member set password = #{password} where userid = #{userid}
 	</update>

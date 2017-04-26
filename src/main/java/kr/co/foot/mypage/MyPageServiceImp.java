@@ -15,6 +15,10 @@ public class MyPageServiceImp implements MyPageService {
 		dao.deactivateAccount(userid);
 	}
 	
+	public void insertDeactivatedate(DeactivateDTO deactivateDTO) {
+		dao.insertDeactivatedate(deactivateDTO);
+	}
+	
 	public void changePassword(MemberVO memberVO) {
 		dao.changePassword(memberVO);
 	}

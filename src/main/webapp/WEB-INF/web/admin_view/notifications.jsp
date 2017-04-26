@@ -38,8 +38,8 @@
 		    -->
 
 			<div class="logo">
-				<a href="http://www.creative-tim.com" class="simple-text">
-					Creative Tim
+				<a href="${pageContext.request.contextPath }" class="simple-text">
+					발자국
 				</a>
 			</div>
 
@@ -61,6 +61,12 @@
 	                    <a href="${pageContext.request.contextPath }/admin/boardlist.do">
 	                        <i class="material-icons">library_books</i>
 	                        <p>Board List</p>
+	                    </a>
+	                </li>
+	                <li>
+	                    <a href="${pageContext.request.contextPath }/admin/adv.do">
+	                        <i class="material-icons">location_on</i>
+	                        <p>Add advertisement</p>
 	                    </a>
 	                </li>
 	                <li class="active">

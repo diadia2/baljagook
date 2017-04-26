@@ -24,16 +24,16 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-web</artifactId>
-			<version>${spring.version}</version>
+			<version>${spring.version}</version> 
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
-			<version>${spring.version}</version>
-			<scope>runtime</scope>
+			<version>${spring.version}</version> 
+			<scope>runtime</scope> 
 		</dependency>
-
+ 
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-aop</artifactId>
@@ -50,7 +50,7 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-expression</artifactId>
 			<version>${spring.version}</version>
-		</dependency>
+		</dependency> 
 
 
 		<!-- Spring MVC -->
@@ -69,12 +69,12 @@
 
 		<dependency>
 			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-web</artifactId>
+			<artifactId>spring-security-web</artifactId> 
 			<version>${spring.security.version}</version>
 		</dependency>
 
 		<dependency>
-			<groupId>org.springframework.security</groupId>
+			<groupId>org.springframework.security</groupId> 
 			<artifactId>spring-security-config</artifactId>
 			<version>${spring.security.version}</version>
 			<scope>runtime</scope>
@@ -260,13 +260,20 @@
 			<version>${spring.version}</version>
 		</dependency>
 
-		<!-- spring-messaging -->
+		
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-messaging</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/com.google.apis/google-api-services-analytics -->
+		<dependency>
+		    <groupId>com.google.apis</groupId>
+		    <artifactId>google-api-services-analytics</artifactId>
+		    <version>v3-rev139-1.22.0</version>
+		</dependency>
+				
 	</dependencies>
 
 
