@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!doctype html>
 <html lang="en">
 <head>
@@ -25,6 +26,66 @@
     <!--     Fonts and icons     -->
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
     <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300|Material+Icons' rel='stylesheet' type='text/css'>
+
+<!-- jquery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<script>
+	function showReportList(regmapidx) {
+		console.log(regmapidx);
+		
+		$.ajax({
+			type : 'POST',
+			data : jQuery.param({ regmapidx: regmapidx }),
+			url : '${ pageContext.request.contextPath }/admin/getReportList.do',
+			contentType : 'application/x-www-form-urlencoded; charset=UTF-8',
+			dataType : 'json',
+			success : (function(data) {
+				console.log('success');
+				$('#reportDetail').empty();
+				for(var i in data) {
+					console.log(data[i]);
+					var $appendReportDetail = $("<tr><td>"+data[i].userid+"</td>"+
+							  					"<td>"+data[i].regdate+"</td>"+
+							  					"<td>"+data[i].reason+"</td></tr>");
+					$appendReportDetail.appendTo('#reportDetail');
+				}
+			})
+		});
+	}
+	
+	function blindMap(regmapidx) {
+		console.log(regmapidx);
+		
+		$.ajax({
+			type : 'POST',
+			data : jQuery.param({ regmapidx : regmapidx }),
+			url : '${ pageContext.request.contextPath }/admin/blindRegmap.do',
+			contentType : 'application/x-www-form-urlencoded; charset=UTF-8',
+			success : (function(data) {
+				alert('블라인드 처리 완료');
+				window.location.href = '${ pageContext.request.contextPath }/admin/boardlist.do';
+			})
+			
+		});
+	}
+	
+	function cancelBlind(regmapidx) {
+		console.log(regmapidx);
+		$.ajax({
+			type : 'POST',
+			data : jQuery.param({ regmapidx : regmapidx }),
+			url : '${ pageContext.request.contextPath }/admin/cancelBlind.do',
+			contentType : 'application/x-www-form-urlencoded; charset=UTF-8',
+			success : (function(data) {
+				alert('블라인드 취소 완료');
+				window.location.href = '${ pageContext.request.contextPath }/admin/boardlist.do';
+			})
+			
+		});
+	}
+
+</script>
+
 </head>
 
 <body>
@@ -148,95 +209,94 @@
 	                    <div class="col-md-12">
 	                        <div class="card">
 	                            <div class="card-header" data-background-color="purple">
-	                                <h4 class="title">Material Dashboard Heading</h4>
-	                                <p class="category">Created using Roboto Font Family</p>
+	                                <h4 class="title">신고 게시글 목록</h4>
 	                            </div>
-	                            <div class="card-content">
-									<div id="typography">
-										<div class="title">
-											<h2>Typography</h2>
-										</div>
-										<div class="row">
-											<div class="tim-typo">
-												<h1><span class="tim-note">Header 1</span>The Life of Material Dashboard </h1>
-											</div>
-											<div class="tim-typo">
-												<h2><span class="tim-note">Header 2</span>The life of Material Dashboard </h2>
-											</div>
-											<div class="tim-typo">
-												<h3><span class="tim-note">Header 3</span>The life of Material Dashboard </h3>
-											</div>
-											<div class="tim-typo">
-												<h4><span class="tim-note">Header 4</span>The life of Material Dashboard </h4>
-											</div>
-											<div class="tim-typo">
-												<h5><span class="tim-note">Header 5</span>The life of Material Dashboard </h5>
-											</div>
-											<div class="tim-typo">
-												<h6><span class="tim-note">Header 6</span>The life of Material Dashboard </h6>
-											</div>
-											<div class="tim-typo">
-												<p><span class="tim-note">Paragraph</span>
-													I will be the leader of a company that ends up being worth billions of dollars, because I got the answers. I understand culture. I am the nucleus. I think that’s a responsibility that I have, to push possibilities, to show people, this is the level that things could be at.</p>
-											</div>
-											<div class="tim-typo">
-												<span class="tim-note">Quote</span>
-												<blockquote>
-												 <p>
-												 I will be the leader of a company that ends up being worth billions of dollars, because I got the answers. I understand culture. I am the nucleus. I think that’s a responsibility that I have, to push possibilities, to show people, this is the level that things could be at.
-												 </p>
-												 <small>
-												 Kanye West, Musician
-												 </small>
-												</blockquote>
-											</div>
-
-											<div class="tim-typo">
-												<span class="tim-note">Muted Text</span>
-												<p class="text-muted">
-												I will be the leader of a company that ends up being worth billions of dollars, because I got the answers...
-												</p>
-											</div>
-											<div class="tim-typo">
-												<span class="tim-note">Primary Text</span>
-												<p class="text-primary">
-												I will be the leader of a company that ends up being worth billions of dollars, because I got the answers...                        </p>
-											</div>
-											<div class="tim-typo">
-												<span class="tim-note">Info Text</span>
-												<p class="text-info">
-												I will be the leader of a company that ends up being worth billions of dollars, because I got the answers...                        </p>
-											</div>
-											<div class="tim-typo">
-												<span class="tim-note">Success Text</span>
-												<p class="text-success">
-												I will be the leader of a company that ends up being worth billions of dollars, because I got the answers...                        </p>
-											</div>
-											<div class="tim-typo">
-												<span class="tim-note">Warning Text</span>
-												<p class="text-warning">
-												I will be the leader of a company that ends up being worth billions of dollars, because I got the answers...
-												</p>
-											</div>
-											<div class="tim-typo">
-												<span class="tim-note">Danger Text</span>
-												<p class="text-danger">
-												I will be the leader of a company that ends up being worth billions of dollars, because I got the answers...                        </p>
-											</div>
-											<div class="tim-typo">
-												<h2><span class="tim-note">Small Tag</span>
-													Header with small subtitle <br>
-													<small>Use "small" tag for the headers</small>
-												</h2>
-											</div>
-										</div>
-									</div>
+	                            <div class="card-content table-responsive">
+	                                <table class="table">
+	                                    <thead class="text-primary">
+	                                    	<th>제목</th>
+	                                    	<th>내용</th>
+	                                    	<th>작성자</th>
+											<th>등록일</th>
+											<th>신고 수</th>
+											<th>블라인드</th>
+	                                    </thead>
+	                                    <tbody>
+	                                    	<c:if test="${ not empty reportedMapDTOList }">
+	                                    		<c:forEach var="reportedMapDTOList" items="${ reportedMapDTOList }" varStatus="loop"> 
+			                                    	<tr>
+			                                    	<td><a href="${ pageContext.request.contextPath }/map/detail.do?mymapidx=${ reportedMapDTOList.mymapidx }">${ reportedMapDTOList.title }</a></td>
+			                                    	<td>${ reportedMapDTOList.content }</td>
+			                                    	<td>${ reportedMapDTOList.userid }</td>
+			                                    	<td>${ reportedMapDTOList.regdate }</td>
+													<td><a href="#" onclick="showReportList(${ reportedMapDTOList.regmapidx });">${ reportedMapDTOList.count }</a></td>
+													<td><button type="button" onclick="blindMap('${ reportedMapDTOList.regmapidx }')">블라인드</button></td>
+		                                    		</tr>
+	                                    		</c:forEach>
+	                                    	</c:if>
+	                                    </tbody>
+	                                </table>
 	                            </div>
 	                        </div>
 	                    </div>
+	                    
+	                    <div class="col-md-12">
+	                        <div class="card">
+	                            <div class="card-header" data-background-color="purple">
+	                                <h4 class="title">신고글 조회</h4>
+	                            </div>
+	                            <div class="card-content table-responsive">
+	                                <table class="table">
+	                                    <thead class="text-primary">
+		                                    <th>신고인</th>
+		                                    <th>신고일</th>
+		                                    <th>이유</th>
+	                                    </thead>
+	                                    <tbody id="reportDetail">
+	                                    </tbody>
+	                                </table>
+	                            </div>
+	                        </div>
+	                    </div>
+	                    
+	                    <div class="col-md-12">
+	                        <div class="card">
+	                            <div class="card-header" data-background-color="purple">
+	                                <h4 class="title">블라인드 게시글 목록</h4>
+	                            </div>
+	                            <div class="card-content table-responsive">
+	                                <table class="table">
+	                                    <thead class="text-primary">
+	                                    	<th>제목</th>
+	                                    	<th>내용</th>
+	                                    	<th>작성자</th>
+											<th>등록일</th>
+											<th>신고 수</th>
+											<th>블라인드 취소</th>
+	                                    </thead>
+	                                    <tbody>
+	                                    	<c:if test="${ not empty blindedMapDTOList }">
+	                                    		<c:forEach var="blindedMapDTOList" items="${ blindedMapDTOList }" varStatus="loop"> 
+			                                    	<tr>
+			                                    	<td><a href="${ pageContext.request.contextPath }/map/detail.do?mymapidx=${ blindedMapDTOList.mymapidx }">${ blindedMapDTOList.title }</a></td>
+			                                    	<td>${ blindedMapDTOList.content }</td>
+			                                    	<td>${ blindedMapDTOList.userid }</td>
+			                                    	<td>${ blindedMapDTOList.regdate }</td>
+													<td><a href="#" onclick="showReportList(${ blindedMapDTOList.regmapidx });">${ blindedMapDTOList.count }</a></td>
+													<td><button type="button" onclick="cancelBlind('${ blindedMapDTOList.regmapidx }')">블라인드 취소</button></td>
+		                                    		</tr>
+	                                    		</c:forEach>
+	                                    	</c:if>
+	                                    </tbody>
+	                                </table>
+	                            </div>
+	                        </div>
+	                    </div>
+	                    
+	                    	                    
 	                </div>
 	            </div>
-	        </div>
+	        </div>        
 
 	        <footer class="footer">
 	            <div class="container-fluid">
