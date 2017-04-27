@@ -31,7 +31,7 @@
     </update>
     
     <insert id="insertAutoLoginEmail" parameterType="AutoLoginDTO">
-        insert into t_autologin(email, token) values(#{email}, #{token})
+        insert into t_autologin(email, token, jsessionid) values(#{email}, #{token}, #{jsessionid})
     </insert>
     
     <select id="getEmailByToken" parameterType="String" resultType="String">
