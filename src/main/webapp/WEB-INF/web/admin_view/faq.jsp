@@ -320,7 +320,7 @@
 	                    <div class="card-header" data-background-color="purple">
 	                        <h4 class="title">FAQ</h4>
 	                    </div>
-	                    <div class="">
+	                    <div class="" style="text-align: right">
 							<button id="addFAQ" type="button" class="btn btn-black btn-round btn-just-icon">
 								<i class="material-icons">add</i><div class="ripple-container"></div>
 							</button>
@@ -335,7 +335,6 @@
 													<c:if test="${ not empty faqList }">
 														<c:forEach var="faqList" items="${ faqList }" varStatus="loop">
 															<tr>
-																<td></td>
 																<td><a data-toggle="collapse" href="#faqContent${ loop.index }" aria-expanded="false" aria-controls="faqContent${ loop.index }" >${ faqList.title }</a></td>
 																<td class="td-actions text-right">
 																	<button type="button" onclick="getFAQByIdx(${ faqList.idx });" rel="tooltip" title="Edit Task" class="btn btn-primary btn-simple btn-xs">
