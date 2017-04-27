@@ -69,4 +69,16 @@ public class PageController {
 		return mav;
 	}
 	
+	@RequestMapping("/s.do")
+	public ModelAndView s() {
+		ModelAndView mav = new ModelAndView("/search/search2");
+		return mav;
+	}
+	
+	@RequestMapping("/m.do")
+	public ModelAndView m() {
+		ModelAndView mav = new ModelAndView("/member/mypage2");
+		return mav;
+	}
+	
 }
