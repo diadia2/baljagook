@@ -29,9 +29,22 @@
 
 <!-- jquery -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<style>
+.highlight {
+	background-color: #E8E8E8;
+}
+</style>
 <script>
-	function showReportList(regmapidx) {
-		console.log(regmapidx);
+	var prevMymapidx;
+	function showReportList(regmapidx, mymapidx) {
+		$('#row'+prevMymapidx).removeClass("highlight");
+		var selected = $('#row'+mymapidx).hasClass("highlight");
+		$('#row'+mymapidx).removeClass("highlight");
+		if(!selected) {
+			$('#row'+mymapidx).addClass("highlight");
+		}
+		prevMymapidx = mymapidx;
+		
 		
 		$.ajax({
 			type : 'POST',
@@ -54,8 +67,6 @@
 	}
 	
 	function blindMap(regmapidx) {
-		console.log(regmapidx);
-		
 		$.ajax({
 			type : 'POST',
 			data : jQuery.param({ regmapidx : regmapidx }),
@@ -70,7 +81,6 @@
 	}
 	
 	function cancelBlind(regmapidx) {
-		console.log(regmapidx);
 		$.ajax({
 			type : 'POST',
 			data : jQuery.param({ regmapidx : regmapidx }),
@@ -110,31 +120,25 @@
 	                <li>
 	                    <a href="${pageContext.request.contextPath }/admin/dashboard.do">
 	                        <i class="material-icons">dashboard</i>
-	                        <p>Dashboard</p>
+	                        <p>대시보드</p>
 	                    </a>
 	                </li>
 	                <li>
 	                    <a href="${pageContext.request.contextPath }/admin/memberlist.do">
 	                        <i class="material-icons">content_paste</i>
-	                        <p>Member List</p>
+	                        <p>회원 관리</p>
 	                    </a>
 	                </li>
 	                <li class="active">
 	                    <a href="${pageContext.request.contextPath }/admin/boardlist.do">
 	                        <i class="material-icons">library_books</i>
-	                        <p>Board List</p>
+	                        <p>게시글 관리</p>
 	                    </a>
 	                </li>
 	                <li>
 	                    <a href="${pageContext.request.contextPath }/admin/adv.do">
 	                        <i class="material-icons">location_on</i>
-	                        <p>Add advertisement</p>
-	                    </a>
-	                </li>
-	                <li>
-	                    <a href="${pageContext.request.contextPath }/admin/notifications.do">
-	                        <i class="material-icons text-gray">notifications</i>
-	                        <p>Notifications</p>
+	                        <p>광고 관리</p>
 	                    </a>
 	                </li>
 	                <li>
@@ -160,46 +164,6 @@
 						</button>
 						<a class="navbar-brand" href="#">Board List</a>
 					</div>
-					<div class="collapse navbar-collapse">
-						<ul class="nav navbar-nav navbar-right">
-							<li>
-								<a href="#pablo" class="dropdown-toggle" data-toggle="dropdown">
-									<i class="material-icons">dashboard</i>
-									<p class="hidden-lg hidden-md">Dashboard</p>
-								</a>
-							</li>
-							<li class="dropdown">
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-									<i class="material-icons">notifications</i>
-									<span class="notification">5</span>
-									<p class="hidden-lg hidden-md">Notifications</p>
-								</a>
-								<ul class="dropdown-menu">
-									<li><a href="#">Mike John responded to your email</a></li>
-									<li><a href="#">You have 5 new tasks</a></li>
-									<li><a href="#">You're now friend with Andrew</a></li>
-									<li><a href="#">Another Notification</a></li>
-									<li><a href="#">Another One</a></li>
-								</ul>
-							</li>
-							<li>
-								<a href="#pablo" class="dropdown-toggle" data-toggle="dropdown">
-	 							   <i class="material-icons">person</i>
-	 							   <p class="hidden-lg hidden-md">Profile</p>
-	 						   </a>
-							</li>
-						</ul>
-
-						<form class="navbar-form navbar-right" role="search">
-							<div class="form-group  is-empty">
-	                        	<input type="text" class="form-control" placeholder="Search">
-	                        	<span class="material-input"></span>
-							</div>
-							<button type="submit" class="btn btn-white btn-round btn-just-icon">
-								<i class="material-icons">search</i><div class="ripple-container"></div>
-							</button>
-	                    </form>
-					</div>
 				</div>
 			</nav>
 
@@ -211,31 +175,31 @@
 	                            <div class="card-header" data-background-color="purple">
 	                                <h4 class="title">신고 게시글 목록</h4>
 	                            </div>
-	                            <div class="card-content table-responsive">
-	                                <table class="table">
-	                                    <thead class="text-primary">
-	                                    	<th>제목</th>
-	                                    	<th>내용</th>
-	                                    	<th>작성자</th>
-											<th>등록일</th>
-											<th>신고 수</th>
-											<th>블라인드</th>
-	                                    </thead>
-	                                    <tbody>
-	                                    	<c:if test="${ not empty reportedMapDTOList }">
-	                                    		<c:forEach var="reportedMapDTOList" items="${ reportedMapDTOList }" varStatus="loop"> 
-			                                    	<tr>
-			                                    	<td><a href="${ pageContext.request.contextPath }/map/detail.do?mymapidx=${ reportedMapDTOList.mymapidx }">${ reportedMapDTOList.title }</a></td>
-			                                    	<td>${ reportedMapDTOList.content }</td>
-			                                    	<td>${ reportedMapDTOList.userid }</td>
-			                                    	<td>${ reportedMapDTOList.regdate }</td>
-													<td><a href="#" onclick="showReportList(${ reportedMapDTOList.regmapidx });">${ reportedMapDTOList.count }</a></td>
-													<td><button type="button" onclick="blindMap('${ reportedMapDTOList.regmapidx }')">블라인드</button></td>
-		                                    		</tr>
-	                                    		</c:forEach>
-	                                    	</c:if>
-	                                    </tbody>
-	                                </table>
+	                            <div class="card-content table-responsive" style="max-height:350px; overflow-y: scroll;">
+		                                <table class="table">
+		                                    <thead class="text-primary">
+		                                    	<th>제목</th>
+		                                    	<th>내용</th>
+		                                    	<th>작성자</th>
+												<th>등록일</th>
+												<th>신고 수</th>
+												<th>블라인드</th>
+		                                    </thead>
+		                                    <tbody>
+		                                    	<c:if test="${ not empty reportedMapDTOList }">
+		                                    		<c:forEach var="reportedMapDTOList" items="${ reportedMapDTOList }" varStatus="loop"> 
+				                                    	<tr id="row${ reportedMapDTOList.mymapidx }">
+				                                    	<td><a href="${ pageContext.request.contextPath }/map/detail.do?mymapidx=${ reportedMapDTOList.mymapidx }">${ reportedMapDTOList.title }</a></td>
+				                                    	<td>${ reportedMapDTOList.content }</td>
+				                                    	<td>${ reportedMapDTOList.userid }</td>
+				                                    	<td>${ reportedMapDTOList.regdate }</td>
+														<td><a href="#" onclick="showReportList(${ reportedMapDTOList.regmapidx }, ${ reportedMapDTOList.mymapidx });">${ reportedMapDTOList.count }</a></td>
+														<td><button type="button" onclick="blindMap('${ reportedMapDTOList.regmapidx }')">블라인드</button></td>
+			                                    		</tr>
+		                                    		</c:forEach>
+		                                    	</c:if>
+		                                    </tbody>
+		                                </table>
 	                            </div>
 	                        </div>
 	                    </div>
@@ -245,7 +209,7 @@
 	                            <div class="card-header" data-background-color="purple">
 	                                <h4 class="title">신고글 조회</h4>
 	                            </div>
-	                            <div class="card-content table-responsive">
+	                            <div class="card-content table-responsive" style="max-height:350px; overflow-y: scroll;">
 	                                <table class="table">
 	                                    <thead class="text-primary">
 		                                    <th>신고인</th>
@@ -264,7 +228,7 @@
 	                            <div class="card-header" data-background-color="purple">
 	                                <h4 class="title">블라인드 게시글 목록</h4>
 	                            </div>
-	                            <div class="card-content table-responsive">
+	                            <div class="card-content table-responsive" style="max-height:350px; overflow-y: scroll;">
 	                                <table class="table">
 	                                    <thead class="text-primary">
 	                                    	<th>제목</th>
@@ -277,12 +241,12 @@
 	                                    <tbody>
 	                                    	<c:if test="${ not empty blindedMapDTOList }">
 	                                    		<c:forEach var="blindedMapDTOList" items="${ blindedMapDTOList }" varStatus="loop"> 
-			                                    	<tr>
+			                                    	<tr id="row${ blindedMapDTOList.mymapidx }">
 			                                    	<td><a href="${ pageContext.request.contextPath }/map/detail.do?mymapidx=${ blindedMapDTOList.mymapidx }">${ blindedMapDTOList.title }</a></td>
 			                                    	<td>${ blindedMapDTOList.content }</td>
 			                                    	<td>${ blindedMapDTOList.userid }</td>
 			                                    	<td>${ blindedMapDTOList.regdate }</td>
-													<td><a href="#" onclick="showReportList(${ blindedMapDTOList.regmapidx });">${ blindedMapDTOList.count }</a></td>
+													<td><a href="#" onclick="showReportList(${ blindedMapDTOList.regmapidx }, ${ blindedMapDTOList.mymapidx });">${ blindedMapDTOList.count }</a></td>
 													<td><button type="button" onclick="cancelBlind('${ blindedMapDTOList.regmapidx }')">블라인드 취소</button></td>
 		                                    		</tr>
 	                                    		</c:forEach>
