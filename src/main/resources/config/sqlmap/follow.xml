@@ -20,5 +20,5 @@
 		delete from t_follow
 		where idx = #{idx}
 	</delete>
-	
+	<!-- 팔로우 -->
 </mapper>

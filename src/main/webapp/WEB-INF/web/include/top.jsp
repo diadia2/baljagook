@@ -7,7 +7,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <title>top</title>
-
+	<!-- Material Dashboard DEMO methods, don't include it in your project! -->
+	<script src="${pageContext.request.contextPath }/resources/admin/assets/js/demo.js"></script>
+		<!--  Notifications Plugin    -->
+	<script src="${pageContext.request.contextPath }/resources/admin/assets/js/bootstrap-notify.js"></script>
 <style type="text/css">
 body {
 	padding-top: 55px;
@@ -402,6 +405,10 @@ body {
 		client.subscribe('/subscribe/echo', function(message) {
 			console.log(message);
 			$('#alarm').text("new");
+			
+			/* 알림 demo.js/ jq-Notification.js에 있음 */
+			demo.showNotification2('top','left')
+			
 		});
 
 	});
@@ -426,7 +433,7 @@ body {
 
 			<div class="collapse navbar-collapse" id="target">
 				<!-- 검색바 -->
-				<form class="navbar-form navbar-nav">
+				<form class="navbar-form navbar-nav" action="${pageContext.request.contextPath }/map/search.do" method="get">
 					<input type="text" class="form-control" placeholder="검색" id="searchtext"
 						size="50%" style="text-align: center;" onKeyPress="if (event.keyCode==13){ goSearch();event.returnValue=false}"/>&nbsp;&nbsp; <a href="javascript:goSearch()"><i
 						class="fa fa-search fa-2x" aria-hidden="true"></i></a>

@@ -1,170 +1,366 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@include file="/WEB-INF/share.jsp"%>
 <!DOCTYPE html>
-<html>
+<html lang="kr">
 <head>
+<style>
+/* 로딩 */
+#loading .svg-icon-loader {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin: -50px 0 0 -50px;
+}
+/* 화면 체우기 */
+html, body {
+	height: 100%;
+}
+
+#sb-site {
+	height: 100% !important;
+}
+
+#page-content-wrapper {
+	height: 100% !important;
+	padding-top: 0px !important;
+}
+
+#page-wrapper {
+	height: 100% !important;
+}
+
+#page-content {
+	height: 100% !important;
+	margin-left: 0px !important;
+	margin-right: 0px !important;
+	padding: 0px !important;
+}
+/* 네비바 투명 */
+#page-header {
+	background: rgba(255, 255, 255, 0) !important;
+}
+
+/* 판넬헤더 클릭 드래그 */
+/* #draggablePanelList .panel-heading {
+	cursor: move;
+} */
+/* 숫자 원 */
+.circleNum {
+	width: 20px;
+	height: 20px;
+	border-radius: 100%;
+	-webkit-border-radius: 100%;
+	-moz-border-radius: 100%;
+	background: #FD2604;
+	color: #FFF;
+	text-align: center;
+	font-size: 12px;
+	line-height: 20px;
+	-webkit-flex: none;
+	flex: none;
+	margin-right: 7px;
+}
+/* 판넬 내부 배치 */
+.dd-handle {
+	display: flex !important;
+	margin-bottom: 15px !important;
+}
+
+.dd-handle:HOVER {
+	box-shadow: 0 6px 10px rgba(0, 0, 0, .23), 0 10px 30px
+		rgba(0, 0, 0, .19);
+}
+
+#addTimeInfo {
+	margin: 0px;
+	border: 0px;
+}
+</style>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>MY MAP ^_^</title>
+<!--[if IE]><meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'><![endif]-->
+<title>Reg Trip</title>
+<meta name="description" content="">
+<meta name="viewport"
+	content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<link rel="apple-touch-icon-precomposed" sizes="144x144"
+	href="${pageContext.request.contextPath }/resources/assets/images/icons/apple-touch-icon-144-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="114x114"
+	href="${pageContext.request.contextPath }/resources/assets/images/icons/apple-touch-icon-114-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="72x72"
+	href="${pageContext.request.contextPath }/resources/assets/images/icons/apple-touch-icon-72-precomposed.png">
+<link rel="apple-touch-icon-precomposed"
+	href="${pageContext.request.contextPath }/resources/assets/images/icons/apple-touch-icon-57-precomposed.png">
+<link rel="shortcut icon"
+	href="${pageContext.request.contextPath }/resources/assets/images/icons/favicon.png">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/helpers/animate.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/helpers/boilerplate.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/helpers/border-radius.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/helpers/grid.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/helpers/page-transitions.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/helpers/spacing.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/helpers/typography.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/helpers/utils.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/helpers/colors.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/material/ripple.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/elements/badges.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/elements/buttons.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/elements/content-box.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/elements/dashboard-box.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/elements/forms.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/elements/images.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/elements/info-box.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/elements/invoice.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/elements/loading-indicators.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/elements/menus.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/elements/panel-box.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/elements/response-messages.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/elements/responsive-tables.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/elements/ribbon.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/elements/social-box.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/elements/tables.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/elements/tile-box.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/elements/timeline.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/icons/fontawesome/fontawesome.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/icons/linecons/linecons.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/icons/spinnericon/spinnericon.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/widgets/accordion-ui/accordion.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/widgets/calendar/calendar.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/widgets/carousel/carousel.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/widgets/charts/justgage/justgage.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/widgets/charts/morris/morris.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/widgets/charts/piegage/piegage.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/widgets/charts/xcharts/xcharts.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/widgets/chosen/chosen.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/widgets/colorpicker/colorpicker.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/widgets/datatable/datatable.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/widgets/datepicker/datepicker.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/widgets/datepicker-ui/datepicker.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/widgets/daterangepicker/daterangepicker.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/widgets/dialog/dialog.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/widgets/dropdown/dropdown.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/widgets/dropzone/dropzone.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/widgets/file-input/fileinput.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/widgets/input-switch/inputswitch.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/widgets/input-switch/inputswitch-alt.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/widgets/ionrangeslider/ionrangeslider.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/widgets/jcrop/jcrop.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/widgets/jgrowl-notifications/jgrowl.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/widgets/loading-bar/loadingbar.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/widgets/maps/vector-maps/vectormaps.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/widgets/markdown/markdown.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/widgets/modal/modal.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/widgets/multi-select/multiselect.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/widgets/multi-upload/fileupload.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/widgets/nestable/nestable.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/widgets/noty-notifications/noty.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/widgets/popover/popover.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/widgets/pretty-photo/prettyphoto.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/widgets/progressbar/progressbar.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/widgets/range-slider/rangeslider.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/widgets/slidebars/slidebars.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/widgets/slider-ui/slider.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/widgets/summernote-wysiwyg/summernote-wysiwyg.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/widgets/tabs-ui/tabs.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/widgets/timepicker/timepicker.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/widgets/tocify/tocify.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/widgets/tooltip/tooltip.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/widgets/touchspin/touchspin.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/widgets/uniform/uniform.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/widgets/wizard/wizard.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/widgets/xeditable/xeditable.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/snippets/chat.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/snippets/files-box.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/snippets/login-box.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/snippets/notification-box.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/snippets/progress-box.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/snippets/todo.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/snippets/user-profile.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/snippets/mobile-navigation.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/applications/mailbox.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/themes/admin/layout.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/themes/admin/color-schemes/default.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/themes/components/default.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/themes/components/border-radius.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/helpers/responsive-elements.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/resources/assets/helpers/admin-responsive.css">
+<script type="text/javascript"
+	src="${pageContext.request.contextPath }/resources/assets/js-core/jquery-core.js"></script>
+<script type="text/javascript"
+	src="${pageContext.request.contextPath }/resources/assets/js-core/jquery-ui-core.js"></script>
+<script type="text/javascript"
+	src="${pageContext.request.contextPath }/resources/assets/js-core/jquery-ui-widget.js"></script>
+<script type="text/javascript"
+	src="${pageContext.request.contextPath }/resources/assets/js-core/jquery-ui-mouse.js"></script>
+<script type="text/javascript"
+	src="${pageContext.request.contextPath }/resources/assets/js-core/jquery-ui-position.js"></script>
+<script type="text/javascript"
+	src="${pageContext.request.contextPath }/resources/assets/js-core/transition.js"></script>
+<script type="text/javascript"
+	src="${pageContext.request.contextPath }/resources/assets/js-core/modernizr.js"></script>
+<script type="text/javascript"
+	src="${pageContext.request.contextPath }/resources/assets/js-core/jquery-cookie.js"></script>
+
+<!-- datepicker -->
+<script type="text/javascript"
+	src="${pageContext.request.contextPath }/resources/assets/widgets/datepicker-ui/datepicker.js"></script>
+<script type="text/javascript"
+	src="${pageContext.request.contextPath }/resources/assets/widgets/datepicker-ui/datepicker-demo.js"></script>
+<script type="text/javascript"
+	src="${pageContext.request.contextPath }/resources/assets/widgets/daterangepicker/moment.js"></script>
+<script type="text/javascript"
+	src="${pageContext.request.contextPath }/resources/assets/widgets/daterangepicker/daterangepicker.js"></script>
+<script type="text/javascript"
+	src="${pageContext.request.contextPath }/resources/assets/widgets/daterangepicker/daterangepicker-demo.js"></script>
+<script type="text/javascript"
+	src="${pageContext.request.contextPath }/resources/assets/widgets/timepicker/timepicker.js"></script>
+<!-- tab -->
+<script type="text/javascript"
+	src="${pageContext.request.contextPath }/resources/assets/widgets/tabs-ui/tabs.js"></script>
+<script type="text/javascript">
+	/* jQuery UI Tabs */
+	$(function() {
+		"use strict";
+		$(".tabs").tabs();
+	});
+</script>
+<script type="text/javascript"
+	src="${pageContext.request.contextPath }/resources/assets/widgets/tabs/tabs.js"></script>
+<script type="text/javascript"
+	src="${pageContext.request.contextPath }/resources/assets/widgets/tabs/tabs-responsive.js"></script>
+
+<!-- map API -->
+<!-- <script async defer
+	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAF05JCFoefu9jROxjM8TcHc8GIR6YDhuU
+      &callback=initMap"></script> -->
 <script
 	src="https://apis.skplanetx.com/tmap/js?version=1&format=javascript&appKey=bac4f916-3297-3be4-93ff-e37ae88b8f42"></script>
 <script
 	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD6x6lwLmHlSpovbF0nM-fPIPpjfv4D9IM&libraries=places"></script>
-<!-- 판넬 드래그에 필요함 -->
-<script type='text/javascript'
-	src="https://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
+<!-- 판넬 드래그 API -->
+<!-- <script type='text/javascript'
+	src="https://code.jquery.com/ui/1.10.1/jquery-ui.js"></script> -->
+<script type="text/javascript"
+	src="${pageContext.request.contextPath }/resources/assets/widgets/interactions-ui/resizable.js"></script>
+<script type="text/javascript"
+	src="${pageContext.request.contextPath }/resources/assets/widgets/interactions-ui/draggable.js"></script>
+<script type="text/javascript"
+	src="${pageContext.request.contextPath }/resources/assets/widgets/interactions-ui/sortable.js"></script>
+<script type="text/javascript"
+	src="${pageContext.request.contextPath }/resources/assets/widgets/interactions-ui/selectable.js"></script>
+<script type="text/javascript"
+	src="${pageContext.request.contextPath }/resources/assets/widgets/nestable/nestable.js"></script>
+<%-- <script type="text/javascript"
+	src="${pageContext.request.contextPath }/resources/assets/widgets/nestable/nestable-demo.js"></script> --%>
 
+<!--  -->
 <script type="text/javascript">
-
-	$(document).ready(function(){
-		var form = document.inputform;
-		form.title.value = "${title}";
-		form.content.value = "${content}";
-		form.hashtag.value = "${hashtag}";
-		
-		
-		$("#mapAgain").click(function(){
-			$.ajax({
-			    type: 'POST' , 
-			    url: '${ pageContext.request.contextPath }/map/mapAgain.do',
-			    dataType : 'json',
-			    data : {
-					start : $('#start').val(),
-					end : $('#end').val()
-			    },
-			    success: function(data) {
-					listLonLat = new Array();
-					for(var i=0; i<data[0].length; i++){
-					    listLonLat.push({lat:Number(data[0][i].lat),lng:Number(data[0][i].lon),idk:data[0][i].idk});
-					}
-					initLonLat = listLonLat[listLonLat.length-1];
-					
-					checkpointList = new Array();
-					for(var i=0; i<data[1].length; i++){
-					    checkpointList.push({idx:data[1][i].idx, coordinatesidx:data[1][i].coordinatesidx, title:data[1][i].title, content:data[1][i].content});
-					}
-					
-					photoList = new Array();
-					for(var i=0; i<data[2].length; i++){
-					    photoList.push({checkpointidx:data[2][i].checkpointidx, oriname:data[2][i].oriname, newname:data[2][i].newname});
-					}
-					initialize();
-		        }
-			});	
-		})	
+	$(window).load(function() {
+		setTimeout(function() {
+			$('#loading').fadeOut(400, "linear");
+		}, 300);
 	});
-       
-   $(function() {
-      /* datetimepicker부분 */
-      $('#datetimepicker1').datetimepicker({
-         useCurrent : false,
-         sideBySide : true,
-         maxDate : moment(),
-         defaultDate : '${start}',
-         format : 'YYYY-MM-DD HH:mm'
-      });
-      $('#datetimepicker2').datetimepicker({
-         useCurrent : false,
-         sideBySide : true,
-         maxDate : moment(),
-         minDate : '${start}',
-         defaultDate : '${end}',
-         format : 'YYYY-MM-DD HH:mm'
-      });
-      $("#datetimepicker1").on("dp.show", function(e) {
-         $('#datetimepicker1').data("DateTimePicker").maxDate($('#end').val());
-      });
-      $("#datetimepicker2").on("dp.show", function(e) {
-         $('#datetimepicker2').data("DateTimePicker").minDate($('#start').val());
-      });
-      
-   });
-   
-
 </script>
-</head>
-<style>
-#rightside {
-	float: none;
-}
-
-#bottomside {
-	position: static;
-	width: 300px;
-	height: 500px;
-	font-size: 10pt;
-}
-
-.controls {
-	margin-top: 10px;
-	border: 1px solid transparent;
-	border-radius: 2px 0 0 2px;
-	box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	height: 32px;
-	outline: none;
-	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-	background-color: #fff;
-	font-family: Roboto;
-	font-size: 15px;
-	font-weight: 300;
-	margin-left: 12px;
-	padding: 0 11px 0 13px;
-	text-overflow: ellipsis;
-	width: 300px;
-}
-
-#type-selector label {
-	font-family: Roboto;
-	font-size: 13px;
-	font-weight: 300;
-}
-
-.infoAppend {
-	border: solid;
-}
-
-#addTimeInfo {
-	border: solid;
-}
-/* 판넬헤더 클릭 드래그 */
-#draggablePanelList .panel-heading {
-	cursor: move;
-}
-
-body {
-	padding-top: 55px;
-}
-
-/* 검색바 네비바에서 가운데 정렬을 위한 css */
-.navbar .navbar-nav {
-	display: inline-block;
-	float: none;
-}
-
-.navbar .navbar-collapse {
-	text-align: center;
-}
-
-.glyphicon {
-	font-size: 50px;
-}
-
-#popular { /*  */
-	padding-right: 15px;
-	padding-left: 15px;
-	margin-right: auto;
-	margin-left: auto;
-}
-
-#draggablePanelList .panel-heading {
-	cursor: move;
-}
-</style>
-
 <script type="text/javascript">
- 
+$(document).ready(function(){
+	var form = document.inputform;
+	form.title.value = "${title}";
+	form.content.value = "${content}";
+	form.hashtag.value = "${hashtag}";
+	form.daterangepickertime.value = "${start}"+"~"+"${end}";
+	
+});
     // 시간별 좌표 불러오기
     var listLonLat = new Array();
     <c:forEach items="${list}" var="list">
@@ -308,9 +504,11 @@ body {
 	//타임라인에 내용 추가 
 	function addTimeLine(){
 		$('#draggablePanelList').children().remove();
+		var n=1;
 		for(var i=0; i<checkMarker.length; i++){
 		    if(checkMarker[i].title != ""){
-				$('#draggablePanelList').append('<div id="addTimeInfo" class="panel panel-info" onClick="goZoomIn('+checkMarker[i].position.lat()+", "+checkMarker[i].position.lng()+')"><div class="panel-heading"><input class="form-control" type="text" value="'+checkMarker[i].title+'"/></div><div class="panel-body"><input type="text" class="form-control" value="'+checkMarker[i].content+'"/></div></div>');
+				$('#draggablePanelList').append('<li class="dd-item" data-id="'+n+'" onClick="goZoomIn('+checkMarker[i].position.lat()+", "+checkMarker[i].position.lng()+')"><div class="dd-handle"><div class="circleNum">'+n+'</div>'+checkMarker[i].title+'</div></li>');
+		   		n++;
 		    }
 		} 
 	}    
@@ -1074,129 +1272,309 @@ body {
 	    location.href = "${ pageContext.request.contextPath }/map/search.do?searchtext="+$('#searchtext').val();
 	}
 </script>
-
-
+</head>
 <body>
-	<header>
-		<jsp:include page="/top.do" />
-	</header>
-	<section>
-		<form name="inputform"
-			action="${ pageContext.request.contextPath }/map/regMymap.do">
-			<div class="row">
-				<div class="col-md-1"></div>
-				<div class="col-md-10">
-					<div class="col-md-12">
-						<input name="title" type="text" class="form-control title-text"
-							placeholder="제목">
-					</div>
-					<br /> <br />
-					<div class="col-md-12">
-						<input name="content" type="text" class="form-control title-text"
-							placeholder="설명">
-					</div>
-					<br /> <br />
-					<div class='col-md-5'>
-						<div class="form-group">
-							<div class='input-group date' id='datetimepicker1'>
-								<input type='text' class="form-control" name="start" id="start" />
-								<span class="input-group-addon"> <i
-									class="fa fa-calendar" aria-hidden="true"></i>
-								</span>
+	<div id="sb-site">
+		<div id="loading">
+			<div class="svg-icon-loader">
+				<img
+					src="${pageContext.request.contextPath }/resources/assets/images/svg-loaders/bars.svg"
+					width="40" alt="">
+			</div>
+		</div>
+		<div id="page-wrapper">
+			<div id="mobile-navigation">
+				<button id="nav-toggle" class="collapsed" data-toggle="collapse"
+					data-target="#page-sidebar">
+					<span></span>
+				</button>
+			</div>
+
+			<div id="page-content-wrapper">
+				<div id="page-content">
+					<div id="page-header">
+						<div id="header-nav-left">
+							<a class="header-btn" id="logout-btn" href="lockscreen-3.html"
+								title="Lockscreen page example"><i
+								class="glyph-icon icon-linecons-lock"></i></a>
+							<div class="user-account-btn dropdown">
+								<a href="#" title="My Account" class="user-profile clearfix"
+									data-toggle="dropdown"><img width="28"
+									src="${pageContext.request.contextPath }/resources/assets/image-resources/gravatar.jpg"
+									alt="Profile image"> <span>${sessionScope.user}</span> <i
+									class="glyph-icon icon-angle-down"></i></a>
+								<div class="dropdown-menu float-right">
+									<div class="box-sm">
+										<div class="login-box clearfix">
+											<div class="user-img">
+												<a href="#" title="" class="change-img">Change photo</a> <img
+													src="${pageContext.request.contextPath }/resources/assets/image-resources/gravatar.jpg"
+													alt="">
+											</div>
+											<div class="user-info">
+												<span>${sessionScope.user}<i>UX/UI developer</i></span> <a
+													href="#" title="Edit profile">Edit profile</a> <a href="#"
+													title="View notifications">View notifications</a>
+											</div>
+										</div>
+										<div class="divider"></div>
+										<ul class="reset-ul mrg5B">
+											<li><a href="#">View login page example <i
+													class="glyph-icon float-right icon-caret-right"></i></a></li>
+											<li><a href="#">View lockscreen example <i
+													class="glyph-icon float-right icon-caret-right"></i></a></li>
+											<li><a href="#">View account details <i
+													class="glyph-icon float-right icon-caret-right"></i></a></li>
+										</ul>
+										<div
+											class="button-pane button-pane-alt pad5L pad5R text-center">
+											<a href="#"
+												class="btn btn-flat display-block font-normal btn-danger"><i
+												class="glyph-icon icon-power-off"></i> Logout</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div id="header-nav-right" class="row">
+							<div class="col-md-4"></div>
+							<div class="col-md-4">
+								<div class="input-group">
+									<input type="text" class="form-control" placeholder="Search"
+										style="margin-top: 13px;"> <span
+										class="input-group-btn"><a href="#"
+										class="hdr-btn popover-button" title="Search"
+										data-placement="bottom" data-id="#popover-search"><i
+											class="glyph-icon icon-search"></i></a></span>
+								</div>
+							</div>
+							<div class="hide" id="popover-search">
+								<div class="pad5A box-md">
+									<div class="input-group">
+										<input type="text" class="form-control"
+											placeholder="Search terms here ..."> <span
+											class="input-group-btn"><a class="btn btn-primary"
+											href="#">Search</a></span>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
-					<div class='col-md-5'>
-						<div class="form-group">
-							<div class='input-group date' id='datetimepicker2'>
-								<input type='text' class="form-control" name="end" id="end" />
-								<span class="input-group-addon"> <i
-									class="fa fa-calendar" aria-hidden="true"></i></span>
+					<!-- <script type="text/javascript"
+						src="https://maps.googleapis.com/maps/api/js?v=3&amp;sensor=true"></script>
+					<script type="text/javascript"
+						src="${pageContext.request.contextPath }/resources/assets/widgets/maps/gmaps/gmaps.js"></script>
+					<script type="text/javascript"
+						src="${pageContext.request.contextPath }/resources/assets/widgets/maps/gmaps/gmaps-demo.js"></script> -->
+					<!-- 					<div id="page-title">
+						<h2>gMaps</h2>
+						<p>Create maps using the Google Maps API</p>
+					</div> -->
+					<form name="inputform"
+						action="${ pageContext.request.contextPath }/map/regMymap.do"
+						style="height: 100%">
+						<div class="row" style="height: 100%">
+							<div id="map" class="col-md-9" style="height: 100%"
+								ondragenter="return dragEnter(event)"
+								ondrop="return dragDrop(event)"
+								ondragover="return dragOver(event)"></div>
+							<div class="col-md-3" style="padding-top: 60px;">
+								<div class="panel">
+									<div class="panel-body">
+										<!-- <h3 class="title-hero">ddd</h3> -->
+										<div class="example-box-wrapper">
+											<div class="content-box tabs">
+												<h3 class="content-box-header bg-default">
+													<ul>
+														<li><a href="#tabs-example-1" title="Tab 1">place</a></li>
+														<li><a href="#tabs-example-2" title="Tab 2">settings</a></li>
+														<li><a href="#tabs-example-3" title="Tab 3">favorites</a></li>
+													</ul>
+												</h3>
+												<div id="tabs-example-1">
+													<div class="row">
+														<span class="col-md-1" draggable="true"
+															ondragstart="return dragStart(event)"
+															ondragend="return dragextramarker(event)"><img
+															src="https://developers.skplanetx.com/upload/tmap/marker/pin_b_m_a.png" /></span>
+														<div class="col-md-11">
+															<input id="pac-input" class="form-control" type="text"
+																placeholder="Search Box">
+														</div>
+													</div>
+													<!-- pannel -->
+													<div class="cf clearfix nestable-lists">
+														<div class="dd" id="nestable">
+															<ol class="dd-list" id="draggablePanelList">
+															</ol>
+														</div>
+													</div>
+													<br />
+													<div style="text-align: center;">
+														<button type="button" class="btn btn-secondary btn-lg"
+															onclick="goSubmit()">등록</button>
+														<button type="button" class="btn btn-secondary btn-lg">취소</button>
+
+													</div>
+
+
+												</div>
+												<div id="tabs-example-2">
+													<input name="title" type="text" class="form-control"
+														placeholder="제목"> <br /> <input name="content"
+														type="text" class="form-control" placeholder="설명"><br />
+
+													<div class="form-group">
+														<div class="input-prepend input-group">
+															<span class="add-on input-group-addon"><i
+																class="glyph-icon icon-calendar"></i></span> <input type="text"
+																name="daterangepickertime" id="daterangepicker-time"
+																class="form-control" value=""> <input
+																type="hidden" id="start" name="start" value="${start}">
+															<input type="hidden" id="end" name="end" value="${end }">
+															<script type="text/javascript">
+															/* daterangepicker-time에서 apply 누르면 실행(daterangepicker.js에 추가함) */
+															function changeDP() {
+																var date = document.inputform.daterangepickertime.value;
+																var time1 = date.substring(11,13);
+																var time2 = date.substring(33,35);
+																if((date.substring(17,19))==("PM")){
+																	time1=Number(time1)+12;
+																}
+																if((date.substring(39,41))==("PM")){
+																	time2=Number(time2)+12;
+																}
+																	document.inputform.start.value=date.substring(0,11)+time1+date.substring(13,16);
+																	document.inputform.end.value=date.substring(22,33)+time2+date.substring(35,38);
+																	mapAgain();
+															}
+															function mapAgain(){
+																$.ajax({
+																    type: 'POST' , 
+																    url: '${ pageContext.request.contextPath }/map/mapAgain.do',
+																    dataType : 'json',
+																    data : {
+																		start : $('#start').val(),
+																		end : $('#end').val()
+																    },
+																    success: function(data) {
+																		listLonLat = new Array();
+																		for(var i=0; i<data[0].length; i++){
+																		    listLonLat.push({lat:Number(data[0][i].lat),lng:Number(data[0][i].lon),idk:data[0][i].idk});
+																		}
+																		initLonLat = listLonLat[listLonLat.length-1];
+																		
+																		checkpointList = new Array();
+																		for(var i=0; i<data[1].length; i++){
+																		    checkpointList.push({idx:data[1][i].idx, coordinatesidx:data[1][i].coordinatesidx, title:data[1][i].title, content:data[1][i].content});
+																		}
+																		
+																		photoList = new Array();
+																		for(var i=0; i<data[2].length; i++){
+																		    photoList.push({checkpointidx:data[2][i].checkpointidx, oriname:data[2][i].oriname, newname:data[2][i].newname});
+																		}
+																		initialize();
+															        }
+																});	
+															}
+																
+																</script>
+														</div>
+													</div>
+													<input name="hashtag" type="text"
+														class="form-control title-text" placeholder="#해쉬태그">
+												</div>
+												<div id="tabs-example-3">
+													<div class="example-box-wrapper">
+														<div class="panel-group" id="accordion">
+															<div class="panel">
+																<div class="panel-heading">
+																	<h4 class="panel-title">
+																		<a data-toggle="collapse" data-parent="#accordion"
+																			href="#collapseOne">my map</a>
+																	</h4>
+																</div>
+																<div id="collapseOne" class="panel-collapse collapse in">
+																	<div class="panel-body">my map</div>
+																</div>
+															</div>
+															<div class="panel">
+																<div class="panel-heading">
+																	<h4 class="panel-title">
+																		<a data-toggle="collapse" data-parent="#accordion"
+																			href="#collapseTwo">my plan</a>
+																	</h4>
+																</div>
+																<div id="collapseTwo" class="panel-collapse collapse">
+																	<div class="panel-body">my plan</div>
+																</div>
+															</div>
+															<div class="panel">
+																<div class="panel-heading">
+																	<h4 class="panel-title">
+																		<a data-toggle="collapse" data-parent="#accordion"
+																			href="#collapseThree">favorites</a>
+																	</h4>
+																</div>
+																<div id="collapseThree" class="panel-collapse collapse">
+																	<div class="panel-body">favorites</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
-					</div>
-					<div class='col-md-2'>
-						<div class="form-group">
-							<div class="col-md-12">
-								<input id="mapAgain" type="button" value="재선택"
-									class="btn btn-secondary col-md-12" />
-							</div>
-						</div>
-					</div>
-
-					<div class="col-md-12">
-						<input name="hashtag" type="text" class="form-control title-text"
-							placeholder="#해쉬태그">
-					</div>
-					<div class="col-md-12">
-						해쉬태그 출력될곳<br /> <br />
-					</div>
-
+						<div id="map_div"></div>
+					</form>
 				</div>
-				<div class="col-md-1"></div>
 			</div>
-			<div class="row">
-				<div id="map" class="col-md-10" style="height: 756px"
-					ondragenter="return dragEnter(event)"
-					ondrop="return dragDrop(event)" ondragover="return dragOver(event)"></div>
-				<div class="col-md-2">
-					<span class="col-md-2" draggable="true"
-						ondragstart="return dragStart(event)"
-						ondragend="return dragextramarker(event)"><img
-						src="https://developers.skplanetx.com/upload/tmap/marker/pin_b_m_a.png" /></span>
-					<div class="col-md-10">
-						<input id="pac-input" class="form-control title-text" type="text"
-							placeholder="Search Box">
-					</div>
-					<br /> <br />
-					<div class="col-md-12"
-						style="height: 696px; overflow: auto; border: solid;">
-						<br />
-						<div id="draggablePanelList" class="list-unstyled"></div>
-					</div>
-
-					<div class="col-md-12">
-						<button type="button" class="btn btn-secondary col-md-6"
-							onclick="goSubmit()">등록</button>
-						<button type="button" class="btn btn-secondary col-md-6">취소</button>
-					</div>
-				</div>
-
-			</div>
-			<br /> <br /> <br />
-			<div class="row">
-				<div class="col-md-1"></div>
-				<div class="col-md-8"
-					style="border: solid; overflow: auto; width: 800px">
-					<h3>길찾기</h3>
-					<span id="dragStart" draggable="true"
-						ondragstart="return dragStart(event)"
-						ondragend="return startDragEnd(event)"> <img
-						src="http://openmap2.tmap.co.kr/start.png" />출발
-					</span> <span id="dragEnd" draggable="true"
-						ondragstart="return dragStart(event)"
-						ondragend="return endDragEnd(event)"> <img
-						src="http://openmap2.tmap.co.kr/arrival.png" />도착
-					</span> <span><input type="button" value="자가용"
-						onclick="findLoadAgain()" /></span> <span><input type="button"
-						value="대중교통" onclick="calculateAndDisplayRoute()" /></span> <span><input
-						type="button" value="도보" onclick="forWalk()" /></span>
-					<div class="col-md-12">
-						<input type="button" value=" 길찾기 종료 " onclick="closeSearch()"
-							class="btn btn-secondary col-md-6" />
-					</div>
-					<br />--------------------------------------------
-					<div id="addinfo"></div>
-				</div>
-				<div class="col-md-1"></div>
-			</div>
-			<br /> <br /> <br />
-			<div id="map_div"></div>
-		</form>
-
-	</section>
-	<footer>
-		<jsp:include page="/bottom.do" />
-	</footer>
+		</div>
+		<script type="text/javascript"
+			src="${pageContext.request.contextPath }/resources/assets/widgets/dropdown/dropdown.js"></script>
+		<script type="text/javascript"
+			src="${pageContext.request.contextPath }/resources/assets/widgets/tooltip/tooltip.js"></script>
+		<script type="text/javascript"
+			src="${pageContext.request.contextPath }/resources/assets/widgets/popover/popover.js"></script>
+		<script type="text/javascript"
+			src="${pageContext.request.contextPath }/resources/assets/widgets/progressbar/progressbar.js"></script>
+		<script type="text/javascript"
+			src="${pageContext.request.contextPath }/resources/assets/widgets/button/button.js"></script>
+		<script type="text/javascript"
+			src="${pageContext.request.contextPath }/resources/assets/widgets/collapse/collapse.js"></script>
+		<script type="text/javascript"
+			src="${pageContext.request.contextPath }/resources/assets/widgets/superclick/superclick.js"></script>
+		<script type="text/javascript"
+			src="${pageContext.request.contextPath }/resources/assets/widgets/input-switch/inputswitch-alt.js"></script>
+		<script type="text/javascript"
+			src="${pageContext.request.contextPath }/resources/assets/widgets/slimscroll/slimscroll.js"></script>
+		<script type="text/javascript"
+			src="${pageContext.request.contextPath }/resources/assets/widgets/slidebars/slidebars.js"></script>
+		<script type="text/javascript"
+			src="${pageContext.request.contextPath }/resources/assets/widgets/slidebars/slidebars-demo.js"></script>
+		<script type="text/javascript"
+			src="${pageContext.request.contextPath }/resources/assets/widgets/charts/piegage/piegage.js"></script>
+		<script type="text/javascript"
+			src="${pageContext.request.contextPath }/resources/assets/widgets/charts/piegage/piegage-demo.js"></script>
+		<script type="text/javascript"
+			src="${pageContext.request.contextPath }/resources/assets/widgets/screenfull/screenfull.js"></script>
+		<script type="text/javascript"
+			src="${pageContext.request.contextPath }/resources/assets/widgets/content-box/contentbox.js"></script>
+		<script type="text/javascript"
+			src="${pageContext.request.contextPath }/resources/assets/widgets/material/material.js"></script>
+		<script type="text/javascript"
+			src="${pageContext.request.contextPath }/resources/assets/widgets/material/ripples.js"></script>
+		<script type="text/javascript"
+			src="${pageContext.request.contextPath }/resources/assets/widgets/overlay/overlay.js"></script>
+		<script type="text/javascript"
+			src="${pageContext.request.contextPath }/resources/assets/js-init/widgets-init.js"></script>
+		<script type="text/javascript"
+			src="${pageContext.request.contextPath }/resources/assets/themes/admin/layout.js"></script>
+	</div>
 </body>
 </html>

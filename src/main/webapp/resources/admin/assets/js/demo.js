@@ -173,8 +173,23 @@ demo = {
                 align: align
             }
         });
+	},
+	
+	showNotification2: function(from, align){
+    	color = Math.floor((Math.random() * 4) + 1);
+
+    	$.notify({
+        	icon: "notifications",
+        	message: "나올까요?"
+
+        },{
+            type: type[color],
+            timer: 4000,
+            placement: {
+                from: from,
+                align: align
+            }
+        });
 	}
-
-
 
 }
