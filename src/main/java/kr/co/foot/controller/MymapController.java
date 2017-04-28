@@ -410,7 +410,7 @@ public class MymapController {
       model.addAttribute("checkpointVO", checkpointVO);
       model.addAttribute("photoList", photoList);
        
-      return "search/detail";
+      return "search/detail2";
    }
    
    /**

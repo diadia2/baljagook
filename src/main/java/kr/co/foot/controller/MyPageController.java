@@ -107,7 +107,7 @@ public class MyPageController {
 	@RequestMapping(value = "/uploadPhoto.do", method = RequestMethod.POST)
 	@ResponseBody
 	public String uploadPhoto(MultipartHttpServletRequest request, Model model) throws IllegalStateException, IOException {
-
+		
 		HttpSession session = request.getSession(true);
 		
 		File file = new File(filePath);
