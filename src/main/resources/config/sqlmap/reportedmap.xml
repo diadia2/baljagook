@@ -8,7 +8,10 @@
 	    select regmapidx, count(*) as count from t_report group by regmapidx
 	</select>
 	<select id="getBlindedMap" resultType="kr.co.foot.mymap.MymapVO">
-	    select * from t_myMap where idx=(select mymapidx from t_regmap where blind=1)
+	    select * from t_myMap a
+	    inner join t_regmap b on a.idx=b.mymapidx
+	    where b.blind=1;
+	    <!-- select * from t_myMap where idx=(select mymapidx from t_regmap where blind=1) -->
 	</select>
 	<update id="blindRegmap" parameterType="int">
 	    update t_regmap set blind = 1 where idx = #{regmapidx}

@@ -88,36 +88,36 @@ public class AdminController {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		String today = sdf.format(cal.getTime());
 		
-		// ¿À´Ã³¯Â¥
+		// ï¿½ï¿½ï¿½Ã³ï¿½Â¥
 		String regdate = (String.valueOf(sdf.parse(today).getTime()/1000));
 		
-		// ¿À´Ã ¼öÁýµÈ ÁÂÇ¥¼ö
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ç¥ï¿½ï¿½
 		int todayCoordinatesCount = mymapService.todayCoordinatesCount(regdate);
 		model.addAttribute("todayCoordinatesCount", todayCoordinatesCount);
 		
-		// 1ÁÖÀÏ Àü±îÁö ¼öÁýµÈ ÁÂÇ¥¼ö
+		// 1ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ç¥ï¿½ï¿½
 		String weekAgo = String.valueOf(((Integer.parseInt(regdate))-604800));
 		int weekAgoCoordinatesCount = mymapService.weekAgoCoordinateCount(weekAgo);
 		model.addAttribute("weekAgoCoordinatesCount", weekAgoCoordinatesCount);
 		
-		// ÃÑ ¼öÁýµÈ ÁÂÇ¥¼ö
+		// ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ç¥ï¿½ï¿½
 		int totalCoordinatesCount = mymapService.todayCoordinatesCount("0");
 		model.addAttribute("totalCoordinatesCount", totalCoordinatesCount);
 		
-		// ³»ÀÏ³¯Â¥
+		// ï¿½ï¿½ï¿½Ï³ï¿½Â¥
 		String tomorrow = String.valueOf(((Integer.parseInt(regdate))+86400));
 		Map<String, String> map1 = new HashMap<String,String>();
 		map1.put("yesterday", regdate);
 		map1.put("regdate", tomorrow);
-		// ¿À´Ã °¡ÀÔÀÚ ¼ö
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
 		int todayMember = mymapService.selectMemberCount(map1);
 		
-		// ¿À´Ã³¯Â¥ Æ÷¸Ë
+		// ï¿½ï¿½ï¿½Ã³ï¿½Â¥ ï¿½ï¿½ï¿½ï¿½
 		String dateToday = sdf.format(new Date(Long.valueOf((Integer.parseInt(regdate))+"000")));
-		// ¾îÁ¦³¯Â¥ Æ÷¸Ë
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¥ ï¿½ï¿½ï¿½ï¿½
 		String dateTo = sdf.format(new Date(Long.valueOf(((Integer.parseInt(regdate))-86400)+"000")));
 		
-		// ÃÖ±Ù ÀÏÁÖÀÏ°£ ÀÏÀÏ °¡ÀÔÀÚ ¼ö
+		// ï¿½Ö±ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
 		List<Integer> dailyMemberCount = new ArrayList<Integer>();
 		List<String> dateList = new ArrayList<String>();
 		
@@ -131,9 +131,9 @@ public class AdminController {
 		      regdate = yesterday;
 	    }
 	   
-		// ÀÏÁÖÀÏÀü ³¯Â¥ Æ÷¸Ë
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Â¥ ï¿½ï¿½ï¿½ï¿½
 		String dateFrom = sdf.format(new Date(Long.valueOf(regdate+"000")));
-		// access_token °ª ±¸ÇÏ±â
+		// access_token ï¿½ï¿½ ï¿½ï¿½ï¿½Ï±ï¿½
 		GetToken getToken = new GetToken();
 		String accessToken = getToken.token();
 		
@@ -144,11 +144,11 @@ public class AdminController {
 		model.addAttribute("dateFrom", dateFrom);
 		model.addAttribute("dateTo", dateTo);
 		
-		// ÃÑ ±¤°íµî·Ï ¼ö
+		// ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
 		int totalAdv = mymapService.selectTotalAdv();
 		model.addAttribute("totalAdv", totalAdv);
 		
-		// ±¤°í ¸ñ·Ï
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
 		List<AdvertisementVO> AdvertisementList = mymapService.selectAdvertisementList();
 		model.addAttribute("AdvertisementList",AdvertisementList);
 		
@@ -164,6 +164,8 @@ public class AdminController {
 		List<MemberVO> regularMemberList = memberManagementService.getRegularMemberList();
 		List<MemberVO> blindedMemberList = memberManagementService.getBlindedMemberList();
 		List<MemberVO> deactivatedMemberList = memberManagementService.getDeactivatedMemberList();
+		
+		List<Integer> reportCntList = new ArrayList<Integer>();
 
 		if(regularMemberList.size() > 0) {
 			for (int i = 0; i < regularMemberList.size(); i++) {
@@ -172,7 +174,8 @@ public class AdminController {
 				String regdate = convertTimestampToDate(regularMemberList.get(i).getRegdate());
 				int myMapCnt = memberManagementService.getMyMapCntByUserid(userid);
 				int myPlanCnt = memberManagementService.getMyPlanCntByUserid(userid);
-				int reportedMyMapCnt = memberManagementService.getReportCntByUserid(userid);
+				reportCntList = memberManagementService.getReportCntByUserid(userid);
+				int reportedMyMapCnt = reportCntList.size();
 				int status = regularMemberList.get(i).getStatus();
 	
 				MemberManagementVO memberInfo = new MemberManagementVO();
@@ -195,7 +198,8 @@ public class AdminController {
 			String regdate = convertTimestampToDate(blindedMemberList.get(j).getRegdate());
 			int myMapCnt = memberManagementService.getMyMapCntByUserid(userid);
 			int myPlanCnt = memberManagementService.getMyPlanCntByUserid(userid);
-			int reportedMyMapCnt = memberManagementService.getReportCntByUserid(userid);
+			reportCntList = memberManagementService.getReportCntByUserid(userid);
+			int reportedMyMapCnt = reportCntList.size();
 			int status = blindedMemberList.get(j).getStatus();
 
 			MemberManagementVO memberInfo = new MemberManagementVO();
@@ -219,7 +223,8 @@ public class AdminController {
 			String deactivatedate = convertTimestampToDate(deactivatedMemberList.get(k).getDeactivatedate());
 			int myMapCnt = memberManagementService.getMyMapCntByUserid(userid);
 			int myPlanCnt = memberManagementService.getMyPlanCntByUserid(userid);
-			int reportedMyMapCnt = memberManagementService.getReportCntByUserid(userid);
+			reportCntList = memberManagementService.getReportCntByUserid(userid);
+			int reportedMyMapCnt = reportCntList.size();
 			int status = blindedMemberList.get(k).getStatus();
 
 			MemberManagementVO memberInfo = new MemberManagementVO();
@@ -334,12 +339,6 @@ public class AdminController {
 	   model.addAttribute("AdvertisementList",AdvertisementList);
 	   
 	   return "admin_view/adv";
-   }
-   
-   @RequestMapping("/admin/notifications.do")
-   public String notifications(){
-	   
-	   return "admin_view/notifications";
    }
    
    @RequestMapping("/admin/bulletin.do")
@@ -491,9 +490,9 @@ public class AdminController {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		String today = sdf.format(cal.getTime());
 		
-		// ¿À´Ã³¯Â¥
+		// ï¿½ï¿½ï¿½Ã³ï¿½Â¥
 		String regdate = (String.valueOf(sdf.parse(today).getTime()/1000));
-		// 1ÁÖÀÏ Àü±îÁö ¼öÁýµÈ ÁÂÇ¥¼ö
+		// 1ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ç¥ï¿½ï¿½
 		String weekAgo = String.valueOf(((Integer.parseInt(regdate))-604800));
 		
 		mymapService.deleteSpots(weekAgo);

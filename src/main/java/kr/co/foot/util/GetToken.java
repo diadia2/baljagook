@@ -10,7 +10,7 @@ import com.google.api.services.analytics.AnalyticsScopes;
 
 public class GetToken {
 	
-	private static final String KEY_FILE_LOCATION = "C:/Users/User/workspace/baljagook/src/main/java/kr/co/foot/util/My Project-5ab8f062c393.json";
+	private static final String KEY_FILE_LOCATION = "/Users/mac/Documents/workspace/baljagook/src/main/java/kr/co/foot/util/My Project-5ab8f062c393.json";
 	
 	public GetToken(){
 		

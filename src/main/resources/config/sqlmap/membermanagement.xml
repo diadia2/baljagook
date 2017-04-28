@@ -17,7 +17,7 @@
        select count(*) from t_myMap where type = 2 and userid = #{userid}
    </select>
    <select id="getReportCntByUserid" parameterType="String" resultType="int">
-       select count(*) from t_report where owner = #{userid}
+       select count(*) from t_report where owner = #{userid} group by regmapidx;
    </select>
    <select id="getReportByUserid" parameterType="String" resultType="kr.co.foot.report.ReportVO">
        select * from t_report where owner = #{userid}

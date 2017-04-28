@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import kr.co.foot.member.MemberVO;
-import kr.co.foot.report.ReportVO;
 
 @Repository
 public class MemberManagementDAOImpl implements MemberManagementDAO {
@@ -40,15 +39,10 @@ public class MemberManagementDAOImpl implements MemberManagementDAO {
 		return myPlanCnt;
 	}
 	
-	public int getReportCntByUserid(String userid) {
-		int reportCnt = sst.selectOne("kr.co.foot.managemember.MemberManagementDAO.getReportCntByUserid", userid);
+	public List<Integer> getReportCntByUserid(String userid) {
+		List<Integer> reportCnt = sst.selectList("kr.co.foot.managemember.MemberManagementDAO.getReportCntByUserid", userid);
 		return reportCnt;
 	}
-	
-//	public List<ReportVO> getReportByUserid(String userid) {
-//		List<ReportVO> reportList = sst.selectList("kr.co.foot.managemember.MemberManagementDAO.getReportByUserid", userid);
-//		return reportList;
-//	}
 	
 	public void updateMemberStatus(MemberVO memberVO) {
 		sst.update("kr.co.foot.managemember.MemberManagementDAO.updateMemberStatus", memberVO);

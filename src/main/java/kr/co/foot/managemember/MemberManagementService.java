@@ -12,8 +12,7 @@ public interface MemberManagementService {
 	public List<MemberVO> getDeactivatedMemberList();
 	public int getMyMapCntByUserid(String userid);
 	public int getMyPlanCntByUserid(String userid);
-	public int getReportCntByUserid(String userid);
-//	public List<ReportVO> getReportByUserid(String userid);
+	public List<Integer> getReportCntByUserid(String userid);
 	public void updateMemberStatus(MemberVO memberVO);
 	public void deleteMember(String userid);	
 }
