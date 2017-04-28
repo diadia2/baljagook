@@ -32,37 +32,50 @@
 <script>
 	function changeStatus(newStatus, userid) {
 		var changedStatus = newStatus.value;
- 		if(changedStatus == 'blinded') {
- 			alert('블라인드 회원으로 변경하시겠습니까?');
+ 		var confirmChange;
+		if(changedStatus == 'blinded') {
+ 			if(confirm('블라인드 회원으로 변경하시겠습니까?') == true) {
+ 				confirmChange = true;
+ 			} else {
+ 				confirmChange = false;
+ 				window.location.href = '${ pageContext.request.contextPath }/admin/memberlist.do';
+ 			}
  		} else if(changedStatus == 'regular') {
- 			alert('정상 회원으로 변경하시겠습니까?');
+ 			if(confirm('정상 회원으로 변경하시겠습니까?') == true) {
+ 				confirmChange = true;
+ 			} else {
+ 				confirmChange = false;
+ 				window.location.href = '${ pageContext.request.contextPath }/admin/memberlist.do';
+ 			}
  		}
- 			
-		$.ajax({
-			type : 'POST',
-			data : jQuery.param({ userid: userid, changedStatus: changedStatus}),
-			url : '${ pageContext.request.contextPath }/admin/changeMemberStatus.do',
-			contentType : 'application/x-www-form-urlencoded; charset=UTF-8',
-			success : (function(data) {
-				alert('변경되었습니다.');
-				window.location.href = '${ pageContext.request.contextPath }/admin/memberlist.do';
-			})
-		});		
+ 		
+		if(confirmChange == true) {
+			$.ajax({
+				type : 'POST',
+				data : jQuery.param({ userid: userid, changedStatus: changedStatus}),
+				url : '${ pageContext.request.contextPath }/admin/changeMemberStatus.do',
+				contentType : 'application/x-www-form-urlencoded; charset=UTF-8',
+				success : (function(data) {
+					alert('변경되었습니다.');
+					window.location.href = '${ pageContext.request.contextPath }/admin/memberlist.do';
+				})
+			});			
+		}
 	}
 
 	function deleteMember(userid) {
-		alert(userid + '님에 대한 회원 정보를 영구 삭제하시겠습니까?');
-		
-		$.ajax({
-			type : 'POST',
-			data : jQuery.param({ userid: userid}),
-			url : '${ pageContext.request.contextPath }/admin/deleteMember.do',
-			contentType : 'application/x-www-form-urlencoded; charset=UTF-8',
-			success : (function(data) {
-				alert('삭제되었습니다.');
-				window.location.href = '${ pageContext.request.contextPath }/admin/memberlist.do';				
-			})
-		});
+		if(confirm(userid + '님에 대한 회원 정보를 영구 삭제하시겠습니까?') == true) {
+			$.ajax({
+				type : 'POST',
+				data : jQuery.param({ userid: userid}),
+				url : '${ pageContext.request.contextPath }/admin/deleteMember.do',
+				contentType : 'application/x-www-form-urlencoded; charset=UTF-8',
+				success : (function(data) {
+					alert('삭제되었습니다.');
+					window.location.href = '${ pageContext.request.contextPath }/admin/memberlist.do';				
+				})
+			});	
+		}		
 	}
 </script>
 </head>
@@ -89,31 +102,25 @@
 	                <li>
 	                    <a href="${pageContext.request.contextPath }/admin/dashboard.do">
 	                        <i class="material-icons">dashboard</i>
-	                        <p>Dashboard</p>
+	                        <p>대시보드</p>
 	                    </a>
 	                </li>
 	                <li class="active">
 	                    <a href="${pageContext.request.contextPath }/admin/memberlist.do">
 	                        <i class="material-icons">content_paste</i>
-	                        <p>Member List</p>
+	                        <p>회원 관리</p>
 	                    </a>
 	                </li>
 	                <li>
 	                    <a href="${pageContext.request.contextPath }/admin/boardlist.do">
 	                        <i class="material-icons">library_books</i>
-	                        <p>Board List</p>
+	                        <p>게시글 관리</p>
 	                    </a>
 	                </li>
 	                <li>
 	                    <a href="${pageContext.request.contextPath }/admin/adv.do">
 	                        <i class="material-icons">location_on</i>
-	                        <p>Add advertisement</p>
-	                    </a>
-	                </li>
-	                <li>
-	                    <a href="${pageContext.request.contextPath }/admin/notifications.do">
-	                        <i class="material-icons text-gray">notifications</i>
-	                        <p>Notifications</p>
+	                        <p>광고 관리</p>
 	                    </a>
 	                </li>
 	                <li>
@@ -139,58 +146,19 @@
 						</button>
 						<a class="navbar-brand" href="#">Member List</a>
 					</div>
-					<div class="collapse navbar-collapse">
-						<ul class="nav navbar-nav navbar-right">
-							<li>
-								<a href="#pablo" class="dropdown-toggle" data-toggle="dropdown">
-									<i class="material-icons">dashboard</i>
-									<p class="hidden-lg hidden-md">Dashboard</p>
-								</a>
-							</li>
-							<li class="dropdown">
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-									<i class="material-icons">notifications</i>
-									<span class="notification">5</span>
-									<p class="hidden-lg hidden-md">Notifications</p>
-								</a>
-								<ul class="dropdown-menu">
-									<li><a href="#">Mike John responded to your email</a></li>
-									<li><a href="#">You have 5 new tasks</a></li>
-									<li><a href="#">You're now friend with Andrew</a></li>
-									<li><a href="#">Another Notification</a></li>
-									<li><a href="#">Another One</a></li>
-								</ul>
-							</li>
-							<li>
-								<a href="#pablo" class="dropdown-toggle" data-toggle="dropdown">
-	 							   <i class="material-icons">person</i>
-	 							   <p class="hidden-lg hidden-md">Profile</p>
-	 						   </a>
-							</li>
-						</ul>
-
-						<form class="navbar-form navbar-right" role="search">
-							<div class="form-group  is-empty">
-	                        	<input type="text" class="form-control" placeholder="Search">
-	                        	<span class="material-input"></span>
-							</div>
-							<button type="submit" class="btn btn-white btn-round btn-just-icon">
-								<i class="material-icons">search</i><div class="ripple-container"></div>
-							</button>
-	                    </form>
-					</div>
 				</div>
 			</nav>
-
+			
 	        <div class="content">
 	            <div class="container-fluid">
 	                <div class="row">
+	                
 	                    <div class="col-md-12">
 	                        <div class="card">
 	                            <div class="card-header" data-background-color="purple">
 	                                <h4 class="title">정상 회원 목록</h4>
 	                            </div>
-	                            <div class="card-content table-responsive">
+	                            <div class="card-content table-responsive" style="max-height:350px; overflow-y: scroll;">
 	                                <table class="table">
 	                                    <thead class="text-primary">
 	                                    	<th>이메일</th>
@@ -198,9 +166,9 @@
 	                                    	<th>가입일</th>
 											<th>MyMap 수</th>
 											<th>MyPlan 수</th>
-											<th>신고 수</th>
+											<th>신고된 <br/>게시물 수</th>
 											<th>상태 변경</th>
-											<th>영구 삭제</th>
+											<th>회원정보 삭제</th>
 	                                    </thead>
 	                                    <tbody>
 	                                    	<c:if test="${ not empty regularMemberInfoList }">
@@ -213,12 +181,12 @@
 														<td>${ regularMemberInfoList.myPlanCnt }</td>
 														<td>${ regularMemberInfoList.reportedMyMapCnt }</td>
 														<td>
-														<select onchange="changeStatus(this, '${ regularMemberInfoList.userid }');">  <%-- onchange="changeRegularStatus('${ regularMemberInfoList.userid }');" --%>
+														<select onchange="changeStatus(this, '${ regularMemberInfoList.userid }');">
 															<option value="regular">정상</option>
 															<option value="blinded">블라인드</option>
 														</select>
 														</td>
-														<td><button type="button" onclick="deleteMember('${ regularMemberInfoList.userid }');">회원정보 영구 삭제</button></td>
+														<td><button type="button" onclick="deleteMember('${ regularMemberInfoList.userid }');">삭제</button></td>
 			                                        </tr>
 		                                        </c:forEach>
 	                                        </c:if>
@@ -233,7 +201,7 @@
 	                            <div class="card-header" data-background-color="purple">
 	                                <h4 class="title">블라인드 회원 목록</h4>
 	                            </div>
-	                            <div class="card-content table-responsive">
+	                            <div class="card-content table-responsive" style="max-height:350px; overflow-y: scroll;">
 	                                <table class="table">
 	                                    <thead class="text-primary">
 	                                    	<th>이메일</th>
@@ -241,9 +209,9 @@
 	                                    	<th>가입일</th>
 											<th>MyMap 수</th>
 											<th>MyPlan 수</th>
-											<th>신고 수</th>
+											<th>신고된 <br/>게시물 수</th>
 											<th>상태 변경</th>
-											<th>영구 삭제</th>
+											<th>회원정보 삭제</th>
 	                                    </thead>
 	                                    <tbody>
 	                                    	<c:if test="${ not empty blindedMemberInfoList }">
@@ -261,7 +229,7 @@
 															<option value="regular">정상</option>
 														</select>														
 														</td>
-														<td><button type="button" onclick="deleteMember('${ blindedMemberInfoList.userid }');">회원정보 영구 삭제</button></td>
+														<td><button type="button" onclick="deleteMember('${ blindedMemberInfoList.userid }');">삭제</button></td>
 			                                        </tr>
 		                                        </c:forEach>
 	                                        </c:if>
@@ -276,7 +244,7 @@
 	                            <div class="card-header" data-background-color="purple">
 	                                <h4 class="title">탈퇴 회원 목록</h4>
 	                            </div>
-	                            <div class="card-content table-responsive">
+	                            <div class="card-content table-responsive" style="max-height:350px; overflow-y: scroll;">
 	                                <table class="table">
 	                                    <thead class="text-primary">
 	                                    	<th>이메일</th>
@@ -285,9 +253,9 @@
 	                                    	<th>탈퇴일</th>
 											<th>MyMap 수</th>
 											<th>MyPlan 수</th>
-											<th>신고 수</th>
+											<th>신고된 <br/>게시물 수</th>
 											<th>상태 변경</th>
-											<th>영구 삭제</th>
+											<th>회원정보 삭제</th>
 	                                    </thead>
 	                                    <tbody>
 	                                    	<c:if test="${ not empty deactivatedMemberInfoList }">
@@ -301,7 +269,7 @@
 														<td>${ deactivatedMemberInfoList.myPlanCnt }</td>
 														<td>${ deactivatedMemberInfoList.reportedMyMapCnt }</td>
 														<td>탈퇴</td>
-														<td><button type="button" onclick="deleteMember('${ deactivatedMemberInfoList.userid }');">회원정보 영구 삭제</button></td>
+														<td><button type="button" onclick="deleteMember('${ deactivatedMemberInfoList.userid }');">삭제</button></td>
 			                                        </tr>
 		                                        </c:forEach>
 	                                        </c:if>

@@ -207,11 +207,11 @@ body {
 	function checkAutoLoginCookie() {
 		checkSession();
 		
-/* 		console.log('지우기 전 쿠키 : ' +Cookies.get('token'));
+/*  		console.log('지우기 전 쿠키 : ' +Cookies.get('token'));
 		Cookies.remove('token', { path: '${pageContext.request.contextPath}'});
 		console.log('지우기  쿠키 : ' +Cookies.get('token')); */
 		
- 		if(check) {
+  		if(check) {
 			console.log('세션에 이미 로그인 되어있음');
 		} else {
 			console.log('쿠키 있는지 확인할게');
@@ -242,7 +242,7 @@ body {
 	} 
 
 	$(document).ready(function() {
-/* 		checkAutoLoginCookie(); */
+ 		checkAutoLoginCookie();
 		var autoLogin="false";
 
 /*-----------------------자동로그인 Toggle 확인------------------------*/

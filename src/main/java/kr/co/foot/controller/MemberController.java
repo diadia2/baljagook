@@ -59,7 +59,7 @@ public class MemberController {
 		
 		String userid = (String) session.getAttribute("user");
 		
-		if(header.equals("�닿���")){
+		if(header.equals("내계획")){
 			List<MymapVO> mymapList = memberService.selectMymapListByuseridForPlan(userid);
 			return mymapList;
 		}

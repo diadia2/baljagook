@@ -38,8 +38,8 @@ public class MemberManagementServiceImpl implements MemberManagementService {
 		return myPlanCnt;
 	}
 	
-	public int getReportCntByUserid(String userid) {
-		int reportCnt = dao.getReportCntByUserid(userid);
+	public List<Integer> getReportCntByUserid(String userid) {
+		List<Integer> reportCnt = dao.getReportCntByUserid(userid);
 		return reportCnt;
 	}
 	

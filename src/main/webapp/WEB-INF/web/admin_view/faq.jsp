@@ -45,13 +45,26 @@
     text-decoration: none;
     cursor: pointer;
 }
+textarea {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+input {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+.btn {
+	background-color : purple;
+}
 </style>
 
 
 <script>
 	$(document).ready(function () {		
-
-		$('#addFAQ').click(function () {
+		
+ 		$('#addFAQ').click(function () {
 			$('#addFAQModal').modal('show');
 		});
 		
@@ -126,7 +139,7 @@
 	
 	/* -------------------FAQ 삭제--------------------------- */	
 	function removeFAQ(idx) {
-		alert('삭제하시겠습니까?');
+		if(confirm('삭제하시겠습니까?') == true) {
 			$.ajax({
 				type : 'POST',
 				url : '${ pageContext.request.contextPath }/removeFAQ.do',
@@ -135,7 +148,8 @@
 					alert('삭제되었습니다.');
 					window.location.href = '${ pageContext.request.contextPath }/admin/faq.do';
 				})	
-			});			
+			});						
+		}
 	}
 	
 	/* ------------------수정하려는 FAQ 데이터 불러오기--------------------------- */
@@ -164,42 +178,58 @@
 
 </head>
 <body>
-
 	<!-- FAQ 등록 Modal -->
-	<div id="addFAQModal" class="modal">
-		<div class="modal-content">
-			<div class="modal-header">
-				<span id="closeAddFAQModal" class="close">&times;</span>
-				<h2>FAQ 등록</h2>
+	<div class="modal fade" id="addFAQModal" tabindex="-1" role="dialog"
+		aria-labelledby="addFAQModal" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="myModalLabel">FAQ 등록</h4>
+				</div>
+				<div class="modal-body">
+					<form id="faqFormAdd">
+						<input type="text" id="addTitle" name="addTitle" placeholder="제목" size="76">
+						<br />
+						<textarea id="addContent" class="text" cols="75" rows="20"
+							name="addContent" placeholder="내용"></textarea>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+							<button type="submit" class="btn btn-primary">등록</button>
+						</div>						
+					</form>
+				</div>
+
 			</div>
-			<form id="faqFormAdd">
-				<input type="text" id="addTitle" name="addTitle">
-				<br/>
-				<textarea id="addContent" class="text" cols="80" rows="20" name="addContent" ></textarea>
-				<br/>
-				<button type="submit">등록</button> 
-			</form>
 		</div>
 	</div>
-	
-	<!-- FAQ 수정 Modal -->
-	<div id="editFAQModal" class="modal">
-		<div class="modal-content">
-			<div class="modal-header">
-				<span id="closeEditFAQModal" class="close">&times;</span>
-				<h2>FAQ 수정</h2>
-			</div>
-			<form id="faqFormEdit">
-				<input type="hidden" id="faqIdx" name="faqIdx">
-				<input type="text" id="editTitle" name="editTitle">
-				<br/>
-				<textarea id="editContent" class="text" cols="80" rows="20" name="editContent" ></textarea>
-				<br/>
-				<button type="submit">수정</button> 
-			</form>
-		</div>
-	</div>	
 
+	<!-- FAQ 수정 Modal -->
+	<div class="modal fade" id="editFAQModal" tabindex="-1" role="dialog"
+		aria-labelledby="editFAQModal" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="myModalLabel">FAQ 수정</h4>
+				</div>
+				<div class="modal-body">
+					<form id="faqFormEdit">
+						<input type="hidden" id="faqIdx" name="faqIdx">
+						<input type="text" id="editTitle" name="editTitle" size="76">
+						<br/>
+						<textarea id="editContent" class="text" cols="75" rows="20" name="editContent" ></textarea> 
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+							<button type="submit" class="btn btn-primary">수정</button>
+						</div>		
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
 
 	<div class="wrapper">
 	    <div class="sidebar" data-color="purple" data-image="${pageContext.request.contextPath }/resources/admin/assets/img/sidebar-1.jpg">
@@ -220,32 +250,25 @@
 	                <li>
 	                    <a href="${pageContext.request.contextPath }/admin/dashboard.do">
 	                        <i class="material-icons">dashboard</i>
-	                        <p>Dashboard</p>
+	                        <p>대시보드</p>
 	                    </a>
 	                </li>
 	                <li>
 	                    <a href="${pageContext.request.contextPath }/admin/memberlist.do">
 	                        <i class="material-icons">content_paste</i>
-	                        <p>Member List</p>
+	                        <p>회원 관리</p>
 	                    </a>
 	                </li>
 	                <li>
 	                    <a href="${pageContext.request.contextPath }/admin/boardlist.do">
 	                        <i class="material-icons">library_books</i>
-	                        <p>Board List</p>
+	                        <p>게시글 관리</p>
 	                    </a>
 	                </li>
 	                <li>
 	                    <a href="${pageContext.request.contextPath }/admin/adv.do">
 	                        <i class="material-icons">location_on</i>
-	                        <p>Add advertisement</p>
-	                    </a>
-	                </li>
-	                <li>
-
-	                    <a href="${pageContext.request.contextPath }/admin/notifications.do">
-	                        <i class="material-icons text-gray">notifications</i>
-	                        <p>Notifications</p>
+	                        <p>광고 관리</p>
 	                    </a>
 	                </li>
 	                <li class="active">
@@ -269,47 +292,7 @@
 							<span class="icon-bar"></span>
 							<span class="icon-bar"></span>
 						</button>
-						<a class="navbar-brand" href="#">Notifications</a>
-					</div>
-					<div class="collapse navbar-collapse">
-						<ul class="nav navbar-nav navbar-right">
-							<li>
-								<a href="#pablo" class="dropdown-toggle" data-toggle="dropdown">
-									<i class="material-icons">dashboard</i>
-									<p class="hidden-lg hidden-md">Dashboard</p>
-								</a>
-							</li>
-							<li class="dropdown">
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-									<i class="material-icons">notifications</i>
-									<span class="notification">5</span>
-									<p class="hidden-lg hidden-md">Notifications</p>
-								</a>
-								<ul class="dropdown-menu">
-									<li><a href="#">Mike John responded to your email</a></li>
-									<li><a href="#">You have 5 new tasks</a></li>
-									<li><a href="#">You're now friend with Andrew</a></li>
-									<li><a href="#">Another Notification</a></li>
-									<li><a href="#">Another One</a></li>
-								</ul>
-							</li>
-							<li>
-								<a href="#pablo" class="dropdown-toggle" data-toggle="dropdown">
-	 							   <i class="material-icons">person</i>
-	 							   <p class="hidden-lg hidden-md">Profile</p>
-	 						   </a>
-							</li>
-						</ul>
-
-						<form class="navbar-form navbar-right" role="search">
-							<div class="form-group  is-empty">
-	                        	<input type="text" class="form-control" placeholder="Search">
-	                        	<span class="material-input"></span>
-							</div>
-							<button type="submit" class="btn btn-white btn-round btn-just-icon">
-								<i class="material-icons">search</i><div class="ripple-container"></div>
-							</button>
-	                    </form>
+						<a class="navbar-brand" href="#">FAQ</a>
 					</div>
 				</div>
 			</nav>
@@ -320,8 +303,12 @@
 	                    <div class="card-header" data-background-color="purple">
 	                        <h4 class="title">FAQ</h4>
 	                    </div>
-	                    <div class="">
-							<button id="addFAQ" type="button" class="btn btn-black btn-round btn-just-icon">
+<<<<<<< HEAD
+=======
+	                    <br />
+>>>>>>> f0be52da02d4b0a627a849ad3988497dd4b1f2d3
+	                    <div class="" style="text-align: right; margin-right: 5%">
+							<button id="addFAQ" type="button" class="btn btn-round btn-just-icon">
 								<i class="material-icons">add</i><div class="ripple-container"></div>
 							</button>
 						</div>	                    
@@ -330,18 +317,17 @@
 								<div class="card-content">
 									<div class="tab-content">
 										<div class="tab-pane active" id="profile">
- 											<table class="table">
+ 											<table class="table" style="max-height:700px; overflow-y: scroll;">
 												<tbody>
 													<c:if test="${ not empty faqList }">
 														<c:forEach var="faqList" items="${ faqList }" varStatus="loop">
 															<tr>
-																<td></td>
 																<td><a data-toggle="collapse" href="#faqContent${ loop.index }" aria-expanded="false" aria-controls="faqContent${ loop.index }" >${ faqList.title }</a></td>
 																<td class="td-actions text-right">
-																	<button type="button" onclick="getFAQByIdx(${ faqList.idx });" rel="tooltip" title="Edit Task" class="btn btn-primary btn-simple btn-xs">
+																	<button type="button" onclick="getFAQByIdx(${ faqList.idx });" rel="tooltip" title="수 정" class="btn btn-primary btn-simple btn-xs">
 																		<i class="material-icons">edit</i>
 																	</button>
-																	<button type="button" onclick="removeFAQ(${ faqList.idx });" rel="tooltip" title="Remove" class="btn btn-danger btn-simple btn-xs">
+																	<button type="button" onclick="removeFAQ(${ faqList.idx });" rel="tooltip" title="삭 제" class="btn btn-danger btn-simple btn-xs">
 																		<i class="material-icons">close</i>
 																	</button>
 																</td>

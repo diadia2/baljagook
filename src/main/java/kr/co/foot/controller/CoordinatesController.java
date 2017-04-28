@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import kr.co.foot.advertisement.AdvertisementVO;
 import kr.co.foot.checkpoint.CheckpointVO;
 import kr.co.foot.coordinates.CoordinatesService;
 import kr.co.foot.coordinates.CoordinatesVO;
@@ -131,6 +132,11 @@ public class CoordinatesController {
       model.addAttribute("hashtag", hashtag);
 /*      model.addAttribute("city", city);
       model.addAttribute("theme", theme);*/
+      
+  	  // ±¤°í ¸ñ·Ï
+   	  List<AdvertisementVO> AdvertisementList = mymapService.selectAdvertisementList();
+   	  model.addAttribute("AdvertisementList",AdvertisementList);
+      
       return "MapTest/regtrip";
    }
    

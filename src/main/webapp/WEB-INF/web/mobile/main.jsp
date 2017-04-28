@@ -615,6 +615,10 @@ function getAndroidFlag(flag){
 }
 
 function takepicture(){
+    if('${id}' == null || '${id}' == ""){
+		alert("로그인후 이용가능합니다.");
+		return;
+    }
     Android.takePicture();
 }
 

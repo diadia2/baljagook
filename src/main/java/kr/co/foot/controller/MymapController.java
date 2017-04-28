@@ -1,11 +1,14 @@
 package kr.co.foot.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,7 +23,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import kr.co.foot.advertisement.AdvertisementVO;
 import kr.co.foot.checkpoint.CheckpointVO;
 import kr.co.foot.coordinates.CoordinatesService;
 import kr.co.foot.favoritemap.FavoritemapVO;
@@ -36,6 +42,7 @@ import kr.co.foot.photo.PhotoVO;
 import kr.co.foot.regcoordinates.RegcoordinatesVO;
 import kr.co.foot.regmap.RegmapVO;
 import kr.co.foot.report.ReportVO;
+import kr.co.foot.util.CommonUtils;
 
 @Controller
 public class MymapController {
@@ -497,6 +504,10 @@ public class MymapController {
       model.addAttribute("mymapList", mymapList);
       model.addAttribute("mymapListPlanAndReg", mymapListPlanAndReg);
       
+  	  // 광고 목록
+   	  List<AdvertisementVO> AdvertisementList = mymapService.selectAdvertisementList();
+   	  model.addAttribute("AdvertisementList",AdvertisementList);
+   	  
       return "MapTest/plantrip";
 
    }
@@ -518,11 +529,16 @@ public class MymapController {
       int mymapidx = Integer.parseInt(mymapidxstr);
       
       List<RegcoordinatesVO> regcoordinatesVO = mymapService.getRegcoordinatesInfo(mymapidx);
+      for(RegcoordinatesVO vo : regcoordinatesVO){
+          System.out.println(vo);
+       }
       List<CheckpointVO> checkpointList = new ArrayList<CheckpointVO>();
       
       for(int i=0; i<regcoordinatesVO.size(); i++){
          CheckpointVO checkpointVO = mymapService.selectCheckPoint(regcoordinatesVO.get(i).getIdx());
-         checkpointList.add(checkpointVO);
+         if(checkpointVO != null){
+        	 checkpointList.add(checkpointVO);
+         }
       }
       
       for(CheckpointVO vo : checkpointList){
@@ -630,6 +646,42 @@ public class MymapController {
 		
 		return "redirect:/map/detail.do?mymapidx="+mymapidx;
 	}
-   
-   
+
+/*==================서버에 올리기 전에 사진을 저장할 filePath 꼭 바꿔주기!===============*/	
+	private static final String filePath = "/Users/mac/Documents/workspace/baljagook/src/main/webapp/resources/photo/";		
+//	private static final String filePath = "/var/lib/tomcat8/webapps/baljagook/resources/photo/profileImage/";	
+	
+	//모바일에서 등록한 체크포인트 사진 변경
+	@RequestMapping(value="/changeImage.do", method=RequestMethod.POST)
+	@ResponseBody
+	public String changeImage(MultipartHttpServletRequest request) throws IllegalStateException, IOException {
+
+		//파일 저장할 경로가 없으면 경로 생성
+		File file = new File(filePath);
+		if(file.exists() == false) {
+			file.mkdirs();
+		}
+		
+		//사용자가 업로드한 이미지 파일 가져오기
+		MultipartFile uploadedImage = request.getFile("file");	
+		String imageName = "";
+		//이미지에 랜덤이름 부여
+		imageName = CommonUtils.getRandomString()+uploadedImage.getOriginalFilename();
+		file = new File(filePath+imageName);
+		uploadedImage.transferTo(file);
+		
+		//이미지를 바꾸려는 checkpointidx 가져오기
+		String checkpointidxS = request.getParameter("jsonData");
+		int checkpointidx = Integer.parseInt(checkpointidxS);
+		
+		System.out.println("이미지 바꾸려는 checkpointidx : " +checkpointidx);
+		
+		//DB t_photo 테이블에 있는 기존 이미지 이름 업데이트
+		PhotoVO photoVO = new PhotoVO();
+		photoVO.setCheckpointidx(checkpointidx);
+		photoVO.setNewname(imageName);
+		mymapService.updatePhoto(photoVO);
+		
+		return imageName;
+	}
 }

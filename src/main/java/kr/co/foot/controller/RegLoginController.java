@@ -98,51 +98,55 @@ public class RegLoginController {
 	@ResponseBody
 	public HashMap<String, String> authenticate(@RequestBody LoginDTO loginData, HttpServletRequest request, HttpServletResponse response) {
 		
+		HttpSession session = request.getSession(true);
 		HashMap<String, String> dataMap = new HashMap<String, String>();
+		String jsessionid = "";
+		String token = null;
 
 		Cookie[] cookies = request.getCookies();
 		for(int i=0; i<cookies.length; i++) {
 			Cookie c = cookies[i];
+			if(c.getName().equals("JSESSIONID")) {
+				jsessionid = c.getValue();
+			}
 			
 			//먼저 자동로그인 쿠키가 있는지 확인
 			if(c.getName().equals("token")) {
-				String token = c.getValue();
-				String email = service.getEmailByToken(token);
-				String userid = service.getUseridByEmail(email);
-				HttpSession session = request.getSession(true);
-				session.setAttribute("user", userid);
+				token = c.getValue();
+			}
+		}
 			
-			//자동로그인 쿠키가 없다면	
+		if (token != null) {
+			String email = service.getEmailByToken(token);
+			String userid = service.getUseridByEmail(email);
+			session.setAttribute("user", userid);
+		} else {
+			// 데이터베이스의 회원정보로 로그인 입력정보가 맞는지 확인
+			String loginUserid = service.findByEmailPass(loginData);
+			if (loginUserid != null) {
+				session.setAttribute("user", loginUserid);
+				dataMap.put("redirectUrl", "main.do");
+
+				// 자동로그인 toggle을 선택하면 자동로그인 쿠키 설정
+				if (loginData.getAutoLogin().equals("true")) {
+					String newToken = CommonUtils.getRandomString();
+					Cookie cToken = new Cookie("token", newToken);
+					cToken.setMaxAge(60 * 60 * 24 * 7);
+					response.addCookie(cToken);
+
+					AutoLoginDTO autoLoginDTO = new AutoLoginDTO();
+					autoLoginDTO.setEmail(loginData.getEmail());
+					autoLoginDTO.setToken(newToken);
+					autoLoginDTO.setJsessionid(jsessionid);
+					service.insertAutoLoginData(autoLoginDTO);
+				}
+
 			} else {
-				
-				//데이터베이스의 회원정보로 로그인 입력정보가 맞는지 확인
-				String loginUserid = service.findByEmailPass(loginData);
-				if(loginUserid != null) {
-					HttpSession session = request.getSession(true);
-					session.setAttribute("user", loginUserid);
-					dataMap.put("redirectUrl", "main.do");
-					
-					//자동로그인 toggle을 선택하면 자동로그인 쿠키 설정
-					if(loginData.getAutoLogin().equals("true")) {
-						String token = CommonUtils.getRandomString();
-						Cookie cToken = new Cookie("token", token);
-						cToken.setMaxAge(60*60*24*7);
-						response.addCookie(cToken);
-						
-						AutoLoginDTO autoLoginDTO = new AutoLoginDTO();
-						autoLoginDTO.setEmail(loginData.getEmail());
-						autoLoginDTO.setToken(token);
-						service.insertAutoLoginData(autoLoginDTO);
-					}			
-					
-				} else {
-					dataMap.put("message", "이메일 또는 비밀번호가 틀렸습니다.");
-				}		
+				dataMap.put("message", "이메일 또는 비밀번호가 틀렸습니다.");
 			}
 		}
 		
 		return dataMap;
-		
 	}
 	
 	//로그아웃
