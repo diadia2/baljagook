@@ -1623,8 +1623,6 @@ function resetFindRoad(){
 													<ul>
 														<li><a href="#tabs-example-1" title="Tab 1">place</a></li>
 														<li><a href="#tabs-example-2" title="Tab 2">settings</a></li>
-														<li><a href="#tabs-example-3" title="Tab 3">favorites</a></li>
-														<li><a onclick="javascript:openNavi()" title="Tab 4">길찾기</a>
 													</ul>
 												</h3>
 												<div id="tabs-example-1">
@@ -1633,10 +1631,12 @@ function resetFindRoad(){
 															ondragstart="return dragStart(event)"
 															ondragend="return dragextramarker(event)"><img
 															src="https://developers.skplanetx.com/upload/tmap/marker/pin_b_m_a.png" /></span>
-														<div class="col-md-11">
-															<input id="pac-input" class="form-control" type="text"
-																placeholder="Search Box">
+														<div class="col-md-9">
+															<input id="pac-input" class="form-control" type="text" placeholder="Search Box">
 														</div>
+														<div class="col-md-2">
+															<a href="javascript:openNavi()"><img src="${ pageContext.request.contextPath }/resources/images/findload3.png"></a>
+														</div> 
 													</div>
 													<!-- pannel -->
 													<div class="cf clearfix nestable-lists">
@@ -1720,47 +1720,7 @@ function resetFindRoad(){
 													<input name="hashtag" type="text"
 														class="form-control title-text" placeholder="#해쉬태그">
 												</div>
-												<div id="tabs-example-3">
-													<div class="example-box-wrapper">
-														<div class="panel-group" id="accordion">
-															<div class="panel">
-																<div class="panel-heading">
-																	<h4 class="panel-title">
-																		<a data-toggle="collapse" data-parent="#accordion"
-																			href="#collapseOne">my map</a>
-																	</h4>
-																</div>
-																<div id="collapseOne" class="panel-collapse collapse in">
-																	<div class="panel-body">my map</div>
-																</div>
-															</div>
-															<div class="panel">
-																<div class="panel-heading">
-																	<h4 class="panel-title">
-																		<a data-toggle="collapse" data-parent="#accordion"
-																			href="#collapseTwo">my plan</a>
-																	</h4>
-																</div>
-																<div id="collapseTwo" class="panel-collapse collapse">
-																	<div class="panel-body">my plan</div>
-																</div>
-															</div>
-															<div class="panel">
-																<div class="panel-heading">
-																	<h4 class="panel-title">
-																		<a data-toggle="collapse" data-parent="#accordion"
-																			href="#collapseThree">favorites</a>
-																	</h4>
-																</div>
-																<div id="collapseThree" class="panel-collapse collapse">
-																	<div class="panel-body">favorites</div>
-																</div>
-															</div>
-														</div>
-													</div>
-												</div>
 											</div>
-
 										</div>
 									</div>
 								</div>

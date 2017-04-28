@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import kr.co.foot.advertisement.AdvertisementVO;
 import kr.co.foot.checkpoint.CheckpointVO;
 import kr.co.foot.coordinates.CoordinatesService;
 import kr.co.foot.favoritemap.FavoritemapVO;
@@ -497,6 +498,10 @@ public class MymapController {
       model.addAttribute("mymapList", mymapList);
       model.addAttribute("mymapListPlanAndReg", mymapListPlanAndReg);
       
+  	  // 광고 목록
+   	  List<AdvertisementVO> AdvertisementList = mymapService.selectAdvertisementList();
+   	  model.addAttribute("AdvertisementList",AdvertisementList);
+   	  
       return "MapTest/plantrip";
 
    }
@@ -518,11 +523,16 @@ public class MymapController {
       int mymapidx = Integer.parseInt(mymapidxstr);
       
       List<RegcoordinatesVO> regcoordinatesVO = mymapService.getRegcoordinatesInfo(mymapidx);
+      for(RegcoordinatesVO vo : regcoordinatesVO){
+          System.out.println(vo);
+       }
       List<CheckpointVO> checkpointList = new ArrayList<CheckpointVO>();
       
       for(int i=0; i<regcoordinatesVO.size(); i++){
          CheckpointVO checkpointVO = mymapService.selectCheckPoint(regcoordinatesVO.get(i).getIdx());
-         checkpointList.add(checkpointVO);
+         if(checkpointVO != null){
+        	 checkpointList.add(checkpointVO);
+         }
       }
       
       for(CheckpointVO vo : checkpointList){
