@@ -32,37 +32,50 @@
 <script>
 	function changeStatus(newStatus, userid) {
 		var changedStatus = newStatus.value;
- 		if(changedStatus == 'blinded') {
- 			confirm('블라인드 회원으로 변경하시겠습니까?');
+ 		var confirmChange;
+		if(changedStatus == 'blinded') {
+ 			if(confirm('블라인드 회원으로 변경하시겠습니까?') == true) {
+ 				confirmChange = true;
+ 			} else {
+ 				confirmChange = false;
+ 				window.location.href = '${ pageContext.request.contextPath }/admin/memberlist.do';
+ 			}
  		} else if(changedStatus == 'regular') {
- 			confirm('정상 회원으로 변경하시겠습니까?');
+ 			if(confirm('정상 회원으로 변경하시겠습니까?') == true) {
+ 				confirmChange = true;
+ 			} else {
+ 				confirmChange = false;
+ 				window.location.href = '${ pageContext.request.contextPath }/admin/memberlist.do';
+ 			}
  		}
- 			
-		$.ajax({
-			type : 'POST',
-			data : jQuery.param({ userid: userid, changedStatus: changedStatus}),
-			url : '${ pageContext.request.contextPath }/admin/changeMemberStatus.do',
-			contentType : 'application/x-www-form-urlencoded; charset=UTF-8',
-			success : (function(data) {
-				alert('변경되었습니다.');
-				window.location.href = '${ pageContext.request.contextPath }/admin/memberlist.do';
-			})
-		});		
+ 		
+		if(confirmChange == true) {
+			$.ajax({
+				type : 'POST',
+				data : jQuery.param({ userid: userid, changedStatus: changedStatus}),
+				url : '${ pageContext.request.contextPath }/admin/changeMemberStatus.do',
+				contentType : 'application/x-www-form-urlencoded; charset=UTF-8',
+				success : (function(data) {
+					alert('변경되었습니다.');
+					window.location.href = '${ pageContext.request.contextPath }/admin/memberlist.do';
+				})
+			});			
+		}
 	}
 
 	function deleteMember(userid) {
-		confirm(userid + '님에 대한 회원 정보를 영구 삭제하시겠습니까?');
-		
-		$.ajax({
-			type : 'POST',
-			data : jQuery.param({ userid: userid}),
-			url : '${ pageContext.request.contextPath }/admin/deleteMember.do',
-			contentType : 'application/x-www-form-urlencoded; charset=UTF-8',
-			success : (function(data) {
-				alert('삭제되었습니다.');
-				window.location.href = '${ pageContext.request.contextPath }/admin/memberlist.do';				
-			})
-		});
+		if(confirm(userid + '님에 대한 회원 정보를 영구 삭제하시겠습니까?') == true) {
+			$.ajax({
+				type : 'POST',
+				data : jQuery.param({ userid: userid}),
+				url : '${ pageContext.request.contextPath }/admin/deleteMember.do',
+				contentType : 'application/x-www-form-urlencoded; charset=UTF-8',
+				success : (function(data) {
+					alert('삭제되었습니다.');
+					window.location.href = '${ pageContext.request.contextPath }/admin/memberlist.do';				
+				})
+			});	
+		}		
 	}
 </script>
 </head>
@@ -168,7 +181,7 @@
 														<td>${ regularMemberInfoList.myPlanCnt }</td>
 														<td>${ regularMemberInfoList.reportedMyMapCnt }</td>
 														<td>
-														<select onchange="changeStatus(this, '${ regularMemberInfoList.userid }');">  <%-- onchange="changeRegularStatus('${ regularMemberInfoList.userid }');" --%>
+														<select onchange="changeStatus(this, '${ regularMemberInfoList.userid }');">
 															<option value="regular">정상</option>
 															<option value="blinded">블라인드</option>
 														</select>

@@ -59,5 +59,6 @@ public interface MymapService {
 	public int todayCoordinatesCount(String regdate);
 	public int weekAgoCoordinateCount(String weekAgo);
 	public void deleteSpots(String weekAgo);
+	public void updatePhoto(PhotoVO photoVO);
 
 }
