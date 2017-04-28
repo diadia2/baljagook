@@ -193,4 +193,8 @@
    <delete id="deleteSpots" parameterType="String">
        delete from t_coordinates where timestamp <![CDATA[<]]> #{weekAgo}
    </delete>
+   
+   <update id="updatePhoto" parameterType="kr.co.foot.photo.PhotoVO">
+       update t_photo set newname = #{newname} where checkpointidx = #{checkpointidx}
+   </update>
 </mapper>

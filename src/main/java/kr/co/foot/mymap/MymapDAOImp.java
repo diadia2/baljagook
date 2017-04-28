@@ -348,4 +348,9 @@ public class MymapDAOImp implements MymapDAO {
 		
 	}
 	
+	@Override
+	public void updatePhoto(PhotoVO photoVO) {
+		sqlSessionTemplate.update("kr.co.foot.mymap.MymapDAO.updatePhoto", photoVO);
+	}
+	
 }

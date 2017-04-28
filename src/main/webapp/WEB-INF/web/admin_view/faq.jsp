@@ -139,7 +139,7 @@ input {
 	
 	/* -------------------FAQ 삭제--------------------------- */	
 	function removeFAQ(idx) {
-		confirm('삭제하시겠습니까?');
+		if(confirm('삭제하시겠습니까?') == true) {
 			$.ajax({
 				type : 'POST',
 				url : '${ pageContext.request.contextPath }/removeFAQ.do',
@@ -148,7 +148,8 @@ input {
 					alert('삭제되었습니다.');
 					window.location.href = '${ pageContext.request.contextPath }/admin/faq.do';
 				})	
-			});			
+			});						
+		}
 	}
 	
 	/* ------------------수정하려는 FAQ 데이터 불러오기--------------------------- */
@@ -302,14 +303,9 @@ input {
 	                    <div class="card-header" data-background-color="purple">
 	                        <h4 class="title">FAQ</h4>
 	                    </div>
-<<<<<<< HEAD
-	                    <div class="" style="text-align: right">
-							<button id="addFAQ" type="button" class="btn btn-black btn-round btn-just-icon">
-=======
 	                    <br />
 	                    <div class="" style="text-align: right; margin-right: 5%">
 							<button id="addFAQ" type="button" class="btn btn-round btn-just-icon">
->>>>>>> 1ef458ad3209a56d0b33bd0f3f2c8eeb9ea60014
 								<i class="material-icons">add</i><div class="ripple-container"></div>
 							</button>
 						</div>	                    

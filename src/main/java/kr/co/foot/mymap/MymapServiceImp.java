@@ -343,5 +343,10 @@ public class MymapServiceImp implements MymapService {
 		mymapDAO.deleteSpots(weekAgo);
 		
 	}
+	
+	@Override
+	public void updatePhoto(PhotoVO photoVO) {
+		mymapDAO.updatePhoto(photoVO);
+	}
 
 }

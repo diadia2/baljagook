@@ -418,6 +418,7 @@ $(document).ready(function(){
 	$('#naviDiv').hide();
 	
 });
+
     // 시간별 좌표 불러오기
     var listLonLat = new Array();
     <c:forEach items="${list}" var="list">
@@ -634,7 +635,8 @@ $(document).ready(function(){
 		   		n++;
 		    }
 		} 
-	}    
+	}		
+		
 	var checkMarker = new Array();
 	var num;
 	var infowindow;
@@ -673,8 +675,7 @@ $(document).ready(function(){
 							    checkpointList:checkpointList[j].idx,
 							    accuracy:listLonLat[i].accuracy,
 							    timestamp:listLonLat[i].timestamp
-							}));
-					 		   
+							})); 
 							  var listener2 = google.maps.event.addListener(map, 'click', function(){
 								if(infowindow != null){
 									  infowindow.close();
@@ -683,11 +684,11 @@ $(document).ready(function(){
 							  var listener4 = google.maps.event.addListener(checkMarker[num], 'click', function(){
 								  if(infowindow != null){
 									  infowindow.close();
-								  }
-								  infowindow = new google.maps.InfoWindow({
-									    content: '<img src="${ pageContext.request.contextPath }/resources/photo/'+this.filename+'" width="200px" height="200px"/><br/>'+
+								  }								  
+								  infowindow = new google.maps.InfoWindow({									  
+									    content: '<img id="cpImage" src="${ pageContext.request.contextPath }/resources/photo/'+this.filename+'" width="200px" height="200px"/><br/>'+
 											    (this.num+1)+". "+this.title+'<br/>'+this.content+
-											    '<br/><input type="button" value="출발설정" onClick="startCheck('+
+											    '<br/><div style="height:0px; overflow:hidden"><input id="chooseImage" type="file"/></div><input type="button" value="사진수정" onclick="uploadImage('+this.checkpointList+');"><br/><input type="button" value="출발설정" onClick="startCheck('+
 									    		this.position.lat().toString()+", "+this.position.lng().toString()+')"/><input type="button" value="도착설정" onClick="endCheck('+
 									    		this.position.lat().toString()+", "+this.position.lng().toString()+')"/><input type="button" value="위치삭제" onClick="removeSpot('+
 									    		(this.position.lat()).toFixed(7).toString()+", "+(this.position.lng()).toFixed(7).toString()+","+this.timestamp+')"/>'
@@ -759,9 +760,11 @@ $(document).ready(function(){
 							  infowindow = new google.maps.InfoWindow({
 								    content: (this.num+1)+". "+(this.position.lat()).toFixed(7).toString()+", "+(this.position.lng()).toFixed(7).toString()+
 								    '<br/><input type="button" value="출발설정" onClick="startCheck('+
-								    		this.position.lat().toString()+", "+this.position.lng().toString()+')"/><input type="button" value="도착설정" onClick="endCheck('+
-								    		this.position.lat().toString()+", "+this.position.lng().toString()+')"/><input type="button" value="위치삭제" onClick="removeSpot('+
-								    		(this.position.lat()).toFixed(7).toString()+", "+(this.position.lng()).toFixed(7).toString()+","+this.timestamp+')"/>'
+								    	this.position.lat().toString()+", "+this.position.lng().toString()+
+								    ')"/><input type="button" value="도착설정" onClick="endCheck('+
+								    	this.position.lat().toString()+", "+this.position.lng().toString()+
+								    ')"/><input type="button" value="위치삭제" onClick="removeSpot('+
+								    (this.position.lat()).toFixed(7).toString()+", "+(this.position.lng()).toFixed(7).toString()+","+this.timestamp+')"/>'
 								  }); 
 							  infowindow.open(map, this);
 						  });	
@@ -769,7 +772,41 @@ $(document).ready(function(){
 			    
 			}
 		}
-	
+
+	//모바일에서 등록한 사진 수정
+	var targetCPidx;
+	function uploadImage(checkpointidx) {
+		$("#chooseImage").click();
+		targetCPidx = checkpointidx;
+	}
+
+	 	$(document).on("change", "#chooseImage", function() {
+		var checkpointidx = targetCPidx;
+		var jsonData = JSON.stringify(checkpointidx);
+		var file_data = $("#chooseImage").prop("files")[0];
+		var form_data = new FormData();
+		form_data.append("file", file_data);
+		form_data.append("jsonData", jsonData);
+		
+		$.ajax({
+			url: "${ pageContext.request.contextPath }/changeImage.do",
+			cache: false,
+			contentType: false,
+			processData: false,
+			data: form_data,
+			type: 'post',
+			error : function(e) {
+				console.log('이미지 변경 실패');
+			},
+			success : function(data) {
+				console.log('이미지 변경 성공');
+				console.log(data);
+  				$("#cpImage").prop("src", "${ pageContext.request.contextPath }/resources/photo/"+data);
+			}
+			
+		});
+		
+	})	
 	
 	// 광고 마커 숨기기
 	function hideAdv(lat, lng){
@@ -1313,15 +1350,6 @@ $(document).ready(function(){
 		endLocation = null;
 		f=0;
 	}
-	
-	function goAgain(){
-		var form = document.inputform;
-		
-		form.action = "${ pageContext.request.contextPath }/map/mapcheck.do";
-		form.method = "POST";
-		form.submit();
-	}
-
 
 	// 대중교통 길찾기
 	function calculateAndDisplayRoute() {
