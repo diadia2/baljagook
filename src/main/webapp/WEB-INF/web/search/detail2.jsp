@@ -1229,8 +1229,6 @@ var flightListLonLat = [];
 						style="height: 100%; margin-bottom: 0px; padding-top: 60px; right: 0">
 						<div class="panel-body" style="height: 100%">
 							<!-- <h3 class="title-hero">Time Line</h3> -->
-							<input type="button" value="start" onclick="javascript:lineStart()"/>
-							<input type="button" value="end" onclick="javascript:lineEnd()"/>
 							<div class="title">
 								<h2>${ mymapVO.title }</h2>
 								<p>by ${ mymapVO.userid }</p> 

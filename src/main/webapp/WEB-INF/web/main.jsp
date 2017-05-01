@@ -26,7 +26,7 @@
 
 		<!-- 메인 사진 -->
 		<img src="${pageContext.request.contextPath }/resources/images/background.PNG" class="img-responsive center-block"
-			alt="Responsive image" style="width: 100%;">
+			alt="Responsive image" style="width: 100%; height: 700px">
 
 		<!-- 사이트 소개 -->
 		<div class="features-clean">
