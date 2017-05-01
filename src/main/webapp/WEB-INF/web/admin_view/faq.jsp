@@ -303,10 +303,7 @@ input {
 	                    <div class="card-header" data-background-color="purple">
 	                        <h4 class="title">FAQ</h4>
 	                    </div>
-<<<<<<< HEAD
-=======
 	                    <br />
->>>>>>> f0be52da02d4b0a627a849ad3988497dd4b1f2d3
 	                    <div class="" style="text-align: right; margin-right: 5%">
 							<button id="addFAQ" type="button" class="btn btn-round btn-just-icon">
 								<i class="material-icons">add</i><div class="ripple-container"></div>

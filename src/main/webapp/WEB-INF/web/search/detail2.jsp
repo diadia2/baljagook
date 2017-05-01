@@ -269,6 +269,10 @@ html, body {
 <script type="text/javascript"
 	src="${pageContext.request.contextPath }/resources/assets/js-core/jquery-cookie.js"></script>
 
+<link
+	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"
+	rel="stylesheet">
+
 <!-- map -->
 <script
 	src="https://apis.skplanetx.com/tmap/js?version=1&format=javascript&appKey=bac4f916-3297-3be4-93ff-e37ae88b8f42"></script>
@@ -1025,6 +1029,97 @@ html, body {
 	});
 	
 </script>
+
+<script type="text/javascript">
+var flightNum = 0;
+var flightListLonLat = [];
+	function lineStart(){
+	    
+	    if(flightNum == 0){
+		    tmap = new Tmap.Map({div:'map_div', width:'0px', height:'0px'});
+			map = new google.maps.Map(document.getElementById('map'), {
+				zoom : zoom,
+				mapTypeId: google.maps.MapTypeId.ROADMAP,
+				center : center,
+				mapTypeControl: false
+			});
+			zoom = 17;
+			map.setZoom(zoom);
+	    }
+	   	
+	    if(flightNum < listLonLat.length-1){
+		
+			flightListLonLat.push(listLonLat[flightNum++]);
+			flightListLonLat.push(listLonLat[flightNum]);
+	
+	 		var center = new google.maps.LatLng(listLonLat[flightNum]);
+			map.setCenter(center);
+			
+		    if(listLonLat.length != 0){
+			var initflightPlanCoordinates = flightListLonLat;
+				var initflightPath = new google.maps.Polyline({
+					path : initflightPlanCoordinates,
+					geodesic : true,
+					strokeColor : '#FF0000',
+					strokeOpacity : 1.0,
+					strokeWeight : 4
+				});
+				
+				initflightPath.setMap(map);
+			}
+	    } else{
+			lineEnd();
+	    }
+	}
+	
+	function lineBack(){
+	    if(flightNum == 0){
+			lineEnd();
+			return;
+	    }
+	    
+	    tmap = new Tmap.Map({div:'map_div', width:'0px', height:'0px'});
+		map = new google.maps.Map(document.getElementById('map'), {
+			zoom : zoom,
+			mapTypeId: google.maps.MapTypeId.ROADMAP,
+			center : center,
+			mapTypeControl: false
+		});
+		zoom = 17;
+		map.setZoom(zoom);
+		
+		
+		var center = new google.maps.LatLng(listLonLat[--flightNum]);
+		map.setCenter(center);
+		flightListLonLat.splice(flightListLonLat.length-2,2);
+	    console.log(flightListLonLat); 
+		if(listLonLat.length != 0){
+			var initflightPlanCoordinates = flightListLonLat;
+				var initflightPath = new google.maps.Polyline({
+					path : initflightPlanCoordinates,
+					geodesic : true,
+					strokeColor : '#FF0000',
+					strokeOpacity : 1.0,
+					strokeWeight : 4
+				});
+				
+				initflightPath.setMap(map);
+		}
+		
+		if(flightListLonLat.length == 0){
+		    lineEnd(); 
+		}
+		
+	}
+	
+	function lineEnd(){
+	    flightNum=0;
+	    flightListLonLat = [];
+	    zoom = 13;
+	    map.setZoom(zoom);
+	    initialize();
+	}
+</script>
 <!--  -->
 <script type="text/javascript">
 	$(window).load(function() {
@@ -1122,18 +1217,23 @@ html, body {
 						</div>
 					</div>
 
+
+					
 					<div id="map" class="col-md-9" style="height: 100%;"
 						ondragenter="return dragEnter(event)"
 						ondrop="return dragDrop(event)"
-						ondragover="return dragOver(event)"></div>
+						ondragover="return dragOver(event)">	
+					</div>
 						
 					<div class="panel col-md-3"
-						style="height: 100%; margin-bottom: 0px; padding-top: 60px;">
+						style="height: 100%; margin-bottom: 0px; padding-top: 60px; right: 0">
 						<div class="panel-body" style="height: 100%">
 							<!-- <h3 class="title-hero">Time Line</h3> -->
+							<input type="button" value="start" onclick="javascript:lineStart()"/>
+							<input type="button" value="end" onclick="javascript:lineEnd()"/>
 							<div class="title">
 								<h2>${ mymapVO.title }</h2>
-								<p>by ${ mymapVO.userid }</p>
+								<p>by ${ mymapVO.userid }</p> 
 								<p>${ mymapVO.content }</p>
 								<p>
 									<c:forEach var="hashtagList" items="${ hashtagList }">
@@ -1171,16 +1271,15 @@ html, body {
 							</div>
 						</div>
 					</div>
+					<div id="playIcon" style="background: white; left: 0; bottom:0; position: absolute; margin-left: 30%">   
+						<i class="glyph-icon tooltip-button demo-icon icon-chevron-left" title="뒤로가기" onclick="javacscript:lineBack()"></i>
+						<i class="glyph-icon tooltip-button demo-icon icon-repeat" title="취소" onclick="javascript:lineEnd()"></i>
+						<i class="glyph-icon tooltip-button demo-icon icon-chevron-right" title="앞으로가기"  onclick="javascript:lineStart()"></i>
+					</div>
+					
+					
+					<div id="map_div"></div>  
 
-
-
-
-
-
-
-
-
-					<div id="map_div"></div>
 				</div>
 			</div>
 		</div>
