@@ -719,6 +719,7 @@ $(document).ready(function(){
 									  }
 									  infowindow = new google.maps.InfoWindow({
 										    content: (this.num+1)+". "+this.title+'<br/>'+this.content+
+										    '<br/><input type="button" value="사진추가">'+
 										    '<br/><input type="button" value="출발설정" onClick="startCheck('+
 										    		this.position.lat().toString()+", "+this.position.lng().toString()+')"/><input type="button" value="도착설정" onClick="endCheck('+
 										    		this.position.lat().toString()+", "+this.position.lng().toString()+')"/><input type="button" value="위치삭제" onClick="removeSpot('+
@@ -1195,60 +1196,59 @@ $(document).ready(function(){
 		initialize();
 	}
 	
-	//Submit new checkpoint form
-	$(document).ready(function () {
-		$('#addNewCPForm').on('submit', function(e) {
-			e.preventDefault();
-			
-			var newCPInfo = {
-					'title' : $('#addNewCPForm input[name=title]').val(),
-					'content' : $('#addNewCPForm input[name=content]').val()
-			};
-			
-			var dataJSON = JSON.stringify(newCPInfo);
-			
-			$.ajax({
-				type : 'POST',
-				data : dataJSON,
-				url : '${ pageContext.request.contextPath }/insertNewCP.do',
-				contentType : 'application/json',
-				dataType : 'json',
-				success : (function(data) {
-					
-				})
-			});
-		});
-	});
+	//새로 추가한 체크포인트 정보 설정
+	var NewCPInfo;
+	function setNewCPInfo(title, content) {
+		NewCPInfo = {
+				title : title,
+				content : content
+		};
+	}
 	
-	//Change extra marker to check point
+	function getNewCPInfo() {
+		return NewCPInfo;
+	}
+		
+	//추가한 extra marker를 체크포인트로 변경 시 입력창 보여주기
  	function changeToCP(lat, lng) {
-		//Place CP icon
+		//아이콘 보여주기
  		var newCP = new google.maps.Marker({
 			position: {lat:lat, lng:lng},
 			map: map
 		});
 
-		//newCP input form
+		//추가 정보 입력 창
 		var listenerNewCP = google.maps.event.addListener(newCP, 'click', function(){
-			if(infowindow != null){
+ 			if(infowindow != null){
 				  infowindow.close();
 			  }
 			  infowindow = new google.maps.InfoWindow({
-				    content: '<form id="addNewCPForm">'+
-				    			'<input type="text" name="title" placeholder="제목 입력">'+
-				    			'<input type="text" name="content" placeholder="내용 입력">'+
-				    			'<button type="submit" value="등록"/>'+
-				    		 '</form>'
+				    content: '<input type="text" id="newCPTitle" placeholder="제목 입력">'+
+				    		'<input type="text" id="newCPContent" placeholder="내용 입력">'+
+				    		'<input type="button" value="등록" onClick="submitNewCP('+lat+','+lng+');"/>'
 				  }); 
 			  infowindow.open(map, this);
 		});
-
-				
+	}
+	
+	//추가한 체크포인트 상세사항 입력
+	function submitNewCP(lat, lng) {
+		var title = document.getElementById('newCPTitle').value;
+		var content = document.getElementById('newCPContent').value;
 		
+		setNewCPInfo(title, content);
 		
-/* 		console.log(listLonLat);
-		console.log(checkpointList);
-		
+		if(title == null) {
+			alert('제목을 입력하세요');
+		} else if (content == null) {
+			alert('내용을 입력하세요');
+		} else {
+			addNewCP(lat, lng);			
+		}
+	}	
+	
+	//추가한 체크포인트 타임라인에 추가
+	function addNewCP(lat, lng) {
 		var previousCP;
 		var prevLonLatIdx;
 		var targetCPIdx;
@@ -1268,46 +1268,31 @@ $(document).ready(function(){
 					targetCPIdx = j;
 				}
 			}
-		}
- 		console.log(targetCPIdx);
-		
-		var test = {
-				content : "test",
-				coordinatesidx: 123,
-				idx: 444,
-				title: "test"
+		}		
+
+		var CPInfo = getNewCPInfo();
+		NewCPInfo = null;
+			
+		var newCPData = {
+			content : CPInfo.content,
+			title: CPInfo.title
 		};
-		
+			
 		//splice into checkpointList array
- 		checkpointList.splice(targetCPIdx+1, 0, test);
- 		console.log(checkpointList);
-		
-		
+ 		checkpointList.splice(targetCPIdx+1, 0, newCPData);
+			
 		//splice into checkMarker array
     	checkMarker.splice(prevLonLatIdx, 0, new google.maps.Marker({
 		    position: {lat:lat, lng:lng},
 		    map: map,
 		    num : targetCPIdx+1,
 		    title:checkpointList[targetCPIdx+1].title,
-		    content:checkpointList[targetCPIdx+1].content,
- 		    filename:filename, 
+		    content:checkpointList[targetCPIdx+1].content, 
 		    checkpointList:checkpointList[targetCPIdx+1].idx
-
- 		    ,accuracy:listLonLat[i].accuracy,
-		    timestamp:listLonLat[i].timestamp
 		}));		
-		
-     	console.log(checkMarker);
-    	
+	    	
     	//update timeline
-    	addTimeLine();
-*/
-		
-	
-		
-/* 		zoom = map.getZoom();
-		initialize(); */		
- 		
+    	addTimeLine();					
 	}	
 	
 	// 직접 마커 설정
