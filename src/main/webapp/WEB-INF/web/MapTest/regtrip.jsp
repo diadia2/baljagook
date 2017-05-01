@@ -631,7 +631,7 @@ $(document).ready(function(){
 		var n=1;
 		for(var i=0; i<checkMarker.length; i++){
 		    if(checkMarker[i].title != ""){
-				$('#draggablePanelList').append('<li id="cpList"'+n+'" class="dd-item" data-id="'+n+'" onClick="goZoomIn('+checkMarker[i].position.lat()+", "+checkMarker[i].position.lng()+')"><div class="dd-handle"><div class="circleNum">'+n+'</div>'+checkMarker[i].title+'</div></li>');
+				$('#draggablePanelList').append('<li id="cpList'+n+'" class="dd-item" data-id="'+n+'" onClick="goZoomIn('+checkMarker[i].position.lat()+", "+checkMarker[i].position.lng()+')"><div class="dd-handle"><div class="circleNum">'+n+'</div><div id="title">'+checkMarker[i].title+'</div><div id="content" style="display: none;">'+checkMarker[i].content+'</div></div></li>');
 		   		n++;
 		    }
 		} 
@@ -719,7 +719,6 @@ $(document).ready(function(){
 									  }
 									  infowindow = new google.maps.InfoWindow({
 										    content: (this.num+1)+". "+this.title+'<br/>'+this.content+
-										    '<br/><input type="button" value="사진추가">'+
 										    '<br/><input type="button" value="출발설정" onClick="startCheck('+
 										    		this.position.lat().toString()+", "+this.position.lng().toString()+')"/><input type="button" value="도착설정" onClick="endCheck('+
 										    		this.position.lat().toString()+", "+this.position.lng().toString()+')"/><input type="button" value="위치삭제" onClick="removeSpot('+
@@ -760,9 +759,7 @@ $(document).ready(function(){
 							  }
 							  infowindow = new google.maps.InfoWindow({
 								    content: (this.num+1)+". "+(this.position.lat()).toFixed(7).toString()+", "+(this.position.lng()).toFixed(7).toString()+
-								    '<br/><input type="button" value="체크포인트로 변경" onClick="changeToCP('+
-								    	(this.position.lat()).toFixed(7).toString()+", "+(this.position.lng()).toFixed(7).toString()+
-								    ')"/><br/><input type="button" value="출발설정" onClick="startCheck('+
+								    '<br/><input type="button" value="출발설정" onClick="startCheck('+
 								    	this.position.lat().toString()+", "+this.position.lng().toString()+
 								    ')"/><input type="button" value="도착설정" onClick="endCheck('+
 								    	this.position.lat().toString()+", "+this.position.lng().toString()+
@@ -1194,105 +1191,6 @@ $(document).ready(function(){
 		initLonLat = {lat:lat,lng:lng};
 		zoom = map.getZoom();
 		initialize();
-	}
-	
-	//새로 추가한 체크포인트 정보 설정
-	var NewCPInfo;
-	function setNewCPInfo(title, content) {
-		NewCPInfo = {
-				title : title,
-				content : content
-		};
-	}
-	
-	function getNewCPInfo() {
-		return NewCPInfo;
-	}
-		
-	//추가한 extra marker를 체크포인트로 변경 시 입력창 보여주기
- 	function changeToCP(lat, lng) {
-		//아이콘 보여주기
- 		var newCP = new google.maps.Marker({
-			position: {lat:lat, lng:lng},
-			map: map
-		});
-
-		//추가 정보 입력 창
-		var listenerNewCP = google.maps.event.addListener(newCP, 'click', function(){
- 			if(infowindow != null){
-				  infowindow.close();
-			  }
-			  infowindow = new google.maps.InfoWindow({
-				    content: '<input type="text" id="newCPTitle" placeholder="제목 입력">'+
-				    		'<input type="text" id="newCPContent" placeholder="내용 입력">'+
-				    		'<input type="button" value="등록" onClick="submitNewCP('+lat+','+lng+');"/>'
-				  }); 
-			  infowindow.open(map, this);
-		});
-	}
-	
-	//추가한 체크포인트 상세사항 입력
-	function submitNewCP(lat, lng) {
-		var title = document.getElementById('newCPTitle').value;
-		var content = document.getElementById('newCPContent').value;
-		
-		setNewCPInfo(title, content);
-		
-		if(title == null) {
-			alert('제목을 입력하세요');
-		} else if (content == null) {
-			alert('내용을 입력하세요');
-		} else {
-			addNewCP(lat, lng);			
-		}
-	}	
-	
-	//추가한 체크포인트 타임라인에 추가
-	function addNewCP(lat, lng) {
-		var previousCP;
-		var prevLonLatIdx;
-		var targetCPIdx;
-		
-		//find previous LonLat index
-		for(var i=0; i<listLonLat.length; i++) {
-			if(listLonLat[i].lat.toString() == lat && listLonLat[i].lng.toString() == lng) {
-				prevLonLatIdx = i;
-			}
-		}
-		
-		//find previous CP index
-		for(var i=0; i<prevLonLatIdx; i++) {	
- 			for(var j=0; j<checkpointList.length; j++) {
-				if(listLonLat[i].idk == checkpointList[j].coordinatesidx) {
-					previousCP = checkpointList[j];
-					targetCPIdx = j;
-				}
-			}
-		}		
-
-		var CPInfo = getNewCPInfo();
-		NewCPInfo = null;
-			
-		var newCPData = {
-			content : CPInfo.content,
-			title: CPInfo.title
-		};
-			
-		//splice into checkpointList array
- 		checkpointList.splice(targetCPIdx+1, 0, newCPData);
-			
-		//splice into checkMarker array
-    	checkMarker.splice(prevLonLatIdx, 0, new google.maps.Marker({
-		    position: {lat:lat, lng:lng},
-		    map: map,
-		    num : targetCPIdx+1,
-		    title:checkpointList[targetCPIdx+1].title,
-		    content:checkpointList[targetCPIdx+1].content, 
-		    checkpointList:checkpointList[targetCPIdx+1].idx
-		}));		
-	    	
-    	//update timeline
-    	addTimeLine();					
 	}	
 	
 	// 직접 마커 설정
@@ -1534,9 +1432,9 @@ $(document).ready(function(){
 		var rightTitle = "";
 		var rightContent = "";		
 		for(var i=0; i<checkMarker.length; i++){
-			rightTitle += $('.panel-heading').eq(i).children().val();
+			rightTitle += $('#cpList'+(i+1)).find('#title').text();
 			rightTitle += "/";
-			rightContent += $('.panel-body').eq(i).children().val();
+			rightContent += $('#cpList'+(i+1)).find('#content').text();
 			rightContent += "/";
 		}
 		$('#map_div').append("<input type='hidden' value='"+rightTitle+"' name='paneltitle'/>");

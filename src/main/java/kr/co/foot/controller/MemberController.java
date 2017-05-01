@@ -49,7 +49,8 @@ public class MemberController {
 		}
 		model.addAttribute("imageName", imageName);
 		
-		return "member/mypage";
+//		return "member/mypage";
+		return "member/mypage3";
 	}
 	
 	//�댁�ы��/�닿��� ���� ajax
