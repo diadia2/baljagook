@@ -1,11 +1,20 @@
 package kr.co.foot.controller;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import kr.co.foot.faq.FaqService;
+import kr.co.foot.faq.FaqVO;
+
 @Controller
 public class PageController {
+	
+	@Autowired
+	private FaqService faqService;
 
 	@RequestMapping("/top.do")
 	public ModelAndView top() {
@@ -32,7 +41,10 @@ public class PageController {
 	@RequestMapping("/qna.do")
 	public ModelAndView qna() {
 		ModelAndView mav = new ModelAndView("/board/qna");
-		return mav;
+	    List<FaqVO> faqList = faqService.getFAQList();
+	    mav.addObject("faqList", faqList);
+		
+	    return mav;
 	}
 
 	@RequestMapping("/noticeList.do")
