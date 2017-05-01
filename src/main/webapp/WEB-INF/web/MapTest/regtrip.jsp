@@ -631,7 +631,11 @@ $(document).ready(function(){
 		var n=1;
 		for(var i=0; i<checkMarker.length; i++){
 		    if(checkMarker[i].title != ""){
+<<<<<<< HEAD
 				$('#draggablePanelList').append('<li id="cpList"'+n+'" class="dd-item" data-id="'+n+'" onClick="goZoomIn('+checkMarker[i].position.lat()+", "+checkMarker[i].position.lng()+')"><div class="dd-handle"><div class="circleNum">'+n+'</div><div>'+checkMarker[i].title+'</div></div></li>');
+=======
+				$('#draggablePanelList').append('<li id="cpList'+n+'" class="dd-item" data-id="'+n+'" onClick="goZoomIn('+checkMarker[i].position.lat()+", "+checkMarker[i].position.lng()+')"><div class="dd-handle"><div class="circleNum">'+n+'</div><div id="title">'+checkMarker[i].title+'</div><div id="content" style="display: none;">'+checkMarker[i].content+'</div></div></li>');
+>>>>>>> ae321736cc91edcdf9aa5739bc01069afe47f9af
 		   		n++;
 		    }
 		} 
@@ -759,9 +763,7 @@ $(document).ready(function(){
 							  }
 							  infowindow = new google.maps.InfoWindow({
 								    content: (this.num+1)+". "+(this.position.lat()).toFixed(7).toString()+", "+(this.position.lng()).toFixed(7).toString()+
-								    '<br/><input type="button" value="체크포인트로 변경" onClick="changeToCP('+
-								    	(this.position.lat()).toFixed(7).toString()+", "+(this.position.lng()).toFixed(7).toString()+
-								    ')"/><br/><input type="button" value="출발설정" onClick="startCheck('+
+								    '<br/><input type="button" value="출발설정" onClick="startCheck('+
 								    	this.position.lat().toString()+", "+this.position.lng().toString()+
 								    ')"/><input type="button" value="도착설정" onClick="endCheck('+
 								    	this.position.lat().toString()+", "+this.position.lng().toString()+
@@ -1193,121 +1195,6 @@ $(document).ready(function(){
 		initLonLat = {lat:lat,lng:lng};
 		zoom = map.getZoom();
 		initialize();
-	}
-	
-	//Submit new checkpoint form
-	$(document).ready(function () {
-		$('#addNewCPForm').on('submit', function(e) {
-			e.preventDefault();
-			
-			var newCPInfo = {
-					'title' : $('#addNewCPForm input[name=title]').val(),
-					'content' : $('#addNewCPForm input[name=content]').val()
-			};
-			
-			var dataJSON = JSON.stringify(newCPInfo);
-			
-			$.ajax({
-				type : 'POST',
-				data : dataJSON,
-				url : '${ pageContext.request.contextPath }/insertNewCP.do',
-				contentType : 'application/json',
-				dataType : 'json',
-				success : (function(data) {
-					
-				})
-			});
-		});
-	});
-	
-	//Change extra marker to check point
- 	function changeToCP(lat, lng) {
-		//Place CP icon
- 		var newCP = new google.maps.Marker({
-			position: {lat:lat, lng:lng},
-			map: map
-		});
-
-		//newCP input form
-		var listenerNewCP = google.maps.event.addListener(newCP, 'click', function(){
-			if(infowindow != null){
-				  infowindow.close();
-			  }
-			  infowindow = new google.maps.InfoWindow({
-				    content: '<form id="addNewCPForm">'+
-				    			'<input type="text" name="title" placeholder="제목 입력">'+
-				    			'<input type="text" name="content" placeholder="내용 입력">'+
-				    			'<button type="submit" value="등록"/>'+
-				    		 '</form>'
-				  }); 
-			  infowindow.open(map, this);
-		});
-
-				
-		
-		
-/* 		console.log(listLonLat);
-		console.log(checkpointList);
-		
-		var previousCP;
-		var prevLonLatIdx;
-		var targetCPIdx;
-		
-		//find previous LonLat index
-		for(var i=0; i<listLonLat.length; i++) {
-			if(listLonLat[i].lat.toString() == lat && listLonLat[i].lng.toString() == lng) {
-				prevLonLatIdx = i;
-			}
-		}
-		
-		//find previous CP index
-		for(var i=0; i<prevLonLatIdx; i++) {	
- 			for(var j=0; j<checkpointList.length; j++) {
-				if(listLonLat[i].idk == checkpointList[j].coordinatesidx) {
-					previousCP = checkpointList[j];
-					targetCPIdx = j;
-				}
-			}
-		}
- 		console.log(targetCPIdx);
-		
-		var test = {
-				content : "test",
-				coordinatesidx: 123,
-				idx: 444,
-				title: "test"
-		};
-		
-		//splice into checkpointList array
- 		checkpointList.splice(targetCPIdx+1, 0, test);
- 		console.log(checkpointList);
-		
-		
-		//splice into checkMarker array
-    	checkMarker.splice(prevLonLatIdx, 0, new google.maps.Marker({
-		    position: {lat:lat, lng:lng},
-		    map: map,
-		    num : targetCPIdx+1,
-		    title:checkpointList[targetCPIdx+1].title,
-		    content:checkpointList[targetCPIdx+1].content,
- 		    filename:filename, 
-		    checkpointList:checkpointList[targetCPIdx+1].idx
-
- 		    ,accuracy:listLonLat[i].accuracy,
-		    timestamp:listLonLat[i].timestamp
-		}));		
-		
-     	console.log(checkMarker);
-    	
-    	//update timeline
-    	addTimeLine();
-*/
-		
-	
-		
-/* 		zoom = map.getZoom();
-		initialize(); */		
- 		
 	}	
 	
 	// 직접 마커 설정
@@ -1549,9 +1436,9 @@ $(document).ready(function(){
 		var rightTitle = "";
 		var rightContent = "";		
 		for(var i=0; i<checkMarker.length; i++){
-			rightTitle += $('.panel-heading').eq(i).children().val();
+			rightTitle += $('#cpList'+(i+1)).find('#title').text();
 			rightTitle += "/";
-			rightContent += $('.panel-body').eq(i).children().val();
+			rightContent += $('#cpList'+(i+1)).find('#content').text();
 			rightContent += "/";
 		}
 		$('#map_div').append("<input type='hidden' value='"+rightTitle+"' name='paneltitle'/>");

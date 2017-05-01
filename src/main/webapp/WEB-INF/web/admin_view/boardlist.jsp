@@ -189,7 +189,7 @@
 		                                    	<c:if test="${ not empty reportedMapDTOList }">
 		                                    		<c:forEach var="reportedMapDTOList" items="${ reportedMapDTOList }" varStatus="loop"> 
 				                                    	<tr id="row${ reportedMapDTOList.mymapidx }">
-				                                    	<td><a href="${ pageContext.request.contextPath }/map/detail.do?mymapidx=${ reportedMapDTOList.mymapidx }">${ reportedMapDTOList.title }</a></td>
+				                                    	<td><a target="_blank" href="${ pageContext.request.contextPath }/map/detail.do?mymapidx=${ reportedMapDTOList.mymapidx }">${ reportedMapDTOList.title }</a></td>
 				                                    	<td>${ reportedMapDTOList.content }</td>
 				                                    	<td>${ reportedMapDTOList.userid }</td>
 				                                    	<td>${ reportedMapDTOList.regdate }</td>
