@@ -411,11 +411,13 @@ html, body {
 					  }
 				  });
 				  var listener1 = google.maps.event.addListener(checkMarker[i], 'click', function(){
+
 					  if(infowindow != null){
 						  infowindow.close();
 					  }
 					  infowindow = new google.maps.InfoWindow({
-						    content: '<img src="${ pageContext.request.contextPath }/resources/photo/'+this.filename+'" width="200px" height="200px"/><br/>'+
+						    content: '<a href="javascript:doImgPop('+this.idx+')"><img src="${ pageContext.request.contextPath }/resources/photo/'+this.filename
+						    +'" width="200px" height="200px" title="클릭하시면 확대하여 보실 수 있습니다." style="cursor:pointer;"/></a><br/>'+
 						    (this.num+1)+". "+this.title+'<br/>'+this.content+
 						    '<br/><input type="button" value="출발설정" onClick="startCheck('+
 						    		this.position.lat().toString()+", "+this.position.lng().toString()+')"/><input type="button" value="도착설정" onClick="endCheck('+
@@ -454,6 +456,43 @@ html, body {
 			 
 		}
 	} 
+	
+		// 사진 확대
+		function doImgPop(idx){ 
+		    console.log(idx);
+		    
+		    $.ajax({
+			    type: 'POST' , 
+			    url: '${ pageContext.request.contextPath }/map/getCheckpointInfo.do',
+			    dataType : 'json',
+			    data : {
+					checkpointidx : idx
+			    },
+			    success: function(data) {
+					var getTitle = data[0].title;
+					var getContent = data[0].content;
+					var newName = data[1].newname;
+					
+					var img = '${ pageContext.request.contextPath }/resources/photo/679c84b19a2547d58f4e2ce8b17126f5.jpg';
+//					var img = '${ pageContext.request.contextPath }/resources/photo/'+newName;
+					$('#openphoto').append("<img src="+img+" onclick='closephoto()' width='80%' height='80%' style='cursor:pointer; margin-left: 10%; margin-top: 2%; margin-bottom: 2%' title ='클릭하시면 창이 닫힙니다.'>");
+			        $('#openphoto').append("<div style='color:white; margin-left: 10%;'>"+getTitle+"</div>");
+			        $('#openphoto').append("<div style='color:white; margin-left: 10%; margin-bottom: 2%;'>"+getContent+"</div>");  
+			        $('#openphoto').fadeIn('slow');
+			        
+			        if(infowindow != null){
+					  	infowindow.close();
+				  	}
+		        }
+			});	
+		    
+ 		     
+		}
+  
+		function closephoto(){
+		    $('#openphoto').children().remove();
+		    $('#openphoto').hide();
+		}
 	
 	//idx => t_checkpoint idx번호
 	function getFavoritePlace(idx){
@@ -740,6 +779,7 @@ html, body {
 	
 	window.onload = function(){
 		initialize();
+ 		$('#openphoto').hide();
 	}
 	
 	function startResetPlace(event){
@@ -1043,8 +1083,7 @@ var flightListLonLat = [];
 				center : center,
 				mapTypeControl: false
 			});
-			zoom = 17;
-			map.setZoom(zoom);
+			
 	    }
 	   	
 	    if(flightNum < listLonLat.length-1){
@@ -1084,10 +1123,7 @@ var flightListLonLat = [];
 			mapTypeId: google.maps.MapTypeId.ROADMAP,
 			center : center,
 			mapTypeControl: false
-		});
-		zoom = 17;
-		map.setZoom(zoom);
-		
+		});		
 		
 		var center = new google.maps.LatLng(listLonLat[--flightNum]);
 		map.setCenter(center);
@@ -1270,10 +1306,11 @@ var flightListLonLat = [];
 						</div>
 					</div>
 					<div id="playIcon" style="background: white; left: 0; bottom:0; position: absolute; margin-left: 30%">   
-						<i class="glyph-icon tooltip-button demo-icon icon-chevron-left" title="뒤로가기" onclick="javacscript:lineBack()"></i>
+						<i class="glyph-icon tooltip-button demo-icon icon-chevron-left" title="뒤로가기" onclick="javacscript:lineBack()"></i> 
 						<i class="glyph-icon tooltip-button demo-icon icon-repeat" title="취소" onclick="javascript:lineEnd()"></i>
 						<i class="glyph-icon tooltip-button demo-icon icon-chevron-right" title="앞으로가기"  onclick="javascript:lineStart()"></i>
 					</div>
+					<div id="openphoto" style="background: black; left: 0; bottom:0; position: absolute; margin-left: 10%; margin-bottom: 10%; margin-right: 30%; margin-top: 10%"></div>
 					
 					
 					<div id="map_div"></div>  

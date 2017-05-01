@@ -631,7 +631,7 @@ $(document).ready(function(){
 		var n=1;
 		for(var i=0; i<checkMarker.length; i++){
 		    if(checkMarker[i].title != ""){
-				$('#draggablePanelList').append('<li id="cpList"'+n+'" class="dd-item" data-id="'+n+'" onClick="goZoomIn('+checkMarker[i].position.lat()+", "+checkMarker[i].position.lng()+')"><div class="dd-handle"><div class="circleNum">'+n+'</div>'+checkMarker[i].title+'</div></li>');
+				$('#draggablePanelList').append('<li id="cpList"'+n+'" class="dd-item" data-id="'+n+'" onClick="goZoomIn('+checkMarker[i].position.lat()+", "+checkMarker[i].position.lng()+')"><div class="dd-handle"><div class="circleNum">'+n+'</div><div>'+checkMarker[i].title+'</div></div></li>');
 		   		n++;
 		    }
 		} 
@@ -1575,9 +1575,11 @@ $(document).ready(function(){
 	    $('#map_div').append("<input type='hidden' value='"+photoOriName+"' name='photoOriName'/>");
 	    $('#map_div').append("<input type='hidden' value='"+photoNewName+"' name='photoNewName'/>");
 	    
+	    alert(rightTitle);
+	    alert(rightContent);
 	    console.log(checkMarker);
 	    console.log(photoList);
-	    document.inputform.submit(); 
+//	    document.inputform.submit(); 
 	}
 	
 	
