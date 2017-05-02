@@ -297,7 +297,7 @@
 		<div id="header-nav-right" class="row">
 			<div class="col-md-4"><a class="navbar-brand" href="${pageContext.request.contextPath }/main.do">발자국로고자리</a></div>
 			<div class="col-md-4">
-				<div class="input-group">
+				<div class="input-group" id="searchvar">
 					<form action="${pageContext.request.contextPath }/map/search.do" method="get">
 						<input type="text" class="form-control" placeholder="Search" id="searchtext"
 							style="margin-top: 13px;" onKeyPress="if (event.keyCode==13){ goSearch();event.returnValue=false}">
