@@ -70,7 +70,7 @@ html, body {
 #header-nav-left {
 	margin-right: 5%;
 }
-.input-group {
+#searchvar {
 	display: none;
 }
 </style>
@@ -511,11 +511,8 @@ $(document).ready(function(){
 		var n=1;
 		for(var i=0; i<checkMarker.length; i++){
 		    if(checkMarker[i].title != ""){
-<<<<<<< HEAD
 				$('#draggablePanelList').append('<li id="cpList"'+n+'" class="dd-item" data-id="'+n+'" onClick="goZoomIn('+checkMarker[i].position.lat()+", "+checkMarker[i].position.lng()+')"><div class="dd-handle"><div class="circleNum">'+n+'</div><div>'+checkMarker[i].title+'</div></div></li>');
-=======
-				$('#draggablePanelList').append('<li id="cpList'+n+'" class="dd-item" data-id="'+n+'" onClick="goZoomIn('+checkMarker[i].position.lat()+", "+checkMarker[i].position.lng()+')"><div class="dd-handle"><div class="circleNum">'+n+'</div><div id="title">'+checkMarker[i].title+'</div><div id="content" style="display: none;">'+checkMarker[i].content+'</div></div></li>');
->>>>>>> ae321736cc91edcdf9aa5739bc01069afe47f9af
+				/* $('#draggablePanelList').append('<li id="cpList'+n+'" class="dd-item" data-id="'+n+'" onClick="goZoomIn('+checkMarker[i].position.lat()+", "+checkMarker[i].position.lng()+')"><div class="dd-handle"><div class="circleNum">'+n+'</div><div id="title">'+checkMarker[i].title+'</div><div id="content" style="display: none;">'+checkMarker[i].content+'</div></div></li>'); */
 		   		n++;
 		    }
 		} 
@@ -1346,7 +1343,7 @@ $(document).ready(function(){
 	    alert(rightContent);
 	    console.log(checkMarker);
 	    console.log(photoList);
-//	    document.inputform.submit(); 
+	    document.inputform.submit(); 
 	}
 	
 	
@@ -1515,7 +1512,7 @@ function resetFindRoad(){
 								style="float: right; position: absolute; right: 0; height: 80%"
 								id="naviDiv">
 								<div class="panel" style="height: 100%">
-									<div class="panel-body" style="height: 100%">
+									<div class="panel-body" style="height: 100%; margin-top: 60px;">
 										<div class="coupon_tab_btn">
 											<span class="tab_btn tab01 active" id="tab1"> <a
 												href="javascript:findLoadAgain()"> <img

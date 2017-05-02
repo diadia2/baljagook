@@ -75,7 +75,7 @@ html, body {
 #header-nav-left {
 	margin-right: 5%;
 }
-.input-group {
+#searchvar {
 	display: none;
 }
 </style>
