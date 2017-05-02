@@ -6,6 +6,8 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+<meta name="viewport" content="width=device-width" />
 <title>Main</title>
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -536,38 +538,52 @@ body {
 					<h2 class="text-center">Featured</h2>
 				</div>
 				<div class="row projects">
+						<div class="col-lg-3 col-sm-6 item">
+						<a href="${pageContext.request.contextPath }/map/detail.do?mymapidx=${ mymapList[0].idx }">
+							<div class="card"> 
+								<img class="img-reponsive" alt="사진1" src="<c:url value="https://maps.googleapis.com/maps/api/staticmap?path=color:0xff0000cc|weight:3|${ regOne }&size=256x256&key=AIzaSyDVbk7aW8HrEqozbZcMDZDBDP77uGJGduc&style=feature:water|color:0x1C91C4cc"/>">
+								<h3 class="name">${ mymapList[0].title }</h3>
+								<p class="description">${ mymapList[0].content }</p>
+								<div class="card-stats small text-muted" style="margin-top:10px;"><i class="fa fa-globe"></i>&nbsp;&nbsp;${ regmapList[0].viewcnt } views</div>
+							</div></a>
+						</div>
+						<div class="col-lg-3 col-sm-6 item">
+						<a href="${pageContext.request.contextPath }/map/detail.do?mymapidx=${ mymapList[1].idx }">
+							<div class="card">
+								<img class="img-reponsive" alt="사진1" src="<c:url value="https://maps.googleapis.com/maps/api/staticmap?path=color:0xff0000cc|weight:3|${ regTwo }&size=256x256&key=AIzaSyDVbk7aW8HrEqozbZcMDZDBDP77uGJGduc&style=feature:water|color:0x1C91C4cc"/>">
+								<h3 class="name">${ mymapList[1].title }</h3>
+								<p class="description">${ mymapList[1].content }</p>
+								<div class="card-stats small text-muted" style="margin-top:10px;"><i class="fa fa-globe"></i>&nbsp;&nbsp;${ regmapList[1].viewcnt } views</div>
+							</div></a>
+						</div> 
+						<div class="col-lg-3 col-sm-6 item">
+						<a href="${pageContext.request.contextPath }/map/detail.do?mymapidx=${ mymapList[2].idx }">
+							<div class="card">
+								<img class="img-reponsive" alt="사진1" src="<c:url value="https://maps.googleapis.com/maps/api/staticmap?path=color:0xff0000cc|weight:3|${ regThree }&size=256x256&key=AIzaSyDVbk7aW8HrEqozbZcMDZDBDP77uGJGduc&style=feature:water|color:0x1C91C4cc"/>">
+								<h3 class="name">${ mymapList[2].title }</h3>
+								<p class="description">${ mymapList[2].content }</p>
+								<div class="card-stats small text-muted" style="margin-top:10px;"><i class="fa fa-globe"></i>&nbsp;&nbsp;${ regmapList[2].viewcnt } views</div>
+							</div></a>
+						</div>
+						<div class="col-lg-3 col-sm-6 item">
+						<a href="${pageContext.request.contextPath }/map/detail.do?mymapidx=${ mymapList[3].idx }">
+							<div class="card">
+								<img class="img-reponsive" alt="사진1" src="<c:url value="https://maps.googleapis.com/maps/api/staticmap?path=color:0xff0000cc|weight:3|${ regFour }&size=256x256&key=AIzaSyDVbk7aW8HrEqozbZcMDZDBDP77uGJGduc&style=feature:water|color:0x1C91C4cc"/>">
+								<h3 class="name">${ mymapList[3].title }</h3>
+								<p class="description">${ mymapList[3].content }</p>
+								<div class="card-stats small text-muted" style="margin-top:10px;"><i class="fa fa-globe"></i>&nbsp;&nbsp;${ regmapList[3].viewcnt } views</div>
+							</div></a>
+						</div>
+					 
+<%-- 				
 					<div class="col-lg-3 col-sm-6 item">
-					<a href="${pageContext.request.contextPath }/mapDetail.do">
 						<div class="card">
-							<img class="img-reponsive" alt="사진1" src="<c:url value="/resources/images/1.png"/>">
-							<h3 class="name">플젝이름</h3>
-							<p class="description">설명</p>
-						</div></a>
-					</div>
-					<div class="col-lg-3 col-sm-6 item">
-						<div class="card">
-							<img class="img-reponsive" alt="사진1" src="<c:url value="/resources/images/2.png"/>">
+							<img class="img-reponsive" alt="사진1" src="<c:url value="https://maps.googleapis.com/maps/api/staticmap?path=color:0xff0000cc|weight:3|37.4044566,126.9073671|37.4044566,126.9073671|37.4020000,126.9108537|37.4020000,126.9108537|37.3997598,126.9191284|37.3998638,126.9461607|37.4042866,126.9620411|37.4759155,126.9817769&size=256x256&key=AIzaSyDVbk7aW8HrEqozbZcMDZDBDP77uGJGduc&style=feature:water|color:0x1C91C4cc&sensor=false"/>">
 							<h3 class="name">플젝이름</h3>
 							<p class="description">설명</p>
 						</div>
-					</div>
-					<div class="col-lg-3 col-sm-6 item">
-						<div class="card">
-							<img class="img-reponsive" alt="사진1" src="<c:url value="/resources/images/3.png"/>">
-							<h3 class="name">플젝이름</h3>
-							<p class="description">설명</p>
-						</div>
-					</div>
-					<div class="col-lg-3 col-sm-6 item">
-						<div class="card">
-							<img class="img-reponsive" alt="사진1" src="<c:url value="/resources/images/4.png"/>">
-							<h3 class="name">플젝이름</h3>
-							<p class="description">설명</p>
-						</div>
-					</div>
-					<div class="text-right">
-						<button class="btn btn-secondary">more</button>
-					</div>
+					</div> 
+--%>
 				</div>
 
 			</div>
@@ -714,7 +730,7 @@ body {
 				</div>
 			</div>
 		</div>
-
+	</div>
 	</section>
 	<footer>
 		<jsp:include page="/bottom.do" />

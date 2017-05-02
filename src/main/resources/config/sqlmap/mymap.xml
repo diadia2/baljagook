@@ -199,4 +199,8 @@
    <update id="updatePhoto" parameterType="kr.co.foot.photo.PhotoVO">
        update t_photo set newname = #{newname} where checkpointidx = #{checkpointidx}
    </update>
+   
+   <select id="selectRegmapInfo" resultType="kr.co.foot.regmap.RegmapVO">
+       select idx, sdate, edate, viewcnt, blind, city, theme, mymapidx from t_regmap where blind <![CDATA[<]]> 1 order by viewcnt DESC LIMIT 0, 4
+   </select>
 </mapper>
