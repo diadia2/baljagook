@@ -417,6 +417,10 @@ public class MymapController {
       model.addAttribute("checkpointVO", checkpointVO);
       model.addAttribute("photoList", photoList);
        
+      for(CheckpointVO vo : checkpointVO){
+    	  System.out.println(vo);
+      }
+      
       return "search/detail2";
    }
    
@@ -683,5 +687,17 @@ public class MymapController {
 		mymapService.updatePhoto(photoVO);
 		
 		return imageName;
+	}
+	@RequestMapping("/map/getCheckpointInfo.do")
+	@ResponseBody
+	public Object[] getCheckpointInfo(@RequestParam("checkpointidx") String checkpointidx){
+		
+		int idx = Integer.parseInt(checkpointidx);
+		CheckpointVO checkpointVO = mymapService.selectCheckPointByIdx(checkpointidx);
+		PhotoVO photoVO = mymapService.selectPhoto(idx);
+		
+		Object[] ob = {checkpointVO, photoVO}; 
+		
+		return ob;
 	}
 }

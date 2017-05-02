@@ -31,7 +31,6 @@
 			<ul class="list-inline">
 				<li><a href="main.do">Home</a></li>
 				<li><a href="#">Introduce</a></li>
-				<li><a href="noticeList.do">Notice</a></li>
 				<li><a href="qna.do">FAQ</a></li>
 			</ul>
 			<p class="copyright">ⓒ 2017 baljaguk, Inc.</p>
