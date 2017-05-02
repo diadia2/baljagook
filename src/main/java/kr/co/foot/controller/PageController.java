@@ -1,5 +1,6 @@
 package kr.co.foot.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,9 +10,16 @@ import org.springframework.web.servlet.ModelAndView;
 
 import kr.co.foot.faq.FaqService;
 import kr.co.foot.faq.FaqVO;
+import kr.co.foot.mymap.MymapService;
+import kr.co.foot.mymap.MymapVO;
+import kr.co.foot.regcoordinates.RegcoordinatesVO;
+import kr.co.foot.regmap.RegmapVO;
 
 @Controller
 public class PageController {
+	
+	@Autowired
+	MymapService mymapService;
 	
 	@Autowired
 	private FaqService faqService;
@@ -30,7 +38,72 @@ public class PageController {
 
 	@RequestMapping("/main.do")
 	public ModelAndView main() {
+		
+		List<RegmapVO> regmapList = mymapService.selectRegmapInfo();
+		
+		for(RegmapVO vo : regmapList){
+			System.out.println(vo);
+		}
+		
+		List<MymapVO> mymapList = new ArrayList<MymapVO>();
+		for(int i=0; i<regmapList.size(); i++){
+			MymapVO mymapVO = mymapService.selectMymap(regmapList.get(i).getMymapidx());
+			mymapList.add(mymapVO);
+		}
+		
+		for(MymapVO vo: mymapList)
+			System.out.println(vo);
+		
+		List<RegcoordinatesVO> regcoordinatesListOne = mymapService.getRegmapsList(mymapList.get(0).getIdx());
+		List<RegcoordinatesVO> regcoordinatesListTwo = mymapService.getRegmapsList(mymapList.get(1).getIdx());
+		List<RegcoordinatesVO> regcoordinatesListThree = mymapService.getRegmapsList(mymapList.get(2).getIdx());
+		List<RegcoordinatesVO> regcoordinatesListFour = mymapService.getRegmapsList(mymapList.get(3).getIdx());
+		
+		String regOne = "";
+		String regTwo = "";
+		String regThree = "";
+		String regFour = "";
+		
+		for(int i=0; i<regcoordinatesListOne.size(); i++){
+			regOne += regcoordinatesListOne.get(i).getLat();
+			regOne += ",";
+			regOne += regcoordinatesListOne.get(i).getLon();
+			if(i != regcoordinatesListOne.size()-1){
+				regOne += "|";
+			}
+		}
+		for(int i=0; i<regcoordinatesListTwo.size(); i++){
+			regTwo += regcoordinatesListTwo.get(i).getLat();
+			regTwo += ",";
+			regTwo += regcoordinatesListTwo.get(i).getLon();
+			if(i != regcoordinatesListTwo.size()-1){
+				regTwo += "|";
+			}
+		}
+		for(int i=0; i<regcoordinatesListThree.size(); i++){
+			regThree += regcoordinatesListThree.get(i).getLat();
+			regThree += ",";
+			regThree += regcoordinatesListThree.get(i).getLon();
+			if(i != regcoordinatesListThree.size()-1){
+				regThree += "|";
+			}
+		}
+		for(int i=0; i<regcoordinatesListFour.size(); i++){
+			regFour += regcoordinatesListFour.get(i).getLat();
+			regFour += ",";
+			regFour += regcoordinatesListFour.get(i).getLon();
+			if(i != regcoordinatesListFour.size()-1){
+				regFour += "|";
+			}
+		}
+		
 		ModelAndView mav = new ModelAndView("/main");
+		mav.addObject("regmapList", regmapList);
+		mav.addObject("mymapList", mymapList);
+		mav.addObject("regOne", regOne);
+		mav.addObject("regTwo", regTwo);
+		mav.addObject("regThree", regThree);
+		mav.addObject("regFour", regFour);
 		return mav;
 	}
 
@@ -92,5 +165,19 @@ public class PageController {
 		ModelAndView mav = new ModelAndView("/member/mypage2");
 		return mav;
 	}
-	
+	@RequestMapping("/main2.do")
+	public ModelAndView main2() {
+		ModelAndView mav = new ModelAndView("/main2");
+		return mav;
+	}
+	@RequestMapping("/top2.do")
+	public ModelAndView top2() {
+		ModelAndView mav = new ModelAndView("/include/top2");
+		return mav;
+	}
+	@RequestMapping("/bottom2.do")
+	public ModelAndView bottom2() {
+		ModelAndView mav = new ModelAndView("/include/bottom2");
+		return mav;
+	}
 }

@@ -352,5 +352,13 @@ public class MymapDAOImp implements MymapDAO {
 	public void updatePhoto(PhotoVO photoVO) {
 		sqlSessionTemplate.update("kr.co.foot.mymap.MymapDAO.updatePhoto", photoVO);
 	}
+
+	@Override
+	public List<RegmapVO> selectRegmapInfo() {
+
+		List<RegmapVO> regmapList = sqlSessionTemplate.selectList("kr.co.foot.mymap.MymapDAO.selectRegmapInfo");
+		
+		return regmapList;
+	}
 	
 }
