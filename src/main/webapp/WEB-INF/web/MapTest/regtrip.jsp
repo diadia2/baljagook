@@ -1,17 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@include file="/WEB-INF/share2.jsp"%>
 <!DOCTYPE html>
 <html lang="kr">
 <head>
 <style>
-/* 로딩 */
-#loading .svg-icon-loader {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	margin: -50px 0 0 -50px;
-}
 /* 화면 체우기 */
 html, body {
 	height: 100%;
@@ -35,10 +28,6 @@ html, body {
 	margin-left: 0px !important;
 	margin-right: 0px !important;
 	padding: 0px !important;
-}
-/* 네비바 투명 */
-#page-header {
-	background: rgba(255, 255, 255, 0) !important;
 }
 
 /* 판넬헤더 클릭 드래그 */
@@ -71,273 +60,164 @@ html, body {
 	box-shadow: 0 6px 10px rgba(0, 0, 0, .23), 0 10px 30px
 		rgba(0, 0, 0, .19);
 }
-
-#addTimeInfo {
-	margin: 0px;
-	border: 0px;
+/* 페이지 메뉴바 왼쪽으로 줄이기 */
+#page-header {
+	width: 25%;
+	left: 75%;
+	margin-left: 15px;
+}
+/* 검색바 숨기기 */
+#header-nav-left {
+	margin-right: 5%;
+}
+.input-group {
+	display: none;
 }
 </style>
 <style type="text/css">
 /* 길찾기 부분 추가 */
 /* 서브 메뉴 관련 추가 부분 */
-.foot_depth01{ padding:0 4%; }
-/*.sub_depth01 > li{ float: left; width: 33.33%; border-right:1px solid #36c4d4; border-bottom:1px solid #36c4d4; box-sizing: border-box;  }*/
-.foot_depth01 > li{ float: left; width: 100%; border-bottom:1px solid #36c4d4; box-sizing: border-box;  }
-
-
-.foot_depth01 > li.right_n{ border-right:1px solid #00b4c9; }
-.foot_depth01 > li.bottom_n{ border-bottom:1px solid #00b4c9; }
-.foot_depth01 > li:first-child{border-top:0;}
-
-
-.foot_depth01 > li > a{ position:relative; display:inline-block;  padding: 12% 0; width:100%; }
-.foot_depth01 > li > a img{ width:40px; position:absolute; top: 20%; left:0px;  }
-.foot_depth01 > li > .menu_rg{ width:40px; position:absolute; top: 20%; left:0px; position:relative; display:inline-block;  padding: 6% 0 0 0; float:right; }
-.foot_depth01 > li > .menu_te{ width:40px; position:absolute; top: 20%; left:0px; position:relative; display:inline-block;  padding: 6% 3% 0 0; float:right; font-size:30px; text-align:right; color:#fff; cursor:pointer; }
-
-
-.foot_depth01 > li > a span{ position:absolute; top: 45%; left: 0; font-size: 1.0em; display: block; width: 100%; text-align: center; font-weight:bold;}
-.foot_depth01 > li.under{ border-top:1px solid #36c4d4; border-bottom:1px dashed #fff; }
-.foot_depth01 > li.under > a img{ width: 40px; top: 12%; left: 50%; margin-left: -20px; }
-.foot_depth01 > li.under > a span{ top: 70%; left: 0; }
-
-.foot_depth01 > li > ul.depth02{ display:none; }
-.foot_depth01 > li > ul.depth02 > li{ border-bottom:1px solid #3b72bc; background-color:#295599; }
-.foot_depth01 > li > ul.depth02 > li > a{ vertical-align:middle; display:block; line-height:34px; color:#fff; padding:0 18px; }
-.foot_depth01 > li > ul.depth02 > li > a img{ width:30px; vertical-align:middle; }
-
-.foot_depth01 > div{ 
-	
-	float: left; border-bottom:1px solid grey; box-sizing: border-box; 
-	position:relative; display:inline-block;  padding: 7% 0; width:100%;
+.foot_depth01 {
+	padding: 0 4%;
 }
-.foot_depth01 > div:first-child{ padding: 3% 0; }
+/*.sub_depth01 > li{ float: left; width: 33.33%; border-right:1px solid #36c4d4; border-bottom:1px solid #36c4d4; box-sizing: border-box;  }*/
+.foot_depth01>li {
+	float: left;
+	width: 100%;
+	border-bottom: 1px solid #36c4d4;
+	box-sizing: border-box;
+}
+
+.foot_depth01>li.right_n {
+	border-right: 1px solid #00b4c9;
+}
+
+.foot_depth01>li.bottom_n {
+	border-bottom: 1px solid #00b4c9;
+}
+
+.foot_depth01>li:first-child {
+	border-top: 0;
+}
+
+.foot_depth01>li>a {
+	position: relative;
+	display: inline-block;
+	padding: 12% 0;
+	width: 100%;
+}
+
+.foot_depth01>li>a img {
+	width: 40px;
+	position: absolute;
+	top: 20%;
+	left: 0px;
+}
+
+.foot_depth01>li>.menu_rg {
+	width: 40px;
+	position: absolute;
+	top: 20%;
+	left: 0px;
+	position: relative;
+	display: inline-block;
+	padding: 6% 0 0 0;
+	float: right;
+}
+
+.foot_depth01>li>.menu_te {
+	width: 40px;
+	position: absolute;
+	top: 20%;
+	left: 0px;
+	position: relative;
+	display: inline-block;
+	padding: 6% 3% 0 0;
+	float: right;
+	font-size: 30px;
+	text-align: right;
+	color: #fff;
+	cursor: pointer;
+}
+
+.foot_depth01>li>a span {
+	position: absolute;
+	top: 45%;
+	left: 0;
+	font-size: 1.0em;
+	display: block;
+	width: 100%;
+	text-align: center;
+	font-weight: bold;
+}
+
+.foot_depth01>li.under {
+	border-top: 1px solid #36c4d4;
+	border-bottom: 1px dashed #fff;
+}
+
+.foot_depth01>li.under>a img {
+	width: 40px;
+	top: 12%;
+	left: 50%;
+	margin-left: -20px;
+}
+
+.foot_depth01>li.under>a span {
+	top: 70%;
+	left: 0;
+}
+
+.foot_depth01>li>ul.depth02 {
+	display: none;
+}
+
+.foot_depth01>li>ul.depth02>li {
+	border-bottom: 1px solid #3b72bc;
+	background-color: #295599;
+}
+
+.foot_depth01>li>ul.depth02>li>a {
+	vertical-align: middle;
+	display: block;
+	line-height: 34px;
+	color: #fff;
+	padding: 0 18px;
+}
+
+.foot_depth01>li>ul.depth02>li>a img {
+	width: 30px;
+	vertical-align: middle;
+}
+
+.foot_depth01>div {
+	float: left;
+	border-bottom: 1px solid grey;
+	box-sizing: border-box;
+	position: relative;
+	display: inline-block;
+	padding: 7% 0;
+	width: 100%;
+}
+
+.foot_depth01>div:first-child {
+	padding: 3% 0;
+}
 
 /* float */
+.clearfix {
+	*zoom: 1;
+}
 
-.clearfix{*zoom: 1;}
-.clearfix:after{content:'';display:block;clear:both;}
-
-</style> 
+.clearfix:after {
+	content: '';
+	display: block;
+	clear: both;
+}
+</style>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <!--[if IE]><meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'><![endif]-->
 <title>Reg Trip</title>
-<meta name="description" content="">
-<meta name="viewport"
-	content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-	
-<link
-	href="${pageContext.request.contextPath }/resources/css/mobile/enterprise.css"
-	rel="stylesheet" type="text/css" />	
-	
-<link rel="apple-touch-icon-precomposed" sizes="144x144"
-	href="${pageContext.request.contextPath }/resources/assets/images/icons/apple-touch-icon-144-precomposed.png">
-<link rel="apple-touch-icon-precomposed" sizes="114x114"
-	href="${pageContext.request.contextPath }/resources/assets/images/icons/apple-touch-icon-114-precomposed.png">
-<link rel="apple-touch-icon-precomposed" sizes="72x72"
-	href="${pageContext.request.contextPath }/resources/assets/images/icons/apple-touch-icon-72-precomposed.png">
-<link rel="apple-touch-icon-precomposed"
-	href="${pageContext.request.contextPath }/resources/assets/images/icons/apple-touch-icon-57-precomposed.png">
-<link rel="shortcut icon"
-	href="${pageContext.request.contextPath }/resources/assets/images/icons/favicon.png">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/helpers/animate.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/helpers/boilerplate.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/helpers/border-radius.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/helpers/grid.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/helpers/page-transitions.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/helpers/spacing.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/helpers/typography.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/helpers/utils.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/helpers/colors.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/material/ripple.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/elements/badges.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/elements/buttons.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/elements/content-box.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/elements/dashboard-box.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/elements/forms.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/elements/images.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/elements/info-box.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/elements/invoice.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/elements/loading-indicators.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/elements/menus.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/elements/panel-box.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/elements/response-messages.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/elements/responsive-tables.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/elements/ribbon.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/elements/social-box.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/elements/tables.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/elements/tile-box.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/elements/timeline.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/icons/fontawesome/fontawesome.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/icons/linecons/linecons.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/icons/spinnericon/spinnericon.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/widgets/accordion-ui/accordion.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/widgets/calendar/calendar.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/widgets/carousel/carousel.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/widgets/charts/justgage/justgage.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/widgets/charts/morris/morris.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/widgets/charts/piegage/piegage.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/widgets/charts/xcharts/xcharts.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/widgets/chosen/chosen.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/widgets/colorpicker/colorpicker.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/widgets/datatable/datatable.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/widgets/datepicker/datepicker.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/widgets/datepicker-ui/datepicker.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/widgets/daterangepicker/daterangepicker.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/widgets/dialog/dialog.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/widgets/dropdown/dropdown.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/widgets/dropzone/dropzone.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/widgets/file-input/fileinput.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/widgets/input-switch/inputswitch.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/widgets/input-switch/inputswitch-alt.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/widgets/ionrangeslider/ionrangeslider.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/widgets/jcrop/jcrop.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/widgets/jgrowl-notifications/jgrowl.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/widgets/loading-bar/loadingbar.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/widgets/maps/vector-maps/vectormaps.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/widgets/markdown/markdown.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/widgets/modal/modal.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/widgets/multi-select/multiselect.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/widgets/multi-upload/fileupload.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/widgets/nestable/nestable.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/widgets/noty-notifications/noty.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/widgets/popover/popover.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/widgets/pretty-photo/prettyphoto.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/widgets/progressbar/progressbar.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/widgets/range-slider/rangeslider.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/widgets/slidebars/slidebars.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/widgets/slider-ui/slider.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/widgets/summernote-wysiwyg/summernote-wysiwyg.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/widgets/tabs-ui/tabs.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/widgets/timepicker/timepicker.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/widgets/tocify/tocify.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/widgets/tooltip/tooltip.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/widgets/touchspin/touchspin.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/widgets/uniform/uniform.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/widgets/wizard/wizard.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/widgets/xeditable/xeditable.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/snippets/chat.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/snippets/files-box.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/snippets/login-box.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/snippets/notification-box.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/snippets/progress-box.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/snippets/todo.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/snippets/user-profile.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/snippets/mobile-navigation.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/applications/mailbox.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/themes/admin/layout.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/themes/admin/color-schemes/default.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/themes/components/default.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/themes/components/border-radius.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/helpers/responsive-elements.css">
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/assets/helpers/admin-responsive.css">
-<script type="text/javascript"
-	src="${pageContext.request.contextPath }/resources/assets/js-core/jquery-core.js"></script>
-<script type="text/javascript"
-	src="${pageContext.request.contextPath }/resources/assets/js-core/jquery-ui-core.js"></script>
-<script type="text/javascript"
-	src="${pageContext.request.contextPath }/resources/assets/js-core/jquery-ui-widget.js"></script>
-<script type="text/javascript"
-	src="${pageContext.request.contextPath }/resources/assets/js-core/jquery-ui-mouse.js"></script>
-<script type="text/javascript"
-	src="${pageContext.request.contextPath }/resources/assets/js-core/jquery-ui-position.js"></script>
-<script type="text/javascript"
-	src="${pageContext.request.contextPath }/resources/assets/js-core/transition.js"></script>
-<script type="text/javascript"
-	src="${pageContext.request.contextPath }/resources/assets/js-core/modernizr.js"></script>
-<script type="text/javascript"
-	src="${pageContext.request.contextPath }/resources/assets/js-core/jquery-cookie.js"></script>
 
 <!-- datepicker -->
 <script type="text/javascript"
@@ -1502,77 +1382,11 @@ function resetFindRoad(){
 </head>
 <body>
 	<div id="sb-site">
-		<div id="loading">
-			<div class="svg-icon-loader">
-				<img
-					src="${pageContext.request.contextPath }/resources/assets/images/svg-loaders/bars.svg"
-					width="40" alt="">
-			</div>
-		</div>
 		<div id="page-wrapper">
-			<div id="mobile-navigation">
-				<button id="nav-toggle" class="collapsed" data-toggle="collapse"
-					data-target="#page-sidebar">
-					<span></span>
-				</button>
-			</div>
-
 			<div id="page-content-wrapper">
-				<div id="page-content"> 
-						<%-- <div id="header-nav-left">
-							<a class="header-btn" id="logout-btn" href="lockscreen-3.html"
-								title="Lockscreen page example"><i
-								class="glyph-icon icon-linecons-lock"></i></a>
-							<div class="user-account-btn dropdown">
-								<a href="#" title="My Account" class="user-profile clearfix"
-									data-toggle="dropdown"><img width="28"
-									src="${pageContext.request.contextPath }/resources/assets/image-resources/gravatar.jpg"
-									alt="Profile image"> <span>${sessionScope.user}</span> <i
-									class="glyph-icon icon-angle-down"></i></a>
-								<div class="dropdown-menu float-right">
-									<div class="box-sm">
-										<div class="login-box clearfix">
-											<div class="user-img">
-												<a href="#" title="" class="change-img">Change photo</a> <img
-													src="${pageContext.request.contextPath }/resources/assets/image-resources/gravatar.jpg"
-													alt="">
-											</div>
-											<div class="user-info">
-												<span>${sessionScope.user}<i>UX/UI developer</i></span> <a
-													href="#" title="Edit profile">Edit profile</a> <a href="#"
-													title="View notifications">View notifications</a>
-											</div>
-										</div>
-										<div class="divider"></div>
-										<ul class="reset-ul mrg5B">
-											<li><a href="#">View login page example <i
-													class="glyph-icon float-right icon-caret-right"></i></a></li>
-											<li><a href="#">View lockscreen example <i
-													class="glyph-icon float-right icon-caret-right"></i></a></li>
-											<li><a href="#">View account details <i
-													class="glyph-icon float-right icon-caret-right"></i></a></li>
-										</ul>
-										<div
-											class="button-pane button-pane-alt pad5L pad5R text-center">
-											<a href="#"
-												class="btn btn-flat display-block font-normal btn-danger"><i
-												class="glyph-icon icon-power-off"></i> Logout</a>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div> --%>
-					
-					<!-- <script type="text/javascript"
-						src="https://maps.googleapis.com/maps/api/js?v=3&amp;sensor=true"></script>
-					<script type="text/javascript"
-						src="${pageContext.request.contextPath }/resources/assets/widgets/maps/gmaps/gmaps.js"></script>
-					<script type="text/javascript"
-						src="${pageContext.request.contextPath }/resources/assets/widgets/maps/gmaps/gmaps-demo.js"></script> -->
-					<!-- 					<div id="page-title">
-						<h2>gMaps</h2>
-						<p>Create maps using the Google Maps API</p>
-					</div> -->
+				<jsp:include page="/top2.do" />
+				<div id="page-content">
+
 					<form name="inputform"
 						action="${ pageContext.request.contextPath }/map/regMymap.do"
 						style="height: 100%">
@@ -1580,75 +1394,10 @@ function resetFindRoad(){
 							<div id="map" class="col-md-9" style="height: 100%;"
 								ondragenter="return dragEnter(event)"
 								ondrop="return dragDrop(event)"
-								ondragover="return dragOver(event)">
-							</div> 
-						
-				 			 
-<%-- 		<div id="closeNavi" class="btnNavi col-md-3"
-				style="width: 50%; height: 10px; font-weight: bold; background-color: white; padding-top: 3px; float: left">
-				<div style="width: 100%; display: inline-block; text-align: center">▼
-				</div>
-			</div>
-			<div class="coupon_tab_btn">
-				<span class="tab_btn tab01 active" id="tab1"> <a href="javascript:findLoadAgain()">
-					<img src="${pageContext.request.contextPath }/resources/images/mobile/navi_tap01.png"/>자가용</a>
-				</span> 
-				<span class="tab_btn tab02" id="tab2"> <a href="javascript:calculateAndDisplayRoute()">
-					<img src="${pageContext.request.contextPath }/resources/images/mobile/navi_tap02.png"/>대중교통</a>
-				</span> 
-				<span class="tab_btn tab03" id="tab3"> <a href="javascript:forWalk()">
-					<img src="${pageContext.request.contextPath }/resources/images/mobile/navi_tap03.png"/>도보</a>
-				</span>
-			</div>
-			<div style="width: 100%; overflow: hidden; overflow-y: auto; height: 83%;">
-				<ul class="foot_depth01 clearfix" id="addinfo"></ul>
-			</div> --%>
-								  
+								ondragover="return dragOver(event)"></div>
+
 							<div class="col-md-3" style="float: right">
-								<div id="header-nav-left" style="">
-							<a class="header-btn" id="logout-btn" href="lockscreen-3.html"
-								title="Lockscreen page example"><i
-								class="glyph-icon icon-linecons-lock"></i></a>
-							<div class="user-account-btn dropdown">
-								<a href="#" title="My Account" class="user-profile clearfix"
-									data-toggle="dropdown"><img width="28"
-									src="${pageContext.request.contextPath }/resources/assets/image-resources/gravatar.jpg"
-									alt="Profile image"> <span>${sessionScope.user}</span> <i
-									class="glyph-icon icon-angle-down"></i></a>
-								<div class="dropdown-menu float-right">
-									<div class="box-sm">
-										<div class="login-box clearfix">
-											<div class="user-img">
-												<a href="#" title="" class="change-img">Change photo</a> <img
-													src="${pageContext.request.contextPath }/resources/assets/image-resources/gravatar.jpg"
-													alt="">
-											</div>
-											<div class="user-info">
-												<span>${sessionScope.user}<i>UX/UI developer</i></span> <a
-													href="#" title="Edit profile">Edit profile</a> <a href="#"
-													title="View notifications">View notifications</a>
-											</div>
-										</div>
-										<div class="divider"></div>
-										<ul class="reset-ul mrg5B">
-											<li><a href="#">View login page example <i
-													class="glyph-icon float-right icon-caret-right"></i></a></li>
-											<li><a href="#">View lockscreen example <i
-													class="glyph-icon float-right icon-caret-right"></i></a></li>
-											<li><a href="#">View account details <i
-													class="glyph-icon float-right icon-caret-right"></i></a></li>
-										</ul>
-										<div
-											class="button-pane button-pane-alt pad5L pad5R text-center">
-											<a href="#"
-												class="btn btn-flat display-block font-normal btn-danger"><i
-												class="glyph-icon icon-power-off"></i> Logout</a>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-								<div class="panel" style="padding-top: 60px;">  
+								<div class="panel" style="padding-top: 60px;">
 									<div class="panel-body">
 										<!-- <h3 class="title-hero">ddd</h3> -->
 										<div class="example-box-wrapper">
@@ -1660,17 +1409,19 @@ function resetFindRoad(){
 													</ul>
 												</h3>
 												<div id="tabs-example-1">
-													<div class="row" >
+													<div class="row">
 														<span class="col-md-1" draggable="true"
 															ondragstart="return dragStart(event)"
 															ondragend="return dragextramarker(event)"><img
 															src="https://developers.skplanetx.com/upload/tmap/marker/pin_b_m_a.png" /></span>
 														<div class="col-md-9">
-															<input id="pac-input" class="form-control" type="text" placeholder="Search Box">
+															<input id="pac-input" class="form-control" type="text"
+																placeholder="Search Box">
 														</div>
 														<div class="col-md-2">
-															<a href="javascript:openNavi()"><img src="${ pageContext.request.contextPath }/resources/images/findload3.png"></a>
-														</div> 
+															<a href="javascript:openNavi()"><img
+																src="${ pageContext.request.contextPath }/resources/images/findload3.png"></a>
+														</div>
 													</div>
 													<!-- pannel -->
 													<div class="cf clearfix nestable-lists">
@@ -1759,76 +1510,44 @@ function resetFindRoad(){
 									</div>
 								</div>
 							</div>
-							
-							<div class="col-md-3" style="float: right; position:absolute; right:0; height:80%" id="naviDiv">
-								<div class="panel" style="height:100%"> 
-									<div class="panel-body" style="height:100%"> 
-										<div class="coupon_tab_btn"> 
-											<span class="tab_btn tab01 active" id="tab1"> <a href="javascript:findLoadAgain()">
-												<img src="${pageContext.request.contextPath }/resources/images/mobile/navi_tap01.png"/>자가용</a>
-											</span> 
-											<span class="tab_btn tab02" id="tab2"> <a href="javascript:calculateAndDisplayRoute()">
-												<img src="${pageContext.request.contextPath }/resources/images/mobile/navi_tap02.png"/>대중교통</a>
-											</span> 
-											<span class="tab_btn tab03" id="tab3"> <a href="javascript:forWalk()">
-												<img src="${pageContext.request.contextPath }/resources/images/mobile/navi_tap03.png"/>도보</a>
+
+							<div class="col-md-3"
+								style="float: right; position: absolute; right: 0; height: 80%"
+								id="naviDiv">
+								<div class="panel" style="height: 100%">
+									<div class="panel-body" style="height: 100%">
+										<div class="coupon_tab_btn">
+											<span class="tab_btn tab01 active" id="tab1"> <a
+												href="javascript:findLoadAgain()"> <img
+													src="${pageContext.request.contextPath }/resources/images/mobile/navi_tap01.png" />자가용
+											</a>
+											</span> <span class="tab_btn tab02" id="tab2"> <a
+												href="javascript:calculateAndDisplayRoute()"> <img
+													src="${pageContext.request.contextPath }/resources/images/mobile/navi_tap02.png" />대중교통
+											</a>
+											</span> <span class="tab_btn tab03" id="tab3"> <a
+												href="javascript:forWalk()"> <img
+													src="${pageContext.request.contextPath }/resources/images/mobile/navi_tap03.png" />도보
+											</a>
 											</span>
 										</div>
 										<div class="example-box-wrapper" style="height: 90%;">
-											<div style="width: 100%; overflow: hidden; overflow-y: auto; height: 100%;">
+											<div
+												style="width: 100%; overflow: hidden; overflow-y: auto; height: 100%;">
 												<ul class="foot_depth01 clearfix" id="addinfo"></ul>
 											</div>
 										</div>
 									</div>
 								</div>
-							</div>	
-							
+							</div>
+
 						</div>
 						<div id="map_div"></div>
 					</form>
 				</div>
 			</div>
 		</div>
-		<script type="text/javascript"
-			src="${pageContext.request.contextPath }/resources/assets/widgets/dropdown/dropdown.js"></script>
-		<script type="text/javascript"
-			src="${pageContext.request.contextPath }/resources/assets/widgets/tooltip/tooltip.js"></script>
-		<script type="text/javascript"
-			src="${pageContext.request.contextPath }/resources/assets/widgets/popover/popover.js"></script>
-		<script type="text/javascript"
-			src="${pageContext.request.contextPath }/resources/assets/widgets/progressbar/progressbar.js"></script>
-		<script type="text/javascript"
-			src="${pageContext.request.contextPath }/resources/assets/widgets/button/button.js"></script>
-		<script type="text/javascript"
-			src="${pageContext.request.contextPath }/resources/assets/widgets/collapse/collapse.js"></script>
-		<script type="text/javascript"
-			src="${pageContext.request.contextPath }/resources/assets/widgets/superclick/superclick.js"></script>
-		<script type="text/javascript"
-			src="${pageContext.request.contextPath }/resources/assets/widgets/input-switch/inputswitch-alt.js"></script>
-		<script type="text/javascript"
-			src="${pageContext.request.contextPath }/resources/assets/widgets/slimscroll/slimscroll.js"></script>
-		<script type="text/javascript"
-			src="${pageContext.request.contextPath }/resources/assets/widgets/slidebars/slidebars.js"></script>
-		<script type="text/javascript"
-			src="${pageContext.request.contextPath }/resources/assets/widgets/slidebars/slidebars-demo.js"></script>
-		<script type="text/javascript"
-			src="${pageContext.request.contextPath }/resources/assets/widgets/charts/piegage/piegage.js"></script>
-		<script type="text/javascript"
-			src="${pageContext.request.contextPath }/resources/assets/widgets/charts/piegage/piegage-demo.js"></script>
-		<script type="text/javascript"
-			src="${pageContext.request.contextPath }/resources/assets/widgets/screenfull/screenfull.js"></script>
-		<script type="text/javascript"
-			src="${pageContext.request.contextPath }/resources/assets/widgets/content-box/contentbox.js"></script>
-		<script type="text/javascript"
-			src="${pageContext.request.contextPath }/resources/assets/widgets/material/material.js"></script>
-		<script type="text/javascript"
-			src="${pageContext.request.contextPath }/resources/assets/widgets/material/ripples.js"></script>
-		<script type="text/javascript"
-			src="${pageContext.request.contextPath }/resources/assets/widgets/overlay/overlay.js"></script>
-		<script type="text/javascript"
-			src="${pageContext.request.contextPath }/resources/assets/js-init/widgets-init.js"></script>
-		<script type="text/javascript"
-			src="${pageContext.request.contextPath }/resources/assets/themes/admin/layout.js"></script>
+		<jsp:include page="/bottom2.do" />
 	</div>
 </body>
 </html>

@@ -45,13 +45,15 @@
     <!-- Searched map list selection -->
    <select id="selectMymapList" parameterType="hashmap" resultType="kr.co.foot.mymap.MymapVO">
        select a.idx as idx, a.title as title, a.content as content, a.userid as userid, a.regdate as regdate, a.type as type from t_myMap a 
-       inner join t_hashtag b on a.idx = b.mymapidx 
+       inner join t_hashtag b on a.idx = b.mymapidx
+       inner join t_regmap c on a.idx = c.mymapidx 
        where 
-       	a.title like CONCAT('%',#{searchtext},'%') 
+       	(a.title like CONCAT('%',#{searchtext},'%') 
        	or 
        	a.content like CONCAT('%',#{searchtext},'%')
        	or 
-       	b.name = CONCAT('%',#{searchtext},'%') 
+       	b.name = CONCAT('%',#{searchtext},'%'))
+       	and c.blind=0 
        	and a.type=1 group by a.idx
        	LIMIT #{start}, #{pageSize}
    </select>
