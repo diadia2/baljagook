@@ -7415,3 +7415,11 @@ button.close {
 		display: none !important
 	}
 }
+
+.adminBtn {
+	border : 1px;
+	background-color : #A02CC9;
+	color : white;
+	border-radius: 8px;
+	padding: 3px 10px 3px 10px;
+}

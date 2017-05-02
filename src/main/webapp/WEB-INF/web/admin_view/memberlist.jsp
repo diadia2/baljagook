@@ -182,11 +182,11 @@
 														<td>${ regularMemberInfoList.reportedMyMapCnt }</td>
 														<td>
 														<select onchange="changeStatus(this, '${ regularMemberInfoList.userid }');">
-															<option value="regular">정상</option>
+															<option value="regular">정  상</option>
 															<option value="blinded">블라인드</option>
 														</select>
 														</td>
-														<td><button type="button" onclick="deleteMember('${ regularMemberInfoList.userid }');">삭제</button></td>
+														<td><button type="button" class="adminBtn" onclick="deleteMember('${ regularMemberInfoList.userid }');">삭 제</button></td>
 			                                        </tr>
 		                                        </c:forEach>
 	                                        </c:if>
@@ -226,10 +226,10 @@
 														<td>
 														<select onchange="changeStatus(this, '${ blindedMemberInfoList.userid }');">
 															<option value="blinded">블라인드</option>
-															<option value="regular">정상</option>
+															<option value="regular">정  상</option>
 														</select>														
 														</td>
-														<td><button type="button" onclick="deleteMember('${ blindedMemberInfoList.userid }');">삭제</button></td>
+														<td><button type="button" class="adminBtn" onclick="deleteMember('${ blindedMemberInfoList.userid }');">삭 제</button></td>
 			                                        </tr>
 		                                        </c:forEach>
 	                                        </c:if>
@@ -269,7 +269,7 @@
 														<td>${ deactivatedMemberInfoList.myPlanCnt }</td>
 														<td>${ deactivatedMemberInfoList.reportedMyMapCnt }</td>
 														<td>탈퇴</td>
-														<td><button type="button" onclick="deleteMember('${ deactivatedMemberInfoList.userid }');">삭제</button></td>
+														<td><button type="button" class="adminBtn" onclick="deleteMember('${ deactivatedMemberInfoList.userid }');">삭 제</button></td>
 			                                        </tr>
 		                                        </c:forEach>
 	                                        </c:if>
