@@ -511,10 +511,6 @@ $(document).ready(function(){
 		var n=1;
 		for(var i=0; i<checkMarker.length; i++){
 		    if(checkMarker[i].title != ""){
-<<<<<<< HEAD
-=======
-				/*$('#draggablePanelList').append('<li id="cpList"'+n+'" class="dd-item" data-id="'+n+'" onClick="goZoomIn('+checkMarker[i].position.lat()+", "+checkMarker[i].position.lng()+')"><div class="dd-handle"><div class="circleNum">'+n+'</div><div>'+checkMarker[i].title+'</div></div></li>');*/
->>>>>>> 033fc2352ea10b6aa71ef98cc2ddc77b1ca7bc7c
 				$('#draggablePanelList').append('<li id="cpList'+n+'" class="dd-item" data-id="'+n+'" onClick="goZoomIn('+checkMarker[i].position.lat()+", "+checkMarker[i].position.lng()+')"><div class="dd-handle"><div class="circleNum">'+n+'</div><div id="title">'+checkMarker[i].title+'</div><div id="content" style="display: none;">'+checkMarker[i].content+'</div></div></li>');
 		   		n++;
 		    }

@@ -1,7 +1,9 @@
 package kr.co.foot.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -49,8 +51,8 @@ public class MemberController {
 		}
 		model.addAttribute("imageName", imageName);
 		
-		return "member/mypage3";
-//		return "member/mypage";
+//		return "member/mypage3";
+		return "member/mypage";
 	}
 	
 	//�댁�ы��/�닿��� ���� ajax
@@ -114,6 +116,43 @@ public class MemberController {
 		model.addAttribute("regcoordinatesVO", regcoordinatesVO);
 		
 		return "MapTest/favoritePlace";
+	}
+	
+	@RequestMapping("/member/getMymapList.do")
+	@ResponseBody
+	public Object[] getMymapList(HttpSession session){
+		
+		String userid = (String)session.getAttribute("user");
+		List<MymapVO> mymapList = mymapService.selectMymapByuserid(userid);
+		
+		Map<Integer, List> map = new HashMap<>();
+		
+		for(int i=0; i<mymapList.size(); i++){
+			List<RegcoordinatesVO> regcoordinatesVO = mymapService.getRegmapsList(mymapList.get(i).getIdx());
+			map.put(mymapList.get(i).getIdx(), regcoordinatesVO);
+		}
+		
+		for(MymapVO vo : mymapList){
+			System.out.println(vo);
+		}
+		System.out.println("==========");
+		
+		List<RegcoordinatesVO> testList = map.get(mymapList.get(0).getIdx());
+		
+		for(RegcoordinatesVO vo : testList){
+			System.out.println(vo);
+		}
+		System.out.println("==========");
+		List<RegcoordinatesVO> testList1 = map.get(mymapList.get(1).getIdx());
+		
+		for(RegcoordinatesVO vo : testList1){
+			System.out.println(vo);
+		}
+		
+		
+		Object[] object = {mymapList, map};
+		
+		return object;
 	}
 	
 }

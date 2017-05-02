@@ -574,16 +574,6 @@ body {
 								<div class="card-stats small text-muted" style="margin-top:10px;"><i class="fa fa-globe"></i>&nbsp;&nbsp;${ regmapList[3].viewcnt } views</div>
 							</div></a>
 						</div>
-					 
-<%-- 				
-					<div class="col-lg-3 col-sm-6 item">
-						<div class="card">
-							<img class="img-reponsive" alt="사진1" src="<c:url value="https://maps.googleapis.com/maps/api/staticmap?path=color:0xff0000cc|weight:3|37.4044566,126.9073671|37.4044566,126.9073671|37.4020000,126.9108537|37.4020000,126.9108537|37.3997598,126.9191284|37.3998638,126.9461607|37.4042866,126.9620411|37.4759155,126.9817769&size=256x256&key=AIzaSyDVbk7aW8HrEqozbZcMDZDBDP77uGJGduc&style=feature:water|color:0x1C91C4cc&sensor=false"/>">
-							<h3 class="name">플젝이름</h3>
-							<p class="description">설명</p>
-						</div>
-					</div> 
---%>
 				</div>
 
 			</div>

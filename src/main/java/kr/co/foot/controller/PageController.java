@@ -36,7 +36,7 @@ public class PageController {
 		return mav;
 	}
 
-	@RequestMapping("/main.do")
+	@RequestMapping(value={"/main.do",""})
 	public ModelAndView main() {
 		
 		List<RegmapVO> regmapList = mymapService.selectRegmapInfo();
@@ -106,7 +106,7 @@ public class PageController {
 		mav.addObject("regFour", regFour);
 		return mav;
 	}
-
+	
 	/*
 	 * @RequestMapping("/regMymap.do") public ModelAndView regMymap() {
 	 * ModelAndView mav = new ModelAndView("/map/regMymap"); return mav; }
