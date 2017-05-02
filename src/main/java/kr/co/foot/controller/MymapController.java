@@ -161,7 +161,7 @@ public class MymapController {
       String[] photoOriNameArr = photoOriName.split("/");
       String[] photoNewNameArr = photoNewName.split("/");
       
-      
+      System.out.println(markerlatArr.length);
       // 占쏙옙커 占쏙옙占쏙옙占쏙옙큼 for占쏙옙
       for(int i=0; i<markerlatArr.length; i++){
          String checkPointLat = markerlatArr[i];
