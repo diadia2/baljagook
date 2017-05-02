@@ -349,4 +349,12 @@ public class MymapServiceImp implements MymapService {
 		mymapDAO.updatePhoto(photoVO);
 	}
 
+	@Override
+	public List<RegmapVO> selectRegmapInfo() {
+
+		List<RegmapVO> regmapList = mymapDAO.selectRegmapInfo();
+		
+		return regmapList;
+	}
+
 }

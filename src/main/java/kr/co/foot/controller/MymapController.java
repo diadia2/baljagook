@@ -358,7 +358,7 @@ public class MymapController {
    
    @RequestMapping("/map/detail.do")
    public String detail(HttpServletRequest request, Model model){
-      
+      System.out.println(request.getParameter("mymapidx"));
       int mymapidx = Integer.parseInt(request.getParameter("mymapidx"));
       SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd HH:mm");
       

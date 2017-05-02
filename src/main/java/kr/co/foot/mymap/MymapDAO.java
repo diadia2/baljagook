@@ -60,6 +60,7 @@ public interface MymapDAO {
 	public int weekAgoCoordinateCount(String weekAgo);
 	public void deleteSpots(String weekAgo);
 	public void updatePhoto(PhotoVO photoVO);
+	public List<RegmapVO> selectRegmapInfo();
 
 
 }
