@@ -194,7 +194,7 @@
 				                                    	<td>${ reportedMapDTOList.userid }</td>
 				                                    	<td>${ reportedMapDTOList.regdate }</td>
 														<td><a href="#" onclick="showReportList(${ reportedMapDTOList.regmapidx }, ${ reportedMapDTOList.mymapidx });">${ reportedMapDTOList.count }</a></td>
-														<td><button type="button" onclick="blindMap('${ reportedMapDTOList.regmapidx }')">블라인드</button></td>
+														<td><button type="button" class="adminBtn" onclick="blindMap('${ reportedMapDTOList.regmapidx }')">블라인드</button></td>
 			                                    		</tr>
 		                                    		</c:forEach>
 		                                    	</c:if>
@@ -247,7 +247,7 @@
 			                                    	<td>${ blindedMapDTOList.userid }</td>
 			                                    	<td>${ blindedMapDTOList.regdate }</td>
 													<td><a href="#" onclick="showReportList(${ blindedMapDTOList.regmapidx }, ${ blindedMapDTOList.mymapidx });">${ blindedMapDTOList.count }</a></td>
-													<td><button type="button" onclick="cancelBlind('${ blindedMapDTOList.regmapidx }')">블라인드 취소</button></td>
+													<td><button type="button" class="adminBtn" onclick="cancelBlind('${ blindedMapDTOList.regmapidx }')">블라인드 취소</button></td>
 		                                    		</tr>
 	                                    		</c:forEach>
 	                                    	</c:if>
