@@ -1,6 +1,9 @@
 package kr.co.foot.controller;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,7 +55,7 @@ public class MemberController {
 		model.addAttribute("imageName", imageName);
 		
 //		return "member/mypage3";
-		return "member/mypage";
+		return "member/mypage2";
 	}
 	
 	//�댁�ы��/�닿��� ���� ajax
@@ -123,36 +126,108 @@ public class MemberController {
 	public Object[] getMymapList(HttpSession session){
 		
 		String userid = (String)session.getAttribute("user");
-		List<MymapVO> mymapList = mymapService.selectMymapByuserid(userid);
+		List<MymapVO> mymapList = memberService.selectMymapListByuserid(userid);
 		
 		Map<Integer, List> map = new HashMap<>();
 		
 		for(int i=0; i<mymapList.size(); i++){
 			List<RegcoordinatesVO> regcoordinatesVO = mymapService.getRegmapsList(mymapList.get(i).getIdx());
 			map.put(mymapList.get(i).getIdx(), regcoordinatesVO);
+			
+			String timestamp = mymapList.get(i).getRegdate();
+ 		    long timestampL = Long.parseLong(timestamp)*1000;
+		    Date dateObj = new Date(timestampL);
+		    DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+		    String time = df.format(dateObj);
+		    mymapList.get(i).setRegdate(time);
 		}
-		
-		for(MymapVO vo : mymapList){
-			System.out.println(vo);
-		}
-		System.out.println("==========");
-		
-		List<RegcoordinatesVO> testList = map.get(mymapList.get(0).getIdx());
-		
-		for(RegcoordinatesVO vo : testList){
-			System.out.println(vo);
-		}
-		System.out.println("==========");
-		List<RegcoordinatesVO> testList1 = map.get(mymapList.get(1).getIdx());
-		
-		for(RegcoordinatesVO vo : testList1){
-			System.out.println(vo);
-		}
-		
-		
+				
 		Object[] object = {mymapList, map};
 		
 		return object;
+	}
+	
+	@RequestMapping("/member/getMyPlanList.do")
+	@ResponseBody
+	public Object[] getMyPlanList(HttpSession session){
+		
+		String userid = (String)session.getAttribute("user");
+		List<MymapVO> mymapList = memberService.selectMymapListByuseridForPlan(userid);
+		
+		Map<Integer, List> map = new HashMap<>();
+		
+		for(int i=0; i<mymapList.size(); i++){
+			List<RegcoordinatesVO> regcoordinatesVO = mymapService.getRegmapsList(mymapList.get(i).getIdx());
+			map.put(mymapList.get(i).getIdx(), regcoordinatesVO);
+			
+			String timestamp = mymapList.get(i).getRegdate();
+ 		    long timestampL = Long.parseLong(timestamp)*1000;
+		    Date dateObj = new Date(timestampL);
+		    DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+		    String time = df.format(dateObj);
+		    mymapList.get(i).setRegdate(time);
+		}
+				
+		Object[] object = {mymapList, map};
+		
+		return object;
+	}
+	
+	@RequestMapping("/member/getFavoriteMapList.do")
+	@ResponseBody
+	public Object[] getFavoriteMapList(HttpSession session){
+		
+		String userid = (String)session.getAttribute("user");
+		
+		Map<Integer, List> map = new HashMap<>();
+		
+		List<FavoritemapVO> favoritemapList = mymapService.selectRegmapidx(userid);
+		List<MymapVO> mymapList = new ArrayList<MymapVO>();
+	      
+	    for(int i=0; i<favoritemapList.size(); i++){
+	        MymapVO mymapVO = mymapService.selectMymapByRegmapIdx(favoritemapList.get(i).getRegmapidx());
+	        mymapList.add(mymapVO);
+	    }
+	    
+		for(int i=0; i<mymapList.size(); i++){
+			List<RegcoordinatesVO> regcoordinatesVO = mymapService.getRegmapsList(mymapList.get(i).getIdx());
+			map.put(mymapList.get(i).getIdx(), regcoordinatesVO);
+			
+			String timestamp = mymapList.get(i).getRegdate();
+ 		    long timestampL = Long.parseLong(timestamp)*1000;
+		    Date dateObj = new Date(timestampL);
+		    DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+		    String time = df.format(dateObj);
+		    mymapList.get(i).setRegdate(time);
+		}
+	    	
+		Object[] object = {mymapList, map};
+		
+		return object;
+	}
+	
+	//�μ�� ���� ajax
+	@RequestMapping("/member/getFavoritePlaceList.do")
+	@ResponseBody
+	public Object[] getFavoritePlaceList(HttpSession session){
+		
+		String userid = (String) session.getAttribute("user");
+		
+		List<FavoriteplaceVO> favoriteplaceList = memberService.selectFavoriteMapByuserid(userid);
+		List<RegcoordinatesVO> regcoordinatesList = new ArrayList<RegcoordinatesVO>();
+		
+		
+		for(int i=0; i<favoriteplaceList.size(); i++){
+			String checkpointidx = favoriteplaceList.get(i).getCheckpointidx() + "";
+			CheckpointVO checkpointVO = mymapService.selectCheckPointByIdx(checkpointidx);
+			RegcoordinatesVO regcoordinatesVO = mymapService.getRegcoordinatesInfoByIdx(checkpointVO.getRegcoordinatesidx());
+			regcoordinatesList.add(regcoordinatesVO);
+		}
+		
+		Object[] object = {favoriteplaceList, regcoordinatesList};
+		
+		return object;
+		
 	}
 	
 }
