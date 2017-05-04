@@ -38,7 +38,7 @@
 }
 
 .mainmsg{
-	font: 13px/1.5 'Nanum Gothic', NanumGothic, '나눔고딕', NanumGothicWeb, serif, malgun Gothic, '맑은고딕', Dotum, '돋움', Gulim, '굴림', sans-serif;
+	font: '나눔고딕'; 
 }
 
 body {
@@ -441,6 +441,9 @@ body {
 		});
 
 	});
+	
+	
+		$("#mainvideo").prop('muted', true); //mute 
 	});
 </script>
 </head> 
@@ -458,27 +461,27 @@ body {
   
 		  
 		<!-- 검색바  --> 
-		<div class="collapse navbar-collapse" id="target" style="position: absolute; top:0; left:0; right: 0; margin-top: 20%; background-color: rgba(0,0,0,.5); padding-top: 20px; padding-bottom: 20px;">  
+		<div class="collapse navbar-collapse" id="target" style="position: absolute; top:0; left:0; right: 0; margin-top: 18%; background-color: rgba(0,0,0,.5); padding-top: 40px; padding-bottom: 40px;">  
 			<!-- 검색바 -->
 			<div class="container"> 
-				<div class="row  features">
+				<div class="row  features"> 
 					<div class="col-lg-2 col-md-4 col-sm-6 item" style="background: 0;"></div>
 					<div class="col-lg-8 col-md-4 col-sm-6 item" style="background: 0;"> 
-						<form class="navbar-form navbar-nav" action="${pageContext.request.contextPath }/map/search.do" method="get" style="text-align: center;">
-							<input type="text" size=70%; class="form-control" placeholder="원하시는 여행지를 입력해 주세요" id="searchtext" style="background-color: transparent;" onKeyPress="if (event.keyCode==13){ goSearch();event.returnValue=false}"/>&nbsp;&nbsp; <a href="javascript:goSearch()">
-								<img src="${ pageContext.request.contextPath }/resources/main/search1.png" width="5%" height="5%"></a>
-						</form>  
 						<p style="text-align: center"><span class="mainmsg" style="color: white; font-size: 20pt; font-weight: bold;">발자국, 나만의 여행 발자취</span>
-						<div class="col-lg-8 col-md-4 col-sm-6 item" style="background: 0;">
-							<span class="mainmsg" style="color: white; font-size: 16pt; padding-left: 5%;"> 
+						<form class="navbar-form navbar-nav" action="${pageContext.request.contextPath }/map/search.do" method="get" style="text-align: center;">
+							<input type="text" size=80%; class="form-control" placeholder="원하시는 여행지를 입력해 주세요" id="searchtext" style="background-color: transparent; height: 50px" onKeyPress="if (event.keyCode==13){ goSearch();event.returnValue=false}"/>&nbsp;&nbsp; <a href="javascript:goSearch()">
+								<img src="${ pageContext.request.contextPath }/resources/main/search1.png" width="5%" height="5%"></a>
+						</form>
+						<div class="col-lg-8 col-md-4 col-sm-6 item" style="background: 0; padding-top: 1%;">
+							<span class="mainmsg" style="color: white; font-size: 16pt; padding-left: 15%;">  
 							나만의 새로운 여행 경로를 만들어보세요!</span><br/>
-							<span class="mainmsg" style="color: white; font-size: 16pt; padding-left: 5%;"> 
+							<span class="mainmsg" style="color: white; font-size: 16pt; padding-left: 15%;"> 
 							여행경로를 타인에게 공유해 보세요!
-							</span><br/> 
+							</span><br/>     
 						</div>
-							<span style="right: 0;">
+							<span style="right: 0;;"> 
 								<button class="dropdown-item btn btn-primary" type="button" 
-									style="height: 65px; font-size: 12pt; background: #337ab7; color: black; font-weight: 600;"
+									style="height: 65px; font-size: 12pt; background: red; color: white; font-weight: 600; margin-top: 1%;"
 									data-toggle="modal" data-target="#signUpModal"
 									data-dismiss="modal" data-backdrop="static" data-keyboard="false">
 									GET STARTED
@@ -506,8 +509,8 @@ body {
 		 
 		<!-- 발자국 모양 <로고> -->
 		<div style="position: absolute; top:0; left:0; margin-left: 3%; margin-top: 2%"> 
-			<img src="${ pageContext.request.contextPath }/resources/main/footprint1.png" width="5%" height="5%"/>&nbsp;&nbsp;<span style="color: white;">발자국</span>
-		</div> 
+			<img src="${ pageContext.request.contextPath }/resources/main/footprint1.png" width="5%" height="5%"/>&nbsp;&nbsp;<span class="mainmsg" style="color: white; font-weight: bold; font-size: 15pt">발자국</span>
+		</div>  
 		     
 		<!-- 메인 우측 상단  -->
 		<c:if test="${empty sessionScope.user }">
