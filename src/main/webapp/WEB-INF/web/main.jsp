@@ -6,8 +6,9 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
-<meta name="viewport" content="width=device-width" />
+<meta name="description" content="">
+<meta name="viewport"
+	content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <title>Main</title>
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -24,6 +25,22 @@
 		<!--  Notifications Plugin    -->
 	<script src="${pageContext.request.contextPath }/resources/admin/assets/js/bootstrap-notify.js"></script>
 <style type="text/css">
+@font-face {
+	font-family: 'Nanum Gothic';
+	font-style: normal;
+	font-weight: 400;
+}
+
+@font-face {
+	font-family: 'Nanum Gothic';
+	font-style: bold;
+	font-weight: 600;
+}
+
+.mainmsg{
+	font: 13px/1.5 'Nanum Gothic', NanumGothic, '나눔고딕', NanumGothicWeb, serif, malgun Gothic, '맑은고딕', Dotum, '돋움', Gulim, '굴림', sans-serif;
+}
+
 body {
 /* 	padding-top: 55px; */
 } 
@@ -435,34 +452,57 @@ body {
 		<!-- 메인 사진 -->
 <%-- 		<img src="${pageContext.request.contextPath }/resources/images/background.PNG" class="img-responsive center-block"
 			alt="Responsive image" style="width: 100%; height: 700px"> --%>
-		<video id="mainvideo" width="100%" height="100%" loop="loop" autoplay="autoplay" style="margin-top: 0; padding-top: 0; opacity: 0.3;">  
+		<video id="mainvideo" width="100%" height="100%" loop="loop" autoplay="autoplay" style="margin-top: 0; padding-top: 0; opacity: 0.3; position: relative;">  
 			<source src="${pageContext.request.contextPath }/resources/video/baljagookMain.mp4" type="video/mp4">
 		</video>
   
 		  
-		<!-- 검색바  -->
-		<div class="collapse navbar-collapse" id="target" style="position: absolute; top:0; left:0; margin-left: 33%; margin-top: 20%; width: 34%">
+		<!-- 검색바  --> 
+		<div class="collapse navbar-collapse" id="target" style="position: absolute; top:0; left:0; right: 0; margin-top: 20%; background-color: rgba(0,0,0,.5); padding-top: 20px; padding-bottom: 20px;">  
 			<!-- 검색바 -->
-			<form class="navbar-form navbar-nav" action="${pageContext.request.contextPath }/map/search.do" method="get" style="margin-bottom: 3%">
-				<input type="text" class="form-control" placeholder="여행지 검색" id="searchtext"
-					size="70%" style="background-color: transparent; text-align: center;" onKeyPress="if (event.keyCode==13){ goSearch();event.returnValue=false}"/>&nbsp;&nbsp; <a href="javascript:goSearch()">
-					<img src="${ pageContext.request.contextPath }/resources/main/search1.png" width="5%" height="5%"></a>
-			</form>
+			<div class="container"> 
+				<div class="row  features">
+					<div class="col-lg-2 col-md-4 col-sm-6 item" style="background: 0;"></div>
+					<div class="col-lg-8 col-md-4 col-sm-6 item" style="background: 0;"> 
+						<form class="navbar-form navbar-nav" action="${pageContext.request.contextPath }/map/search.do" method="get" style="text-align: center;">
+							<input type="text" size=70%; class="form-control" placeholder="원하시는 여행지를 입력해 주세요" id="searchtext" style="background-color: transparent;" onKeyPress="if (event.keyCode==13){ goSearch();event.returnValue=false}"/>&nbsp;&nbsp; <a href="javascript:goSearch()">
+								<img src="${ pageContext.request.contextPath }/resources/main/search1.png" width="5%" height="5%"></a>
+						</form>  
+						<p style="text-align: center"><span class="mainmsg" style="color: white; font-size: 20pt; font-weight: bold;">발자국, 나만의 여행 발자취</span>
+						<div class="col-lg-8 col-md-4 col-sm-6 item" style="background: 0;">
+							<span class="mainmsg" style="color: white; font-size: 16pt; padding-left: 5%;"> 
+							나만의 새로운 여행 경로를 만들어보세요!</span><br/>
+							<span class="mainmsg" style="color: white; font-size: 16pt; padding-left: 5%;"> 
+							여행경로를 타인에게 공유해 보세요!
+							</span><br/> 
+						</div>
+							<span style="right: 0;">
+								<button class="dropdown-item btn btn-primary" type="button" 
+									style="height: 65px; font-size: 12pt; background: #337ab7; color: black; font-weight: 600;"
+									data-toggle="modal" data-target="#signUpModal"
+									data-dismiss="modal" data-backdrop="static" data-keyboard="false">
+									GET STARTED
+								</button>
+							</span>
+					</div> 
+					<div class="col-lg-2 col-md-4 col-sm-6 item" style="background: 0;"></div>
+				</div> 
+			</div>  
 			<!-- <p><span style="color: white; font-size: 20pt;">Your maps are your stories</span> --> 
-			<h2 style="color: white; text-align: center;">Your maps are your stories</h2>   
+<!-- 			<h2 style="color: white; text-align: center;">Your maps are your stories</h2>    
 			<h3 style="color: white;">Make amazing interactive maps for past,</h3>
-			<h3 style="color: white;">present and future adventures. It's free!</h3>
+			<h3 style="color: white;">present and future adventures. It's free!</h3> -->
+		
+			<!-- GET STARTED --> 
+<!-- 			<div style="right: 0; bottom: 0; position:inherit;">
+				<button class="dropdown-item btn btn-primary" type="button" 
+					style="height: 65px; font-size: 12pt; background: white; color: black; font-weight: 600;"
+					data-toggle="modal" data-target="#signUpModal"
+					data-dismiss="modal" data-backdrop="static" data-keyboard="false">
+					GET STARTED
+				</button>
+			</div> -->
 		</div> 
-		    
-		<!-- GET STARTED --> 
-		<div style="position: absolute; left: 0; top: 0; margin-left: 58%; margin-top: 26%;">
-			<button class="dropdown-item btn btn-primary" type="button" 
-				style="height: 65px; font-size: 12pt; background: white; color: black; font-weight: 600;"
-				data-toggle="modal" data-target="#signUpModal"
-				data-dismiss="modal" data-backdrop="static" data-keyboard="false">
-				GET STARTED
-			</button>
-		</div>
 		 
 		<!-- 발자국 모양 <로고> -->
 		<div style="position: absolute; top:0; left:0; margin-left: 3%; margin-top: 2%"> 
@@ -492,7 +532,7 @@ body {
 		</c:if>
 		    
 		<!-- 사이트 소개 -->
-		<div class="features-clean" style="position: absolute; bottom: 0; margin-left: 20%; background: 0">
+		<div class="collapse navbar-collapse" style="position: absolute; left: 0; right: 0; bottom: 0; background: 0"> 
 			<div class="container">  
 				<div class="intro"></div> 
 				<div class="row  features">

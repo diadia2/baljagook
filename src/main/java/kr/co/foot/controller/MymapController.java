@@ -353,7 +353,7 @@ public class MymapController {
 		model.addAttribute("searchtext", searchtext);
 		model.addAttribute("moreCount", moreCount);
 		
-		return "search/search";
+		return "search/search2";
 	}
    
    @RequestMapping("/map/detail.do")
