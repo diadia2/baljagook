@@ -24,23 +24,55 @@ html, body {
 	window.onload = function(){
 	    initMap();
 	}
-
+	
+	var myLatLng;
+	var infowindow;
+	var address;
+	    
     function initMap() {
-		var myLatLng = {
+		myLatLng = {
 		    lat : ${ regcoordinatesVO.lat },
 		    lng : ${ regcoordinatesVO.lon }
 		};
 	
 		var map = new google.maps.Map(document.getElementById('map'), {
-		    zoom : 13,
+		    zoom : 15,
 		    center : myLatLng
 		});
+		
+	    var count = 0;
+	    var geocoder = new google.maps.Geocoder;
+		
+		geocoder.geocode({'location': myLatLng}, (function(count){return function(results, status) {
+				if (status === google.maps.GeocoderStatus.OK) {
+			        address = results[0].formatted_address;
+			        address = address.substring(5, address.length);
+			    } 
+			}
+		})(count)
+		);
 	 
 		var marker = new google.maps.Marker({
 		    position : myLatLng,
 		    map : map
 		});
+		
+		  var listener3 = google.maps.event.addListener(map, 'click', function(){
+			if(infowindow != null){
+				  infowindow.close();
+			  }
+		  });
+		  var listener1 = google.maps.event.addListener(marker, 'click', function(){
+			  if(infowindow != null){
+				  infowindow.close();
+			  }
+			  infowindow = new google.maps.InfoWindow({
+				    content: address
+				  }); 
+			  infowindow.open(map, this);
+		  });	
     } 
+
 </script>
 </head>
 <body>

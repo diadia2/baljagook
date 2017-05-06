@@ -232,6 +232,139 @@
 		}, 300);
 	});
 </script>
+
+<script type="text/javascript">
+	$(document).ready(function(){
+	
+	    // mymap
+		$.ajax({
+		    type: 'POST' , 
+		    url: '${ pageContext.request.contextPath }/member/getMymapList.do',
+		    dataType : 'json',
+		    success: function(data) {
+			$('mymapInfo').children().remove();
+				console.log(data);
+				console.log(data[0].length);
+				console.log(data[0][0].content); // mymap 0번째의 내용
+				console.log(data[0][0].idx);	 // mymap 0번째 인덱스
+				console.log(data[1]);			 // reglist들의 list
+				console.log(data[1][data[0][0].idx]);	// reglist들의 list의 0번째 리스트
+				console.log(data[1][data[0][0].idx][0].lat);	// reglist들의 list의 0번째 리스트의 0번째 lat
+				var lonlat = "";
+				for(i=0; i<data[0].length; i++){
+				    for(j=0; j<data[1][data[0][i].idx].length; j++){
+						lonlat += data[1][data[0][i].idx][j].lat;
+						lonlat += ",";
+						lonlat += data[1][data[0][i].idx][j].lon;
+						if(j != (data[1][data[0][i].idx].length)-1){
+						    lonlat += "|";
+						}
+				    }
+					$('#mymapInfo').append('<div class="col-lg-3 col-md-4 col-sm-6"><div class="thumbnail-box-wrapper"><div class="thumbnail-box"><a class="thumb-link" href="${ pageContext.request.contextPath }/map/detail.do?mymapidx='+data[0][i].idx+'" title=""></a><div class="thumb-content"><div class="center-vertical"><div class="center-content">'+
+						'<i class="icon-helper icon-center animated zoomInUp font-white glyph-icon icon-linecons-camera"></i></div></div></div><div class="thumb-overlay bg-black"></div><img src="https://maps.googleapis.com/maps/api/staticmap?path=color:0xff0000cc|weight:3|'+
+							lonlat+'&size=400x400&key=AIzaSyDVbk7aW8HrEqozbZcMDZDBDP77uGJGduc&style=feature:water|color:0x1C91C4cc" alt=""></div><div class="thumb-pane"><h3 class="thumb-heading animated rollIn"><a href="${ pageContext.request.contextPath }/map/detail.do?mymapidx='+data[0][i].idx+'" title="">'+data[0][i].title+'</a> <small>'+data[0][i].regdate
+							+'</small></h3></div></div></div>');
+					lonlat = "";
+				}
+	        }
+		});	
+		
+	    // myplan
+		$.ajax({
+		    type: 'POST' , 
+		    url: '${ pageContext.request.contextPath }/member/getMyPlanList.do',
+		    dataType : 'json',
+		    success: function(data) {
+			$('myplanInfo').children().remove();
+				console.log(data);
+				console.log(data[0].length);
+				console.log(data[0][0].content); // mymap 0번째의 내용
+				console.log(data[0][0].idx);	 // mymap 0번째 인덱스
+				console.log(data[1]);			 // reglist들의 list
+				console.log(data[1][data[0][0].idx]);	// reglist들의 list의 0번째 리스트
+				console.log(data[1][data[0][0].idx][0].lat);	// reglist들의 list의 0번째 리스트의 0번째 lat
+				var lonlat = "";
+				for(i=0; i<data[0].length; i++){
+				    for(j=0; j<data[1][data[0][i].idx].length; j++){
+						lonlat += data[1][data[0][i].idx][j].lat;
+						lonlat += ",";
+						lonlat += data[1][data[0][i].idx][j].lon;
+						if(j != (data[1][data[0][i].idx].length)-1){
+						    lonlat += "|";
+						}
+				    }
+					$('#myplanInfo').append('<div class="col-lg-3 col-md-4 col-sm-6"><div class="thumbnail-box-wrapper"><div class="thumbnail-box"><a class="thumb-link" href="${ pageContext.request.contextPath }/map/detail.do?mymapidx='+data[0][i].idx+'" title=""></a><div class="thumb-content"><div class="center-vertical"><div class="center-content">'+
+						'<i class="icon-helper icon-center animated zoomInUp font-white glyph-icon icon-linecons-camera"></i></div></div></div><div class="thumb-overlay bg-black"></div><img src="https://maps.googleapis.com/maps/api/staticmap?path=color:0xff0000cc|weight:3|'+
+							lonlat+'&size=400x400&key=AIzaSyDVbk7aW8HrEqozbZcMDZDBDP77uGJGduc&style=feature:water|color:0x1C91C4cc" alt=""></div><div class="thumb-pane"><h3 class="thumb-heading animated rollIn"><a href="${ pageContext.request.contextPath }/map/detail.do?mymapidx='+data[0][i].idx+'" title="">'+data[0][i].title+'</a> <small>'+data[0][i].regdate
+							+'</small></h3></div></div></div>');
+					lonlat = "";
+				}
+	        }
+		});	
+	    
+	    
+		//favorite Map
+		$.ajax({
+		    type: 'POST' , 
+		    url: '${ pageContext.request.contextPath }/member/getFavoriteMapList.do',
+		    dataType : 'json',
+		    success: function(data) {
+			$('favoritemap').children().remove();
+				console.log(data);
+				console.log(data[0].length);
+				console.log(data[0][0].content); // mymap 0번째의 내용
+				console.log(data[0][0].idx);	 // mymap 0번째 인덱스
+				console.log(data[1]);			 // reglist들의 list
+				console.log(data[1][data[0][0].idx]);	// reglist들의 list의 0번째 리스트
+				console.log(data[1][data[0][0].idx][0].lat);	// reglist들의 list의 0번째 리스트의 0번째 lat
+				var lonlat = "";
+				for(i=0; i<data[0].length; i++){
+				    for(j=0; j<data[1][data[0][i].idx].length; j++){
+						lonlat += data[1][data[0][i].idx][j].lat;
+						lonlat += ",";
+						lonlat += data[1][data[0][i].idx][j].lon;
+						if(j != (data[1][data[0][i].idx].length)-1){
+						    lonlat += "|";
+						}
+				    }
+					$('#favoritemap').append('<div class="col-lg-4 col-md-4 col-sm-6"><div class="thumbnail-box-wrapper"><div class="thumbnail-box"><a class="thumb-link" href="${ pageContext.request.contextPath }/map/detail.do?mymapidx='+data[0][i].idx+'" title=""></a><div class="thumb-content"><div class="center-vertical"><div class="center-content">'+
+						'<i class="icon-helper icon-center animated zoomInUp font-white glyph-icon icon-linecons-camera"></i></div></div></div><div class="thumb-overlay bg-black"></div><img src="https://maps.googleapis.com/maps/api/staticmap?path=color:0xff0000cc|weight:3|'+
+							lonlat+'&size=400x400&key=AIzaSyDVbk7aW8HrEqozbZcMDZDBDP77uGJGduc&style=feature:water|color:0x1C91C4cc" alt=""></div><div class="thumb-pane"><h3 class="thumb-heading animated rollIn"><a href="${ pageContext.request.contextPath }/map/detail.do?mymapidx='+data[0][i].idx+'" title=""><small>'+data[0][i].title+'</small></a></h3></div></div></div>');
+					lonlat = "";
+				}
+	        }
+		});	
+	
+		//favorite Place
+		$.ajax({
+		    type: 'POST' , 
+		    url: '${ pageContext.request.contextPath }/member/getFavoritePlaceList.do',
+		    dataType : 'json',
+		    success: function(data) {
+			$('favoriteplace').children().remove();
+				var lonlat = "";
+				for(i=0; i<data[0].length; i++){
+				    lonlat += data[1][i].lat;
+				    lonlat += ",";
+				    lonlat += data[1][i].lon;
+					$('#favoriteplace').append('<div class="col-lg-4 col-md-4 col-sm-6"><div class="thumbnail-box-wrapper"><div class="thumbnail-box"><a class="thumb-link" href="javascript:myPlace('+data[0][i].checkpointidx+')" title=""></a><div class="thumb-content"><div class="center-vertical"><div class="center-content">'+
+						'<i class="icon-helper icon-center animated zoomInUp font-white glyph-icon icon-linecons-camera"></i></div></div></div><div class="thumb-overlay bg-black"></div><img src="https://maps.googleapis.com/maps/api/staticmap?center='+lonlat+'&zoom=19&size=400x400&markers=color:red|'+
+							lonlat+'&key=AIzaSyDVbk7aW8HrEqozbZcMDZDBDP77uGJGduc" alt=""></div><div class="thumb-pane"><h3 class="thumb-heading animated rollIn"><a href="#" title=""><small>'+data[0][i].placename+'</small></a></h3></div></div></div>'); 
+					lonlat = "";
+				}
+	        }
+		});	
+		
+	});
+	
+	function myPlace(checkpointidx) {
+
+		window.open("${ pageContext.request.contextPath }/member/favoritePlace.do?checkpointidx="
+					+ checkpointidx, "FavoritePlace", "top=10, width=800, height=700, toolbar=no, menubar=no, scrollbars=no, resizable=yes");
+
+    }
+
+</script>
 </head>
 <body>
 	<div id="sb-site">
@@ -508,97 +641,92 @@
 										src="${pageContext.request.contextPath }/resources/assets/widgets/mixitup/isotope.js"></script>
 									<script type="text/javascript"
 										src="${pageContext.request.contextPath }/resources/assets/widgets/mixitup/portfolio-demo.js"></script>
+									
 									<div class="tab-pane fade" id="tab-example-2">
 										<div class="panel-body" style="background-color: white;">
 											<div class="example-box-wrapper">
-												<div class="row">
-													<div class="col-lg-3 col-md-4 col-sm-6">
+												<div id="mymapInfo" class="row">
+ 													<div class="col-lg-3 col-md-4 col-sm-6">
 														<div class="thumbnail-box-wrapper">
 															<div class="thumbnail-box">
-																<a class="thumb-link" href="#" title=""></a>
+																<a class="thumb-link" href="#" title="" style="border: 2px solid"></a>
 																<div class="thumb-content">
 																	<div class="center-vertical">
 																		<div class="center-content">
-																			<i
-																				class="icon-helper icon-center animated zoomInUp font-white glyph-icon icon-linecons-camera"></i>
+																			<i class="icon-helper icon-center animated zoomInUp font-white glyph-icon icon-linecons-camera"></i>
 																		</div>
 																	</div>
 																</div>
 																<div class="thumb-overlay bg-black"></div>
-																<img
-																	src="https://maps.googleapis.com/maps/api/staticmap?center=Williamsburg,Brooklyn,NY&zoom=13&size=400x400&
-markers=color:blue%7Clabel:S%7C11211%7C11206%7C11222&key=AIzaSyAaoYtvdumAK8l-T6uEQsX18cCJNjmyWBo"
-																	alt="">
+																<img src="${ pageContext.request.contextPath }/resources/images/click.jpg" alt="">
 															</div>
 															<div class="thumb-pane">
 																<h3 class="thumb-heading animated rollIn">
-																	<a href="#" title="">Working in the morning</a> <small>12
-																		March 2015</small>
+																	<a href="#" title="">새로 등록하기</a> <small>Create Map</small>
 																</h3>
 															</div>
 														</div>
-													</div>
-													<div class="col-lg-3 col-md-4 col-sm-6">
+													</div> 													
+												</div>
+											</div>
+										</div>
+									</div> 
+									<div class="tab-pane fade" id="tab-example-3">
+										<div class="panel-body" style="background-color: white;">
+											<div class="example-box-wrapper">
+												<div id="myplanInfo" class="row">
+ 													<div class="col-lg-3 col-md-4 col-sm-6">
 														<div class="thumbnail-box-wrapper">
 															<div class="thumbnail-box">
-																<a class="thumb-link" href="#" title=""></a>
+																<a class="thumb-link" href="${pageContext.request.contextPath}/map/plantrip.do" title="" style="border: 2px solid"></a>
 																<div class="thumb-content">
 																	<div class="center-vertical">
 																		<div class="center-content">
-																			<i
-																				class="icon-helper icon-center animated zoomInUp font-white glyph-icon icon-linecons-camera"></i>
+																			<i class="icon-helper icon-center animated zoomInUp font-white glyph-icon icon-linecons-camera"></i>
 																		</div>
 																	</div>
 																</div>
 																<div class="thumb-overlay bg-black"></div>
-																<img
-																	src="https://maps.googleapis.com/maps/api/staticmap?center=Williamsburg,Brooklyn,NY&zoom=13&size=400x400&
-markers=color:blue%7Clabel:S%7C11211%7C11206%7C11222&key=AIzaSyAaoYtvdumAK8l-T6uEQsX18cCJNjmyWBo"
-																	alt="">
+																<img src="${ pageContext.request.contextPath }/resources/images/click.jpg" alt="">
 															</div>
 															<div class="thumb-pane">
 																<h3 class="thumb-heading animated rollIn">
-																	<a href="#" title="">Working in the morning</a> <small>12
-																		March 2015</small>
+																	<a href="${pageContext.request.contextPath}/map/plantrip.do" title="">새로 계획하기</a> <small>Create Plan</small>
 																</h3>
 															</div>
 														</div>
-													</div>
-													<div class="col-lg-3 col-md-4 col-sm-6">
-														<div class="thumbnail-box-wrapper">
-															<div class="thumbnail-box">
-																<a class="thumb-link" href="#" title=""></a>
-																<div class="thumb-content">
-																	<div class="center-vertical">
-																		<div class="center-content">
-																			<i
-																				class="icon-helper icon-center animated zoomInUp font-white glyph-icon icon-linecons-camera"></i>
-																		</div>
-																	</div>
-																</div>
-																<div class="thumb-overlay bg-black"></div>
-																<img
-																	src="https://maps.googleapis.com/maps/api/staticmap?center=Williamsburg,Brooklyn,NY&zoom=13&size=400x400&
-markers=color:blue%7Clabel:S%7C11211%7C11206%7C11222&key=AIzaSyAaoYtvdumAK8l-T6uEQsX18cCJNjmyWBo"
-																	alt="">
-															</div>
-															<div class="thumb-pane">
-																<h3 class="thumb-heading animated rollIn">
-																	<a href="#" title="">Working in the morning</a> <small>12
-																		March 2015</small>
-																</h3>
-															</div>
+													</div> 													
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="tab-pane fade" id="tab-example-4"> 
+										<div class="col-md-6">
+											<div class="content-box">
+												<h3 class="content-box-header clearfix text-center">Favorite Map</h3>
+												<div class="panel-body" style="background-color: white;">
+													<div class="example-box-wrapper">
+														<div id="favoritemap" class="row">
+														 													
 														</div>
 													</div>
 												</div>
 											</div>
 										</div>
-
+											
+										<div class="col-md-6">
+											<div class="content-box">
+												<h3 class="content-box-header clearfix text-center">Favorite Place</h3>
+												<div class="panel-body" style="background-color: white;">
+													<div class="example-box-wrapper">
+														<div id="favoriteplace" class="row">
+		 																									
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
 									</div>
-									<div class="tab-pane fade" id="tab-example-3">
-										<div class="row"></div>
-									</div>
-									<div class="tab-pane fade" id="tab-example-4"></div>
 								</div>
 							</div>
 						</div>
@@ -606,6 +734,7 @@ markers=color:blue%7Clabel:S%7C11211%7C11206%7C11222&key=AIzaSyAaoYtvdumAK8l-T6u
 				</div>
 			</div>
 		</div>
+		
 		<script type="text/javascript"
 			src="${pageContext.request.contextPath }/resources/assets/widgets/dropdown/dropdown.js"></script>
 		<script type="text/javascript"
