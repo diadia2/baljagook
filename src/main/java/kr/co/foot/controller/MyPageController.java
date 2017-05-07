@@ -18,6 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -138,6 +139,30 @@ public class MyPageController {
 		
 		return imageName;
 		
+	}
+	
+	@RequestMapping(value="/deleteMyMap.do", method=RequestMethod.POST)
+	@ResponseBody
+	public void deleteMyMap(@RequestParam("mymapidx") int mymapidx) {
+		service.deleteMyMap(mymapidx);
+	}
+	
+	@RequestMapping(value="/deleteMyPlan.do", method=RequestMethod.POST)
+	@ResponseBody
+	public void deleteMyPlan(@RequestParam("mymapidx") int mymapidx) {
+		service.deleteMyPlan(mymapidx);
+	}
+	
+	@RequestMapping(value="/deleteFavoriteMap.do", method=RequestMethod.POST)
+	@ResponseBody
+	public void deleteFavoriteMap(@RequestParam("idx") int idx) {
+		service.deleteFavoriteMap(idx);
+	}
+	
+	@RequestMapping(value="/deleteFavoritePlace.do", method=RequestMethod.POST)
+	@ResponseBody
+	public void deleteFavoritePlace(@RequestParam("idx") int idx) {
+		service.deleteFavoritePlace(idx);
 	}	
 	
 }
