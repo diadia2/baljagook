@@ -79,13 +79,26 @@ public class MymapDAOImp implements MymapDAO {
 
 	@Override /*��蹂닿린 ���댁� ������*/
 	public List<MymapVO> selectMymapList(String searchtext, int pageSize) {
-		int start = 0;
+		int start = pageSize-8;
+		System.out.println(pageSize+"페이지사이즈"+start);
 		HashMap<String, Object> search = new HashMap<String, Object>();
 		search.put("start", start);
-		search.put("pageSize", pageSize);
+		search.put("pageSize", 8);//8개씩 보여준다
 		search.put("searchtext", searchtext);
 		
 		List<MymapVO> mymapList = sqlSessionTemplate.selectList("kr.co.foot.mymap.MymapDAO.selectMymapList", search);
+		return mymapList;
+	}
+	@Override /*��蹂닿린 ���댁� ������*/
+	public List<MymapVO> selectMymapList2(String searchtext, int pageSize) {
+		int start = pageSize-8;
+		System.out.println(pageSize+"페이지사이즈"+start);
+		HashMap<String, Object> search = new HashMap<String, Object>();
+		search.put("start", start);
+		search.put("pageSize", 8);//8개씩 보여준다
+		search.put("searchtext", searchtext);
+		
+		List<MymapVO> mymapList = sqlSessionTemplate.selectList("kr.co.foot.mymap.MymapDAO.selectMymapList2", search);
 		return mymapList;
 	}
 
