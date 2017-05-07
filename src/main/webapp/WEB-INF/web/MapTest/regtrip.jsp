@@ -511,7 +511,8 @@ $(document).ready(function(){
 		var n=1;
 		for(var i=0; i<checkMarker.length; i++){
 		    if(checkMarker[i].title != ""){
-				$('#draggablePanelList').append('<li id="cpList'+n+'" class="dd-item" data-id="'+n+'" onClick="goZoomIn('+checkMarker[i].position.lat()+", "+checkMarker[i].position.lng()+')"><div class="dd-handle"><div class="circleNum">'+n+'</div><div id="title">'+checkMarker[i].title+'</div><div id="content" style="display: none;">'+checkMarker[i].content+'</div></div></li>');
+				//$('#draggablePanelList').append('<li id="cpList"'+n+'" class="dd-item" data-id="'+n+'" onClick="goZoomIn('+checkMarker[i].position.lat()+", "+checkMarker[i].position.lng()+')"><div class="dd-handle"><div class="circleNum">'+n+'</div><div>'+checkMarker[i].title+'</div></div></li>');
+				$('#draggablePanelList').append('<li id="cpList'+n+'" class="dd-item" data-id="'+n+'" onClick="goZoomIn('+checkMarker[i].position.lat()+", "+checkMarker[i].position.lng()+')"><div class="dd-handle"><div class="circleNum">'+n+'</div><div id="title">'+checkMarker[i].title+'</div><div id="content" style="display: none;">'+checkMarker[i].content+'</div></div></li>'); 
 		   		n++;
 		    }
 		} 
@@ -1300,9 +1301,6 @@ $(document).ready(function(){
 				markerlonlat2 += "/";
 				markerlonlat3 += checkMarker[i].checkpointList;
 				markerlonlat3 += "/";
-				console.log(markerlonlat1);
-				console.log(markerlonlat2);
-				console.log(markerlonlat3);
 			}
 	    }
 		checkpoint1 = "<input type='hidden' value='"+markerlonlat1+"' name='markerlat'/>";
@@ -1313,7 +1311,7 @@ $(document).ready(function(){
 		$('#map_div').append(checkpoint3);
 	    
 		var rightTitle = "";
-		var rightContent = "";	
+		var rightContent = "";		
 		for(var i=0; i<checkMarker.length; i++){
 			rightTitle += $('#cpList'+(i+1)).find('#title').text();
 			rightTitle += "/";
@@ -1340,7 +1338,9 @@ $(document).ready(function(){
 	    $('#map_div').append("<input type='hidden' value='"+photoCheckPointIdx+"' name='photoCheckPointIdx'/>");
 	    $('#map_div').append("<input type='hidden' value='"+photoOriName+"' name='photoOriName'/>");
 	    $('#map_div').append("<input type='hidden' value='"+photoNewName+"' name='photoNewName'/>");
-
+	    
+	    alert(rightTitle);
+	    alert(rightContent);
 	    console.log(checkMarker);
 	    console.log(photoList);
 	    document.inputform.submit(); 

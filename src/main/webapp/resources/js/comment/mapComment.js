@@ -3,7 +3,7 @@
  */
 	$(function() {
 		$.ajax({
-			url : "/comment/mapCommentList.do",
+			url : "${pageContext.request.contextPath }/comment/mapCommentList.do",
 			type : "post",
 			data : "userid="+$("#userid").val()+"&content=" + $("#content").val()+"&regmapidx=" + $("#regmapidx").val(),
 			success : callback
@@ -17,7 +17,7 @@
 			}
 			$.ajax({
 				type : "post",
-				url : "/map/commentInsert.do",
+				url : "${pageContext.request.contextPath }/map/commentInsert.do",
 				data : json,
 				success : callback
 			});

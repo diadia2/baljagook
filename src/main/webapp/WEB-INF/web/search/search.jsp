@@ -1,34 +1,49 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@include file="/WEB-INF/share.jsp"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@include file="/WEB-INF/share2.jsp"%>
 <!DOCTYPE html>
-<html>
+<html lang="kr">
 <head>
-<meta charset="UTF-8">
-<title>Search List</title>
+<style>
+.thumb-pane {
+	background-color: white;
+	margin-bottom: 0px !important;
+}
 
-<link rel="stylesheet"
-	href="${ pageContext.request.contextPath }/resources/css/sub.css">
-	
+.thumbnail-box-wrapper {
+	border: solid 1px;
+	border-color: rgba(128, 128, 128, 0.23);
+}
+
+.thumbnail-box-wrapper:HOVER {
+	box-shadow: 0 6px 10px rgba(0, 0, 0, .23), 0 10px 30px
+		rgba(0, 0, 0, .19);
+}
+
+.margin3 {
+	margin-bottom: 20px !important;
+}
+</style>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Portfolio gallery</title>
 <script type="text/javascript">
 /*-----------------------세션 아이디 확인 후 가져오기------------------------*/
-	var sessionUserid;
-	function checkSession() {
-		$.ajax({
-			type : 'GET',
-			url : '${ pageContext.request.contextPath }/getSessionUserid.do',
-			dataType : 'json',
-			async : false,
-			success : function(data) {
-				console.log(data['sessionUserid']);
-				sessionUserid = data['sessionUserid'];
-			}
-		});
-	};
-	
+var sessionUserid;
+function checkSession() {
+	$.ajax({
+		type : 'GET',
+		url : '${ pageContext.request.contextPath }/getSessionUserid.do',
+		dataType : 'json',
+		async : false,
+		success : function(data) {
+			console.log(data['sessionUserid']);
+			sessionUserid = data['sessionUserid'];
+		}
+	});
+};
+
 /*-------------------------------검색 부분--------------------------------*/	
-	$(function() {
+	$(function() {		
 		var json = {
 			searchtext : "${searchtext}",
 			moreCount : "${moreCount}"
@@ -39,29 +54,54 @@
 			data : json,
 			success : callback
 		});
-		 var num = 1;
-		$("#more").click(function() {
-			num++;
-			var json = {
-				searchtext : "${searchtext}",
-				moreCount : num
-			}
-			$.ajax({
-				url : "${ pageContext.request.contextPath }/map/searchList.do",
-				type : "get",
-				data : json,
-				success : callback
-			});
-		});
+		var num = 1;
+		$(window)
+				.scroll(
+						function() {
+							if ($("body").height() < $(window).height()) {
+								alert("There isn't a vertical scroll bar");
+							}
+							if ($(window).scrollTop() == $(document).height()
+									- $(window).height()) {
+								num++;
+								var json = {
+									searchtext : "${searchtext}",
+									moreCount : num
+								}
+								$
+										.ajax({
+											url : "${ pageContext.request.contextPath }/map/searchList.do",
+											type : "get",
+											data : json,
+											success : callback
+										});
+							}
+						});
+
+		$("#more")
+				.click(
+						function() {
+							num++;
+							var json = {
+								searchtext : "${searchtext}",
+								moreCount : num
+							}
+							$
+									.ajax({
+										url : "${ pageContext.request.contextPath }/map/searchList.do",
+										type : "get",
+										data : json,
+										success : callback
+									});
+						});
 	});
 	function callback(data) {
-		$("#search_list").html(data);
+		console.log(data);
+		$("#portfolio-grid").append(data);
+		$("#portfolio-grid").mixitup({
+			showOnLoad : "mix_all"
+		})
 	}
-	function goSearch() {
-		location.href = "${ pageContext.request.contextPath }/map/search.do?searchtext="
-				+ $('#searchtext').val();
-	}
-
 	/* Like 버튼  */
 	function handleLike(check, mymapidxRef) {
 		console.log(mymapidxRef);
@@ -109,64 +149,60 @@
 		}
 	}
 </script>
+
+
 </head>
 <body>
-	<header>
-		<jsp:include page="/top.do" />
-	</header>
-	<section>
-		<div class="container">
-			<div class="search_box">
-				<div class="sub_box">
-					<span>도시</span>
-					<ul>
-						<li><input type="checkbox" value="" /> 서울 <input
-							type="checkbox" value="" /> 경기 <input type="checkbox" value="" />
-							강원 <input type="checkbox" value="" /> 충청 <input type="checkbox"
-							value="" /> 전라 <input type="checkbox" value="" /> 경상 <input
-							type="checkbox" value="" /> 제주 <input type="checkbox" value="" />
-							부산 <input type="checkbox" value="" /> 인천 <input type="checkbox"
-							value="" /> 광주 <input type="checkbox" value="" /> 대전 <input
-							type="checkbox" value="" /> 대구 <input type="checkbox" value="" />
-							울산</li>
-					</ul>
-				</div>
-				<div class="sub_box">
-					<span class="sess">테마</span>
-					<ul>
-						<li><input type="checkbox" value="" /> 식도락 <input
-							type="checkbox" value="" /> 가족 <input type="checkbox" value="" />
-							커플</li>
-					</ul>
-				</div>
-				<div class="sub_box">
-					<span>계절</span>
-					<ul>
-						<li><input type="checkbox" value="" /> 봄 <input
-							type="checkbox" value="" /> 여름 <input type="checkbox" value="" />
-							가을 <input type="checkbox" value="" /> 겨울</li>
-					</ul>
-				</div>
-				<div class="sub_box">
-					<span>기간</span>
-					<ul>
-						<li><input type="checkbox" value="" /> 하루 <input
-							type="checkbox" value="" /> 2박3일 <input type="checkbox" value="" />
-							3박~</li>
-					</ul>
+	<div id="sb-site">
+		<div id="page-wrapper">
+			<div id="page-content-wrapper">
+				<jsp:include page="/top2.do" />
+				<div id="page-content">
+					<link rel="stylesheet" type="text/css"
+						href="${pageContext.request.contextPath }/resources/assets/frontend-elements/portfolio-navigation.css">
+					<script type="text/javascript"
+						src="${pageContext.request.contextPath }/resources/assets/widgets/mixitup/mixitup.js"></script>
+					<script type="text/javascript"
+						src="${pageContext.request.contextPath }/resources/assets/widgets/mixitup/images-loaded.js"></script>
+					<script type="text/javascript"
+						src="${pageContext.request.contextPath }/resources/assets/widgets/mixitup/isotope.js"></script>
+					<script type="text/javascript"
+						src="${pageContext.request.contextPath }/resources/assets/widgets/mixitup/portfolio-demo.js"></script>
+					<div
+						class="portfolio-controls mrg10L mrg10R radius-all-4 portfolio-nav-alt bg-blue clearfix controls">
+						<div class="container text-center">
+							<ul class="float-none">
+								<li class="filter" data-filter="hover_1">최근순</li>
+								<li class="filter" data-filter="hover_2">조회수순</li>
+								<li class="filter" data-filter="hover_3">추천순</li>
+							</ul>
+						</div>
+					</div>
+					<div class="clearfix">
+						<ul id="portfolio-grid" class="reset-ul">
+						</ul>
+					</div>
+
+
+
+
+					<div class="divider"></div>
+					<!-- 					<div class="text-center">
+						<ul class="pagination pagination-lg">
+							<li><a href="#">«</a></li>
+							<li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
+							<li><a href="#">2</a></li>
+							<li><a href="#">3</a></li>
+							<li><a href="#">4</a></li>
+							<li><a href="#">5</a></li>
+							<li><a href="#">»</a></li>
+						</ul>
+					</div> -->
 				</div>
 			</div>
-			<div id="search_list"></div>
-			
-			<div class="paging">
 
-				<button id="more">more</button>
-
-			</div>
 		</div>
-	</section>
-	<footer>
-		<jsp:include page="/bottom.do" />
-	</footer>
+		<jsp:include page="/bottom2.do" />
+	</div>
 </body>
 </html>

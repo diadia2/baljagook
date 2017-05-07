@@ -14,7 +14,7 @@ $(function() {
 				idx : $(this).parent().attr("id")
 			}
 			$.ajax({
-				url : "/map/commentModify.do",
+				url : "${pageContext.request.contextPath }/map/commentModify.do",
 				type : "post",
 				data : json,
 				success : callback
@@ -22,7 +22,7 @@ $(function() {
 		});
 		$(".del").click(function() {
 			$.ajax({
-				url : "/map/commentDelete.do",
+				url : "${pageContext.request.contextPath }/map/commentDelete.do",
 				type : "post",
 				data : "idx="+$(this).parent().attr("id"),
 				success : callback
@@ -41,7 +41,7 @@ $(function() {
 					idx : $(this).parent().attr("id")
 			}
 			$.ajax({
-				url : "/map/commentReply.do",
+				url : "${pageContext.request.contextPath }/map/commentReply.do",
 				type : "post",
 				data : json,
 				success : callback

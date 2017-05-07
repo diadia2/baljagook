@@ -2,6 +2,7 @@ package kr.co.foot.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -278,82 +280,103 @@ public class MymapController {
       return "redirect:/";
    }
    
-	@RequestMapping(value = "/map/searchList.do", method = RequestMethod.GET)
-	public String searchList(@RequestParam("searchtext") String searchtext, @RequestParam("moreCount") int moreCount, Model model, HttpServletRequest request){
+   @RequestMapping(value = "/map/searchList.do", method = RequestMethod.GET)
+	public String searchList(@RequestParam("searchtext") String searchtext, @RequestParam("moreCount") int moreCount,
+			Model model, HttpServletRequest request) {
+
+		List<MymapVO> mymapList = mymapService.selectMymapList(searchtext, 8 * moreCount);// 5*1
+																							// 더보기
+																							// 누르면
+																							// 5*2
+																							// 5*3
+		List<MymapVO> mymapList2 = mymapService.selectMymapList2(searchtext, 8 * moreCount);//조회수순
 		
-		List<MymapVO> mymapList = mymapService.selectMymapList(searchtext, 4*moreCount);//5*1 더보기 누르면 5*2 5*3  
-		System.out.println(mymapList.size());
+		System.out.println("mymapList.size() :" + mymapList.size());
 		List<HashtagVO> hashtagList = new ArrayList<HashtagVO>();
-		
-		//View로 넘길 like 해시맵 생성
+
+		// View로 넘길 like 해시맵 생성
 		HashMap<Integer, Integer> likeMap = new HashMap<Integer, Integer>();
-		//View로 넘길 like 체크용 해시맵 생성
+		// View로 넘길 like 체크용 해시맵 생성
 		HashMap<Integer, Boolean> likeAlreadyChecked = new HashMap<Integer, Boolean>();
-		//like 수 초기화
+		// like 수 초기화
 		int likeCnt = 0;
-		
+
 		HashMap<Integer, Integer> viewcntMap = new HashMap<Integer, Integer>();
 		int viewcnt = 0;
-		
-		for(int i=0; i<mymapList.size(); i++){
-			
+
+		for (int i = 0; i < mymapList.size(); i++) {
+			// 날짜 변환
+			String timestamp = mymapList.get(i).getRegdate();
+			long timestampL = Long.parseLong(timestamp) * 1000;
+			Date dateObj = new Date(timestampL);
+			DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+			String time = df.format(dateObj);
+			mymapList.get(i).setRegdate(time);
+
 			// 占싯삼옙占쏙옙占쎈에 占승댐옙 mymapidx 占쌀뤄옙占쏙옙占쏙옙
 			List<HashtagVO> eachHashtagList = mymapService.getHashtagList(mymapList.get(i).getIdx());
 			// 占쏙옙 mymapidx占쏙옙 占승댐옙 t_hashtag 占쌀뤄옙占쏙옙占쏙옙
-			for(int j=0; j<eachHashtagList.size(); j++){
+			for (int j = 0; j < eachHashtagList.size(); j++) {
 				hashtagList.add(eachHashtagList.get(j));
 			}
 		}
-	
+
 		// mymapidx占쏙옙 占승댐옙 t_regmap 占쌀뤄옙占쏙옙占쏙옙
 		List<RegmapVO> regmapList = new ArrayList<RegmapVO>();
-		for(int i=0; i<mymapList.size(); i++){
+		for (int i = 0; i < mymapList.size(); i++) {
 			RegmapVO getRegmap = mymapService.getRegmapList(mymapList.get(i).getIdx());
 			regmapList.add(getRegmap);
 			viewcnt = getRegmap.getViewcnt();
 			viewcntMap.put(mymapList.get(i).getIdx(), viewcnt);
 		}
-		
-		//Session에 저장된 userid 확인
+
+		// Session에 저장된 userid 확인
 		HttpSession session = request.getSession(true);
 		String loggedUserid = (String) session.getAttribute("user");
 		System.out.println("로그인중인 사용자: " + loggedUserid);
-		
-		//Like
+
+		// map image
+		Map<Integer, List> mapImg = new HashMap<>();
+
+		// Like
 		List<String> userList = new ArrayList<String>();
-		for(int i=0; i<mymapList.size(); i++) {
+		for (int i = 0; i < mymapList.size(); i++) {
 			userList = mymapService.getLikeCnt(mymapList.get(i).getIdx());
-			if(userList == null) {
+			if (userList == null) {
 				likeCnt = 0;
 			} else {
 				likeCnt = userList.size();
 			}
-			
-			//로그인된 userid가 이미 게시글을 '좋아요' 했다면 hashmap에 정보 저장
-			if(userList.contains(loggedUserid)) {
+
+			// 로그인된 userid가 이미 게시글을 '좋아요' 했다면 hashmap에 정보 저장
+			if (userList.contains(loggedUserid)) {
 				likeAlreadyChecked.put(mymapList.get(i).getIdx(), true);
 			}
-			
-			likeMap.put(mymapList.get(i).getIdx(), likeCnt);	
+
+			likeMap.put(mymapList.get(i).getIdx(), likeCnt);
+
+			List<RegcoordinatesVO> regcoordinatesVO = mymapService.getRegmapsList(mymapList.get(i).getIdx());
+			mapImg.put(mymapList.get(i).getIdx(), regcoordinatesVO);
 		}
-		
-		
+
 		model.addAttribute("mymapList", mymapList);
+		model.addAttribute("mymapList2", mymapList2);
 		model.addAttribute("hashtagList", hashtagList);
 		model.addAttribute("likeMap", likeMap);
 		model.addAttribute("likeAlreadyChecked", likeAlreadyChecked);
 		model.addAttribute("viewcntMap", viewcntMap);
+		model.addAttribute("mapImg", mapImg);
 		
 		return "search/searchList";
 	}
-	
+
 	@RequestMapping(value = "/map/search.do", method = RequestMethod.GET)
-	public String search(@RequestParam("searchtext") String searchtext, Model model, HttpServletRequest request){
+	public String search(@RequestParam("searchtext") String searchtext, Model model, HttpServletRequest request) {
 		int moreCount = 1;
 		model.addAttribute("searchtext", searchtext);
 		model.addAttribute("moreCount", moreCount);
-		
-		return "search/search2";
+
+		return "search/search";
 	}
    
    @RequestMapping("/map/detail.do")

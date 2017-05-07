@@ -15,8 +15,8 @@ public class CommentServiceImp implements CommentService{
 	private CommentDAO dao;
 	
 	@Override
-	public List<CommentVO> list() {
-		return dao.list();
+	public List<CommentVO> list(int regmapidx) {
+		return dao.list(regmapidx);
 	}
 	
 	@Override

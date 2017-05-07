@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.co.foot.board.CommentDAO">
 
-	<select id="selectComment" resultType="CommentVO">
-		select * from t_comment order by grp desc, seq asc
+	<select id="selectComment" resultType="CommentVO" parameterType="int">
+		select * from t_comment where regmapidx = #{regmapidx} order by grp desc, seq asc
 	</select>
 
 	<insert id="insertComment" parameterType="CommentVO">
