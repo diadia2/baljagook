@@ -47,6 +47,37 @@ public class MyPageDAOImp implements MyPageDAO {
 		String email = sst.selectOne("kr.co.foot.mypage.MyPageDAO.getEmailByUserid", userid);
 		return email;
 	}
+
+	public void deleteMyMap(int mymapidx) {
+		sst.delete("kr.co.foot.mypage.MyPageDAO.deleteMyMap", mymapidx);
+	}
 	
+	public void deleteRegMap(int mymapidx) {
+		sst.delete("kr.co.foot.mypage.MyPageDAO.deleteRegMap", mymapidx);
+	}
+	
+	public void deleteHashTag(int mymapidx) {
+		sst.delete("kr.co.foot.mypage.MyPageDAO.deleteHashTag", mymapidx);
+	}
+	
+	public void deleteRegCoordinates(int mymapidx) {
+		sst.delete("kr.co.foot.mypage.MyPageDAO.deleteRegCoordinates", mymapidx);
+	}
+	
+	public void deleteMyPlan(int mymapidx) {
+		sst.delete("kr.co.foot.mypage.MyPageDAO.deleteMyPlan", mymapidx);
+	}
+	
+	public void deleteMyPlanCoordinates(int mymapidx) {
+		sst.delete("kr.co.foot.mypage.MyPageDAO.deleteMyPlanCoordinates", mymapidx);
+	}
+	
+	public void deleteFavoriteMap(int idx) {
+		sst.delete("kr.co.foot.mypage.MyPageDAO.deleteFavoriteMap", idx);
+	}
+	
+	public void deleteFavoritePlace(int idx) {
+		sst.delete("kr.co.foot.mypage.MyPageDAO.deleteFavoritePlace", idx);
+	}
 	
 }

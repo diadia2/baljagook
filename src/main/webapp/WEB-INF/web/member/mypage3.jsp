@@ -10,6 +10,14 @@
 
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath }/resources/css/sub.css">
+<!-- Dropzone (사진 업로드) -->
+<link rel="stylesheet" 
+	href="${ pageContext.request.contextPath }/resources/css/dropzone/dropzone.css">
+<link rel="stylesheet" 
+	href="${ pageContext.request.contextPath }/resources/css/dropzone/basic.css">	
+<script type="text/javascript"
+	src="${pageContext.request.contextPath }/resources/js/dropzone/dropzone.js"></script>
+
 
 <script type="text/javascript">
 	$(document).ready(function() {
@@ -31,11 +39,9 @@
 						
 						for(var i=0; i<data.length; i++){
 						    if(i==0){
-								$('#myInfo').append('<li class="top"><a href="${ pageContext.request.contextPath }/map/detail.do?mymapidx='+data[i].idx+'">'+
-													data[i].title+'</a><br/>'+data[i].content+'<span onclick="javascript:deleteMymap('+data[i].idx+','+data[i].type+')">×</span></li>');
+								$('#myInfo').append('<li class="top"><a href="${ pageContext.request.contextPath }/map/detail.do?mymapidx='+data[i].idx+'">'+data[i].title+'</a><br/>'+data[i].content+'<span onclick="javascript:deleteMyMap('+data[i].idx+','+data[i].type+')">×</span></li>');
 						    } else {
-								$('#myInfo').append('<li><a href="${ pageContext.request.contextPath }/map/detail.do?mymapidx='+data[i].idx+'">'+
-													data[i].title+'</a><br/>'+data[i].content+'<span>×</span></li>');   
+								$('#myInfo').append('<li><a href="${ pageContext.request.contextPath }/map/detail.do?mymapidx='+data[i].idx+'">'+data[i].title+'</a><br/>'+data[i].content+'<span onclick="javascript:deleteMyMap('+data[i].idx+','+data[i].type+')">×</span></li>');   
 						    }
 						}
 			        }
@@ -55,9 +61,9 @@
 						
 						for(var i=0; i<data.length; i++){
 						    if(i==0){
-								$('#myInfo').append('<li class="top"><a href="${pageContext.request.contextPath}/map/plantrip.do">'+data[i].title+'</a><br/>'+data[i].content+'<span>×</span></li>');
+								$('#myInfo').append('<li class="top"><a href="${pageContext.request.contextPath}/map/plantrip.do">'+data[i].title+'</a><br/>'+data[i].content+'<span onclick="javascript:deleteMyPlan('+data[i].idx+','+data[i].type+');">×</span></li>');
 						    } else {
-								$('#myInfo').append('<li><a href="${pageContext.request.contextPath}/map/plantrip.do">'+data[i].title+'</a><br/>'+data[i].content+'<span>×</span></li>');   
+								$('#myInfo').append('<li><a href="${pageContext.request.contextPath}/map/plantrip.do">'+data[i].title+'</a><br/>'+data[i].content+'<span onclick="javascript:deleteMyPlan('+data[i].idx+','+data[i].type+');">×</span></li>');   
 						    }
 						}
 			        }
@@ -78,9 +84,9 @@
 						for(var i=0; i<data.length; i++){
 						    if(i==0){
 								console.log(data[i].idx);
-								$('#myInfo').append('<li class="top"><a href="${ pageContext.request.contextPath }/map/detail.do?mymapidx='+data[i].idx+'">'+data[i].title+'</a><br/>'+data[i].content+'<span>×</span></li>');
+								$('#myInfo').append('<li class="top"><a href="${ pageContext.request.contextPath }/map/detail.do?mymapidx='+data[i].idx+'">'+data[i].title+'</a><br/>'+data[i].content+'<span onclick="javascript:deleteFavoriteMap('+data[i].idx+');">×</span></li>');
 						    } else {
-								$('#myInfo').append('<li><a href="${ pageContext.request.contextPath }/map/detail.do?mymapidx='+data[i].idx+'">'+data[i].title+'</a><br/>'+data[i].content+'<span>×</span></li>');   
+								$('#myInfo').append('<li><a href="${ pageContext.request.contextPath }/map/detail.do?mymapidx='+data[i].idx+'">'+data[i].title+'</a><br/>'+data[i].content+'<span onclick="javascript:deleteFavoriteMap('+data[i].idx+');">×</span></li>');   
 						    }
 						}
 			        }
@@ -100,9 +106,9 @@
 						
 						for(var i=0; i<data.length; i++){
 						    if(i==0){
-								$('#myInfo').append('<li class="top"><a href="javascript:myPlace('+data[i].checkpointidx+')">'+data[i].placename+'</a><span>×</span></li>');
+								$('#myInfo').append('<li class="top"><a href="javascript:myPlace('+data[i].checkpointidx+')">'+data[i].placename+'</a><span onclick="javascript:deleteFavoritePlace('+data[i].idx+');">×</span></li>');
 						    } else {
-								$('#myInfo').append('<li><a href="javascript:myPlace('+data[i].checkpointidx+')">'+data[i].placename+'</a><span>×</span></li>');   
+								$('#myInfo').append('<li><a href="javascript:myPlace('+data[i].checkpointidx+')">'+data[i].placename+'</a><span onclick="javascript:deleteFavoritePlace('+data[i].idx+');">×</span></li>');   
 						    }
 						}
 			        }
@@ -180,14 +186,71 @@
 
     }
 
-     function deleteMymap(mymapidx, type) {
-	console.log(mymapidx);
-	console.log(type);
-	if (confirm("삭제 하시겠습니까?")) {
-
-	}
-
+    function deleteMyMap(mymapidx, type) {
+		console.log(mymapidx);
+		console.log(type);
+		if (confirm("삭제 하시겠습니까?")) {
+			$.ajax({
+				type : 'POST',
+				data : jQuery.param({ mymapidx: mymapidx }),
+				url : '${ pageContext.request.contextPath }/deleteMyMap.do',
+				contentType : 'application/x-www-form-urlencoded; charset=UTF-8',
+				success : (function(data) {
+					alert('삭제되었습니다');
+					window.location.href = '${ pageContext.request.contextPath }/member/mypage.do';
+				})
+			});
+		}
     }
+
+     function deleteMyPlan(mymapidx, type) {
+    	console.log(mymapidx);
+    	console.log(type);
+    	if (confirm("삭제 하시겠습니까?")) {
+    		$.ajax({
+    			type : 'POST',
+    			data : jQuery.param({ mymapidx: mymapidx }),
+    			url : '${ pageContext.request.contextPath }/deleteMyPlan.do',
+    			contentType : 'application/x-www-form-urlencoded; charset=UTF-8',
+    			success : (function(data) {
+    				alert('삭제되었습니다');
+    				window.location.href = '${ pageContext.request.contextPath }/member/resetMypage.do';
+    			})
+    		});
+    	}
+	}
+     
+    function deleteFavoriteMap(idx) {
+    	console.log(idx);
+    	if(confirm("삭제 하시겠습니까?")) {
+    		$.ajax({
+    			type : 'POST',
+    			data : jQuery.param({ idx: idx }),
+    			url : '${ pageContext.request.contextPath }/deleteFavoriteMap.do',
+    			contentType : 'application/x-www-form-urlencoded; charset=UTF-8',
+    			success : (function(data) {
+    				alert('삭제되었습니다');
+    				window.location.href = '${ pageContext.request.contextPath }/member/resetMypageTwo.do';
+    			})
+    		});    		
+    	}	
+    }
+
+    function deleteFavoritePlace(idx) {
+    	console.log(idx);
+    	if(confirm("삭제 하시겠습니까?")) {
+    		$.ajax({
+    			type : 'POST',
+    			data : jQuery.param({ idx: idx }),
+    			url : '${ pageContext.request.contextPath }/deleteFavoritePlace.do',
+    			contentType : 'application/x-www-form-urlencoded; charset=UTF-8',
+    			success : (function(data) {
+    				alert('삭제되었습니다');
+    				window.location.href = '${ pageContext.request.contextPath }/member/resetMypageThree.do';
+    			})
+    		});    		
+    	}	
+    }    
      
 /*-----------------------비밀번호 형식 체크------------------------*/
 	function validatePassword(inputPassword) {
@@ -260,28 +323,34 @@ function deactivateAccount() {
 };
 
 /*------------------프로필사진 변경-------------------------*/
-	function uploadImage() {
-		$("#chooseImage").click();
-	}
-
-	$(document).on("change", "#chooseImage", function() {
-		var file_data = $("#chooseImage").prop("files")[0];
-		var form_data = new FormData();
-		form_data.append("file", file_data);
-
-		$.ajax({
-		    url: "${ pageContext.request.contextPath }/uploadPhoto.do",
-		    cache: false,
-		    contentType: false,
-		    processData: false,
-		    data: form_data,
-		    type: 'post',
-		    success: function (data) {
-				$("#profileImage").prop("src", "${ pageContext.request.contextPath }/resources/photo/profileImage/"+data);
-			}
-	    });
-	})		
-		
+Dropzone.autoDiscover = false;
+$(document).ready(function () {
+	
+ 	$('#uploadProfileImg').click(function () {
+		$('#addProfileImg').modal('show');
+	});
+ 	
+ 	$('#finishUpload').click(function () {
+ 		$('#addProfileImg').modal('hide');
+ 	});
+	
+	$("div#dropThat").dropzone({
+		url: "${ pageContext.request.contextPath }/uploadPhoto.do",
+		maxFilesize : 3,
+		maxFiles : 1,
+		init: function() {
+			this.on("maxfilesexceeded", function(file) {
+				this.removeAllFiles();
+				this.addFile(file);
+			});
+			this.on("success", function(file, responseText) {
+				console.log('imageName : ' +responseText); 
+				$("#profileImage").prop("src", "${ pageContext.request.contextPath }/resources/photo/profileImage/"+responseText);			
+			});
+		}		
+	});	
+	
+});
 </script>
 </head>
 <body>
@@ -329,17 +398,35 @@ function deactivateAccount() {
 			</div>
 		</div>	 
 	</div>
+
+<!-- 프로필 이미지 등록 Modal -->	
+	<div class="modal fade" id="addProfileImg" tabindex="-1" role="dialog" aria-labelledby="addProfileImgModal" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="myModalLabel">프로필 사진 등록</h4>					
+				</div>
+				<div class="modal-body">
+					<div id="dropThat" class="dropzone"></div>
+				</div>
+				<div class="modal-footer">
+					<button id="finishUpload" class="btn btn-primary">완료</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
 	
 	<section>
 		<div class="container">
 			<div class="menuleft">
+	
 				<div class="div_img">
  					<img id="profileImage" src="${ pageContext.request.contextPath }/resources/photo/profileImage/${ imageName }" width="80" height="80"/>
-					<div style="height:0px;overflow:hidden">
-						<input id="chooseImage" type="file"/>
-					</div>
-					<button onclick="uploadImage();">사진 업로드</button>
 				</div>
+					<button id="uploadProfileImg" type="button">사진 업로드</button>
 				<div class="div_name">${sessionScope.user}</div>
 				<div class="menus">
 					<ul>
@@ -349,6 +436,7 @@ function deactivateAccount() {
 					</ul>
 				</div>
 			</div>
+
 			<div class="div_main">
 				<div class="menus">
 					<span class="">장소</span> <span class="">MAP</span> <span class="">내계획</span> <span class="on">내여행</span>

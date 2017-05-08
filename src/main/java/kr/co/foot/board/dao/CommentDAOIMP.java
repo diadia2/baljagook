@@ -15,8 +15,8 @@ public class CommentDAOIMP implements CommentDAO{
 	private SqlSessionTemplate sqlSessionTemplate;//spring-mvc.xml Bean에서 설정
 
 	@Override
-	public List<CommentVO> list() {
-		List<CommentVO> list = sqlSessionTemplate.selectList("kr.co.foot.board.CommentDAO.selectComment");
+	public List<CommentVO> list(int regmapidx) {
+		List<CommentVO> list = sqlSessionTemplate.selectList("kr.co.foot.board.CommentDAO.selectComment", regmapidx);
 		return list;
 	}
 	

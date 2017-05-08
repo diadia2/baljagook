@@ -46,4 +46,24 @@ public class MyPageServiceImp implements MyPageService {
 		String email = dao.getEmailByUserid(userid);
 		return email;
 	}
+	
+	public void deleteMyMap(int mymapidx) {
+		dao.deleteMyMap(mymapidx);
+		dao.deleteRegMap(mymapidx);
+		dao.deleteHashTag(mymapidx);
+		dao.deleteRegCoordinates(mymapidx);
+	}
+	
+	public void deleteMyPlan(int mymapidx) {
+		dao.deleteMyPlan(mymapidx);
+		dao.deleteMyPlanCoordinates(mymapidx);
+	}
+	
+	public void deleteFavoriteMap(int idx) {
+		dao.deleteFavoriteMap(idx);
+	}
+	
+	public void deleteFavoritePlace(int idx) {
+		dao.deleteFavoritePlace(idx);
+	}
 }

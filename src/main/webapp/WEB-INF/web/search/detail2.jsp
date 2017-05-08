@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@include file="/WEB-INF/share2.jsp" %>
+<%@include file="/WEB-INF/share2.jsp"%>
 <!DOCTYPE html>
 <html lang="kr">
 <head>
@@ -50,6 +50,20 @@ html, body {
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <!--[if IE]><meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'><![endif]-->
 <title>gMaps</title>
+<!-- tab -->
+<script type="text/javascript"
+	src="${pageContext.request.contextPath }/resources/assets/widgets/tabs-ui/tabs.js"></script>
+<script type="text/javascript">
+	/* jQuery UI Tabs */
+	$(function() {
+		"use strict";
+		$(".tabs").tabs();
+	});
+</script>
+<script type="text/javascript"
+	src="${pageContext.request.contextPath }/resources/assets/widgets/tabs/tabs.js"></script>
+<script type="text/javascript"
+	src="${pageContext.request.contextPath }/resources/assets/widgets/tabs/tabs-responsive.js"></script>
 <!-- map -->
 <script
 	src="https://apis.skplanetx.com/tmap/js?version=1&format=javascript&appKey=bac4f916-3297-3be4-93ff-e37ae88b8f42"></script>
@@ -822,7 +836,7 @@ html, body {
 		
 
 		/* sock */
-		var socket = new SockJS('/Baljagook/endpoint');
+		/* var socket = new SockJS('/Baljagook/endpoint');
 		var client = Stomp.over(socket);
 		client.connect({}, function(frame) {
 			console.log('connected stomp over sockjs');
@@ -831,7 +845,7 @@ html, body {
 				$('#alarm').append(message.body + '<br>');
 			});
 
-		});
+		}); */
 		$('#message').click(function() {
 			var data = {
 				name : "${sessionScope.user}"
@@ -933,6 +947,39 @@ var flightListLonLat = [];
 	    map.setZoom(zoom);
 	    initialize();
 	}
+	
+	
+
+	/**
+	 * mapComment
+	 */
+		$(function() {
+			$.ajax({
+				url : "${pageContext.request.contextPath }/comment/mapCommentList.do",
+				type : "post",
+				data : "userid="+$("#userid").val()+"&content=" + $("#content").val()+"&regmapidx=" + $("#regmapidx").val(),
+				success : callback
+			});
+			$("#cmtBtm").click(function() {
+				var json = {
+						userid : $("#userid").val(),
+						content : $("#content").val(),
+						regmapidx : $("#regmapidx").val(),
+		/* 				idx : '240' */
+				}
+				$.ajax({
+					type : "post",
+					url : "${pageContext.request.contextPath }/map/commentInsert.do",
+					data : json,
+					success : callback
+				});
+			});
+		});
+		function callback(data) {
+			$("#cmt").html(data);
+			$("#cmtText").val("")
+		}
+
 </script>
 </head>
 <body>
@@ -967,32 +1014,77 @@ var flightListLonLat = [];
 								<p>${ sdate }~${ edate }</p>
 							</div>
 							<div class="example-box-wrapper" style="height: 85%">
-								<div
-									class="timeline-box timeline-box-left scrollable-content scrollable-xs scrollable-nice"
-									style="height: 100%">
-									<c:forEach var="checkpointVO" items="${ checkpointVO }"
-										varStatus="i">
-										<!-- 타임라인 1개 -->
-										<div class="tl-row" onClick="goZoomIn(${i.index})">
-											<div class="tl-item float-right redline">
-												<div class="tl-icon bg-red">
-													<i class="icon-toggle-on">${i.index+1}</i>
-												</div>
-												<div class="popover right">
-													<div class="arrow"></div>
-													<div class="popover-content">
-														<div class="tl-label bs-label label-info">${ checkpointVO.title }</div>
-														<p class="tl-content">${ checkpointVO.content }</p>
-														<div class="tl-time">
-															<i class="glyph-icon icon-clock-o"></i> a few seconds ago
+								<div class="content-box tabs" style="height: 100%">
+									<h3 class="content-box-header bg-default">
+										<ul>
+											<li><a href="#tabs-example-2" title="Tab 1">Time
+													Line</a></li>
+											<li><a href="#tabs-example-1" title="Tab 2">Comment</a></li>
+										</ul>
+									</h3>
+									<div id="tabs-example-2">
+										<div
+											class="timeline-box timeline-box-left scrollable-content scrollable-xs scrollable-nice"
+											style="height: 100%">
+											<c:forEach var="checkpointVO" items="${ checkpointVO }"
+												varStatus="i">
+												<!-- 타임라인 1개 -->
+												<div class="tl-row" onClick="goZoomIn(${i.index})">
+													<div class="tl-item float-right redline">
+														<div class="tl-icon bg-red">
+															<i class="icon-toggle-on">${i.index+1}</i>
+														</div>
+														<div class="popover right">
+															<div class="arrow"></div>
+															<div class="popover-content">
+																<div class="tl-label bs-label label-info">${ checkpointVO.title }</div>
+																<p class="tl-content">${ checkpointVO.content }</p>
+																<div class="tl-time">
+																	<i class="glyph-icon icon-clock-o"></i> a few seconds
+																	ago
+																</div>
+															</div>
 														</div>
 													</div>
 												</div>
+											</c:forEach>
+
+										</div>
+
+
+									</div>
+									<div id="tabs-example-1" style="height: 100%">
+										<div
+											class="timeline-box timeline-box-left scrollable-content scrollable-xs scrollable-nice"
+											style="height: 80%">
+											<!-- 출력 -->
+											<div id="cmt"></div>
+										</div>
+										<!-- 입력 -->
+										<div class="button-pane pad10A">
+											<div class="input-group form">
+												<input type="hidden" value="${ mymapVO.idx }" id="regmapidx">
+												<input type="hidden" value="${sessionScope.user }"
+													id="userid">
+												<textarea id="content" class="form-control"
+													placeholder="댓 글" style="height: 50px;"></textarea>
+												<div class="input-group-btn">
+													<button type="button" class="btn btn-default" id="cmtBtm"
+														tabindex="-1" style="height: 50px; width: 50px;">
+														<i class="glyph-icon icon-mail-reply"></i>
+													</button>
+												</div>
 											</div>
 										</div>
-									</c:forEach>
 
+
+
+
+									</div>
 								</div>
+
+
+
 							</div>
 						</div>
 					</div>
@@ -1005,8 +1097,9 @@ var flightListLonLat = [];
 							class="glyph-icon tooltip-button demo-icon icon-chevron-right"
 							title="앞으로가기" onclick="javascript:lineStart()"></i>
 					</div>
-					<div id="openphoto" style="background: black; left: 0; bottom:0; position: absolute; margin-left: 10%; margin-bottom: 10%; margin-right: 30%; margin-top: 10%"></div>
-					
+					<div id="openphoto"
+						style="background: black; left: 0; bottom: 0; position: absolute; margin-left: 10%; margin-bottom: 10%; margin-right: 30%; margin-top: 10%"></div>
+
 					<div id="map_div"></div>
 				</div>
 			</div>

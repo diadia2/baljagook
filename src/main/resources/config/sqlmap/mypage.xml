@@ -24,5 +24,29 @@
     </select>    
     <select id="getEmailByUserid" parameterType="String" resultType="String">
         select email from t_member where userid = #{userid}
-    </select>	
+    </select>
+   <delete id="deleteMyMap" parameterType="int">
+       delete from t_myMap where idx = #{idx}
+   </delete>
+   <delete id="deleteRegMap" parameterType="int">
+       delete from t_regmap where mymapidx = #{mymapidx}
+   </delete>
+   <delete id="deleteHashTag" parameterType="int">
+       delete from t_hashtag where mymapidx = #{mymapidx}
+   </delete>
+   <delete id="deleteRegCoordinates" parameterType="int">
+       delete from t_regcoordinates where mymapidx = #{mymapidx}
+   </delete>
+   <delete id="deleteMyPlan" parameterType="int">
+       delete from t_myMap where idx = #{mymapidx}
+   </delete>
+   <delete id="deleteMyPlanCoordinates" parameterType="int">
+       delete from t_regcoordinates where mymapidx = #{mymapidx}
+   </delete>
+   <delete id="deleteFavoriteMap" parameterType="int">
+       delete from t_favoritemap where idx = #{idx}
+   </delete>
+   <delete id="deleteFavoritePlace" parameterType="int">
+       delete from t_favoriteplace where idx = #{idx}
+   </delete>
 </mapper>

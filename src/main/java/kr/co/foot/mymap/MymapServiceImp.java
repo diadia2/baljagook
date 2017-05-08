@@ -82,6 +82,13 @@ public class MymapServiceImp implements MymapService {
 		
 		return mymapList;
 	}
+	@Override
+	public List<MymapVO> selectMymapList2(String searchtext, int pageSize) {
+		
+		List<MymapVO> mymapList = mymapDAO.selectMymapList2(searchtext, pageSize);
+		
+		return mymapList;
+	}
 
 	@Override
 	public List<HashtagVO> getHashtagList(int idx) {

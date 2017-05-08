@@ -25,6 +25,7 @@ public interface MymapService {
 	public List<RegcoordinatesVO> getRegcoordinatesInfo(int mymapidx);
 	public void insertCheckpoint(CheckpointVO checkpointVO);
 	public List<MymapVO> selectMymapList(String searchtext, int pageSize);
+	public List<MymapVO> selectMymapList2(String searchtext, int pageSize);
 	public List<HashtagVO> getHashtagList(int idx);
 	public RegmapVO getRegmapList(int idx);
 	public MymapVO selectMymap(int mymapidx);

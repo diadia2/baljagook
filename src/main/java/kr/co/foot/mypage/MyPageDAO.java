@@ -12,4 +12,12 @@ public interface MyPageDAO {
 	public MemberVO findByUserid(String userid);
 	public MemberVO findByEmail(String Email);
 	public String getEmailByUserid(String userid);
+	public void deleteMyMap(int mymapidx);
+	public void deleteRegMap(int mymapidx);
+	public void deleteHashTag(int mymapidx);
+	public void deleteRegCoordinates(int mymapidx);
+	public void deleteMyPlan(int mymapidx);
+	public void deleteMyPlanCoordinates(int mymapidx);
+	public void deleteFavoriteMap(int idx);
+	public void deleteFavoritePlace(int idx);
 }
