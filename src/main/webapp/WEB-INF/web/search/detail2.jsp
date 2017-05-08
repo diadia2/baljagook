@@ -89,7 +89,7 @@ html, body {
     	photoList.push({checkpointidx:${photoList.checkpointidx}, oriname:'${photoList.oriname}', newname:'${photoList.newname}'});
     </c:forEach>
     
-    var center = listLonLat[listLonLat.length-1];
+    var center = listLonLat[0];
     var zoom = 13;
     
 	var routeLayer, routeLayerWalk, tmap, map;
@@ -109,6 +109,8 @@ html, body {
 	var directionsService;
 	
 	function initialize() {
+	    console.log(listLonLat);
+	   	console.log(checkpoint);
 		// 좌표 등록
 		tmap = new Tmap.Map({div:'map_div', width:'0px', height:'0px'});
 		map = new google.maps.Map(document.getElementById('map'), {
@@ -142,6 +144,8 @@ html, body {
 			}
 			
 			addLineMarker();
+			
+			flightMarkers = [];
 
 	}
 	
@@ -150,6 +154,37 @@ html, body {
 	function goZoomIn(i){
  		var center = new google.maps.LatLng(checkpoint[i].lat, checkpoint[i].lng);
 		map.setCenter(center); 
+		
+		$('.timelineinfo').css({'background-color':'white'});
+		$('.timelineinfo').eq(i).css({'background-color':'yellow'});
+		$('.timelineinfo').eq(i).attr("tabindex", -1).focus();
+		
+		  if(infowindow != null){
+			  infowindow.close();
+		  }
+		  console.log(checkMarker);
+		if(checkMarker[i].filename != undefined){
+		  infowindow = new google.maps.InfoWindow({
+	               content: '<a href="javascript:doImgPop('+checkMarker[i].idx+')"><img src="${ pageContext.request.contextPath }/resources/photo/'+checkMarker[i].filename
+	                +'" width="200px" height="200px" title="클릭하시면 확대하여 보실 수 있습니다." style="cursor:pointer;"/></a><br/>'+
+				    (checkMarker[i].num+1)+". "+checkMarker[i].title+'<br/>'+checkMarker[i].content+
+				    '<br/><input type="button" value="출발설정" onClick="startCheck('+
+				   	 	checkMarker[i].position.lat().toString()+", "+checkMarker[i].position.lng().toString()+')"/><input type="button" value="도착설정" onClick="endCheck('+
+				    	checkMarker[i].position.lat().toString()+", "+checkMarker[i].position.lng().toString()+')"/><input type="button" value="즐겨찾기등록" onClick="getFavoritePlace('+checkMarker[i].idx+')"/>'
+				  });
+			  infowindow.open(map, checkMarker[i]);
+		} else {
+		    if(infowindow != null){
+			  infowindow.close();
+		  } 
+		  infowindow = new google.maps.InfoWindow({
+				    content: (checkMarker[i].num+1)+". "+checkMarker[i].title+'<br/>'+checkMarker[i].content+
+				    '<br/><input type="button" value="출발설정" onClick="startCheck('+
+					    checkMarker[i].position.lat().toString()+", "+checkMarker[i].position.lng().toString()+')"/><input type="button" value="도착설정" onClick="endCheck('+
+					    checkMarker[i].position.lat().toString()+", "+checkMarker[i].position.lng().toString()+')"/><input type="button" value="즐겨찾기등록" onClick="getFavoritePlace('+checkMarker[i].idx+')"/>'
+			  }); 
+		  infowindow.open(map, checkMarker[i]);
+		}
 	}
 	
 	var checkMarker = new Array();
@@ -182,25 +217,30 @@ html, body {
 			}
 			
 			if(filename != null){
+			    
 				checkMarker.push(new google.maps.Marker({
 				    position: checkpoint[i],
 				    map: map,
 				    num : i,
 				    idx : checkpoint[i].checkpointidx,
 				    filename : filename,
-				    title : checkpoint[j].title,
-				   	content : checkpoint[j].content
+				    title : checkpoint[i].title,
+				   	content : checkpoint[i].content
 				}));
 				  
 				  var listener3 = google.maps.event.addListener(map, 'click', function(){
 					if(infowindow != null){
 						  infowindow.close();
 					  }
+					  $('.timelineinfo').css({'background-color':'white'});
 				  });
 				  var listener1 = google.maps.event.addListener(checkMarker[i], 'click', function(){
 					  if(infowindow != null){
 						  infowindow.close();
 					  }
+					  $('.timelineinfo').css({'background-color':'white'});
+					  $('.timelineinfo').eq(this.num).css({'background-color':'yellow'});
+					  $('.timelineinfo').eq(this.num).attr("tabindex", -1).focus();
 					  infowindow = new google.maps.InfoWindow({
 			               content: '<a href="javascript:doImgPop('+this.idx+')"><img src="${ pageContext.request.contextPath }/resources/photo/'+this.filename
 			                +'" width="200px" height="200px" title="클릭하시면 확대하여 보실 수 있습니다." style="cursor:pointer;"/></a><br/>'+
@@ -208,28 +248,32 @@ html, body {
 						    '<br/><input type="button" value="출발설정" onClick="startCheck('+
 						    		this.position.lat().toString()+", "+this.position.lng().toString()+')"/><input type="button" value="도착설정" onClick="endCheck('+
 						    		this.position.lat().toString()+", "+this.position.lng().toString()+')"/><input type="button" value="즐겨찾기등록" onClick="getFavoritePlace('+this.idx+')"/>'
-						  }); 
+						  });
 					  infowindow.open(map, this);
 				  }); 
-			} else {
+			} else if(filename == null){
+			    
 			    checkMarker.push(new google.maps.Marker({
 				    position: checkpoint[i],
 				    map: map,
 				    num : i,
 				    idx : checkpoint[i].checkpointidx,
-				    title : checkpoint[j].title,
-				   	content : checkpoint[j].content
+				    title : checkpoint[i].title,
+				   	content : checkpoint[i].content
 				}));
 			    
 				  var listener3 = google.maps.event.addListener(map, 'click', function(){
 					if(infowindow != null){
 						  infowindow.close();
 					  }
+					$('.timelineinfo').css({'background-color':'white'});
 				  });
 				  var listener1 = google.maps.event.addListener(checkMarker[i], 'click', function(){
 					  if(infowindow != null){
 						  infowindow.close();
-					  }
+					  } 
+					  $('.timelineinfo').css({'background-color':'white'});
+					  $('.timelineinfo').eq(this.num).css({'background-color':'yellow'});
 					  infowindow = new google.maps.InfoWindow({
 						    content: (this.num+1)+". "+this.title+'<br/>'+this.content+
 						    '<br/><input type="button" value="출발설정" onClick="startCheck('+
@@ -255,11 +299,13 @@ html, body {
                     checkpointidx : idx
                 },
                 success: function(data) {
+                    console.log(data);
+                    
                     var getTitle = data[0].title;
                     var getContent = data[0].content;
                     var newName = data[1].newname;
                     
-                    var img = '${ pageContext.request.contextPath }/resources/photo/679c84b19a2547d58f4e2ce8b17126f5.jpg';
+                    var img = '${ pageContext.request.contextPath }/resources/photo/profileImage/a3255505d10246868aa50c15904b9382lion.jpg';
 //                    var img = '${ pageContext.request.contextPath }/resources/photo/'+newName;
                     $('#openphoto').append("<img src="+img+" onclick='closephoto()' width='80%' height='80%' style='cursor:pointer; margin-left: 10%; margin-top: 2%; margin-bottom: 2%' title ='클릭하시면 창이 닫힙니다.'>");
                     $('#openphoto').append("<div style='color:white; margin-left: 10%;'>"+getTitle+"</div>");
@@ -861,6 +907,7 @@ html, body {
 <script type="text/javascript">
 var flightNum = 0;
 var flightListLonLat = [];
+var flightMarkers = new Array();
 	function lineStart(){
 	    
 	    if(flightNum == 0){
@@ -871,7 +918,7 @@ var flightListLonLat = [];
 				center : center,
 				mapTypeControl: false
 			});
-			zoom = 17;
+			zoom = 13;
 			map.setZoom(zoom);
 	    }
 	   	
@@ -879,9 +926,21 @@ var flightListLonLat = [];
 		
 			flightListLonLat.push(listLonLat[flightNum++]);
 			flightListLonLat.push(listLonLat[flightNum]);
-	
+			
 	 		var center = new google.maps.LatLng(listLonLat[flightNum]);
 			map.setCenter(center);
+			
+			if(flightMarkers.length != 0){	// 라인 마커가 있으면
+				for (var i = 0; i < flightMarkers.length; i++) {
+				    flightMarkers[i].setMap(null);
+				  }
+			}
+			
+			flightMarkers.push(new google.maps.Marker({
+			    position: center,
+			    map: map,
+			    icon: "http://openmap2.tmap.co.kr/point.png"
+			}));
 			
 		    if(listLonLat.length != 0){
 			var initflightPlanCoordinates = flightListLonLat;
@@ -913,12 +972,24 @@ var flightListLonLat = [];
 			center : center,
 			mapTypeControl: false
 		});
-		zoom = 17;
+		zoom = 13;
 		map.setZoom(zoom);
-		
 		
 		var center = new google.maps.LatLng(listLonLat[--flightNum]);
 		map.setCenter(center);
+		
+		if(flightMarkers.length != 0){	// 라인 마커가 있으면
+			for (var i = 0; i < flightMarkers.length; i++) {
+			    flightMarkers[i].setMap(null);
+			  }
+		}
+		
+		flightMarkers.push(new google.maps.Marker({
+		    position: center,
+		    map: map,
+		    icon: "http://openmap2.tmap.co.kr/point.png"
+		}));
+		
 		flightListLonLat.splice(flightListLonLat.length-2,2);
 	    console.log(flightListLonLat); 
 		if(listLonLat.length != 0){
@@ -1022,7 +1093,7 @@ var flightListLonLat = [];
 											<li><a href="#tabs-example-1" title="Tab 2">Comment</a></li>
 										</ul>
 									</h3>
-									<div id="tabs-example-2">
+									<div id="tabs-example-2" style="height: 100%">
 										<div
 											class="timeline-box timeline-box-left scrollable-content scrollable-xs scrollable-nice"
 											style="height: 100%">
@@ -1036,12 +1107,10 @@ var flightListLonLat = [];
 														</div>
 														<div class="popover right">
 															<div class="arrow"></div>
-															<div class="popover-content">
+															<div class="popover-content timelineinfo"> 
 																<div class="tl-label bs-label label-info">${ checkpointVO.title }</div>
 																<p class="tl-content">${ checkpointVO.content }</p>
 																<div class="tl-time">
-																	<i class="glyph-icon icon-clock-o"></i> a few seconds
-																	ago
 																</div>
 															</div>
 														</div>

@@ -450,15 +450,15 @@ body {
 <body>
 	 <header>
  	</header>
-	<section style="background: black;">  
+	<section style="background: black;">   
  
 		<!-- 메인 사진 -->
 <%-- 		<img src="${pageContext.request.contextPath }/resources/images/background.PNG" class="img-responsive center-block"
 			alt="Responsive image" style="width: 100%; height: 700px"> --%>
-		<video id="mainvideo" width="100%" height="100%" loop="loop" autoplay="autoplay" style="margin-top: 0; padding-top: 0; opacity: 0.3; position: relative;">  
+		<video id="mainvideo" width="100%" height="100%" loop="loop" autoplay="autoplay" style="margin-top: 0; padding-top: 0; opacity: 0.8; position: relative;">  
 			<source src="${pageContext.request.contextPath }/resources/video/baljagookMain.mp4" type="video/mp4">
-		</video>
-  
+		</video>  
+   
 		  
 		<!-- 검색바  --> 
 		<div class="collapse navbar-collapse" id="target" style="position: absolute; top:0; left:0; right: 0; margin-top: 18%; background-color: rgba(0,0,0,.5); padding-top: 40px; padding-bottom: 40px;">  
@@ -469,9 +469,9 @@ body {
 					<div class="col-lg-8 col-md-4 col-sm-6 item" style="background: 0;"> 
 						<p style="text-align: center"><span class="mainmsg" style="color: white; font-size: 20pt; font-weight: bold;">발자국, 나만의 여행 발자취</span>
 						<form class="navbar-form navbar-nav" action="${pageContext.request.contextPath }/map/search.do" method="get" style="text-align: center;">
-							<input type="text" size=80%; class="form-control" placeholder="원하시는 여행지를 입력해 주세요" id="searchtext" style="background-color: transparent; height: 50px" onKeyPress="if (event.keyCode==13){ goSearch();event.returnValue=false}"/>&nbsp;&nbsp; <a href="javascript:goSearch()">
+							<input type="text" size=65%; class="form-control" placeholder="원하시는 여행지를 입력해 주세요" id="searchtext" style="color:white; font-size:14pt; background-color: transparent; height: 50px" onKeyPress="if (event.keyCode==13){ goSearch();event.returnValue=false}"/>&nbsp;&nbsp; <a href="javascript:goSearch()">
 								<img src="${ pageContext.request.contextPath }/resources/main/search1.png" width="5%" height="5%"></a>
-						</form>
+						</form> 
 						<div class="col-lg-8 col-md-4 col-sm-6 item" style="background: 0; padding-top: 1%;">
 							<span class="mainmsg" style="color: white; font-size: 16pt; padding-left: 15%;">  
 							나만의 새로운 여행 경로를 만들어보세요!</span><br/>
@@ -578,7 +578,7 @@ body {
 		<div class="projects-clean">
 			<div class="container">
 				<div class="intro">
-					<h2 class="text-center">Featured</h2>
+					<h2 class="text-center"></h2>
 				</div>
 				<div class="row projects">
 						<div class="col-lg-3 col-sm-6 item">

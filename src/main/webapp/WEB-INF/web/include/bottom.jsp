@@ -14,14 +14,9 @@
 			<div class="social container">
 				<div class="row">
 					<div class="col-md-4"></div>
+					<div class="col-md-4"></div>
 					<div class="col-md-4">
-						<a href="#"><i class="fa fa-google-plus" aria-hidden="true"></i></a>
-						<a href="#"><i class="fa fa-twitter" aria-hidden="true"></i> </a>
-						<a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a><a
-							href="#"><i>kakao</i></a>
-					</div>
-					<div class="col-md-4">
-						<a href="https://play.google.com/intl/en_us/badges/"><img
+						<a href="https://play.google.com/store/apps/details?id=co.kr.bit.mymap"><img
 							src="<c:url value="/resources/images/google.png"/>"/></a>
 							<%-- <img
 							src="${pageContext.request.contextPath }/resources/images/google.png"/> --%>

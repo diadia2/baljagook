@@ -87,7 +87,7 @@
    </select>
    
    <select id="getRegmapsList" parameterType="int" resultType="kr.co.foot.regcoordinates.RegcoordinatesVO">
-	   select idx, lon, lat, mymapidx from t_regcoordinates where mymapidx = #{mymapidx}
+	   select idx, lon, lat, mymapidx from t_regcoordinates where mymapidx = #{mymapidx} order by idx DESC
    </select>
    
    <select id="selectCheckPoint" parameterType="int" resultType="kr.co.foot.checkpoint.CheckpointVO">
