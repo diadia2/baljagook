@@ -30,176 +30,166 @@
 			contentType : 'application/json',
 			dataType : 'json',
 			success : function(imageName) {
-				$("#profileImage").prop("src", "${ pageContext.request.contextPath }/resources/photo/profileImage/"+imageName);			
+				$("#profileImage").prop("src", "${ pageContext.request.contextPath }/resources/photo/profileImage/"+imageName);
 			}
 		});
-						// mymap
-						$
-								.ajax({
-									type : 'POST',
-									url : '${ pageContext.request.contextPath }/member/getMymapList.do',
-									dataType : 'json',
-									success : function(data) {
-										$('mymapInfo').children().remove();
-										console.log(data);
-										console.log(data[0].length);
-										//console.log(data[0][0].content); // mymap 0번째의 내용
-										//console.log(data[0][0].idx);	 // mymap 0번째 인덱스
-										//console.log(data[1]);			 // reglist들의 list
-										//console.log(data[1][data[0][0].idx]);	// reglist들의 list의 0번째 리스트
-										//console.log(data[1][data[0][0].idx][0].lat);	// reglist들의 list의 0번째 리스트의 0번째 lat
-										var lonlat = "";
-										for (i = 0; i < data[0].length; i++) {
-											for (j = 0; j < data[1][data[0][i].idx].length; j++) {
-												lonlat += data[1][data[0][i].idx][j].lat;
-												lonlat += ",";
-												lonlat += data[1][data[0][i].idx][j].lon;
-												if (j != (data[1][data[0][i].idx].length) - 1) {
-													lonlat += "|";
-												}
-											}
-											$('#mymapInfo')
-													.append(
-															'<div class="col-lg-3 col-md-4 col-sm-6"><div class="thumbnail-box-wrapper"><div class="thumbnail-box"><button class="btn btn-sm btn-danger tooltip-button del icon-tr" title="삭제" value=""><i class="glyph-icon icon-remove"></i></button><a class="thumb-link" href="${ pageContext.request.contextPath }/map/detail.do?mymapidx='
-																	+ data[0][i].idx
-																	+ '" title=""></a><div class="thumb-overlay"></div><img src="https://maps.googleapis.com/maps/api/staticmap?path=color:0xff0000cc|weight:3|'
-																	+ lonlat
-																	+ '&size=400x400&key=AIzaSyDVbk7aW8HrEqozbZcMDZDBDP77uGJGduc&style=feature:water|color:0x1C91C4cc" alt=""></div><div class="thumb-pane"><h3 class="thumb-heading animated rollIn"><a href="${ pageContext.request.contextPath }/map/detail.do?mymapidx='
-																	+ data[0][i].idx
-																	+ '" title="">'
-																	+ data[0][i].title
-																	+ '</a> <small>'
-																	+ data[0][i].regdate
-																	+ '</small></h3></div></div></div>');
+		
+		// mymap
+		$.ajax({
+			type : 'POST',
+			url : '${ pageContext.request.contextPath }/member/getMymapList.do',
+			dataType : 'json',
+			success : function(data) {
+						$('mymapInfo').children().remove();
+						console.log(data);
+						console.log(data[0].length);
+						//console.log(data[0][0].content); // mymap 0번째의 내용
+						//console.log(data[0][0].idx);	 // mymap 0번째 인덱스
+						//console.log(data[1]);			 // reglist들의 list
+						//console.log(data[1][data[0][0].idx]);	// reglist들의 list의 0번째 리스트
+						//console.log(data[1][data[0][0].idx][0].lat);	// reglist들의 list의 0번째 리스트의 0번째 lat
+						var lonlat = "";
+						for (i = 0; i < data[0].length; i++) {
+							for (j = 0; j < data[1][data[0][i].idx].length; j++) {
+								lonlat += data[1][data[0][i].idx][j].lat;
+								lonlat += ",";
+								lonlat += data[1][data[0][i].idx][j].lon;
+								if (j != (data[1][data[0][i].idx].length) - 1) {
+									lonlat += "|";
+								}
+							}
+							$('#mymapInfo').append(
+													'<div class="col-lg-3 col-md-4 col-sm-6"><div class="thumbnail-box-wrapper"><div class="thumbnail-box"><button class="btn btn-sm btn-danger tooltip-button del icon-tr" title="삭제" value=""><i class="glyph-icon icon-remove"></i></button><a class="thumb-link" href="${ pageContext.request.contextPath }/map/detail.do?mymapidx='
+													+ data[0][i].idx
+													+ '" title=""></a><div class="thumb-overlay"></div><img src="https://maps.googleapis.com/maps/api/staticmap?path=color:0xff0000cc|weight:3|'
+													+ lonlat
+													+ '&size=400x400&key=AIzaSyDVbk7aW8HrEqozbZcMDZDBDP77uGJGduc&style=feature:water|color:0x1C91C4cc" alt=""></div><div class="thumb-pane"><h3 class="thumb-heading animated rollIn"><a href="${ pageContext.request.contextPath }/map/detail.do?mymapidx='
+													+ data[0][i].idx
+													+ '" title="">'
+													+ data[0][i].title
+													+ '</a> <small>'
+													+ data[0][i].regdate
+													+ '</small></h3></div></div></div>');
 											lonlat = "";
-										}
+						}
+					}
+			});
+
+			// myplan
+		$.ajax({
+			type : 'POST',
+			url : '${ pageContext.request.contextPath }/member/getMyPlanList.do',
+			dataType : 'json',
+			success : function(data) {
+						$('myplanInfo').children().remove();
+							console.log(data);
+							console.log(data[0].length);
+							//console.log(data[0][0].content); // mymap 0번째의 내용
+							//console.log(data[0][0].idx);	 // mymap 0번째 인덱스
+							//console.log(data[1]);			 // reglist들의 list
+							//console.log(data[1][data[0][0].idx]);	// reglist들의 list의 0번째 리스트
+							//console.log(data[1][data[0][0].idx][0].lat);	// reglist들의 list의 0번째 리스트의 0번째 lat
+							var lonlat = "";
+							for (i = 0; i < data[0].length; i++) {
+								for (j = 0; j < data[1][data[0][i].idx].length; j++) {
+									lonlat += data[1][data[0][i].idx][j].lat;
+									lonlat += ",";
+									lonlat += data[1][data[0][i].idx][j].lon;
+									if (j != (data[1][data[0][i].idx].length) - 1) {
+										lonlat += "|";
 									}
-								});
+								}
+								$('#myplanInfo').append(
+														'<div class="col-lg-3 col-md-4 col-sm-6"><div class="thumbnail-box-wrapper"><div class="thumbnail-box"><button class="btn btn-sm btn-danger tooltip-button del icon-tr" title="삭제" value=""><i class="glyph-icon icon-remove"></i></button><a class="thumb-link" href="${ pageContext.request.contextPath }/map/detail.do?mymapidx='
+														+ data[0][i].idx
+														+ '" title=""></a><div class="thumb-overlay"></div><img src="https://maps.googleapis.com/maps/api/staticmap?path=color:0xff0000cc|weight:3|'
+														+ lonlat
+														+ '&size=400x400&key=AIzaSyDVbk7aW8HrEqozbZcMDZDBDP77uGJGduc&style=feature:water|color:0x1C91C4cc" alt=""></div><div class="thumb-pane"><h3 class="thumb-heading animated rollIn"><a href="${ pageContext.request.contextPath }/map/detail.do?mymapidx='
+														+ data[0][i].idx
+														+ '" title="">'
+														+ data[0][i].title
+														+ '</a> <small>'
+														+ data[0][i].regdate
+														+ '</small></h3></div></div></div>');
+												lonlat = "";
+							}
+					}
+		});
 
-						// myplan
-						$
-								.ajax({
-									type : 'POST',
-									url : '${ pageContext.request.contextPath }/member/getMyPlanList.do',
-									dataType : 'json',
-									success : function(data) {
-										$('myplanInfo').children().remove();
-										console.log(data);
-										console.log(data[0].length);
-										//console.log(data[0][0].content); // mymap 0번째의 내용
-										//console.log(data[0][0].idx);	 // mymap 0번째 인덱스
-										//console.log(data[1]);			 // reglist들의 list
-										//console.log(data[1][data[0][0].idx]);	// reglist들의 list의 0번째 리스트
-										//console.log(data[1][data[0][0].idx][0].lat);	// reglist들의 list의 0번째 리스트의 0번째 lat
-										var lonlat = "";
-										for (i = 0; i < data[0].length; i++) {
-											for (j = 0; j < data[1][data[0][i].idx].length; j++) {
-												lonlat += data[1][data[0][i].idx][j].lat;
-												lonlat += ",";
-												lonlat += data[1][data[0][i].idx][j].lon;
-												if (j != (data[1][data[0][i].idx].length) - 1) {
-													lonlat += "|";
-												}
-											}
-											$('#myplanInfo')
-													.append(
-															'<div class="col-lg-3 col-md-4 col-sm-6"><div class="thumbnail-box-wrapper"><div class="thumbnail-box"><button class="btn btn-sm btn-danger tooltip-button del icon-tr" title="삭제" value=""><i class="glyph-icon icon-remove"></i></button><a class="thumb-link" href="${ pageContext.request.contextPath }/map/detail.do?mymapidx='
-																	+ data[0][i].idx
-																	+ '" title=""></a><div class="thumb-overlay"></div><img src="https://maps.googleapis.com/maps/api/staticmap?path=color:0xff0000cc|weight:3|'
-																	+ lonlat
-																	+ '&size=400x400&key=AIzaSyDVbk7aW8HrEqozbZcMDZDBDP77uGJGduc&style=feature:water|color:0x1C91C4cc" alt=""></div><div class="thumb-pane"><h3 class="thumb-heading animated rollIn"><a href="${ pageContext.request.contextPath }/map/detail.do?mymapidx='
-																	+ data[0][i].idx
-																	+ '" title="">'
-																	+ data[0][i].title
-																	+ '</a> <small>'
-																	+ data[0][i].regdate
-																	+ '</small></h3></div></div></div>');
-											lonlat = "";
-										}
+		//favorite Map
+		$.ajax({
+				type : 'POST',
+				url : '${ pageContext.request.contextPath }/member/getFavoriteMapList.do',
+				dataType : 'json',
+				success : function(data) {
+							$('favoritemap').children().remove();
+							console.log(data);
+							console.log(data[0].length);
+							//console.log(data[0][0].content); // mymap 0번째의 내용
+							//console.log(data[0][0].idx);	 // mymap 0번째 인덱스
+							//console.log(data[1]);			 // reglist들의 list
+							//console.log(data[1][data[0][0].idx]);	// reglist들의 list의 0번째 리스트
+							//console.log(data[1][data[0][0].idx][0].lat);	// reglist들의 list의 0번째 리스트의 0번째 lat
+							var lonlat = "";
+							for (i = 0; i < data[0].length; i++) {
+								for (j = 0; j < data[1][data[0][i].idx].length; j++) {
+									lonlat += data[1][data[0][i].idx][j].lat;
+									lonlat += ",";
+									lonlat += data[1][data[0][i].idx][j].lon;
+									if (j != (data[1][data[0][i].idx].length) - 1) {
+										lonlat += "|";
 									}
-								});
+								}
+								$('#favoritemap').append(
+														'<div class="col-lg-4 col-md-4 col-sm-6"><div class="thumbnail-box-wrapper"><div class="thumbnail-box"><button class="btn btn-sm btn-danger tooltip-button del icon-tr" title="삭제" value=""><i class="glyph-icon icon-remove"></i></button><a class="thumb-link" href="${ pageContext.request.contextPath }/map/detail.do?mymapidx='
+														+ data[0][i].idx
+														+ '" title=""></a><div class="thumb-overlay"></div><img src="https://maps.googleapis.com/maps/api/staticmap?path=color:0xff0000cc|weight:3|'
+														+ lonlat
+														+ '&size=400x400&key=AIzaSyDVbk7aW8HrEqozbZcMDZDBDP77uGJGduc&style=feature:water|color:0x1C91C4cc" alt=""></div><div class="thumb-pane"><h3 class="thumb-heading animated rollIn"><a href="${ pageContext.request.contextPath }/map/detail.do?mymapidx='
+														+ data[0][i].idx
+														+ '" title=""><small>'
+														+ data[0][i].title
+														+ '</small></a></h3></div></div></div>');
+												lonlat = "";
+							}
+						}
+		});
 
-						//favorite Map
-						$
-								.ajax({
-									type : 'POST',
-									url : '${ pageContext.request.contextPath }/member/getFavoriteMapList.do',
-									dataType : 'json',
-									success : function(data) {
-										$('favoritemap').children().remove();
-										console.log(data);
-										console.log(data[0].length);
-										//console.log(data[0][0].content); // mymap 0번째의 내용
-										//console.log(data[0][0].idx);	 // mymap 0번째 인덱스
-										//console.log(data[1]);			 // reglist들의 list
-										//console.log(data[1][data[0][0].idx]);	// reglist들의 list의 0번째 리스트
-										//console.log(data[1][data[0][0].idx][0].lat);	// reglist들의 list의 0번째 리스트의 0번째 lat
-										var lonlat = "";
-										for (i = 0; i < data[0].length; i++) {
-											for (j = 0; j < data[1][data[0][i].idx].length; j++) {
-												lonlat += data[1][data[0][i].idx][j].lat;
-												lonlat += ",";
-												lonlat += data[1][data[0][i].idx][j].lon;
-												if (j != (data[1][data[0][i].idx].length) - 1) {
-													lonlat += "|";
-												}
-											}
-											$('#favoritemap')
-													.append(
-															'<div class="col-lg-4 col-md-4 col-sm-6"><div class="thumbnail-box-wrapper"><div class="thumbnail-box"><button class="btn btn-sm btn-danger tooltip-button del icon-tr" title="삭제" value=""><i class="glyph-icon icon-remove"></i></button><a class="thumb-link" href="${ pageContext.request.contextPath }/map/detail.do?mymapidx='
-																	+ data[0][i].idx
-																	+ '" title=""></a><div class="thumb-overlay"></div><img src="https://maps.googleapis.com/maps/api/staticmap?path=color:0xff0000cc|weight:3|'
-																	+ lonlat
-																	+ '&size=400x400&key=AIzaSyDVbk7aW8HrEqozbZcMDZDBDP77uGJGduc&style=feature:water|color:0x1C91C4cc" alt=""></div><div class="thumb-pane"><h3 class="thumb-heading animated rollIn"><a href="${ pageContext.request.contextPath }/map/detail.do?mymapidx='
-																	+ data[0][i].idx
-																	+ '" title=""><small>'
-																	+ data[0][i].title
-																	+ '</small></a></h3></div></div></div>');
-											lonlat = "";
-										}
-									}
-								});
-
-						//favorite Place
-						$
-								.ajax({
-									type : 'POST',
-									url : '${ pageContext.request.contextPath }/member/getFavoritePlaceList.do',
-									dataType : 'json',
-									success : function(data) {
-										$('favoriteplace').children().remove();
-										var lonlat = "";
-										for (i = 0; i < data[0].length; i++) {
-											lonlat += data[1][i].lat;
-											lonlat += ",";
-											lonlat += data[1][i].lon;
-											$('#favoriteplace')
-													.append(
-															'<div class="col-lg-4 col-md-4 col-sm-6"><div class="thumbnail-box-wrapper"><div class="thumbnail-box"><button class="btn btn-sm btn-danger tooltip-button del icon-tr" title="삭제" value=""><i class="glyph-icon icon-remove"></i></button><a class="thumb-link" href="javascript:myPlace('
-																	+ data[0][i].checkpointidx
-																	+ ')" title=""></a><div class="thumb-content"><div class="center-vertical"><div class="center-content">'
-																	+ '<i class="icon-helper icon-center animated zoomInUp font-white glyph-icon icon-linecons-camera"></i></div></div></div><div class="thumb-overlay"></div><img src="https://maps.googleapis.com/maps/api/staticmap?center='
-																	+ lonlat
-																	+ '&zoom=19&size=400x400&markers=color:red|'
-																	+ lonlat
-																	+ '&key=AIzaSyDVbk7aW8HrEqozbZcMDZDBDP77uGJGduc" alt=""></div><div class="thumb-pane"><h3 class="thumb-heading animated rollIn"><a href="#" title=""><small>'
-																	+ data[0][i].placename
-																	+ '</small></a></h3></div></div></div>');
-											lonlat = "";
-										}
-									}
-								});
-
-					});
-
+		//favorite Place
+		$.ajax({
+				type : 'POST',
+				url : '${ pageContext.request.contextPath }/member/getFavoritePlaceList.do',
+				dataType : 'json',
+				success : function(data) {
+							$('favoriteplace').children().remove();
+							var lonlat = "";
+							for (i = 0; i < data[0].length; i++) {
+								lonlat += data[1][i].lat;
+								lonlat += ",";
+								lonlat += data[1][i].lon;
+								$('#favoriteplace').append(
+														'<div class="col-lg-4 col-md-4 col-sm-6"><div class="thumbnail-box-wrapper"><div class="thumbnail-box"><button class="btn btn-sm btn-danger tooltip-button del icon-tr" title="삭제" value=""><i class="glyph-icon icon-remove"></i></button><a class="thumb-link" href="javascript:myPlace('
+														+ data[0][i].checkpointidx
+														+ ')" title=""></a><div class="thumb-content"><div class="center-vertical"><div class="center-content">'
+														+ '<i class="icon-helper icon-center animated zoomInUp font-white glyph-icon icon-linecons-camera"></i></div></div></div><div class="thumb-overlay"></div><img src="https://maps.googleapis.com/maps/api/staticmap?center='
+														+ lonlat
+														+ '&zoom=19&size=400x400&markers=color:red|'
+														+ lonlat
+														+ '&key=AIzaSyDVbk7aW8HrEqozbZcMDZDBDP77uGJGduc" alt=""></div><div class="thumb-pane"><h3 class="thumb-heading animated rollIn"><a href="#" title=""><small>'
+														+ data[0][i].placename
+														+ '</small></a></h3></div></div></div>');
+												lonlat = "";
+							}
+						}
+		});
+	});
 
 	function myPlace(checkpointidx) {
-		window
-				.open(
-						"${ pageContext.request.contextPath }/member/favoritePlace.do?checkpointidx="
-								+ checkpointidx,
-						"FavoritePlace",
-						"top=10, width=800, height=700, toolbar=no, menubar=no, scrollbars=no, resizable=yes");
+		window.open(
+					"${ pageContext.request.contextPath }/member/favoritePlace.do?checkpointidx="
+					+ checkpointidx,
+					"FavoritePlace",
+					"top=10, width=800, height=700, toolbar=no, menubar=no, scrollbars=no, resizable=yes");
 	}
 
 	/*----------------------My Map 삭제------------------------*/
