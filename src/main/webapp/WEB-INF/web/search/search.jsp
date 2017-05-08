@@ -43,10 +43,11 @@ function checkSession() {
 };
 
 /*-------------------------------검색 부분--------------------------------*/	
-	$(function() {		
+	$(function() {		 
 		var json = {
 			searchtext : "${searchtext}",
-			moreCount : "${moreCount}"
+			moreCount : "${moreCount}",
+			flag : 1
 		}
 		$.ajax({
 			url : "${ pageContext.request.contextPath }/map/searchList.do",
@@ -55,21 +56,18 @@ function checkSession() {
 			success : callback
 		});
 		var num = 1;
-		$(window)
-				.scroll(
-						function() {
+		$(window).scroll(function() {
 							if ($("body").height() < $(window).height()) {
 								alert("There isn't a vertical scroll bar");
 							}
-							if ($(window).scrollTop() == $(document).height()
-									- $(window).height()) {
+							if ($(window).scrollTop() == $(document).height() - $(window).height()) {
 								num++;
 								var json = {
 									searchtext : "${searchtext}",
-									moreCount : num
+									moreCount : num,
+									flag : 1
 								}
-								$
-										.ajax({
+								$.ajax({
 											url : "${ pageContext.request.contextPath }/map/searchList.do",
 											type : "get",
 											data : json,
@@ -78,22 +76,6 @@ function checkSession() {
 							}
 						});
 
-		$("#more")
-				.click(
-						function() {
-							num++;
-							var json = {
-								searchtext : "${searchtext}",
-								moreCount : num
-							}
-							$
-									.ajax({
-										url : "${ pageContext.request.contextPath }/map/searchList.do",
-										type : "get",
-										data : json,
-										success : callback
-									});
-						});
 	});
 	function callback(data) {
 		console.log(data);
@@ -149,6 +131,42 @@ function checkSession() {
 		}
 	}
 </script>
+<script type="text/javascript">
+	function hover2(flag){ 
+	    $('#portfolio-grid').children().remove(); 
+		var json = {
+			searchtext : "${searchtext}",
+			moreCount : "${moreCount}",
+			flag : flag
+		}
+		$.ajax({
+			url : "${ pageContext.request.contextPath }/map/searchList.do",
+			type : "get",
+			data : json,
+			success : callback
+		});
+		var num = 1;
+		$(window).scroll(function() {
+							if ($("body").height() < $(window).height()) {
+								alert("There isn't a vertical scroll bar");
+							}
+							if ($(window).scrollTop() == $(document).height()- $(window).height()) {
+								num++;
+								var json = {
+									searchtext : "${searchtext}",
+									moreCount : num,
+									flag : flag
+								}
+								$.ajax({
+											url : "${ pageContext.request.contextPath }/map/searchList.do",
+											type : "get",
+											data : json,
+											success : callback
+										});
+							}
+						});
+	}
+</script>
 
 
 </head>
@@ -156,7 +174,7 @@ function checkSession() {
 	<div id="sb-site">
 		<div id="page-wrapper">
 			<div id="page-content-wrapper">
-				<jsp:include page="/top2.do" />
+				<jsp:include page="/top2.do" /> 
 				<div id="page-content">
 					<link rel="stylesheet" type="text/css"
 						href="${pageContext.request.contextPath }/resources/assets/frontend-elements/portfolio-navigation.css">
@@ -172,9 +190,8 @@ function checkSession() {
 						class="portfolio-controls mrg10L mrg10R radius-all-4 portfolio-nav-alt bg-blue clearfix controls">
 						<div class="container text-center">
 							<ul class="float-none">
-								<li class="filter" data-filter="hover_1">최근순</li>
-								<li class="filter" data-filter="hover_2">조회수순</li>
-								<li class="filter" data-filter="hover_3">추천순</li>
+								<li onclick="javascript:hover2(1)" class="filter" data-filter="hover_1">최근순</li>
+								<li onclick="javascript:hover2(2)" class="filter" data-filter="hover_2">조회수순</li>
 							</ul>
 						</div>
 					</div>
@@ -182,9 +199,6 @@ function checkSession() {
 						<ul id="portfolio-grid" class="reset-ul">
 						</ul>
 					</div>
-
-
-
 
 					<div class="divider"></div>
 					<!-- 					<div class="text-center">

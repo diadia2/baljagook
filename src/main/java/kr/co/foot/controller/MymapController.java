@@ -281,16 +281,17 @@ public class MymapController {
    }
    
    @RequestMapping(value = "/map/searchList.do", method = RequestMethod.GET)
-	public String searchList(@RequestParam("searchtext") String searchtext, @RequestParam("moreCount") int moreCount,
+	public String searchList(@RequestParam("searchtext") String searchtext, @RequestParam("moreCount") int moreCount, @RequestParam("flag") int flag,
 			Model model, HttpServletRequest request) {
 
-		List<MymapVO> mymapList = mymapService.selectMymapList(searchtext, 8 * moreCount);// 5*1
-																							// 더보기
-																							// 누르면
-																							// 5*2
-																							// 5*3
-		List<MymapVO> mymapList2 = mymapService.selectMymapList2(searchtext, 8 * moreCount);//조회수순
-		
+	   List<MymapVO> mymapList = new ArrayList<MymapVO>();
+	   	
+	   	if(flag == 1){
+	   		mymapList = mymapService.selectMymapList(searchtext, 8 * moreCount); // 최근순
+		} else if(flag == 2){
+			mymapList = mymapService.selectMymapList2(searchtext, 8 * moreCount); //조회수순
+		}
+	   	
 		System.out.println("mymapList.size() :" + mymapList.size());
 		List<HashtagVO> hashtagList = new ArrayList<HashtagVO>();
 
@@ -376,16 +377,11 @@ public class MymapController {
 		}
 
 		model.addAttribute("mymapList", mymapList);
-		model.addAttribute("mymapList2", mymapList2);
 		model.addAttribute("hashtagList", hashtagList);
 		model.addAttribute("likeMap", likeMap);
 		model.addAttribute("likeAlreadyChecked", likeAlreadyChecked);
 		model.addAttribute("viewcntMap", viewcntMap);
 		model.addAttribute("mapImg", mapImg);
-		
-		for(MymapVO vo : mymapList){
-			System.out.println(vo);
-		}
 		
 		return "search/searchList";
 	}

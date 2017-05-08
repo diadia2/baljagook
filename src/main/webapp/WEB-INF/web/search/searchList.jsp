@@ -12,12 +12,9 @@
 }
 </style>
 </head>
-<body>
-
-		
-					
-					<div class="clearfix">
-						<ul id="portfolio-grid" class="reset-ul">
+<body>					
+		<div class="clearfix">
+			<ul id="portfolio-grid" class="reset-ul">
 						
 		 	<c:forEach var="mymapList" items="${ mymapList }" varStatus="status">
 
@@ -78,10 +75,8 @@
 					</div>
 				</li>
 			</c:forEach>
-	 		
-			 
 			
 			</ul>
-					</div>
+		</div>
 </body>
 </html>
