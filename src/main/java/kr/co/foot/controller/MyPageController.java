@@ -120,8 +120,6 @@ public class MyPageController {
 		String imageName = "";
 		Iterator<String> itr = request.getFileNames();
 		
-		
-		
 		if(itr.hasNext()) {
 			MultipartFile uploadedImage = request.getFile(itr.next());
 			
@@ -134,11 +132,22 @@ public class MyPageController {
 			memberVO.setUserid(userid);
 			memberVO.setPhoto(imageName);
 			service.insertImageName(memberVO);
-			
 		}
 		
 		return imageName;
 		
+	}
+	
+	@RequestMapping(value="/getMyProfileImage.do", method=RequestMethod.POST)
+	@ResponseBody
+	public String getMyProfileImage(HttpSession session) {
+		String userid = (String) session.getAttribute("user");
+		String imageName = service.getImageName(userid);
+		if(imageName == null) {
+			imageName = "defaultImage.png";
+		}
+		
+		return imageName;
 	}
 	
 	@RequestMapping(value="/deleteMyMap.do", method=RequestMethod.POST)

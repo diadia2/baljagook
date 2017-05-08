@@ -185,8 +185,270 @@
 
 					});
 
-	function myPlace(checkpointidx) {
+	function showMyMap() {
+		// mymap
+		$.ajax({
+			type : 'POST',
+			url : '${ pageContext.request.contextPath }/member/getMymapList.do',
+			dataType : 'json',
+			success : function(data) {
+						$('#mymapInfo').children().remove();
+						console.log(data);
+						console.log(data[0].length);
+						//console.log(data[0][0].content); // mymap 0번째의 내용
+						//console.log(data[0][0].idx);	 // mymap 0번째 인덱스
+						//console.log(data[1]);			 // reglist들의 list
+						//console.log(data[1][data[0][0].idx]);	// reglist들의 list의 0번째 리스트
+						//console.log(data[1][data[0][0].idx][0].lat);	// reglist들의 list의 0번째 리스트의 0번째 lat
+						var lonlat = "";
+						for (i = 0; i < data[0].length; i++) {
+							for (j = 0; j < data[1][data[0][i].idx].length; j++) {
+								lonlat += data[1][data[0][i].idx][j].lat;
+								lonlat += ",";
+								lonlat += data[1][data[0][i].idx][j].lon;
+								if (j != (data[1][data[0][i].idx].length) - 1) {
+									lonlat += "|";
+								}
+							}
+							$('#mymapInfo').append(
+													'<div class="col-lg-3 col-md-4 col-sm-6"><div class="thumbnail-box-wrapper"><div class="thumbnail-box"><button onclick="deleteMyMap('+data[0][i].idx+')" class="btn btn-sm btn-danger tooltip-button del icon-tr" title="삭제" value=""><i class="glyph-icon icon-remove"></i></button><a class="thumb-link" href="${ pageContext.request.contextPath }/map/detail.do?mymapidx='
+													+ data[0][i].idx
+													+ '" title=""></a><div class="thumb-overlay"></div><img src="https://maps.googleapis.com/maps/api/staticmap?path=color:0xff0000cc|weight:3|'
+													+ lonlat
+													+ '&size=400x400&key=AIzaSyDVbk7aW8HrEqozbZcMDZDBDP77uGJGduc&style=feature:water|color:0x1C91C4cc" alt=""></div><div class="thumb-pane"><h3 class="thumb-heading animated rollIn"><a href="${ pageContext.request.contextPath }/map/detail.do?mymapidx='
+													+ data[0][i].idx
+													+ '" title="">'
+													+ data[0][i].title
+													+ '</a> <small>'
+													+ data[0][i].regdate
+													+ '</small></h3></div></div></div>');
+											lonlat = "";
+						}
+					}
+			});	
+	}
 
+	function showMyPlan() {
+		// myplan
+		$.ajax({
+			type : 'POST',
+			url : '${ pageContext.request.contextPath }/member/getMyPlanList.do',
+			dataType : 'json',
+			success : function(data) {
+						$('#myplanInfo').children().remove();
+							console.log(data);
+							console.log(data[0].length);
+							//console.log(data[0][0].content); // mymap 0번째의 내용
+							//console.log(data[0][0].idx);	 // mymap 0번째 인덱스
+							//console.log(data[1]);			 // reglist들의 list
+							//console.log(data[1][data[0][0].idx]);	// reglist들의 list의 0번째 리스트
+							//console.log(data[1][data[0][0].idx][0].lat);	// reglist들의 list의 0번째 리스트의 0번째 lat
+							var lonlat = "";
+							for (i = 0; i < data[0].length; i++) {
+								for (j = 0; j < data[1][data[0][i].idx].length; j++) {
+									lonlat += data[1][data[0][i].idx][j].lat;
+									lonlat += ",";
+									lonlat += data[1][data[0][i].idx][j].lon;
+									if (j != (data[1][data[0][i].idx].length) - 1) {
+										lonlat += "|";
+									}
+								}
+								$('#myplanInfo').append(
+														'<div class="col-lg-3 col-md-4 col-sm-6"><div class="thumbnail-box-wrapper"><div class="thumbnail-box"><button onclick="deleteMyPlan('+data[0][i].idx+')" class="btn btn-sm btn-danger tooltip-button del icon-tr" title="삭제" value=""><i class="glyph-icon icon-remove"></i></button><a class="thumb-link" href="${ pageContext.request.contextPath }/map/detail.do?mymapidx='
+														+ data[0][i].idx
+														+ '" title=""></a><div class="thumb-overlay"></div><img src="https://maps.googleapis.com/maps/api/staticmap?path=color:0xff0000cc|weight:3|'
+														+ lonlat
+														+ '&size=400x400&key=AIzaSyDVbk7aW8HrEqozbZcMDZDBDP77uGJGduc&style=feature:water|color:0x1C91C4cc" alt=""></div><div class="thumb-pane"><h3 class="thumb-heading animated rollIn"><a href="${ pageContext.request.contextPath }/map/detail.do?mymapidx='
+														+ data[0][i].idx
+														+ '" title="">'
+														+ data[0][i].title
+														+ '</a> <small>'
+														+ data[0][i].regdate
+														+ '</small></h3></div></div></div>');
+												lonlat = "";
+							}
+					}
+		});	
+	}
+
+	function showFavoriteMap() {
+		//favorite Map
+		$.ajax({
+				type : 'POST',
+				url : '${ pageContext.request.contextPath }/member/getFavoriteMapList.do',
+				dataType : 'json',
+				success : function(data) {
+							$('#favoritemap').children().remove();
+							console.log(data);
+							console.log(data[0].length);
+							//console.log(data[0][0].content); // mymap 0번째의 내용
+							//console.log(data[0][0].idx);	 // mymap 0번째 인덱스
+							//console.log(data[1]);			 // reglist들의 list
+							//console.log(data[1][data[0][0].idx]);	// reglist들의 list의 0번째 리스트
+							//console.log(data[1][data[0][0].idx][0].lat);	// reglist들의 list의 0번째 리스트의 0번째 lat
+							var lonlat = "";
+							for (i = 0; i < data[0].length; i++) {
+								for (j = 0; j < data[1][data[0][i].idx].length; j++) {
+									lonlat += data[1][data[0][i].idx][j].lat;
+									lonlat += ",";
+									lonlat += data[1][data[0][i].idx][j].lon;
+									if (j != (data[1][data[0][i].idx].length) - 1) {
+										lonlat += "|";
+									}
+								}
+								$('#favoritemap').append(
+														'<div class="col-lg-4 col-md-4 col-sm-6"><div class="thumbnail-box-wrapper"><div class="thumbnail-box"><button onclick="deleteFavoriteMap('+data[0][i].idx+')" class="btn btn-sm btn-danger tooltip-button del icon-tr" title="삭제" value=""><i class="glyph-icon icon-remove"></i></button><a class="thumb-link" href="${ pageContext.request.contextPath }/map/detail.do?mymapidx='
+														+ data[0][i].idx
+														+ '" title=""></a><div class="thumb-overlay"></div><img src="https://maps.googleapis.com/maps/api/staticmap?path=color:0xff0000cc|weight:3|'
+														+ lonlat
+														+ '&size=400x400&key=AIzaSyDVbk7aW8HrEqozbZcMDZDBDP77uGJGduc&style=feature:water|color:0x1C91C4cc" alt=""></div><div class="thumb-pane"><h3 class="thumb-heading animated rollIn"><a href="${ pageContext.request.contextPath }/map/detail.do?mymapidx='
+														+ data[0][i].idx
+														+ '" title=""><small>'
+														+ data[0][i].title
+														+ '</small></a></h3></div></div></div>');
+												lonlat = "";
+							}
+						}
+		});	
+	}
+
+	function showFavoritePlace() {
+		//favorite Place
+		$.ajax({
+				type : 'POST',
+				url : '${ pageContext.request.contextPath }/member/getFavoritePlaceList.do',
+				dataType : 'json',
+				success : function(data) {
+							$('#favoriteplace').children().remove();
+							var lonlat = "";
+							for (i = 0; i < data[0].length; i++) {
+								lonlat += data[1][i].lat;
+								lonlat += ",";
+								lonlat += data[1][i].lon;
+								$('#favoriteplace').append(
+														'<div class="col-lg-4 col-md-4 col-sm-6"><div class="thumbnail-box-wrapper"><div class="thumbnail-box"><button onclick="deleteFavoritePlace('+data[0][i].idx+')" class="btn btn-sm btn-danger tooltip-button del icon-tr" title="삭제" value=""><i class="glyph-icon icon-remove"></i></button><a class="thumb-link" href="javascript:myPlace('
+														+ data[0][i].checkpointidx
+														+ ')" title=""></a><div class="thumb-content"><div class="center-vertical"><div class="center-content">'
+														+ '<i class="icon-helper icon-center animated zoomInUp font-white glyph-icon icon-linecons-camera"></i></div></div></div><div class="thumb-overlay"></div><img src="https://maps.googleapis.com/maps/api/staticmap?center='
+														+ lonlat
+														+ '&zoom=19&size=400x400&markers=color:red|'
+														+ lonlat
+														+ '&key=AIzaSyDVbk7aW8HrEqozbZcMDZDBDP77uGJGduc" alt=""></div><div class="thumb-pane"><h3 class="thumb-heading animated rollIn"><a href="#" title=""><small>'
+														+ data[0][i].placename
+														+ '</small></a></h3></div></div></div>');
+												lonlat = "";
+							}
+						}
+		});	
+	}
+
+/*-----------------------프로필 이미지 가져오기------------------------*/
+	function showProfileImage() {
+		$.ajax({
+			type : 'POST',
+			url : '${ pageContext.request.contextPath }/getMyProfileImage.do',
+			contentType : 'application/json',
+			dataType : 'json',
+			success : function(imageName) {
+				$("#profileImage").prop("src", "${ pageContext.request.contextPath }/resources/photo/profileImage/"+imageName);
+			}
+		});	
+	}
+
+	$(document).ready(function() {
+		showMyMap();
+		showMyPlan();
+		showFavoriteMap();
+		showFavoritePlace();
+		showProfileImage();
+	});
+		
+	function myPlace(checkpointidx) {
+		window.open(
+					"${ pageContext.request.contextPath }/member/favoritePlace.do?checkpointidx="
+					+ checkpointidx,
+					"FavoritePlace",
+					"top=10, width=800, height=700, toolbar=no, menubar=no, scrollbars=no, resizable=yes");
+	}
+
+	/*----------------------My Map 삭제------------------------*/
+	function deleteMyMap(mymapidx) {
+		console.log(mymapidx);
+		if (confirm("삭제 하시겠습니까?")) {
+			$.ajax({
+				type : 'POST',
+				data : jQuery.param({
+					mymapidx : mymapidx
+				}),
+				url : '${ pageContext.request.contextPath }/deleteMyMap.do',
+				contentType : 'application/x-www-form-urlencoded; charset=UTF-8',
+				success : (function(data) {
+					alert('삭제되었습니다');
+					showMyMap();
+				})
+			});
+		}
+	}
+
+	/*----------------------My Plan 삭제------------------------*/
+	function deleteMyPlan(mymapidx, type) {
+		console.log(mymapidx);
+		console.log(type);
+		if (confirm("삭제 하시겠습니까?")) {
+			$.ajax({
+				type : 'POST',
+				data : jQuery.param({
+					mymapidx : mymapidx
+				}),
+				url : '${ pageContext.request.contextPath }/deleteMyPlan.do',
+				contentType : 'application/x-www-form-urlencoded; charset=UTF-8',
+				success : (function(data) {
+					alert('삭제되었습니다');
+					showMyPlan();
+				})
+			});
+		}
+	}
+
+	/*----------------------Favorite Map 삭제------------------------*/
+	function deleteFavoriteMap(idx) {
+		console.log(idx);
+		if (confirm("삭제 하시겠습니까?")) {
+			$.ajax({
+				type : 'POST',
+				data : jQuery.param({
+					idx : idx
+				}),
+				url : '${ pageContext.request.contextPath }/deleteFavoriteMap.do',
+				contentType : 'application/x-www-form-urlencoded; charset=UTF-8',
+				success : (function(data) {
+					alert('삭제되었습니다');
+					showFavoriteMap();
+				})
+			});
+		}
+	}
+
+	/*----------------------Favorite Place 삭제------------------------*/
+	function deleteFavoritePlace(idx) {
+		console.log(idx);
+		if (confirm("삭제 하시겠습니까?")) {
+			$.ajax({
+				type : 'POST',
+				data : jQuery.param({
+					idx : idx
+				}),
+				url : '${ pageContext.request.contextPath }/deleteFavoritePlace.do',
+				contentType : 'application/x-www-form-urlencoded; charset=UTF-8',
+				success : (function(data) {
+					alert('삭제되었습니다');
+					showFavoritePlace();
+				})
+			});
+		}
+	}
+
+	function myPlace(checkpointidx) {
 		window
 				.open(
 						"${ pageContext.request.contextPath }/member/favoritePlace.do?checkpointidx="
@@ -194,6 +456,24 @@
 						"FavoritePlace",
 						"top=10, width=800, height=700, toolbar=no, menubar=no, scrollbars=no, resizable=yes");
 
+/*------------------프로필사진 변경-------------------------*/
+var timer;
+function checkFile(imageName) {
+ 		$.ajax({
+			url : '${ pageContext.request.contextPath }/resources/photo/profileImage/'+imageName,
+			type: 'HEAD',
+			error : function() {
+				timer = setTimeout(function() {
+							checkFile(imageName);
+						}, 3000);
+			},
+			success : function(data) {
+				clearTimeout(timer);
+				showProfileImage();
+/* 				$("#profileImage").prop("src", "${ pageContext.request.contextPath }/resources/photo/profileImage/"+imageName); */
+				$('#addProfileImg').modal('hide');
+			}
+		});
 	}
 </script>
 </head>
@@ -329,16 +609,16 @@
 								<ul class="list-group row list-group-icons">
 									<li class="col-md-3 active"><a href="#tab-example-1"
 										data-toggle="tab" class="list-group-item"><i
-											class="glyph-icon icon-dashboard"></i> Account Settings</a></li>
+											class="glyph-icon icon-gear"></i> Account Settings</a></li>
 									<li class="col-md-3"><a href="#tab-example-2"
 										data-toggle="tab" class="list-group-item"><i
-											class="glyph-icon font-primary icon-camera"></i> My Map</a></li>
+											class="glyph-icon font-primary icon-edit"></i> My Map</a></li>
 									<li class="col-md-3"><a href="#tab-example-3"
 										data-toggle="tab" class="list-group-item"><i
-											class="glyph-icon font-blue-alt icon-globe"></i> My Plan</a></li>
+											class="glyph-icon font-blue-alt icon-calculator"></i> My Plan</a></li>
 									<li class="col-md-3"><a href="#tab-example-4"
 										data-toggle="tab" class="list-group-item"><i
-											class="glyph-icon font-red icon-bullhorn"></i> Favorites </a></li>
+											class="glyph-icon font-yellow icon-star"></i> Favorites </a></li>
 								</ul>
 								<div class="tab-content">
 									<div class="tab-pane pad0A fade active in" id="tab-example-1">
@@ -429,6 +709,8 @@
 														<div class="thumbnail-box-wrapper">
 															<div class="thumbnail-box thumbnail-box-inverse">
 																<a class="thumb-link" href="#" title=""
+																	data-toggle="modal" data-target="#myModal"
+																	data-backdrop="static" data-keyboard="false"
 																	style="border: 2px solid"></a>
 																<div class="thumb-content">
 																	<div class="center-vertical">
@@ -504,6 +786,8 @@
 											</div>
 										</div>
 
+
+
 										<div class="col-md-6">
 											<div class="content-box">
 												<h3 class="content-box-header clearfix text-center">Favorite
@@ -519,10 +803,96 @@
 								</div>
 							</div>
 						</div>
+						
+						<!-- datepicker -->
+		<script type="text/javascript"
+			src="${pageContext.request.contextPath }/resources/assets/widgets/datepicker-ui/datepicker.js"></script>
+		<script type="text/javascript"
+			src="${pageContext.request.contextPath }/resources/assets/widgets/datepicker-ui/datepicker-demo.js"></script>
+		<script type="text/javascript"
+			src="${pageContext.request.contextPath }/resources/assets/widgets/daterangepicker/moment.js"></script>
+		<script type="text/javascript"
+			src="${pageContext.request.contextPath }/resources/assets/widgets/daterangepicker/daterangepicker.js"></script>
+		<script type="text/javascript"
+			src="${pageContext.request.contextPath }/resources/assets/widgets/daterangepicker/daterangepicker-demo.js"></script>
+		<script type="text/javascript"
+			src="${pageContext.request.contextPath }/resources/assets/widgets/timepicker/timepicker.js"></script>
+
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+			aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+			
+			
+			<form action="${ pageContext.request.contextPath }/map/mapcheck.do" method="POST" name="inputform">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-hidden="true">&times;</button>
+						<h4 class="modal-title">Modal title</h4>
 					</div>
+					<div class="modal-body">
+				
+
+						<input name="title" type="text" class="form-control"
+							placeholder="제목"> <br /> <input name="content"
+							type="text" class="form-control" placeholder="설명"><br />
+						<div class="form-group">
+							<div class="input-prepend input-group">
+								<span class="add-on input-group-addon"><i
+									class="glyph-icon icon-calendar"></i></span> <input type="text"
+									name="daterangepickertime" id="daterangepicker-time"
+									class="form-control" value=""> <input type="text"
+									id="start" name="start" value="${start}"> <input
+									type="text" id="end" name="end" value="${end }">
+								<script type="text/javascript">
+									/* daterangepicker-time에서 apply 누르면 실행(daterangepicker.js에 추가함) */
+									function changeDP() {
+										var date = document.inputform.daterangepickertime.value;
+										var time1 = date.substring(11, 13);
+										var time2 = date.substring(33, 35);
+										console.log(time1);
+										if ((date.substring(17, 19)) == ("PM")) {
+											time1 = Number(time1) + 12;
+										}
+										if ((date.substring(39, 41)) == ("PM")) {
+											time2 = Number(time2) + 12;
+										}
+										document.inputform.start.value = date
+												.substring(0, 11)
+												+ time1
+												+ date.substring(13, 16);
+										document.inputform.end.value = date
+												.substring(22, 33)
+												+ time2
+												+ date.substring(35, 38);
+									}
+								</script>
+							</div>
+						</div>
+						<input name="hashtag" type="text" class="form-control title-text"
+							placeholder="#해쉬태그">
+
+					</div>
+					<div class="modal-footer">
+						<button type="submit" class="btn btn-primary">등록하기</button>
+						<button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
+					</div>
+					</form>
 				</div>
 			</div>
 		</div>
+		
+						
+					</div>
+					
+					
+				</div>
+			</div>
+		</div>
+		
+		
+
+
 		<jsp:include page="/bottom2.do" />
 	</div>
 </body>

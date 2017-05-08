@@ -228,7 +228,7 @@
 <script type="text/javascript"
 	src="${pageContext.request.contextPath }/resources/assets/js-core/modernizr.js"></script>
 <script type="text/javascript"
-	src="${pageContext.request.contextPath }/resources/assets/js-core/jquery-cookie.js"></script>
+	src="${pageContext.request.contextPath }/resources/assets/js-core/jquery-cookie.js"></script>		
 <!-- icons -->
 <link rel="stylesheet" type="text/css"
 	href="${pageContext.request.contextPath }/resources/assets/icons/iconic/iconic.css">
@@ -248,7 +248,13 @@
 <!-- 체크/라디오 박스 -->
 <link rel="stylesheet" type="text/css"
 	href="https://cdnjs.cloudflare.com/ajax/libs/pretty-checkbox/2.2.1/pretty.min.css">
-
+<!-- Dropzone -->
+<script type="text/javascript"
+	src="${pageContext.request.contextPath }/resources/js/dropzone/dropzone.js"></script>
+<link rel="stylesheet" 
+	href="${ pageContext.request.contextPath }/resources/css/dropzone/dropzone.css">
+<link rel="stylesheet" 
+	href="${ pageContext.request.contextPath }/resources/css/dropzone/basic.css">
 <!-- 타임라인 레이블수준 낮춤 -->
 <style type="text/css">
 .popover {

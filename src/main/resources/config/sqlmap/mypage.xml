@@ -37,6 +37,11 @@
    <delete id="deleteRegCoordinates" parameterType="int">
        delete from t_regcoordinates where mymapidx = #{mymapidx}
    </delete>
+   <delete id="deleteLike" parameterType="int">
+       delete a.* from t_like a
+       inner join t_regmap b on a.regmapidx = b.idx
+       where b.mymapidx = #{mymapidx}
+   </delete>
    <delete id="deleteMyPlan" parameterType="int">
        delete from t_myMap where idx = #{mymapidx}
    </delete>
