@@ -327,6 +327,7 @@ public class MymapController {
 			RegmapVO getRegmap = mymapService.getRegmapList(mymapList.get(i).getIdx());
 			regmapList.add(getRegmap);
 			viewcnt = getRegmap.getViewcnt();
+			System.out.println(viewcnt);
 			viewcntMap.put(mymapList.get(i).getIdx(), viewcnt);
 		}
 
@@ -336,8 +337,8 @@ public class MymapController {
 		System.out.println("로그인중인 사용자: " + loggedUserid);
 
 		// map image
-		Map<Integer, List> mapImg = new HashMap<>();
-
+		Map<Integer, String> mapImg = new HashMap<>();
+		String lonlat = "";
 		// Like
 		List<String> userList = new ArrayList<String>();
 		for (int i = 0; i < mymapList.size(); i++) {
@@ -356,7 +357,22 @@ public class MymapController {
 			likeMap.put(mymapList.get(i).getIdx(), likeCnt);
 
 			List<RegcoordinatesVO> regcoordinatesVO = mymapService.getRegmapsList(mymapList.get(i).getIdx());
-			mapImg.put(mymapList.get(i).getIdx(), regcoordinatesVO);
+			
+			for(int j=0; j<regcoordinatesVO.size(); j++){
+				if(j != regcoordinatesVO.size()-1){
+					lonlat += regcoordinatesVO.get(j).getLat();
+					lonlat += ",";
+					lonlat += regcoordinatesVO.get(j).getLon();
+					lonlat += "|";
+				} else {
+					lonlat += regcoordinatesVO.get(j).getLat();
+					lonlat += ",";
+					lonlat += regcoordinatesVO.get(j).getLon();
+				}
+			}
+			System.out.println(lonlat);
+			mapImg.put(mymapList.get(i).getIdx(), lonlat);
+			lonlat = "";
 		}
 
 		model.addAttribute("mymapList", mymapList);
@@ -366,6 +382,10 @@ public class MymapController {
 		model.addAttribute("likeAlreadyChecked", likeAlreadyChecked);
 		model.addAttribute("viewcntMap", viewcntMap);
 		model.addAttribute("mapImg", mapImg);
+		
+		for(MymapVO vo : mymapList){
+			System.out.println(vo);
+		}
 		
 		return "search/searchList";
 	}
