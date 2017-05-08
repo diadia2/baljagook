@@ -12,5 +12,8 @@ public interface MyPageService {
 	public MemberVO findByUserid(String userid);
 	public MemberVO findByEmail(String email);
 	public String getEmailByUserid(String userid);
-
+	public void deleteMyMap(int mymapidx);
+	public void deleteMyPlan(int mymapidx);
+	public void deleteFavoriteMap(int idx);
+	public void deleteFavoritePlace(int idx);
 }
