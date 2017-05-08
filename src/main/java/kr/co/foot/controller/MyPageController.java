@@ -1,15 +1,7 @@
 package kr.co.foot.controller;
 
-import static java.nio.file.StandardWatchEventKinds.ENTRY_CREATE;
-
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.FileSystems;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.WatchEvent;
-import java.nio.file.WatchKey;
-import java.nio.file.WatchService;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -151,6 +143,9 @@ public class MyPageController {
 	public String getMyProfileImage(HttpSession session) {
 		String userid = (String) session.getAttribute("user");
 		String imageName = service.getImageName(userid);
+		if(imageName == null) {
+			imageName = "defaultImage.png";
+		}
 		
 		return imageName;
 	}
