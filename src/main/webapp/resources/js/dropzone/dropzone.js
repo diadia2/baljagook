@@ -139,7 +139,7 @@
       hiddenInputContainer: "body",
       capture: null,
       renameFilename: null,
-      dictDefaultMessage: "업로드할 사진을 드래그 하세요:)",
+      dictDefaultMessage: "업로드할 사진을 올려 주세요:)",
       dictFallbackMessage: "Your browser does not support drag'n'drop file uploads.",
       dictFallbackText: "Please use the fallback form below to upload your files like in the olden days.",
       dictFileTooBig: "File is too big ({{filesize}}MiB). Max filesize: {{maxFilesize}}MiB.",
@@ -538,6 +538,7 @@
       }
       if (this.element.classList.contains("dropzone") && !this.element.querySelector(".dz-message")) {
         this.element.appendChild(Dropzone.createElement("<div class=\"dz-default dz-message\"><span>" + this.options.dictDefaultMessage + "</span></div>"));
+//        this.element.appendChild(Dropzone.createElement("<div align=\"center\"><br/>" + this.options.dictDefaultMessage + "</span></div>"));
       }
       if (this.clickableElements.length) {
         setupHiddenFileInput = (function(_this) {

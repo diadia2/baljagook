@@ -7,8 +7,17 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>View profile</title>
 <script type="text/javascript">
+/*-----------------------프로필 이미지 가져오기------------------------*/
 	$(document).ready(function(){
-	
+		$.ajax({
+			type : 'POST',
+			url : '${ pageContext.request.contextPath }/getMyProfileImage.do',
+			contentType : 'application/json',
+			dataType : 'json',
+			success : function(imageName) {
+				$("#profileImage").prop("src", "${ pageContext.request.contextPath }/resources/photo/profileImage/"+imageName);			
+			}
+		});	
 	    // mymap
 		$.ajax({
 		    type: 'POST' , 
@@ -137,9 +146,224 @@
 
     }
 
+/*----------------------My Map 삭제------------------------*/	
+    function deleteMyMap(mymapidx, type) {
+		console.log(mymapidx);
+		console.log(type);
+		if (confirm("삭제 하시겠습니까?")) {
+			$.ajax({
+				type : 'POST',
+				data : jQuery.param({ mymapidx: mymapidx }),
+				url : '${ pageContext.request.contextPath }/deleteMyMap.do',
+				contentType : 'application/x-www-form-urlencoded; charset=UTF-8',
+				success : (function(data) {
+					alert('삭제되었습니다');
+					window.location.href = '${ pageContext.request.contextPath }/member/mypage.do';
+				})
+			});
+		}
+    }
+
+/*----------------------My Plan 삭제------------------------*/	
+     function deleteMyPlan(mymapidx, type) {
+    	console.log(mymapidx);
+    	console.log(type);
+    	if (confirm("삭제 하시겠습니까?")) {
+    		$.ajax({
+    			type : 'POST',
+    			data : jQuery.param({ mymapidx: mymapidx }),
+    			url : '${ pageContext.request.contextPath }/deleteMyPlan.do',
+    			contentType : 'application/x-www-form-urlencoded; charset=UTF-8',
+    			success : (function(data) {
+    				alert('삭제되었습니다');
+    				window.location.href = '${ pageContext.request.contextPath }/member/resetMypage.do';
+    			})
+    		});
+    	}
+	}
+
+/*----------------------Favorite Map 삭제------------------------*/
+    function deleteFavoriteMap(idx) {
+    	console.log(idx);
+    	if(confirm("삭제 하시겠습니까?")) {
+    		$.ajax({
+    			type : 'POST',
+    			data : jQuery.param({ idx: idx }),
+    			url : '${ pageContext.request.contextPath }/deleteFavoriteMap.do',
+    			contentType : 'application/x-www-form-urlencoded; charset=UTF-8',
+    			success : (function(data) {
+    				alert('삭제되었습니다');
+    				window.location.href = '${ pageContext.request.contextPath }/member/resetMypageTwo.do';
+    			})
+    		});    		
+    	}	
+    }
+
+/*----------------------Favorite Place 삭제------------------------*/
+    function deleteFavoritePlace(idx) {
+    	console.log(idx);
+    	if(confirm("삭제 하시겠습니까?")) {
+    		$.ajax({
+    			type : 'POST',
+    			data : jQuery.param({ idx: idx }),
+    			url : '${ pageContext.request.contextPath }/deleteFavoritePlace.do',
+    			contentType : 'application/x-www-form-urlencoded; charset=UTF-8',
+    			success : (function(data) {
+    				alert('삭제되었습니다');
+    				window.location.href = '${ pageContext.request.contextPath }/member/resetMypageThree.do';
+    			})
+    		});    		
+    	}	
+    }    
+     
+/*-----------------------비밀번호 형식 체크------------------------*/
+	function validatePassword(inputPassword) {
+		var passwordFormat = /^[a-zA-Z-0-9!@#$%^&*]{5,15}$/;
+ 		
+		if (inputPassword.match(passwordFormat)) {
+			return true;
+		} else {
+			return false;
+		}
+	}	     
+     
+</script>
+<script>
+/*------------------비밀번호 변경-------------------------*/		
+function submitUpdatePass() {
+	$('#changePassForm').submit();
+}
+$(document).ready(function () {
+	$('#changePassForm').on('submit', function(e) {
+		console.log('changePassForm submitted');
+		e.preventDefault();
+		
+		var inputNewPw = $('#changePassForm input[name=newPassword]').val();
+		var inputNewPwConfirm = $('#changePassForm input[name=newPasswordConfirm]').val();
+		
+		if(!validatePassword(inputNewPw)) {
+			alert('비밀번호 형식이 맞지 않습니다(길이: 5-15, 특수문자(!@#$%^&*만 가능), 공백 제외)');
+		} else {
+			if(inputNewPw != inputNewPwConfirm) {
+				alert('비밀번호가 일치하지 않습니다');
+			} else {
+				var newPassInfo = {
+						'currentPassword' : $('#changePassForm input[name=currentPassword]').val(),
+						'newPassword' : $('#changePassForm input[name=newPassword]').val()
+				};
+				var dataJSON = JSON.stringify(newPassInfo);
+				
+				$.ajax({
+					type : 'POST',
+					data : dataJSON,
+					url : '${ pageContext.request.contextPath }/changePassword.do',
+					contentType : 'application/json',
+					dataType : 'json',
+					success : (function(data) {
+						alert(data['message']);
+						if(data['redirectUrl'] != null) {
+							window.location.href = '${ pageContext.request.contextPath }/'+data['redirectUrl'];
+						}
+					})
+				});			
+			}			
+		}
+	});		
+});
+</script>
+<script>
+/*------------------회원 탈퇴-------------------------*/
+function deactivateAccount() {
+	if(confirm("탈퇴하시겠습니까?ㅠㅠ")) {
+		
+		$.ajax({
+			type : 'POST',
+			url : '${ pageContext.request.contextPath }/deactivate.do',
+			contentType : 'application/json',
+			dataType : 'json',
+			success : (function(data) {
+				alert(data['message']);
+				window.location.href = '${ pageContext.request.contextPath }/'+data['redirectUrl'];
+			})
+		});
+	};
+};
+
+/*------------------프로필사진 변경-------------------------*/
+var timer;
+function checkFile(imageName) {
+ 		$.ajax({
+			url : '${ pageContext.request.contextPath }/resources/photo/profileImage/'+imageName,
+			type: 'HEAD',
+			error : function() {
+				timer = setTimeout(function() {
+							checkFile(imageName);
+						}, 3000);
+			},
+			success : function(data) {
+				clearTimeout(timer);
+				$("#profileImage").prop("src", "${ pageContext.request.contextPath }/resources/photo/profileImage/"+imageName);
+				$('#addProfileImg').modal('hide');
+//				window.location.href = '${ pageContext.request.contextPath }/member/mypage.do';				
+			}
+		});
+	}
+
+Dropzone.autoDiscover = false;
+$(document).ready(function () {
+	
+ 	$('#uploadProfileImg').click(function () {
+		$('#addProfileImg').modal('show');
+	});
+	
+	$("div#dropThat").dropzone({
+		url: "${ pageContext.request.contextPath }/uploadPhoto.do",
+		maxFilesize : 3,
+		maxFiles : 1,
+		autoProcessQueue: false,
+		init: function() {
+			
+			this.on("maxfilesexceeded", function(file) {
+				this.removeAllFiles();
+				this.addFile(file);
+			});
+			
+			var myDropzone = this;
+		 	
+			$('#finishUpload').click(function() {
+		 		myDropzone.processQueue(); 		
+			});
+			
+			this.on("success", function(file, imageName) {
+				checkFile(imageName);		
+			});
+		}		
+	});	
+});	
+	
 </script>
 </head>
 <body>
+
+<!------------------ 프로필 이미지 등록 Modal -------------------->	
+	<div class="modal fade" id="addProfileImg" tabindex="-1" role="dialog" aria-labelledby="addProfileImgModal" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="myModalLabel">프로필 사진 등록</h4>					
+				</div>
+				<div class="modal-body">
+					<div id="dropThat" class="dropzone"></div>
+				</div>
+				<div class="modal-footer">
+					<button id="finishUpload" class="btn btn-success">완료</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
 	<div id="sb-site">
 		<div id="page-wrapper">
 			<div id="page-content-wrapper">
@@ -185,8 +409,8 @@
 										</div>
 										<div class="image-content font-white">
 											<div class="meta-box meta-box-bottom">
-												<img
-													src="${pageContext.request.contextPath }/resources/assets/image-resources/gravatar.jpg"
+												<img width="80" height="80"
+													src="${ pageContext.request.contextPath }/resources/photo/profileImage/${ imageName }"
 													alt="" class="meta-image img-bordered img-circle">
 												<h3 class="meta-heading">${sessionScope.user }</h3>
 											</div>
@@ -290,12 +514,12 @@
 													<h3 class="content-box-header clearfix text-center">
 														Change Password</h3>
 													<div class="content-box-wrapper pad0T clearfix">
-														<form class="form-horizontal pad15L pad15R bordered-row">
+														<form id="changePassForm" class="form-horizontal pad15L pad15R bordered-row">
 															<div class="form-group">
 																<label class="col-sm-6 control-label">Old
 																	password:</label>
 																<div class="col-sm-6">
-																	<input type="text" class="form-control" id=""
+																	<input type="password" class="form-control" name="currentPassword"
 																		placeholder="">
 																</div>
 															</div>
@@ -303,7 +527,7 @@
 																<label class="col-sm-6 control-label">New
 																	password:</label>
 																<div class="col-sm-6">
-																	<input type="text" class="form-control" id=""
+																	<input type="password" class="form-control" name="newPassword"
 																		placeholder="">
 																</div>
 															</div>
@@ -311,14 +535,14 @@
 																<label class="col-sm-6 control-label">Repeat
 																	password:</label>
 																<div class="col-sm-6">
-																	<input type="text" class="form-control" id=""
+																	<input type="password" class="form-control" name="newPasswordConfirm"
 																		placeholder="">
 																</div>
 															</div>
 														</form>
 													</div>
 													<div class="button-pane mrg20T">
-														<button class="btn btn-success">Update Password</button>
+														<button onclick="submitUpdatePass()" class="btn btn-success">Update Password</button>
 													</div>
 												</div>
 											</div>
@@ -341,10 +565,15 @@
 														<div class="form-group col-sm-12 text-center">
 															<div class="fileinput-preview thumbnail"
 																data-trigger="fileinput"
-																style="width: 200px; height: 150px"></div>
+																style="width: 200px; height: 150px">
+																<img id="profileImage" src="${ pageContext.request.contextPath }/resources/photo/profileImage/${ imageName }" width="200px" height="150px"/>																	
+															</div>
 															<br /> <br />
-															<button class="btn btn-success" onclick="uploadImage();">사진
+															<button id="uploadProfileImg" type="button" class="btn btn-success">사진
 																업로드</button>
+														</div>
+														<div class="form-group col-sm-12 text-center">
+															<button type="button" class="btn btn-danger" onclick="deactivateAccount()">계정 탈퇴</button>
 														</div>
 													</form>
 												</div>
