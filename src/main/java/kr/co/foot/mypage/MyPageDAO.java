@@ -18,6 +18,7 @@ public interface MyPageDAO {
 	public void deleteRegCoordinates(int mymapidx);
 	public void deleteMyPlan(int mymapidx);
 	public void deleteMyPlanCoordinates(int mymapidx);
+	public void deleteLike(int mymapidx);
 	public void deleteFavoriteMap(int idx);
 	public void deleteFavoritePlace(int idx);
 }

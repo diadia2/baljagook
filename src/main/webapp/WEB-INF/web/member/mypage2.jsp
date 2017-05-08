@@ -21,26 +21,16 @@
 	background: rgba(244, 67, 54, 0);
 }
 </style>
-<script type="text/javascript">	
-	$(document).ready(function() {
-/*-----------------------프로필 이미지 가져오기------------------------*/
-		$.ajax({
-			type : 'POST',
-			url : '${ pageContext.request.contextPath }/getMyProfileImage.do',
-			contentType : 'application/json',
-			dataType : 'json',
-			success : function(imageName) {
-				$("#profileImage").prop("src", "${ pageContext.request.contextPath }/resources/photo/profileImage/"+imageName);
-			}
-		});
-		
+<script type="text/javascript">
+
+	function showMyMap() {
 		// mymap
 		$.ajax({
 			type : 'POST',
 			url : '${ pageContext.request.contextPath }/member/getMymapList.do',
 			dataType : 'json',
 			success : function(data) {
-						$('mymapInfo').children().remove();
+						$('#mymapInfo').children().remove();
 						console.log(data);
 						console.log(data[0].length);
 						//console.log(data[0][0].content); // mymap 0번째의 내용
@@ -59,7 +49,7 @@
 								}
 							}
 							$('#mymapInfo').append(
-													'<div class="col-lg-3 col-md-4 col-sm-6"><div class="thumbnail-box-wrapper"><div class="thumbnail-box"><button class="btn btn-sm btn-danger tooltip-button del icon-tr" title="삭제" value=""><i class="glyph-icon icon-remove"></i></button><a class="thumb-link" href="${ pageContext.request.contextPath }/map/detail.do?mymapidx='
+													'<div class="col-lg-3 col-md-4 col-sm-6"><div class="thumbnail-box-wrapper"><div class="thumbnail-box"><button onclick="deleteMyMap('+data[0][i].idx+')" class="btn btn-sm btn-danger tooltip-button del icon-tr" title="삭제" value=""><i class="glyph-icon icon-remove"></i></button><a class="thumb-link" href="${ pageContext.request.contextPath }/map/detail.do?mymapidx='
 													+ data[0][i].idx
 													+ '" title=""></a><div class="thumb-overlay"></div><img src="https://maps.googleapis.com/maps/api/staticmap?path=color:0xff0000cc|weight:3|'
 													+ lonlat
@@ -73,15 +63,17 @@
 											lonlat = "";
 						}
 					}
-			});
+			});	
+	}
 
-			// myplan
+	function showMyPlan() {
+		// myplan
 		$.ajax({
 			type : 'POST',
 			url : '${ pageContext.request.contextPath }/member/getMyPlanList.do',
 			dataType : 'json',
 			success : function(data) {
-						$('myplanInfo').children().remove();
+						$('#myplanInfo').children().remove();
 							console.log(data);
 							console.log(data[0].length);
 							//console.log(data[0][0].content); // mymap 0번째의 내용
@@ -100,7 +92,7 @@
 									}
 								}
 								$('#myplanInfo').append(
-														'<div class="col-lg-3 col-md-4 col-sm-6"><div class="thumbnail-box-wrapper"><div class="thumbnail-box"><button class="btn btn-sm btn-danger tooltip-button del icon-tr" title="삭제" value=""><i class="glyph-icon icon-remove"></i></button><a class="thumb-link" href="${ pageContext.request.contextPath }/map/detail.do?mymapidx='
+														'<div class="col-lg-3 col-md-4 col-sm-6"><div class="thumbnail-box-wrapper"><div class="thumbnail-box"><button onclick="deleteMyPlan('+data[0][i].idx+')" class="btn btn-sm btn-danger tooltip-button del icon-tr" title="삭제" value=""><i class="glyph-icon icon-remove"></i></button><a class="thumb-link" href="${ pageContext.request.contextPath }/map/detail.do?mymapidx='
 														+ data[0][i].idx
 														+ '" title=""></a><div class="thumb-overlay"></div><img src="https://maps.googleapis.com/maps/api/staticmap?path=color:0xff0000cc|weight:3|'
 														+ lonlat
@@ -114,15 +106,17 @@
 												lonlat = "";
 							}
 					}
-		});
+		});	
+	}
 
+	function showFavoriteMap() {
 		//favorite Map
 		$.ajax({
 				type : 'POST',
 				url : '${ pageContext.request.contextPath }/member/getFavoriteMapList.do',
 				dataType : 'json',
 				success : function(data) {
-							$('favoritemap').children().remove();
+							$('#favoritemap').children().remove();
 							console.log(data);
 							console.log(data[0].length);
 							//console.log(data[0][0].content); // mymap 0번째의 내용
@@ -141,7 +135,7 @@
 									}
 								}
 								$('#favoritemap').append(
-														'<div class="col-lg-4 col-md-4 col-sm-6"><div class="thumbnail-box-wrapper"><div class="thumbnail-box"><button class="btn btn-sm btn-danger tooltip-button del icon-tr" title="삭제" value=""><i class="glyph-icon icon-remove"></i></button><a class="thumb-link" href="${ pageContext.request.contextPath }/map/detail.do?mymapidx='
+														'<div class="col-lg-4 col-md-4 col-sm-6"><div class="thumbnail-box-wrapper"><div class="thumbnail-box"><button onclick="deleteFavoriteMap('+data[0][i].idx+')" class="btn btn-sm btn-danger tooltip-button del icon-tr" title="삭제" value=""><i class="glyph-icon icon-remove"></i></button><a class="thumb-link" href="${ pageContext.request.contextPath }/map/detail.do?mymapidx='
 														+ data[0][i].idx
 														+ '" title=""></a><div class="thumb-overlay"></div><img src="https://maps.googleapis.com/maps/api/staticmap?path=color:0xff0000cc|weight:3|'
 														+ lonlat
@@ -153,22 +147,24 @@
 												lonlat = "";
 							}
 						}
-		});
+		});	
+	}
 
+	function showFavoritePlace() {
 		//favorite Place
 		$.ajax({
 				type : 'POST',
 				url : '${ pageContext.request.contextPath }/member/getFavoritePlaceList.do',
 				dataType : 'json',
 				success : function(data) {
-							$('favoriteplace').children().remove();
+							$('#favoriteplace').children().remove();
 							var lonlat = "";
 							for (i = 0; i < data[0].length; i++) {
 								lonlat += data[1][i].lat;
 								lonlat += ",";
 								lonlat += data[1][i].lon;
 								$('#favoriteplace').append(
-														'<div class="col-lg-4 col-md-4 col-sm-6"><div class="thumbnail-box-wrapper"><div class="thumbnail-box"><button class="btn btn-sm btn-danger tooltip-button del icon-tr" title="삭제" value=""><i class="glyph-icon icon-remove"></i></button><a class="thumb-link" href="javascript:myPlace('
+														'<div class="col-lg-4 col-md-4 col-sm-6"><div class="thumbnail-box-wrapper"><div class="thumbnail-box"><button onclick="deleteFavoritePlace('+data[0][i].idx+')" class="btn btn-sm btn-danger tooltip-button del icon-tr" title="삭제" value=""><i class="glyph-icon icon-remove"></i></button><a class="thumb-link" href="javascript:myPlace('
 														+ data[0][i].checkpointidx
 														+ ')" title=""></a><div class="thumb-content"><div class="center-vertical"><div class="center-content">'
 														+ '<i class="icon-helper icon-center animated zoomInUp font-white glyph-icon icon-linecons-camera"></i></div></div></div><div class="thumb-overlay"></div><img src="https://maps.googleapis.com/maps/api/staticmap?center='
@@ -181,9 +177,30 @@
 												lonlat = "";
 							}
 						}
-		});
-	});
+		});	
+	}
 
+/*-----------------------프로필 이미지 가져오기------------------------*/
+	function showProfileImage() {
+		$.ajax({
+			type : 'POST',
+			url : '${ pageContext.request.contextPath }/getMyProfileImage.do',
+			contentType : 'application/json',
+			dataType : 'json',
+			success : function(imageName) {
+				$("#profileImage").prop("src", "${ pageContext.request.contextPath }/resources/photo/profileImage/"+imageName);
+			}
+		});	
+	}
+
+	$(document).ready(function() {
+		showMyMap();
+		showMyPlan();
+		showFavoriteMap();
+		showFavoritePlace();
+		showProfileImage();
+	});
+		
 	function myPlace(checkpointidx) {
 		window.open(
 					"${ pageContext.request.contextPath }/member/favoritePlace.do?checkpointidx="
@@ -193,23 +210,21 @@
 	}
 
 	/*----------------------My Map 삭제------------------------*/
-	function deleteMyMap(mymapidx, type) {
+	function deleteMyMap(mymapidx) {
 		console.log(mymapidx);
-		console.log(type);
 		if (confirm("삭제 하시겠습니까?")) {
-			$
-					.ajax({
-						type : 'POST',
-						data : jQuery.param({
-							mymapidx : mymapidx
-						}),
-						url : '${ pageContext.request.contextPath }/deleteMyMap.do',
-						contentType : 'application/x-www-form-urlencoded; charset=UTF-8',
-						success : (function(data) {
-							alert('삭제되었습니다');
-							window.location.href = '${ pageContext.request.contextPath }/member/mypage.do';
-						})
-					});
+			$.ajax({
+				type : 'POST',
+				data : jQuery.param({
+					mymapidx : mymapidx
+				}),
+				url : '${ pageContext.request.contextPath }/deleteMyMap.do',
+				contentType : 'application/x-www-form-urlencoded; charset=UTF-8',
+				success : (function(data) {
+					alert('삭제되었습니다');
+					showMyMap();
+				})
+			});
 		}
 	}
 
@@ -218,19 +233,18 @@
 		console.log(mymapidx);
 		console.log(type);
 		if (confirm("삭제 하시겠습니까?")) {
-			$
-					.ajax({
-						type : 'POST',
-						data : jQuery.param({
-							mymapidx : mymapidx
-						}),
-						url : '${ pageContext.request.contextPath }/deleteMyPlan.do',
-						contentType : 'application/x-www-form-urlencoded; charset=UTF-8',
-						success : (function(data) {
-							alert('삭제되었습니다');
-							window.location.href = '${ pageContext.request.contextPath }/member/resetMypage.do';
-						})
-					});
+			$.ajax({
+				type : 'POST',
+				data : jQuery.param({
+					mymapidx : mymapidx
+				}),
+				url : '${ pageContext.request.contextPath }/deleteMyPlan.do',
+				contentType : 'application/x-www-form-urlencoded; charset=UTF-8',
+				success : (function(data) {
+					alert('삭제되었습니다');
+					showMyPlan();
+				})
+			});
 		}
 	}
 
@@ -238,19 +252,18 @@
 	function deleteFavoriteMap(idx) {
 		console.log(idx);
 		if (confirm("삭제 하시겠습니까?")) {
-			$
-					.ajax({
-						type : 'POST',
-						data : jQuery.param({
-							idx : idx
-						}),
-						url : '${ pageContext.request.contextPath }/deleteFavoriteMap.do',
-						contentType : 'application/x-www-form-urlencoded; charset=UTF-8',
-						success : (function(data) {
-							alert('삭제되었습니다');
-							window.location.href = '${ pageContext.request.contextPath }/member/resetMypageTwo.do';
-						})
-					});
+			$.ajax({
+				type : 'POST',
+				data : jQuery.param({
+					idx : idx
+				}),
+				url : '${ pageContext.request.contextPath }/deleteFavoriteMap.do',
+				contentType : 'application/x-www-form-urlencoded; charset=UTF-8',
+				success : (function(data) {
+					alert('삭제되었습니다');
+					showFavoriteMap();
+				})
+			});
 		}
 	}
 
@@ -258,19 +271,18 @@
 	function deleteFavoritePlace(idx) {
 		console.log(idx);
 		if (confirm("삭제 하시겠습니까?")) {
-			$
-					.ajax({
-						type : 'POST',
-						data : jQuery.param({
-							idx : idx
-						}),
-						url : '${ pageContext.request.contextPath }/deleteFavoritePlace.do',
-						contentType : 'application/x-www-form-urlencoded; charset=UTF-8',
-						success : (function(data) {
-							alert('삭제되었습니다');
-							window.location.href = '${ pageContext.request.contextPath }/member/resetMypageThree.do';
-						})
-					});
+			$.ajax({
+				type : 'POST',
+				data : jQuery.param({
+					idx : idx
+				}),
+				url : '${ pageContext.request.contextPath }/deleteFavoritePlace.do',
+				contentType : 'application/x-www-form-urlencoded; charset=UTF-8',
+				success : (function(data) {
+					alert('삭제되었습니다');
+					showFavoritePlace();
+				})
+			});
 		}
 	}
 
@@ -359,9 +371,9 @@ function checkFile(imageName) {
 			},
 			success : function(data) {
 				clearTimeout(timer);
-				$("#profileImage").prop("src", "${ pageContext.request.contextPath }/resources/photo/profileImage/"+imageName);
+				showProfileImage();
+/* 				$("#profileImage").prop("src", "${ pageContext.request.contextPath }/resources/photo/profileImage/"+imageName); */
 				$('#addProfileImg').modal('hide');
-//				window.location.href = '${ pageContext.request.contextPath }/member/mypage.do';				
 			}
 		});
 	}
