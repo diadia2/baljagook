@@ -230,5 +230,8 @@
 	<!-- stomp -->
 	<script type="text/javascript"
 		src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+	<!-- jquery cookie -->
+	<script
+		src="${pageContext.request.contextPath}/resources/js/js.cookie.js"></script>
 </body>
 </html>
