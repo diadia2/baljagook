@@ -218,6 +218,18 @@
 				}
 			});				
 		});
+		
+/*-----------------------프로필 이미지 가져오기------------------------*/
+	$.ajax({
+		type : 'POST',
+		url : '${ pageContext.request.contextPath }/getMyProfileImage.do',
+		contentType : 'application/json',
+		dataType : 'json',
+		success : function(imageName) {
+			$("#profileImage").prop("src", "${ pageContext.request.contextPath }/resources/photo/profileImage/"+imageName);			
+		}
+	});
+		
 	/* sock */
 	var socket = new SockJS('/Baljagook/endpoint');
 	var client = Stomp.over(socket);
@@ -274,8 +286,8 @@
 				class="glyph-icon icon-linecons-lock"></i></a>
 			<div class="user-account-btn dropdown">
 				<a href="#" title="My Account" class="user-profile clearfix"
-					data-toggle="dropdown"><img width="28"
-					src="${pageContext.request.contextPath }/resources/assets/image-resources/gravatar.jpg"
+					data-toggle="dropdown"><img id="profileImage" width="28" height="28"
+					src="${ pageContext.request.contextPath }/resources/photo/profileImage/${ imageName }"
 					alt="Profile image"> <span>${sessionScope.user}</span> <i
 					class="glyph-icon icon-angle-down"></i></a>
 

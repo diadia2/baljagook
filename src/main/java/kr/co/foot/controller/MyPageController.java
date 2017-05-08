@@ -1,7 +1,15 @@
 package kr.co.foot.controller;
 
+import static java.nio.file.StandardWatchEventKinds.ENTRY_CREATE;
+
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.WatchEvent;
+import java.nio.file.WatchKey;
+import java.nio.file.WatchService;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -120,8 +128,6 @@ public class MyPageController {
 		String imageName = "";
 		Iterator<String> itr = request.getFileNames();
 		
-		
-		
 		if(itr.hasNext()) {
 			MultipartFile uploadedImage = request.getFile(itr.next());
 			
@@ -134,11 +140,19 @@ public class MyPageController {
 			memberVO.setUserid(userid);
 			memberVO.setPhoto(imageName);
 			service.insertImageName(memberVO);
-			
 		}
 		
 		return imageName;
 		
+	}
+	
+	@RequestMapping(value="/getMyProfileImage.do", method=RequestMethod.POST)
+	@ResponseBody
+	public String getMyProfileImage(HttpSession session) {
+		String userid = (String) session.getAttribute("user");
+		String imageName = service.getImageName(userid);
+		
+		return imageName;
 	}
 	
 	@RequestMapping(value="/deleteMyMap.do", method=RequestMethod.POST)

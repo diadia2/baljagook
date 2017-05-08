@@ -281,16 +281,17 @@ public class MymapController {
    }
    
    @RequestMapping(value = "/map/searchList.do", method = RequestMethod.GET)
-	public String searchList(@RequestParam("searchtext") String searchtext, @RequestParam("moreCount") int moreCount,
+	public String searchList(@RequestParam("searchtext") String searchtext, @RequestParam("moreCount") int moreCount, @RequestParam("flag") int flag,
 			Model model, HttpServletRequest request) {
 
-		List<MymapVO> mymapList = mymapService.selectMymapList(searchtext, 8 * moreCount);// 5*1
-																							// 더보기
-																							// 누르면
-																							// 5*2
-																							// 5*3
-		List<MymapVO> mymapList2 = mymapService.selectMymapList2(searchtext, 8 * moreCount);//조회수순
-		
+	   List<MymapVO> mymapList = new ArrayList<MymapVO>();
+	   	
+	   	if(flag == 1){
+	   		mymapList = mymapService.selectMymapList(searchtext, 8 * moreCount); // 최근순
+		} else if(flag == 2){
+			mymapList = mymapService.selectMymapList2(searchtext, 8 * moreCount); //조회수순
+		}
+	   	
 		System.out.println("mymapList.size() :" + mymapList.size());
 		List<HashtagVO> hashtagList = new ArrayList<HashtagVO>();
 
@@ -327,6 +328,7 @@ public class MymapController {
 			RegmapVO getRegmap = mymapService.getRegmapList(mymapList.get(i).getIdx());
 			regmapList.add(getRegmap);
 			viewcnt = getRegmap.getViewcnt();
+			System.out.println(viewcnt);
 			viewcntMap.put(mymapList.get(i).getIdx(), viewcnt);
 		}
 
@@ -336,8 +338,8 @@ public class MymapController {
 		System.out.println("로그인중인 사용자: " + loggedUserid);
 
 		// map image
-		Map<Integer, List> mapImg = new HashMap<>();
-
+		Map<Integer, String> mapImg = new HashMap<>();
+		String lonlat = "";
 		// Like
 		List<String> userList = new ArrayList<String>();
 		for (int i = 0; i < mymapList.size(); i++) {
@@ -356,11 +358,25 @@ public class MymapController {
 			likeMap.put(mymapList.get(i).getIdx(), likeCnt);
 
 			List<RegcoordinatesVO> regcoordinatesVO = mymapService.getRegmapsList(mymapList.get(i).getIdx());
-			mapImg.put(mymapList.get(i).getIdx(), regcoordinatesVO);
+			
+			for(int j=0; j<regcoordinatesVO.size(); j++){
+				if(j != regcoordinatesVO.size()-1){
+					lonlat += regcoordinatesVO.get(j).getLat();
+					lonlat += ",";
+					lonlat += regcoordinatesVO.get(j).getLon();
+					lonlat += "|";
+				} else {
+					lonlat += regcoordinatesVO.get(j).getLat();
+					lonlat += ",";
+					lonlat += regcoordinatesVO.get(j).getLon();
+				}
+			}
+			System.out.println(lonlat);
+			mapImg.put(mymapList.get(i).getIdx(), lonlat);
+			lonlat = "";
 		}
 
 		model.addAttribute("mymapList", mymapList);
-		model.addAttribute("mymapList2", mymapList2);
 		model.addAttribute("hashtagList", hashtagList);
 		model.addAttribute("likeMap", likeMap);
 		model.addAttribute("likeAlreadyChecked", likeAlreadyChecked);
