@@ -383,7 +383,7 @@ $(document).ready(function(){
 			      			console.log(this);
 				  			infowindow = new google.maps.InfoWindow({
 					    		content: '<img src="${ pageContext.request.contextPath }/resources/advphoto/'+this.newname+'" width="200px" height="200px"/><br/>'+
-					    			'업체명 : '+this.name+'<br/>'+'소개 : '+this.detail+'<br/><input type="button" onclick="javascript:hideAdv('+(this.position.lat()).toFixed(7).toString()+", "+(this.position.lng()).toFixed(7).toString()+')" value=" 광고 숨기기 "/>'
+					    			'업체명 : '+this.name+'<br/>'+'소개 : '+this.detail+'<br/><input type="button" class="btn btn-yellow" onclick="javascript:hideAdv('+(this.position.lat()).toFixed(7).toString()+", "+(this.position.lng()).toFixed(7).toString()+')" value=" 광고 숨기기 "/>'
 					  }); 
 				  			infowindow.open(map, this);
 			 		}); 
@@ -569,9 +569,9 @@ $(document).ready(function(){
 								  infowindow = new google.maps.InfoWindow({									  
 									    content: '<img id="cpImage" src="${ pageContext.request.contextPath }/resources/photo/'+this.filename+'" width="200px" height="200px"/><br/>'+
 											    (this.num+1)+". "+this.title+'<br/>'+this.content+
-											    '<br/><div style="height:0px; overflow:hidden"><input id="chooseImage" type="file"/></div><input type="button" value="사진수정" onclick="uploadImage('+this.checkpointList+');"><br/><input type="button" value="출발설정" onClick="startCheck('+
-									    		this.position.lat().toString()+", "+this.position.lng().toString()+')"/><input type="button" value="도착설정" onClick="endCheck('+
-									    		this.position.lat().toString()+", "+this.position.lng().toString()+')"/><input type="button" value="위치삭제" onClick="removeSpot('+
+											    '<br/><div style="height:0px; overflow:hidden"><input id="chooseImage" type="file"/></div><input type="button" class="btn btn-border btn-alt border-red btn-link font-red" value="사진수정" onclick="uploadImage('+this.checkpointList+');"><br/><input type="button" class="btn btn-danger" value="출발설정" onClick="startCheck('+
+									    		this.position.lat().toString()+", "+this.position.lng().toString()+')"/><input type="button" class="btn btn-danger" value="도착설정" onClick="endCheck('+
+									    		this.position.lat().toString()+", "+this.position.lng().toString()+')"/><input type="button" class="btn btn-yellow" value="위치삭제" onClick="removeSpot('+
 									    		(this.position.lat()).toFixed(7).toString()+", "+(this.position.lng()).toFixed(7).toString()+","+this.timestamp+')"/>'
 									  }); 
 								  infowindow.open(map, this);
@@ -600,9 +600,9 @@ $(document).ready(function(){
 									  }
 									  infowindow = new google.maps.InfoWindow({
 										    content: (this.num+1)+". "+this.title+'<br/>'+this.content+
-										    '<br/><input type="button" value="출발설정" onClick="startCheck('+
-										    		this.position.lat().toString()+", "+this.position.lng().toString()+')"/><input type="button" value="도착설정" onClick="endCheck('+
-										    		this.position.lat().toString()+", "+this.position.lng().toString()+')"/><input type="button" value="위치삭제" onClick="removeSpot('+
+										    '<br/><input class="btn btn-danger" type="button" value="출발설정" onClick="startCheck('+
+										    		this.position.lat().toString()+", "+this.position.lng().toString()+')"/><input type="button" class="btn btn-danger" value="도착설정" onClick="endCheck('+
+										    		this.position.lat().toString()+", "+this.position.lng().toString()+')"/><input type="button" class="btn btn-yellow" value="위치삭제" onClick="removeSpot('+
 										    		(this.position.lat()).toFixed(7).toString()+", "+(this.position.lng()).toFixed(7).toString()+","+this.timestamp+')"/>'
 										  }); 
 									  console.log(infowindow);
@@ -640,11 +640,11 @@ $(document).ready(function(){
 							  }
 							  infowindow = new google.maps.InfoWindow({
 								    content: (this.num+1)+". "+(this.position.lat()).toFixed(7).toString()+", "+(this.position.lng()).toFixed(7).toString()+
-								    '<br/><input type="button" value="출발설정" onClick="startCheck('+
+								    '<br/><input type="button" class="btn btn-danger" value="출발설정" onClick="startCheck('+
 								    	this.position.lat().toString()+", "+this.position.lng().toString()+
-								    ')"/><input type="button" value="도착설정" onClick="endCheck('+
+								    ')"/><input type="button" class="btn btn-danger" value="도착설정" onClick="endCheck('+
 								    	this.position.lat().toString()+", "+this.position.lng().toString()+
-								    ')"/><input type="button" value="위치삭제" onClick="removeSpot('+
+								    ')"/><input type="button" class="btn btn-yellow" value="위치삭제" onClick="removeSpot('+
 								    (this.position.lat()).toFixed(7).toString()+", "+(this.position.lng()).toFixed(7).toString()+","+this.timestamp+')"/>'
 								  }); 
 							  infowindow.open(map, this);

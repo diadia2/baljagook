@@ -186,7 +186,6 @@
 					});
 
 	function myPlace(checkpointidx) {
-
 		window
 				.open(
 						"${ pageContext.request.contextPath }/member/favoritePlace.do?checkpointidx="
@@ -329,16 +328,16 @@
 								<ul class="list-group row list-group-icons">
 									<li class="col-md-3 active"><a href="#tab-example-1"
 										data-toggle="tab" class="list-group-item"><i
-											class="glyph-icon icon-dashboard"></i> Account Settings</a></li>
+											class="glyph-icon icon-gear"></i> Account Settings</a></li>
 									<li class="col-md-3"><a href="#tab-example-2"
 										data-toggle="tab" class="list-group-item"><i
-											class="glyph-icon font-primary icon-camera"></i> My Map</a></li>
+											class="glyph-icon font-primary icon-edit"></i> My Map</a></li>
 									<li class="col-md-3"><a href="#tab-example-3"
 										data-toggle="tab" class="list-group-item"><i
-											class="glyph-icon font-blue-alt icon-globe"></i> My Plan</a></li>
+											class="glyph-icon font-blue-alt icon-calculator"></i> My Plan</a></li>
 									<li class="col-md-3"><a href="#tab-example-4"
 										data-toggle="tab" class="list-group-item"><i
-											class="glyph-icon font-red icon-bullhorn"></i> Favorites </a></li>
+											class="glyph-icon font-yellow icon-star"></i> Favorites </a></li>
 								</ul>
 								<div class="tab-content">
 									<div class="tab-pane pad0A fade active in" id="tab-example-1">
@@ -429,6 +428,8 @@
 														<div class="thumbnail-box-wrapper">
 															<div class="thumbnail-box thumbnail-box-inverse">
 																<a class="thumb-link" href="#" title=""
+																	data-toggle="modal" data-target="#myModal"
+																	data-backdrop="static" data-keyboard="false"
 																	style="border: 2px solid"></a>
 																<div class="thumb-content">
 																	<div class="center-vertical">
@@ -504,6 +505,8 @@
 											</div>
 										</div>
 
+
+
 										<div class="col-md-6">
 											<div class="content-box">
 												<h3 class="content-box-header clearfix text-center">Favorite
@@ -519,10 +522,96 @@
 								</div>
 							</div>
 						</div>
+						
+						<!-- datepicker -->
+		<script type="text/javascript"
+			src="${pageContext.request.contextPath }/resources/assets/widgets/datepicker-ui/datepicker.js"></script>
+		<script type="text/javascript"
+			src="${pageContext.request.contextPath }/resources/assets/widgets/datepicker-ui/datepicker-demo.js"></script>
+		<script type="text/javascript"
+			src="${pageContext.request.contextPath }/resources/assets/widgets/daterangepicker/moment.js"></script>
+		<script type="text/javascript"
+			src="${pageContext.request.contextPath }/resources/assets/widgets/daterangepicker/daterangepicker.js"></script>
+		<script type="text/javascript"
+			src="${pageContext.request.contextPath }/resources/assets/widgets/daterangepicker/daterangepicker-demo.js"></script>
+		<script type="text/javascript"
+			src="${pageContext.request.contextPath }/resources/assets/widgets/timepicker/timepicker.js"></script>
+
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+			aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+			
+			
+			<form action="${ pageContext.request.contextPath }/map/mapcheck.do" method="POST" name="inputform">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-hidden="true">&times;</button>
+						<h4 class="modal-title">Modal title</h4>
 					</div>
+					<div class="modal-body">
+				
+
+						<input name="title" type="text" class="form-control"
+							placeholder="제목"> <br /> <input name="content"
+							type="text" class="form-control" placeholder="설명"><br />
+						<div class="form-group">
+							<div class="input-prepend input-group">
+								<span class="add-on input-group-addon"><i
+									class="glyph-icon icon-calendar"></i></span> <input type="text"
+									name="daterangepickertime" id="daterangepicker-time"
+									class="form-control" value=""> <input type="text"
+									id="start" name="start" value="${start}"> <input
+									type="text" id="end" name="end" value="${end }">
+								<script type="text/javascript">
+									/* daterangepicker-time에서 apply 누르면 실행(daterangepicker.js에 추가함) */
+									function changeDP() {
+										var date = document.inputform.daterangepickertime.value;
+										var time1 = date.substring(11, 13);
+										var time2 = date.substring(33, 35);
+										console.log(time1);
+										if ((date.substring(17, 19)) == ("PM")) {
+											time1 = Number(time1) + 12;
+										}
+										if ((date.substring(39, 41)) == ("PM")) {
+											time2 = Number(time2) + 12;
+										}
+										document.inputform.start.value = date
+												.substring(0, 11)
+												+ time1
+												+ date.substring(13, 16);
+										document.inputform.end.value = date
+												.substring(22, 33)
+												+ time2
+												+ date.substring(35, 38);
+									}
+								</script>
+							</div>
+						</div>
+						<input name="hashtag" type="text" class="form-control title-text"
+							placeholder="#해쉬태그">
+
+					</div>
+					<div class="modal-footer">
+						<button type="submit" class="btn btn-primary">등록하기</button>
+						<button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
+					</div>
+					</form>
 				</div>
 			</div>
 		</div>
+		
+						
+					</div>
+					
+					
+				</div>
+			</div>
+		</div>
+		
+		
+
+
 		<jsp:include page="/bottom2.do" />
 	</div>
 </body>
