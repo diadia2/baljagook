@@ -455,7 +455,7 @@
 								+ checkpointidx,
 						"FavoritePlace",
 						"top=10, width=800, height=700, toolbar=no, menubar=no, scrollbars=no, resizable=yes");
-
+	}
 /*------------------프로필사진 변경-------------------------*/
 var timer;
 function checkFile(imageName) {
@@ -803,48 +803,50 @@ function checkFile(imageName) {
 								</div>
 							</div>
 						</div>
-						
+
 						<!-- datepicker -->
-		<script type="text/javascript"
-			src="${pageContext.request.contextPath }/resources/assets/widgets/datepicker-ui/datepicker.js"></script>
-		<script type="text/javascript"
-			src="${pageContext.request.contextPath }/resources/assets/widgets/datepicker-ui/datepicker-demo.js"></script>
-		<script type="text/javascript"
-			src="${pageContext.request.contextPath }/resources/assets/widgets/daterangepicker/moment.js"></script>
-		<script type="text/javascript"
-			src="${pageContext.request.contextPath }/resources/assets/widgets/daterangepicker/daterangepicker.js"></script>
-		<script type="text/javascript"
-			src="${pageContext.request.contextPath }/resources/assets/widgets/daterangepicker/daterangepicker-demo.js"></script>
-		<script type="text/javascript"
-			src="${pageContext.request.contextPath }/resources/assets/widgets/timepicker/timepicker.js"></script>
+						<script type="text/javascript"
+							src="${pageContext.request.contextPath }/resources/assets/widgets/datepicker-ui/datepicker.js"></script>
+						<script type="text/javascript"
+							src="${pageContext.request.contextPath }/resources/assets/widgets/datepicker-ui/datepicker-demo.js"></script>
+						<script type="text/javascript"
+							src="${pageContext.request.contextPath }/resources/assets/widgets/daterangepicker/moment.js"></script>
+						<script type="text/javascript"
+							src="${pageContext.request.contextPath }/resources/assets/widgets/daterangepicker/daterangepicker.js"></script>
+						<script type="text/javascript"
+							src="${pageContext.request.contextPath }/resources/assets/widgets/daterangepicker/daterangepicker-demo.js"></script>
+						<script type="text/javascript"
+							src="${pageContext.request.contextPath }/resources/assets/widgets/timepicker/timepicker.js"></script>
 
-		<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
-			aria-labelledby="myModalLabel" aria-hidden="true">
-			<div class="modal-dialog">
-			
-			
-			<form action="${ pageContext.request.contextPath }/map/mapcheck.do" method="POST" name="inputform">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal"
-							aria-hidden="true">&times;</button>
-						<h4 class="modal-title">Modal title</h4>
-					</div>
-					<div class="modal-body">
-				
+						<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+							aria-labelledby="myModalLabel" aria-hidden="true">
+							<div class="modal-dialog">
 
-						<input name="title" type="text" class="form-control"
-							placeholder="제목"> <br /> <input name="content"
-							type="text" class="form-control" placeholder="설명"><br />
-						<div class="form-group">
-							<div class="input-prepend input-group">
-								<span class="add-on input-group-addon"><i
-									class="glyph-icon icon-calendar"></i></span> <input type="text"
-									name="daterangepickertime" id="daterangepicker-time"
-									class="form-control" value=""> <input type="text"
-									id="start" name="start" value="${start}"> <input
-									type="text" id="end" name="end" value="${end }">
-								<script type="text/javascript">
+
+								<form
+									action="${ pageContext.request.contextPath }/map/mapcheck.do"
+									method="POST" name="inputform">
+									<div class="modal-content">
+										<div class="modal-header">
+											<button type="button" class="close" data-dismiss="modal"
+												aria-hidden="true">&times;</button>
+											<h4 class="modal-title">Modal title</h4>
+										</div>
+										<div class="modal-body">
+
+
+											<input name="title" type="text" class="form-control"
+												placeholder="제목"> <br /> <input name="content"
+												type="text" class="form-control" placeholder="설명"><br />
+											<div class="form-group">
+												<div class="input-prepend input-group">
+													<span class="add-on input-group-addon"><i
+														class="glyph-icon icon-calendar"></i></span> <input type="text"
+														name="daterangepickertime" id="daterangepicker-time"
+														class="form-control" value=""> <input type="text"
+														id="start" name="start" value="${start}"> <input
+														type="text" id="end" name="end" value="${end }">
+													<script type="text/javascript">
 									/* daterangepicker-time에서 apply 누르면 실행(daterangepicker.js에 추가함) */
 									function changeDP() {
 										var date = document.inputform.daterangepickertime.value;
@@ -861,39 +863,41 @@ function checkFile(imageName) {
 												.substring(0, 11)
 												+ time1
 												+ date.substring(13, 16);
+										alert(date);
 										document.inputform.end.value = date
 												.substring(22, 33)
 												+ time2
 												+ date.substring(35, 38);
 									}
 								</script>
+												</div>
+											</div>
+											<input name="hashtag" type="text"
+												class="form-control title-text" placeholder="#해쉬태그">
+
+										</div>
+										<div class="modal-footer">
+											<button type="submit" class="btn btn-primary">등록하기</button>
+											<button type="button" class="btn btn-default"
+												data-dismiss="modal">취소</button>
+										</div>
+								</form>
 							</div>
 						</div>
-						<input name="hashtag" type="text" class="form-control title-text"
-							placeholder="#해쉬태그">
+					</div>
 
-					</div>
-					<div class="modal-footer">
-						<button type="submit" class="btn btn-primary">등록하기</button>
-						<button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
-					</div>
-					</form>
+
 				</div>
+
+
 			</div>
 		</div>
-		
-						
-					</div>
-					
-					
-				</div>
-			</div>
-		</div>
-		
-		
+	</div>
 
 
-		<jsp:include page="/bottom2.do" />
+
+
+	<jsp:include page="/bottom2.do" />
 	</div>
 </body>
 </html>

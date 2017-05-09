@@ -285,7 +285,7 @@ $(document).ready(function(){
 	form.title.value = "${title}";
 	form.content.value = "${content}";
 	form.hashtag.value = "${hashtag}";
-	form.daterangepickertime.value = "${start}"+"~"+"${end}";
+	/* form.daterangepickertime.value = "${start}"+"~"+"${end}"; */
 	
 	$(".coupon_tab_btn span").click(function() {
 		$(".coupon_tab_btn span").each(function() {

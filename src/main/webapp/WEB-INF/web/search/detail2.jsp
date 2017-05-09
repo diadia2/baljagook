@@ -1083,6 +1083,13 @@ var flightMarkers = new Array();
 									</c:forEach>
 								</p>
 								<p>${ sdate }~${ edate }</p>
+
+								<button class="btn btn-default" onclick="javascript:getFavoriteMap()">
+									<i class="glyph-icon icon-star"></i>
+								</button>
+								<button class="btn btn-default" onclick="javascript:showReportForm();">
+									<i class="glyph-icon icon-exclamation-circle"></i>
+								</button>
 							</div>
 							<div class="example-box-wrapper" style="height: 85%">
 								<div class="content-box tabs" style="height: 100%">
@@ -1107,11 +1114,10 @@ var flightMarkers = new Array();
 														</div>
 														<div class="popover right">
 															<div class="arrow"></div>
-															<div class="popover-content timelineinfo"> 
+															<div class="popover-content timelineinfo">
 																<div class="tl-label bs-label label-info">${ checkpointVO.title }</div>
 																<p class="tl-content">${ checkpointVO.content }</p>
-																<div class="tl-time">
-																</div>
+																<div class="tl-time"></div>
 															</div>
 														</div>
 													</div>
