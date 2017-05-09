@@ -76,6 +76,10 @@ public class MyPageDAOImp implements MyPageDAO {
 		sst.delete("kr.co.foot.mypage.MyPageDAO.deleteLike", mymapidx);
 	}
 	
+	public void deleteReport(int mymapidx) {
+		sst.delete("kr.co.foot.mypage.MyPageDAO.deleteReport", mymapidx);
+	}
+	
 	public void deleteFavoriteMap(int idx) {
 		sst.delete("kr.co.foot.mypage.MyPageDAO.deleteFavoriteMap", idx);
 	}

@@ -53,6 +53,7 @@ public class MyPageServiceImp implements MyPageService {
 		dao.deleteHashTag(mymapidx);
 		dao.deleteRegCoordinates(mymapidx);
 		dao.deleteLike(mymapidx);
+		dao.deleteReport(mymapidx);
 	}
 	
 	public void deleteMyPlan(int mymapidx) {
