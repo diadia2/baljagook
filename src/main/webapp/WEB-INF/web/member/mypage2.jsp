@@ -7,184 +7,25 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>View profile</title>
 <style type="text/css">
-.btn.btn-sm.btn-danger.tooltip-button.del.icon-tr {
+.xbutton {
 	position: absolute !important;
 	z-index: 35 !important;
 	font-size: 16px !important;
-}
-
-.badge-danger, .bg-danger, .bg-red, .bootstrap-switch-danger,
-	.btn-danger, .checkbox-danger div[id^=uniform-] span.checked,
-	.hover-danger:hover, .hover-red:hover, .label-danger,
-	.progress-bar-danger, .radio-danger div[id^=uniform-] span.checked {
-	color: #000;
-	background: rgba(244, 67, 54, 0);
+	color: #000; 
+	background: rgba(244, 67, 54, 0);	
 }
 </style>
+<link rel="stylesheet" type="text/css"
+      href="${pageContext.request.contextPath }/resources/assets/frontend-elements/portfolio-navigation.css">
+<script type="text/javascript"
+	    src="${pageContext.request.contextPath }/resources/assets/widgets/mixitup/mixitup.js"></script>
+<script type="text/javascript"
+		src="${pageContext.request.contextPath }/resources/assets/widgets/mixitup/images-loaded.js"></script>
+<script type="text/javascript"
+		src="${pageContext.request.contextPath }/resources/assets/widgets/mixitup/isotope.js"></script>
+<script type="text/javascript"
+		src="${pageContext.request.contextPath }/resources/assets/widgets/mixitup/portfolio-demo.js"></script>
 <script type="text/javascript">
-	$(document)
-			.ready(
-					function() {
-
-						// mymap
-						$
-								.ajax({
-									type : 'POST',
-									url : '${ pageContext.request.contextPath }/member/getMymapList.do',
-									dataType : 'json',
-									success : function(data) {
-										$('mymapInfo').children().remove();
-										console.log(data);
-										console.log(data[0].length);
-										//console.log(data[0][0].content); // mymap 0번째의 내용
-										//console.log(data[0][0].idx);	 // mymap 0번째 인덱스
-										//console.log(data[1]);			 // reglist들의 list
-										//console.log(data[1][data[0][0].idx]);	// reglist들의 list의 0번째 리스트
-										//console.log(data[1][data[0][0].idx][0].lat);	// reglist들의 list의 0번째 리스트의 0번째 lat
-										var lonlat = "";
-										for (i = 0; i < data[0].length; i++) {
-											for (j = 0; j < data[1][data[0][i].idx].length; j++) {
-												lonlat += data[1][data[0][i].idx][j].lat;
-												lonlat += ",";
-												lonlat += data[1][data[0][i].idx][j].lon;
-												if (j != (data[1][data[0][i].idx].length) - 1) {
-													lonlat += "|";
-												}
-											}
-											$('#mymapInfo')
-													.append(
-															'<div class="col-lg-3 col-md-4 col-sm-6"><div class="thumbnail-box-wrapper"><div class="thumbnail-box"><button class="btn btn-sm btn-danger tooltip-button del icon-tr" title="삭제" value=""><i class="glyph-icon icon-remove"></i></button><a class="thumb-link" href="${ pageContext.request.contextPath }/map/detail.do?mymapidx='
-																	+ data[0][i].idx
-																	+ '" title=""></a><div class="thumb-overlay"></div><img src="https://maps.googleapis.com/maps/api/staticmap?path=color:0xff0000cc|weight:3|'
-																	+ lonlat
-																	+ '&size=400x400&key=AIzaSyDVbk7aW8HrEqozbZcMDZDBDP77uGJGduc&style=feature:water|color:0x1C91C4cc" alt=""></div><div class="thumb-pane"><h3 class="thumb-heading animated rollIn"><a href="${ pageContext.request.contextPath }/map/detail.do?mymapidx='
-																	+ data[0][i].idx
-																	+ '" title="">'
-																	+ data[0][i].title
-																	+ '</a> <small>'
-																	+ data[0][i].regdate
-																	+ '</small></h3></div></div></div>');
-											lonlat = "";
-										}
-									}
-								});
-
-						// myplan
-						$
-								.ajax({
-									type : 'POST',
-									url : '${ pageContext.request.contextPath }/member/getMyPlanList.do',
-									dataType : 'json',
-									success : function(data) {
-										$('myplanInfo').children().remove();
-										console.log(data);
-										console.log(data[0].length);
-										//console.log(data[0][0].content); // mymap 0번째의 내용
-										//console.log(data[0][0].idx);	 // mymap 0번째 인덱스
-										//console.log(data[1]);			 // reglist들의 list
-										//console.log(data[1][data[0][0].idx]);	// reglist들의 list의 0번째 리스트
-										//console.log(data[1][data[0][0].idx][0].lat);	// reglist들의 list의 0번째 리스트의 0번째 lat
-										var lonlat = "";
-										for (i = 0; i < data[0].length; i++) {
-											for (j = 0; j < data[1][data[0][i].idx].length; j++) {
-												lonlat += data[1][data[0][i].idx][j].lat;
-												lonlat += ",";
-												lonlat += data[1][data[0][i].idx][j].lon;
-												if (j != (data[1][data[0][i].idx].length) - 1) {
-													lonlat += "|";
-												}
-											}
-											$('#myplanInfo')
-													.append(
-															'<div class="col-lg-3 col-md-4 col-sm-6"><div class="thumbnail-box-wrapper"><div class="thumbnail-box"><button class="btn btn-sm btn-danger tooltip-button del icon-tr" title="삭제" value=""><i class="glyph-icon icon-remove"></i></button><a class="thumb-link" href="${ pageContext.request.contextPath }/map/detail.do?mymapidx='
-																	+ data[0][i].idx
-																	+ '" title=""></a><div class="thumb-overlay"></div><img src="https://maps.googleapis.com/maps/api/staticmap?path=color:0xff0000cc|weight:3|'
-																	+ lonlat
-																	+ '&size=400x400&key=AIzaSyDVbk7aW8HrEqozbZcMDZDBDP77uGJGduc&style=feature:water|color:0x1C91C4cc" alt=""></div><div class="thumb-pane"><h3 class="thumb-heading animated rollIn"><a href="${ pageContext.request.contextPath }/map/detail.do?mymapidx='
-																	+ data[0][i].idx
-																	+ '" title="">'
-																	+ data[0][i].title
-																	+ '</a> <small>'
-																	+ data[0][i].regdate
-																	+ '</small></h3></div></div></div>');
-											lonlat = "";
-										}
-									}
-								});
-
-						//favorite Map
-						$
-								.ajax({
-									type : 'POST',
-									url : '${ pageContext.request.contextPath }/member/getFavoriteMapList.do',
-									dataType : 'json',
-									success : function(data) {
-										$('favoritemap').children().remove();
-										console.log(data);
-										console.log(data[0].length);
-										//console.log(data[0][0].content); // mymap 0번째의 내용
-										//console.log(data[0][0].idx);	 // mymap 0번째 인덱스
-										//console.log(data[1]);			 // reglist들의 list
-										//console.log(data[1][data[0][0].idx]);	// reglist들의 list의 0번째 리스트
-										//console.log(data[1][data[0][0].idx][0].lat);	// reglist들의 list의 0번째 리스트의 0번째 lat
-										var lonlat = "";
-										for (i = 0; i < data[0].length; i++) {
-											for (j = 0; j < data[1][data[0][i].idx].length; j++) {
-												lonlat += data[1][data[0][i].idx][j].lat;
-												lonlat += ",";
-												lonlat += data[1][data[0][i].idx][j].lon;
-												if (j != (data[1][data[0][i].idx].length) - 1) {
-													lonlat += "|";
-												}
-											}
-											$('#favoritemap')
-													.append(
-															'<div class="col-lg-4 col-md-4 col-sm-6"><div class="thumbnail-box-wrapper"><div class="thumbnail-box"><button class="btn btn-sm btn-danger tooltip-button del icon-tr" title="삭제" value=""><i class="glyph-icon icon-remove"></i></button><a class="thumb-link" href="${ pageContext.request.contextPath }/map/detail.do?mymapidx='
-																	+ data[0][i].idx
-																	+ '" title=""></a><div class="thumb-overlay"></div><img src="https://maps.googleapis.com/maps/api/staticmap?path=color:0xff0000cc|weight:3|'
-																	+ lonlat
-																	+ '&size=400x400&key=AIzaSyDVbk7aW8HrEqozbZcMDZDBDP77uGJGduc&style=feature:water|color:0x1C91C4cc" alt=""></div><div class="thumb-pane"><h3 class="thumb-heading animated rollIn"><a href="${ pageContext.request.contextPath }/map/detail.do?mymapidx='
-																	+ data[0][i].idx
-																	+ '" title=""><small>'
-																	+ data[0][i].title
-																	+ '</small></a></h3></div></div></div>');
-											lonlat = "";
-										}
-									}
-								});
-
-						//favorite Place
-						$
-								.ajax({
-									type : 'POST',
-									url : '${ pageContext.request.contextPath }/member/getFavoritePlaceList.do',
-									dataType : 'json',
-									success : function(data) {
-										$('favoriteplace').children().remove();
-										var lonlat = "";
-										for (i = 0; i < data[0].length; i++) {
-											lonlat += data[1][i].lat;
-											lonlat += ",";
-											lonlat += data[1][i].lon;
-											$('#favoriteplace')
-													.append(
-															'<div class="col-lg-4 col-md-4 col-sm-6"><div class="thumbnail-box-wrapper"><div class="thumbnail-box"><button class="btn btn-sm btn-danger tooltip-button del icon-tr" title="삭제" value=""><i class="glyph-icon icon-remove"></i></button><a class="thumb-link" href="javascript:myPlace('
-																	+ data[0][i].checkpointidx
-																	+ ')" title=""></a><div class="thumb-content"><div class="center-vertical"><div class="center-content">'
-																	+ '<i class="icon-helper icon-center animated zoomInUp font-white glyph-icon icon-linecons-camera"></i></div></div></div><div class="thumb-overlay"></div><img src="https://maps.googleapis.com/maps/api/staticmap?center='
-																	+ lonlat
-																	+ '&zoom=19&size=400x400&markers=color:red|'
-																	+ lonlat
-																	+ '&key=AIzaSyDVbk7aW8HrEqozbZcMDZDBDP77uGJGduc" alt=""></div><div class="thumb-pane"><h3 class="thumb-heading animated rollIn"><a href="#" title=""><small>'
-																	+ data[0][i].placename
-																	+ '</small></a></h3></div></div></div>');
-											lonlat = "";
-										}
-									}
-								});
-
-					});
-
 	function showMyMap() {
 		// mymap
 		$.ajax({
@@ -211,7 +52,7 @@
 								}
 							}
 							$('#mymapInfo').append(
-													'<div class="col-lg-3 col-md-4 col-sm-6"><div class="thumbnail-box-wrapper"><div class="thumbnail-box"><button onclick="deleteMyMap('+data[0][i].idx+')" class="btn btn-sm btn-danger tooltip-button del icon-tr" title="삭제" value=""><i class="glyph-icon icon-remove"></i></button><a class="thumb-link" href="${ pageContext.request.contextPath }/map/detail.do?mymapidx='
+													'<div class="col-lg-3 col-md-4 col-sm-6"><div class="thumbnail-box-wrapper"><div class="thumbnail-box"><button onclick="deleteMyMap('+data[0][i].idx+')" class="btn btn-sm btn-danger tooltip-button del icon-tr xbutton" title="삭제" value=""><i class="glyph-icon icon-remove"></i></button><a class="thumb-link" href="${ pageContext.request.contextPath }/map/detail.do?mymapidx='
 													+ data[0][i].idx
 													+ '" title=""></a><div class="thumb-overlay"></div><img src="https://maps.googleapis.com/maps/api/staticmap?path=color:0xff0000cc|weight:3|'
 													+ lonlat
@@ -254,7 +95,7 @@
 									}
 								}
 								$('#myplanInfo').append(
-														'<div class="col-lg-3 col-md-4 col-sm-6"><div class="thumbnail-box-wrapper"><div class="thumbnail-box"><button onclick="deleteMyPlan('+data[0][i].idx+')" class="btn btn-sm btn-danger tooltip-button del icon-tr" title="삭제" value=""><i class="glyph-icon icon-remove"></i></button><a class="thumb-link" href="${ pageContext.request.contextPath }/map/detail.do?mymapidx='
+														'<div class="col-lg-3 col-md-4 col-sm-6"><div class="thumbnail-box-wrapper"><div class="thumbnail-box"><button onclick="deleteMyPlan('+data[0][i].idx+')" class="btn btn-sm btn-danger tooltip-button del icon-tr xbutton" title="삭제" value=""><i class="glyph-icon icon-remove"></i></button><a class="thumb-link" href="${ pageContext.request.contextPath }/map/detail.do?mymapidx='
 														+ data[0][i].idx
 														+ '" title=""></a><div class="thumb-overlay"></div><img src="https://maps.googleapis.com/maps/api/staticmap?path=color:0xff0000cc|weight:3|'
 														+ lonlat
@@ -297,7 +138,7 @@
 									}
 								}
 								$('#favoritemap').append(
-														'<div class="col-lg-4 col-md-4 col-sm-6"><div class="thumbnail-box-wrapper"><div class="thumbnail-box"><button onclick="deleteFavoriteMap('+data[0][i].idx+')" class="btn btn-sm btn-danger tooltip-button del icon-tr" title="삭제" value=""><i class="glyph-icon icon-remove"></i></button><a class="thumb-link" href="${ pageContext.request.contextPath }/map/detail.do?mymapidx='
+														'<div class="col-lg-4 col-md-4 col-sm-6"><div class="thumbnail-box-wrapper"><div class="thumbnail-box"><button onclick="deleteFavoriteMap('+data[0][i].idx+')" class="btn btn-sm btn-danger tooltip-button del icon-tr xbutton" title="삭제" value=""><i class="glyph-icon icon-remove"></i></button><a class="thumb-link" href="${ pageContext.request.contextPath }/map/detail.do?mymapidx='
 														+ data[0][i].idx
 														+ '" title=""></a><div class="thumb-overlay"></div><img src="https://maps.googleapis.com/maps/api/staticmap?path=color:0xff0000cc|weight:3|'
 														+ lonlat
@@ -326,7 +167,7 @@
 								lonlat += ",";
 								lonlat += data[1][i].lon;
 								$('#favoriteplace').append(
-														'<div class="col-lg-4 col-md-4 col-sm-6"><div class="thumbnail-box-wrapper"><div class="thumbnail-box"><button onclick="deleteFavoritePlace('+data[0][i].idx+')" class="btn btn-sm btn-danger tooltip-button del icon-tr" title="삭제" value=""><i class="glyph-icon icon-remove"></i></button><a class="thumb-link" href="javascript:myPlace('
+														'<div class="col-lg-4 col-md-4 col-sm-6"><div class="thumbnail-box-wrapper"><div class="thumbnail-box"><button onclick="deleteFavoritePlace('+data[0][i].idx+')" class="btn btn-sm btn-danger tooltip-button del icon-tr xbutton" title="삭제" value=""><i class="glyph-icon icon-remove"></i></button><a class="thumb-link" href="javascript:myPlace('
 														+ data[0][i].checkpointidx
 														+ ')" title=""></a><div class="thumb-content"><div class="center-vertical"><div class="center-content">'
 														+ '<i class="icon-helper icon-center animated zoomInUp font-white glyph-icon icon-linecons-camera"></i></div></div></div><div class="thumb-overlay"></div><img src="https://maps.googleapis.com/maps/api/staticmap?center='
@@ -447,6 +288,7 @@
 			});
 		}
 	}
+<<<<<<< HEAD
 
 	function myPlace(checkpointidx) {
 		window
@@ -457,6 +299,81 @@
 						"top=10, width=800, height=700, toolbar=no, menubar=no, scrollbars=no, resizable=yes");
 		
 
+=======
+		
+/*-----------------------비밀번호 형식 체크------------------------*/
+	function validatePassword(inputPassword) {
+		var passwordFormat = /^[a-zA-Z-0-9!@#$%^&*]{5,15}$/;
+ 		
+		if (inputPassword.match(passwordFormat)) {
+			return true;
+		} else {
+			return false;
+		}
+	}	     
+	     
+	</script>
+	<script>
+	/*------------------비밀번호 변경-------------------------*/		
+	function submitUpdatePass() {
+		$('#changePassForm').submit();
+	}
+	$(document).ready(function () {
+		$('#changePassForm').on('submit', function(e) {
+			console.log('changePassForm submitted');
+			e.preventDefault();
+			
+			var inputNewPw = $('#changePassForm input[name=newPassword]').val();
+			var inputNewPwConfirm = $('#changePassForm input[name=newPasswordConfirm]').val();
+			
+			if(!validatePassword(inputNewPw)) {
+				alert('비밀번호 형식이 맞지 않습니다(길이: 5-15, 특수문자(!@#$%^&*만 가능), 공백 제외)');
+			} else {
+				if(inputNewPw != inputNewPwConfirm) {
+					alert('비밀번호가 일치하지 않습니다');
+				} else {
+					var newPassInfo = {
+							'currentPassword' : $('#changePassForm input[name=currentPassword]').val(),
+							'newPassword' : $('#changePassForm input[name=newPassword]').val()
+					};
+					var dataJSON = JSON.stringify(newPassInfo);
+					
+					$.ajax({
+						type : 'POST',
+						data : dataJSON,
+						url : '${ pageContext.request.contextPath }/changePassword.do',
+						contentType : 'application/json',
+						dataType : 'json',
+						success : (function(data) {
+							alert(data['message']);
+							if(data['redirectUrl'] != null) {
+								window.location.href = '${ pageContext.request.contextPath }/'+data['redirectUrl'];
+							}
+						})
+					});			
+				}			
+			}
+		});		
+	});
+	</script>
+	<script>
+	/*------------------회원 탈퇴-------------------------*/
+	function deactivateAccount() {
+		if(confirm("탈퇴하시겠습니까?ㅠㅠ")) {
+			
+			$.ajax({
+				type : 'POST',
+				url : '${ pageContext.request.contextPath }/deactivate.do',
+				contentType : 'application/json',
+				dataType : 'json',
+				success : (function(data) {
+					alert(data['message']);
+					window.location.href = '${ pageContext.request.contextPath }/'+data['redirectUrl'];
+				})
+			});
+		};
+	};		
+>>>>>>> a27a7161b44146761ebfaf9114de228a121d5076
 /*------------------프로필사진 변경-------------------------*/
 var timer;
 function checkFile(imageName) {
@@ -476,9 +393,58 @@ function checkFile(imageName) {
 			}
 		});
 	}
+Dropzone.autoDiscover = false;
+$(document).ready(function () {
+	
+ 	$('#uploadProfileImg').click(function () {
+		$('#addProfileImg').modal('show');
+	});
+	
+	$("div#dropThat").dropzone({
+		url: "${ pageContext.request.contextPath }/uploadPhoto.do",
+		maxFilesize : 3,
+		maxFiles : 1,
+		autoProcessQueue: false,
+		init: function() {
+			
+			this.on("maxfilesexceeded", function(file) {
+				this.removeAllFiles();
+				this.addFile(file);
+			});
+			
+			var myDropzone = this;
+		 	
+			$('#finishUpload').click(function() {
+		 		myDropzone.processQueue(); 		
+			});
+			
+			this.on("success", function(file, imageName) {
+				checkFile(imageName);		
+			});
+		}		
+	});	
+});		
 </script>
 </head>
 <body>
+<!------------------ 프로필 이미지 등록 Modal -------------------->	
+	<div class="modal fade" id="addProfileImg" tabindex="-1" role="dialog" aria-labelledby="addProfileImgModal" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="myModalLabel">프로필 사진 등록</h4>					
+				</div>
+				<div class="modal-body">
+					<div id="dropThat" class="dropzone"></div>
+				</div>
+				<div class="modal-footer">
+					<button id="finishUpload" class="btn btn-success">완료</button>
+				</div>
+			</div>
+		</div>
+	</div>
 	<div id="sb-site">
 		<div id="page-wrapper">
 			<div id="page-content-wrapper">
@@ -524,8 +490,8 @@ function checkFile(imageName) {
 										</div>
 										<div class="image-content font-white">
 											<div class="meta-box meta-box-bottom">
-												<img
-													src="${pageContext.request.contextPath }/resources/assets/image-resources/gravatar.jpg"
+												<img width="80" height="80"
+													src="${ pageContext.request.contextPath }/resources/photo/profileImage/${ imageName }"
 													alt="" class="meta-image img-bordered img-circle">
 												<h3 class="meta-heading">${sessionScope.user }</h3>
 											</div>
@@ -629,12 +595,12 @@ function checkFile(imageName) {
 													<h3 class="content-box-header clearfix text-center">
 														Change Password</h3>
 													<div class="content-box-wrapper pad0T clearfix">
-														<form class="form-horizontal pad15L pad15R bordered-row">
+														<form id="changePassForm" class="form-horizontal pad15L pad15R bordered-row">
 															<div class="form-group">
 																<label class="col-sm-6 control-label">Old
 																	password:</label>
 																<div class="col-sm-6">
-																	<input type="text" class="form-control" id=""
+																	<input type="password" class="form-control" name="currentPassword"
 																		placeholder="">
 																</div>
 															</div>
@@ -642,7 +608,7 @@ function checkFile(imageName) {
 																<label class="col-sm-6 control-label">New
 																	password:</label>
 																<div class="col-sm-6">
-																	<input type="text" class="form-control" id=""
+																	<input type="password" class="form-control" name="newPassword"
 																		placeholder="">
 																</div>
 															</div>
@@ -650,14 +616,14 @@ function checkFile(imageName) {
 																<label class="col-sm-6 control-label">Repeat
 																	password:</label>
 																<div class="col-sm-6">
-																	<input type="text" class="form-control" id=""
+																	<input type="password" class="form-control" name="newPasswordConfirm"
 																		placeholder="">
 																</div>
 															</div>
 														</form>
 													</div>
 													<div class="button-pane mrg20T">
-														<button class="btn btn-success">Update Password</button>
+														<button onclick="submitUpdatePass()" class="btn btn-success">Update Password</button>
 													</div>
 												</div>
 											</div>
@@ -680,100 +646,99 @@ function checkFile(imageName) {
 														<div class="form-group col-sm-12 text-center">
 															<div class="fileinput-preview thumbnail"
 																data-trigger="fileinput"
-																style="width: 200px; height: 150px"></div>
+																style="width: 200px; height: 150px">
+																<img id="profileImage" src="${ pageContext.request.contextPath }/resources/photo/profileImage/${ imageName }" width="200px" height="150px"/>
+															</div>
 															<br /> <br />
-															<button class="btn btn-success" onclick="uploadImage();">사진
+															<button id="uploadProfileImg" type="button" class="btn btn-success">사진
 																업로드</button>
 														</div>
+														<div class="form-group col-sm-12 text-center">
+															<button type="button" class="btn btn-danger" onclick="deactivateAccount()">계정 탈퇴</button>
+														</div>														
 													</form>
 												</div>
 											</div>
 										</div>
 									</div>
-									<link rel="stylesheet" type="text/css"
-										href="${pageContext.request.contextPath }/resources/assets/frontend-elements/portfolio-navigation.css">
-									<script type="text/javascript"
-										src="${pageContext.request.contextPath }/resources/assets/widgets/mixitup/mixitup.js"></script>
-									<script type="text/javascript"
-										src="${pageContext.request.contextPath }/resources/assets/widgets/mixitup/images-loaded.js"></script>
-									<script type="text/javascript"
-										src="${pageContext.request.contextPath }/resources/assets/widgets/mixitup/isotope.js"></script>
-									<script type="text/javascript"
-										src="${pageContext.request.contextPath }/resources/assets/widgets/mixitup/portfolio-demo.js"></script>
+					
 
 									<div class="tab-pane fade" id="tab-example-2">
 										<div class="panel-body" style="background-color: white;">
 											<div class="example-box-wrapper">
-												<div id="mymapInfo" class="row">
-
-													<div class="col-lg-3 col-md-4 col-sm-6">
-														<div class="thumbnail-box-wrapper">
-															<div class="thumbnail-box thumbnail-box-inverse">
-																<a class="thumb-link" href="#" title=""
-																	data-toggle="modal" data-target="#myModal"
-																	data-backdrop="static" data-keyboard="false"
-																	style="border: 2px solid"></a>
-																<div class="thumb-content">
-																	<div class="center-vertical">
-																		<div class="center-content">
-																			<i
-																				class="icon-helper icon-center animated rotateIn font-white glyph-icon icon-plus"></i>
-																		</div>
+												<div class="col-lg-3 col-md-4 col-sm-6">
+													<div class="thumbnail-box-wrapper">
+														<div class="thumbnail-box thumbnail-box-inverse">
+															<a class="thumb-link" href="#" title=""
+																data-toggle="modal" data-target="#myModal"
+																data-backdrop="static" data-keyboard="false"
+																style="border: 2px solid"></a>
+															<div class="thumb-content">
+																<div class="center-vertical">
+																	<div class="center-content">
+																		<i
+																			class="icon-helper icon-center animated rotateIn font-white glyph-icon icon-plus"></i>
 																	</div>
 																</div>
-																<div class="thumb-overlay bg-white"></div>
-																<img
-																	src="${ pageContext.request.contextPath }/resources/images/click.jpg"
-																	alt="">
 															</div>
-															<div class="thumb-pane">
-																<h3 class="thumb-heading animated rollIn">
-																	<a href="#" title="">새로 등록하기</a> <small>Create
-																		Map</small>
-																</h3>
-															</div>
+															<div class="thumb-overlay bg-white"></div>
+															<img
+																src="${ pageContext.request.contextPath }/resources/images/click.jpg"
+																alt="">
+														</div>
+														<div class="thumb-pane">
+															<h3 class="thumb-heading animated rollIn">
+																<a href="#" title="">새로 등록하기</a> <small>Create
+																	Map</small>
+															</h3>
 														</div>
 													</div>
+												</div>
+												<div id="mymapInfo" class="row">
 												</div>
 											</div>
 										</div>
 									</div>
+									
+									
 									<div class="tab-pane fade" id="tab-example-3">
 										<div class="panel-body" style="background-color: white;">
-											<div class="example-box-wrapper">
-												<div id="myplanInfo" class="row">
-													<div class="col-lg-3 col-md-4 col-sm-6">
-														<div class="thumbnail-box-wrapper">
-															<div class="thumbnail-box thumbnail-box-inverse">
-																<a class="thumb-link"
-																	href="${pageContext.request.contextPath}/map/plantrip.do"
-																	title="" style="border: 2px solid"></a>
-																<div class="thumb-content">
-																	<div class="center-vertical">
-																		<div class="center-content">
-																			<i
-																				class="icon-helper icon-center animated rotateIn font-white glyph-icon icon-plus"></i>
-																		</div>
+											<div class="example-box-wrapper">		
+												<div class="col-lg-3 col-md-4 col-sm-6">
+													<div class="thumbnail-box-wrapper">
+														<div class="thumbnail-box thumbnail-box-inverse">
+															<a class="thumb-link"
+																href="${pageContext.request.contextPath}/map/plantrip.do"
+																title="" style="border: 2px solid"></a>
+															<div class="thumb-content">
+																<div class="center-vertical">
+																	<div class="center-content">
+																		<i
+																			class="icon-helper icon-center animated rotateIn font-white glyph-icon icon-plus"></i>
 																	</div>
 																</div>
-																<div class="thumb-overlay bg-white"></div>
-																<img
-																	src="${ pageContext.request.contextPath }/resources/images/click.jpg"
-																	alt="">
 															</div>
-															<div class="thumb-pane">
-																<h3 class="thumb-heading animated rollIn">
-																	<a
-																		href="${pageContext.request.contextPath}/map/plantrip.do"
-																		title="">새로 계획하기</a> <small>Create Plan</small>
-																</h3>
-															</div>
+															<div class="thumb-overlay bg-white"></div>
+															<img
+																src="${ pageContext.request.contextPath }/resources/images/click.jpg"
+																alt="">
+														</div>
+														<div class="thumb-pane">
+															<h3 class="thumb-heading animated rollIn">
+																<a
+																	href="${pageContext.request.contextPath}/map/plantrip.do"
+																	title="">새로 계획하기</a> <small>Create Plan</small>
+															</h3>
 														</div>
 													</div>
+												</div>
+												<div id="myplanInfo" class="row">
 												</div>
 											</div>
 										</div>
 									</div>
+									
+									
 									<div class="tab-pane fade" id="tab-example-4">
 										<div class="col-md-6">
 											<div class="content-box">
@@ -801,100 +766,99 @@ function checkFile(imageName) {
 											</div>
 										</div>
 									</div>
+									
+									
 								</div>
 							</div>
 						</div>
 						
-						<!-- datepicker -->
-		<script type="text/javascript"
-			src="${pageContext.request.contextPath }/resources/assets/widgets/datepicker-ui/datepicker.js"></script>
-		<script type="text/javascript"
-			src="${pageContext.request.contextPath }/resources/assets/widgets/datepicker-ui/datepicker-demo.js"></script>
-		<script type="text/javascript"
-			src="${pageContext.request.contextPath }/resources/assets/widgets/daterangepicker/moment.js"></script>
-		<script type="text/javascript"
-			src="${pageContext.request.contextPath }/resources/assets/widgets/daterangepicker/daterangepicker.js"></script>
-		<script type="text/javascript"
-			src="${pageContext.request.contextPath }/resources/assets/widgets/daterangepicker/daterangepicker-demo.js"></script>
-		<script type="text/javascript"
-			src="${pageContext.request.contextPath }/resources/assets/widgets/timepicker/timepicker.js"></script>
-
-		<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
-			aria-labelledby="myModalLabel" aria-hidden="true">
-			<div class="modal-dialog">
-			
-			
-			<form action="${ pageContext.request.contextPath }/map/mapcheck.do" method="POST" name="inputform">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal"
-							aria-hidden="true">&times;</button>
-						<h4 class="modal-title">Modal title</h4>
-					</div>
-					<div class="modal-body">
+						<!-------------------------- datepicker ------------------------------->
+						<script type="text/javascript"
+							src="${pageContext.request.contextPath }/resources/assets/widgets/datepicker-ui/datepicker.js"></script>
+						<script type="text/javascript"
+							src="${pageContext.request.contextPath }/resources/assets/widgets/datepicker-ui/datepicker-demo.js"></script>
+						<script type="text/javascript"
+							src="${pageContext.request.contextPath }/resources/assets/widgets/daterangepicker/moment.js"></script>
+						<script type="text/javascript"
+							src="${pageContext.request.contextPath }/resources/assets/widgets/daterangepicker/daterangepicker.js"></script>
+						<script type="text/javascript"
+							src="${pageContext.request.contextPath }/resources/assets/widgets/daterangepicker/daterangepicker-demo.js"></script>
+						<script type="text/javascript"
+							src="${pageContext.request.contextPath }/resources/assets/widgets/timepicker/timepicker.js"></script>
 				
-
-						<input name="title" type="text" class="form-control"
-							placeholder="제목"> <br /> <input name="content"
-							type="text" class="form-control" placeholder="설명"><br />
-						<div class="form-group">
-							<div class="input-prepend input-group">
-								<span class="add-on input-group-addon"><i
-									class="glyph-icon icon-calendar"></i></span> <input type="text"
-									name="daterangepickertime" id="daterangepicker-time"
-									class="form-control" value=""> <input type="text"
-									id="start" name="start" value="${start}"> <input
-									type="text" id="end" name="end" value="${end }">
-								<script type="text/javascript">
-									/* daterangepicker-time에서 apply 누르면 실행(daterangepicker.js에 추가함) */
-									function changeDP() {
-										var date = document.inputform.daterangepickertime.value;
-										var time1 = date.substring(11, 13);
-										var time2 = date.substring(33, 35);
-										console.log(time1);
-										if ((date.substring(17, 19)) == ("PM")) {
-											time1 = Number(time1) + 12;
-										}
-										if ((date.substring(39, 41)) == ("PM")) {
-											time2 = Number(time2) + 12;
-										}
-										document.inputform.start.value = date
-												.substring(0, 11)
-												+ time1
-												+ date.substring(13, 16);
-										document.inputform.end.value = date
-												.substring(22, 33)
-												+ time2
-												+ date.substring(35, 38);
-									}
-								</script>
+						<!------------------------- 여행 등록 Modal ----------------------------->	
+						<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+							aria-labelledby="myModalLabel" aria-hidden="true">
+							<div class="modal-dialog">
+								
+								<form action="${ pageContext.request.contextPath }/map/mapcheck.do" method="POST" name="inputform">
+									
+									<div class="modal-content">
+										
+										<div class="modal-header">
+											<button type="button" class="close" data-dismiss="modal"
+												aria-hidden="true">&times;</button>
+											<h4 class="modal-title">Modal title</h4>
+										</div>
+									
+										<div class="modal-body">
+											<input name="title" type="text" class="form-control"
+												placeholder="제목"> <br /> <input name="content"
+												type="text" class="form-control" placeholder="설명"><br />
+												<div class="form-group">
+													<div class="input-prepend input-group">
+														<span class="add-on input-group-addon"><i
+															class="glyph-icon icon-calendar"></i></span> <input type="text"
+															name="daterangepickertime" id="daterangepicker-time"
+															class="form-control" value=""> <input type="text"
+															id="start" name="start" value="${start}"> <input
+															type="text" id="end" name="end" value="${end }">
+														<script type="text/javascript">
+															/* daterangepicker-time에서 apply 누르면 실행(daterangepicker.js에 추가함) */
+															function changeDP() {
+																var date = document.inputform.daterangepickertime.value;
+																var time1 = date.substring(11, 13);
+																var time2 = date.substring(33, 35);
+																console.log(time1);
+																if ((date.substring(17, 19)) == ("PM")) {
+																	time1 = Number(time1) + 12;
+																}
+																if ((date.substring(39, 41)) == ("PM")) {
+																	time2 = Number(time2) + 12;
+																}
+																document.inputform.start.value = date
+																		.substring(0, 11)
+																		+ time1
+																		+ date.substring(13, 16);
+																document.inputform.end.value = date
+																		.substring(22, 33)
+																		+ time2
+																		+ date.substring(35, 38);
+															}
+														</script>
+													</div>
+												</div>
+											<input name="hashtag" type="text" class="form-control title-text"
+												placeholder="#해쉬태그">
+										</div>
+										
+										<div class="modal-footer">
+											<button type="submit" class="btn btn-primary">등록하기</button>
+											<button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
+										</div>
+									</div>
+								</form>
 							</div>
-						</div>
-						<input name="hashtag" type="text" class="form-control title-text"
-							placeholder="#해쉬태그">
+						</div>		
 
-					</div>
-					<div class="modal-footer">
-						<button type="submit" class="btn btn-primary">등록하기</button>
-						<button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
-					</div>
-					</form>
-				</div>
+				</div>	
 			</div>
+			<jsp:include page="/bottom2.do" />	
 		</div>
-		
-						
-					</div>
-					
-					
-				</div>
-			</div>
-		</div>
-		
-		
-
-
-		<jsp:include page="/bottom2.do" />
 	</div>
+</div>
+
+	
+	
 </body>
 </html>
