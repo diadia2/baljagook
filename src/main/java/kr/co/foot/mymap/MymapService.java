@@ -62,5 +62,6 @@ public interface MymapService {
 	public void deleteSpots(String weekAgo);
 	public void updatePhoto(PhotoVO photoVO);
 	public List<RegmapVO> selectRegmapInfo();
+	public List<MymapVO> selectMymapList3(String searchtext, int pageSize);
 
 }

@@ -373,5 +373,18 @@ public class MymapDAOImp implements MymapDAO {
 		
 		return regmapList;
 	}
+
+	@Override
+	public List<MymapVO> selectMymapList3(String searchtext, int pageSize) {
+		int start = pageSize-8;
+		System.out.println(pageSize+"페이지사이즈"+start);
+		HashMap<String, Object> search = new HashMap<String, Object>();
+		search.put("start", start);
+		search.put("pageSize", 8);//8개씩 보여준다
+		search.put("searchtext", searchtext);
+		
+		List<MymapVO> mymapList = sqlSessionTemplate.selectList("kr.co.foot.mymap.MymapDAO.selectMymapList3", search);
+		return mymapList;
+	}
 	
 }

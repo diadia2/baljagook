@@ -48,12 +48,6 @@ public class MemberController {
 		List<MymapVO> mymapList = memberService.selectMymapListByuserid(userid); 
 		model.addAttribute("mymapList", mymapList);
 		
-		String imageName = myPageService.getImageName(userid);
-		if(imageName == null) {
-			imageName = "defaultImage.png";
-		}
-		model.addAttribute("imageName", imageName);
-		
 //		return "member/mypage3";
 		return "member/mypage2";
 	}

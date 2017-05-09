@@ -39,4 +39,10 @@ public class CommentServiceImp implements CommentService{
 		dao.reply(commentVo);
 	}
 	
+	@Override
+	public String getProfileImage(String userid) {
+		String imageName = dao.getProfileImage(userid);
+		return imageName;
+	}
+	
 }

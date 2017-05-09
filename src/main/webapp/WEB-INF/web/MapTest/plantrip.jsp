@@ -30,9 +30,9 @@ html, body {
 	padding: 0px !important;
 }
 /* 판넬헤더 클릭 드래그 */
-/* #draggablePanelList .panel-heading {
+#draggablePanelList .panel-heading {
 	cursor: move;
-} */
+}
 /* 숫자 원 */
 .circleNum {
 	width: 20px;
@@ -262,8 +262,8 @@ html, body {
 <script
 	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD6x6lwLmHlSpovbF0nM-fPIPpjfv4D9IM&libraries=places"></script>
 <!-- 판넬 드래그 API -->
-<!-- <script type='text/javascript'
-	src="https://code.jquery.com/ui/1.10.1/jquery-ui.js"></script> -->
+<script type='text/javascript'
+	src="https://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
 <script type="text/javascript"
 	src="${pageContext.request.contextPath }/resources/assets/widgets/interactions-ui/resizable.js"></script>
 <script type="text/javascript"
@@ -299,6 +299,41 @@ $(document).ready(function(){
 	
 	$('#naviDiv').hide();
 	
+	
+	var sortIndex;	// 선택된 div index의 listLonLat 좌표값
+	      var sortNum;		// 타임라인 div index 번호
+		      /* 타임라인 판넬 드래그 */
+			jQuery(function($) {
+				var panelList = $('#draggablePanelList');
+				panelList.sortable({
+	        		start: function(event, ui) { 
+	        		      sortIndex = listLonLat[ui.item.index()];
+	        		      sortNum = ui.item.index();
+	       			},
+	       			stop: function(event, ui) { 
+	       			    if(sortNum != ui.item.index()){
+				      		   for(var i=0; i<listLonLat.length; i++){
+									if(listLonLat[i].lat == sortIndex.lat && listLonLat[i].lng == sortIndex.lng){
+									    sortNum = i;
+									}
+								}
+		      		     	    listLonLat.splice(sortNum, 1);
+		      		     	    sortNum = ui.item.index();
+		      		     		listLonLat.splice(sortNum,0,sortIndex);
+		      		     		change = false;
+		      		     	initialize();
+	       			    }
+	     			},
+					handle : '.panel-heading',
+					update : function() {
+						$('.panel', panelList).each(function(index, elem) {
+							var $listItem = $(elem), newIndex = $listItem.index();
+							//판넬 리스트 번호 관련
+							// Persist the new indices.
+						});
+					}
+				});
+			});
 });
 
 	var advlistLonLat = new Array();
@@ -341,6 +376,11 @@ $(document).ready(function(){
 	
 	
 	function initialize() {
+	    
+	    if(listLonLat.length != 0){
+			center = listLonLat[listLonLat.length-1];
+	    }
+	    
 		// 좌표 등록
 		tmap = new Tmap.Map({div:'map_div', width:'0px', height:'0px'});
 		map = new google.maps.Map(document.getElementById('map'), {
@@ -379,13 +419,31 @@ $(document).ready(function(){
 			addLineMarker();
 			
 			if(mymapLonLatList.length != 0){
-				for(var i=0; i<mymapLonLatList.length; i++){    
+				for(var i=0; i<mymapLonLatList.length; i++){  
+				    
+					var strokeColor = "";
+					if(i%7 == 0){
+					    strokeColor = '#FC0004';
+					} else if(i%7 == 1){
+					    strokeColor = '#D16500';
+					} else if(i%7 == 2){
+					    strokeColor = '#E8DC00';
+					} else if(i%7 == 2){
+					    strokeColor = '#2CCC00';
+					} else if(i%7 == 2){
+					    strokeColor = '#0071B7';
+					} else if(i%7 == 2){
+					    strokeColor = '#1900BC';
+					} else if(i%7 == 2){
+					    strokeColor = '#9900C4';
+					}
+					
 					var mymapCoordinates = mymapLonLatList[i].mymapLonLat;
 						var mymapPath = new google.maps.Polyline({
 							path : mymapCoordinates,
 							geodesic : true,
-							strokeColor : '#0000FF',
-							strokeOpacity : 1.0,
+							strokeColor : strokeColor,
+							strokeOpacity : 0.7,
 							strokeWeight : 3
 						});
 						mymapPath.setMap(null);
@@ -422,6 +480,7 @@ $(document).ready(function(){
 				  }  
 			}); 
 			
+			checkPointMarker = [];
 			 /////////////////////		    
 			if(mymapCheckpointList.length != 0){
 				for(var i=0; i<mymapCheckpointList.length; i++){
@@ -431,20 +490,28 @@ $(document).ready(function(){
 						checkPointMarker.push(new google.maps.Marker({
 					   	 	position: mymapCheckpointList[i].mymapCheckpoint[j],
 					   	 	map: map,
-							icon : "http://maps.google.com/mapfiles/kml/paddle/blu-circle-lv.png"
+							icon : "http://maps.google.com/mapfiles/kml/paddle/red-circle-lv.png"
 						}));
-
-					  var listener7 = google.maps.event.addListener(checkPointMarker, 'click', function(){
-						  if(infowindow != null){
+						
+					  var listener6 = google.maps.event.addListener(map, 'click', function(){
+						if(infowindow != null){
 							  infowindow.close();
 						  }
-						  infowindow = new google.maps.InfoWindow({
-							    content: gogogo
-							  }); 
-						  infowindow.open(map, this);
-					  });  
+					  });
 				    }
 				}
+				
+			    for(i=0; i<checkPointMarker.length; i++){
+				  var listener7 = google.maps.event.addListener(checkPointMarker[i], 'click', function(){
+					  if(infowindow != null){
+						  infowindow.close();
+					  }
+					  infowindow = new google.maps.InfoWindow({
+					     		content: '<input type="button" value="마커추가" onclick="javascript:addExtraMarker('+this.position.lat().toFixed(7).toString()+','+this.position.lng().toFixed(7).toString()+')">'
+						  }); 
+					  infowindow.open(map, this);
+				  });
+			    }
 			}
 			 
 			var input = document.getElementById('pac-input');
@@ -771,7 +838,7 @@ $(document).ready(function(){
 				$('#addinfo').append('<div class="InfoAppend"><span style="float:right;margin-right:25px;width:30px;text-align:center;position:absolute;"><img src="${pageContext.request.contextPath }/resources/images/mobile/navi_tap01.png"/></span><span style="margin-left:30px">'+routeLayer.features[i].attributes.description+'</span></div>');
 			}
 		}
-		
+		lineLocation = [];
 		for(var i=0; i<routeLayer.features.length; i++){
 			if(routeLayer.features[i].geometry.components == null){
 				var xy = tmapToGoogle(new Tmap.LonLat(routeLayer.features[i].geometry.x, routeLayer.features[i].geometry.y));
@@ -1007,6 +1074,7 @@ $(document).ready(function(){
 		zoom = map.getZoom();
 		center = new google.maps.LatLng(lat, lng);
 		map.setCenter(center);
+		console.log(listLonLat);
 		initialize();
 	}
 	
@@ -1385,8 +1453,6 @@ function resetFindRoad(){
 					}
 					mymapLonLatList.push({mymapLonLat:mymapLonLat, mymapidx:data[0][0].mymapidx});
 					mymapCheckpointList.push({mymapCheckpoint:mymapCheckpoint, mymapidx:data[0][0].mymapidx});
-					console.log(mymapLonLatList);
-					console.log(mymapCheckpointList);
 					drawFavoriteMap();
 		        }
 			});	
@@ -1407,16 +1473,32 @@ function resetFindRoad(){
 		    openADV();
 		    
 		    for(var i=0; i<mymapLonLatList.length; i++){    
+				var strokeColor = "";
+				if(i%7 == 0){
+				    strokeColor = '#FC0004';
+				} else if(i%7 == 1){
+				    strokeColor = '#D16500';
+				} else if(i%7 == 2){
+				    strokeColor = '#E8DC00';
+				} else if(i%7 == 2){
+				    strokeColor = '#2CCC00';
+				} else if(i%7 == 2){
+				    strokeColor = '#0071B7';
+				} else if(i%7 == 2){
+				    strokeColor = '#1900BC';
+				} else if(i%7 == 2){
+				    strokeColor = '#9900C4';
+				}
 				var mymapCoordinates = mymapLonLatList[i].mymapLonLat;
-					var mymapPath = new google.maps.Polyline({
-						path : mymapCoordinates,
-						geodesic : true,
-						strokeColor : '#0000FF',
-						strokeOpacity : 1.0,
-						strokeWeight : 3
-					});
-					mymapPath.setMap(null);
-					mymapPath.setMap(map);
+				var mymapPath = new google.maps.Polyline({
+					path : mymapCoordinates,
+					geodesic : true,
+					strokeColor : strokeColor,
+					strokeOpacity : 0.7,
+					strokeWeight : 3
+				});
+				mymapPath.setMap(null);
+				mymapPath.setMap(map);
 			}
 		    console.log(mymapCheckpointList.length);
 			
@@ -1424,7 +1506,6 @@ function resetFindRoad(){
 		    /////////////////////
 			for(var i=0; i<mymapCheckpointList.length; i++){
 			    for(var j=0; j<mymapCheckpointList[i].mymapCheckpoint.length; j++){
-					console.log(mymapCheckpointList[i].mymapCheckpoint[j]);
 						
 					checkPointMarker.push(new google.maps.Marker({
 				   	 	position: mymapCheckpointList[i].mymapCheckpoint[j],
@@ -1438,19 +1519,21 @@ function resetFindRoad(){
 					  }
 				  });
 				  
-				  console.log(checkPointMarker);
-				  var listener7 = google.maps.event.addListener(checkPointMarker[j], 'click', function(){
-					  if(infowindow != null){
-						  infowindow.close();
-					  }
-					  infowindow = new google.maps.InfoWindow({
-						    content: 'gogogo'
-						  }); 
-					  infowindow.open(map, this);
-				  });  
+				  console.log(checkPointMarker);  
 			    }
 			}
 		    
+		    for(i=0; i<checkPointMarker.length; i++){
+			  var listener7 = google.maps.event.addListener(checkPointMarker[i], 'click', function(){
+				  if(infowindow != null){
+					  infowindow.close();
+				  }
+				  infowindow = new google.maps.InfoWindow({
+				     	 content: '<input type="button" value="마커추가" onclick="javascript:addExtraMarker('+this.position.lat().toFixed(7).toString()+','+this.position.lng().toFixed(7).toString()+')">'
+					  }); 
+				  infowindow.open(map, this);
+			  });
+		    }
 		    
 		    
 		    if(listLonLat.length != 0){
@@ -1532,6 +1615,9 @@ function resetFindRoad(){
 <script type="text/javascript">
 	var flightNum = 0;
 	var flightloadLonLat = [];
+<<<<<<< HEAD
+	function loadStart(){
+=======
 	
 	function loadStart() {
 		timerId = setInterval(function() {
@@ -1543,6 +1629,7 @@ function resetFindRoad(){
 	function loadStart2(){
 	    console.log(lineLocation);
 	    console.log(lineLocationWalk);
+>>>>>>> 9f5cd570b680acde1ba07eaca9d7041130206c97
 	    
 	    if(lineLocation.length != 0){
 		    
@@ -1838,6 +1925,7 @@ function resetFindRoad(){
 																					style="text-decoration: none;"><span
 																						style="font-size: 13pt;">지도 : ${ mymapList.title }</span></a></li>
 																			</c:forEach>
+																			----------------------------------------
 																			<c:forEach var="favoriteplaceList"
 																				items="${ favoriteplaceList }">
 																				<li><a

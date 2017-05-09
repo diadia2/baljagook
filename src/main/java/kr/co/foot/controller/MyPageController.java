@@ -25,6 +25,8 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import kr.co.foot.member.MemberVO;
 import kr.co.foot.mypage.DeactivateDTO;
+import kr.co.foot.mypage.FavMapDTO;
+import kr.co.foot.mypage.FavPlaceDTO;
 import kr.co.foot.mypage.MyPageService;
 import kr.co.foot.mypage.PasswordDTO;
 import kr.co.foot.reglogin.LoginDTO;
@@ -40,7 +42,7 @@ public class MyPageController {
 	@Autowired
 	private RegLoginService regLoginService;
 	
-	//회원탈퇴
+	//��������
 	@RequestMapping(value="/deactivate.do", method=RequestMethod.POST)
 	@ResponseBody
 	public HashMap<String, String> deactivateAccount(HttpServletRequest request) throws ParseException {
@@ -63,17 +65,17 @@ public class MyPageController {
 		session.invalidate();
 		
 		HashMap<String, String> dataMap = new HashMap<String, String>();
-		dataMap.put("message", "정상적으로 탈퇴 되었습니다.");
+		dataMap.put("message", "�������쇰� ���� �����듬����.");
 		dataMap.put("redirectUrl", "main.do");
 		
 		return dataMap;
 	}
 	
-	//비밀번호 변경
+	//鍮�諛�踰��� 蹂�寃�
 	@RequestMapping(value="/changePassword.do", method=RequestMethod.POST, consumes=MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public HashMap<String, String> changePassword(@RequestBody PasswordDTO passwordDTO, HttpServletRequest request) {
-		System.out.println("비밀번호 변경 컨트롤러 진입");
+		System.out.println("鍮�諛�踰��� 蹂�寃� 而⑦�몃·�� 吏���");
 		
 		String currentPassword = passwordDTO.getCurrentPassword();
 		String newPassword = passwordDTO.getNewPassword();
@@ -93,10 +95,10 @@ public class MyPageController {
 			updatedMember.setPassword(newPassword);
 			service.changePassword(updatedMember);
 			
-			dataMap.put("message", "비밀번호 변경 성공!");
+			dataMap.put("message", "鍮�諛�踰��� 蹂�寃� �깃났!");
 			dataMap.put("redirectUrl", "/member/mypage.do");
 		} else {
-			dataMap.put("message", "현재 비밀번호가 틀렸습니다.");
+			dataMap.put("message", "���� 鍮�諛�踰��멸� ���몄�듬����.");
 		}
 		return dataMap;
 	}
@@ -104,7 +106,7 @@ public class MyPageController {
 	private static final String filePath = "/Users/mac/Documents/workspace/baljagook/src/main/webapp/resources/photo/profileImage/";		
 //	private static final String filePath = "/var/lib/tomcat8/webapps/baljagook/resources/photo/profileImage/";	
 	
-	//프로필사진 변경
+	//��濡����ъ� 蹂�寃�
 	@RequestMapping(value = "/uploadPhoto.do", method = RequestMethod.POST)
 	@ResponseBody
 	public String uploadPhoto(MultipartHttpServletRequest request, Model model) throws IllegalStateException, IOException {
@@ -127,7 +129,7 @@ public class MyPageController {
 			file = new File(filePath+imageName);
 			uploadedImage.transferTo(file);
 			
-			// DB에 imageName 추가
+			// DB�� imageName 異�媛�
 			MemberVO memberVO = new MemberVO();
 			memberVO.setUserid(userid);
 			memberVO.setPhoto(imageName);
@@ -164,14 +166,26 @@ public class MyPageController {
 	
 	@RequestMapping(value="/deleteFavoriteMap.do", method=RequestMethod.POST)
 	@ResponseBody
-	public void deleteFavoriteMap(@RequestParam("idx") int idx) {
-		service.deleteFavoriteMap(idx);
+	public void deleteFavoriteMap(@RequestParam("mymapidx") int mymapidx, HttpSession session) {
+		String userid = (String) session.getAttribute("user");
+		
+		FavMapDTO favMapDTO = new FavMapDTO();
+		favMapDTO.setUserid(userid);
+		favMapDTO.setMymapidx(mymapidx);
+		
+		service.deleteFavoriteMap(favMapDTO);
 	}
 	
 	@RequestMapping(value="/deleteFavoritePlace.do", method=RequestMethod.POST)
 	@ResponseBody
-	public void deleteFavoritePlace(@RequestParam("idx") int idx) {
-		service.deleteFavoritePlace(idx);
+	public void deleteFavoritePlace(@RequestParam("checkpointidx") int checkpointidx, HttpSession session) {
+		String userid = (String) session.getAttribute("user");
+		
+		FavPlaceDTO favPlaceDTO = new FavPlaceDTO();
+		favPlaceDTO.setUserid(userid);
+		favPlaceDTO.setCheckpointidx(checkpointidx);
+
+		service.deleteFavoritePlace(favPlaceDTO);
 	}	
 	
 }

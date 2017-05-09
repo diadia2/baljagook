@@ -26,6 +26,14 @@
 <script type="text/javascript"
 		src="${pageContext.request.contextPath }/resources/assets/widgets/mixitup/portfolio-demo.js"></script>
 <script type="text/javascript">
+$(document).ready(function() {
+	showMyMap();
+	showMyPlan();
+	showFavoriteMap();
+	showFavoritePlace();
+	showProfileImage();
+});
+
 	function showMyMap() {
 		// mymap
 		$.ajax({
@@ -33,7 +41,11 @@
 			url : '${ pageContext.request.contextPath }/member/getMymapList.do',
 			dataType : 'json',
 			success : function(data) {
-						$('#mymapInfo').children().remove();
+						for(var i=0; i<$('#mymapInfo').children().length; i++) {
+							if(i != 0) {
+								$('#mymapInfo').children().eq(i).remove();
+							}
+						}
 						console.log(data);
 						console.log(data[0].length);
 						//console.log(data[0][0].content); // mymap 0번째의 내용
@@ -76,7 +88,11 @@
 			url : '${ pageContext.request.contextPath }/member/getMyPlanList.do',
 			dataType : 'json',
 			success : function(data) {
-						$('#myplanInfo').children().remove();
+						for(var i=0; i<$('#myplanInfo').children().length; i++) {
+							if(i != 0) {
+								$('#myplanInfo').children().eq(i).remove();
+							}
+						}
 							console.log(data);
 							console.log(data[0].length);
 							//console.log(data[0][0].content); // mymap 0번째의 내용
@@ -167,7 +183,7 @@
 								lonlat += ",";
 								lonlat += data[1][i].lon;
 								$('#favoriteplace').append(
-														'<div class="col-lg-4 col-md-4 col-sm-6"><div class="thumbnail-box-wrapper"><div class="thumbnail-box"><button onclick="deleteFavoritePlace('+data[0][i].idx+')" class="btn btn-sm btn-danger tooltip-button del icon-tr xbutton" title="삭제" value=""><i class="glyph-icon icon-remove"></i></button><a class="thumb-link" href="javascript:myPlace('
+														'<div class="col-lg-4 col-md-4 col-sm-6"><div class="thumbnail-box-wrapper"><div class="thumbnail-box"><button onclick="deleteFavoritePlace('+data[0][i].checkpointidx+')" class="btn btn-sm btn-danger tooltip-button del icon-tr xbutton" title="삭제" value=""><i class="glyph-icon icon-remove"></i></button><a class="thumb-link" href="javascript:myPlace('
 														+ data[0][i].checkpointidx
 														+ ')" title=""></a><div class="thumb-content"><div class="center-vertical"><div class="center-content">'
 														+ '<i class="icon-helper icon-center animated zoomInUp font-white glyph-icon icon-linecons-camera"></i></div></div></div><div class="thumb-overlay"></div><img src="https://maps.googleapis.com/maps/api/staticmap?center='
@@ -191,18 +207,11 @@
 			contentType : 'application/json',
 			dataType : 'json',
 			success : function(imageName) {
-				$("#profileImage").prop("src", "${ pageContext.request.contextPath }/resources/photo/profileImage/"+imageName);
+				$("#profileImage1").prop("src", "${ pageContext.request.contextPath }/resources/photo/profileImage/"+imageName);
+				$("#profileImage2").prop("src", "${ pageContext.request.contextPath }/resources/photo/profileImage/"+imageName);
 			}
 		});	
 	}
-
-	$(document).ready(function() {
-		showMyMap();
-		showMyPlan();
-		showFavoriteMap();
-		showFavoritePlace();
-		showProfileImage();
-	});
 		
 	function myPlace(checkpointidx) {
 		window.open(
@@ -252,13 +261,13 @@
 	}
 
 	/*----------------------Favorite Map 삭제------------------------*/
-	function deleteFavoriteMap(idx) {
-		console.log(idx);
+	function deleteFavoriteMap(mymapidx) {
+		console.log(mymapidx);
 		if (confirm("삭제 하시겠습니까?")) {
 			$.ajax({
 				type : 'POST',
 				data : jQuery.param({
-					idx : idx
+					mymapidx : mymapidx
 				}),
 				url : '${ pageContext.request.contextPath }/deleteFavoriteMap.do',
 				contentType : 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -271,13 +280,13 @@
 	}
 
 	/*----------------------Favorite Place 삭제------------------------*/
-	function deleteFavoritePlace(idx) {
-		console.log(idx);
+	function deleteFavoritePlace(checkpointidx) {
+		console.log(checkpointidx);
 		if (confirm("삭제 하시겠습니까?")) {
 			$.ajax({
 				type : 'POST',
 				data : jQuery.param({
-					idx : idx
+					checkpointidx : checkpointidx
 				}),
 				url : '${ pageContext.request.contextPath }/deleteFavoritePlace.do',
 				contentType : 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -288,6 +297,7 @@
 			});
 		}
 	}
+
 		
 /*-----------------------비밀번호 형식 체크------------------------*/
 	function validatePassword(inputPassword) {
@@ -374,8 +384,9 @@ function checkFile(imageName) {
 			},
 			success : function(data) {
 				clearTimeout(timer);
-				showProfileImage();
-/* 				$("#profileImage").prop("src", "${ pageContext.request.contextPath }/resources/photo/profileImage/"+imageName); */
+ 				$("#profileImage").prop("src", "${ pageContext.request.contextPath }/resources/photo/profileImage/"+imageName);		
+ 				$("#profileImage1").prop("src", "${ pageContext.request.contextPath }/resources/photo/profileImage/"+imageName);
+ 				$("#profileImage2").prop("src", "${ pageContext.request.contextPath }/resources/photo/profileImage/"+imageName);
 				$('#addProfileImg').modal('hide');
 			}
 		});
@@ -427,7 +438,7 @@ $(document).ready(function () {
 					<div id="dropThat" class="dropzone"></div>
 				</div>
 				<div class="modal-footer">
-					<button id="finishUpload" class="btn btn-success">완료</button>
+					<button id="finishUpload" class="btn btn-success">올리기</button>
 				</div>
 			</div>
 		</div>
@@ -477,7 +488,7 @@ $(document).ready(function () {
 										</div>
 										<div class="image-content font-white">
 											<div class="meta-box meta-box-bottom">
-												<img width="80" height="80"
+												<img id="profileImage1" width="80" height="80"
 													src="${ pageContext.request.contextPath }/resources/photo/profileImage/${ imageName }"
 													alt="" class="meta-image img-bordered img-circle">
 												<h3 class="meta-heading">${sessionScope.user }</h3>
@@ -634,7 +645,7 @@ $(document).ready(function () {
 															<div class="fileinput-preview thumbnail"
 																data-trigger="fileinput"
 																style="width: 200px; height: 150px">
-																<img id="profileImage" src="${ pageContext.request.contextPath }/resources/photo/profileImage/${ imageName }" width="200px" height="150px"/>
+																<img id="profileImage2" src="${ pageContext.request.contextPath }/resources/photo/profileImage/${ imageName }" width="200px" height="150px">
 															</div>
 															<br /> <br />
 															<button id="uploadProfileImg" type="button" class="btn btn-success">사진
@@ -653,35 +664,35 @@ $(document).ready(function () {
 									<div class="tab-pane fade" id="tab-example-2">
 										<div class="panel-body" style="background-color: white;">
 											<div class="example-box-wrapper">
-												<div class="col-lg-3 col-md-4 col-sm-6">
-													<div class="thumbnail-box-wrapper">
-														<div class="thumbnail-box thumbnail-box-inverse">
-															<a class="thumb-link" href="#" title=""
-																data-toggle="modal" data-target="#myModal"
-																data-backdrop="static" data-keyboard="false"
-																style="border: 2px solid"></a>
-															<div class="thumb-content">
-																<div class="center-vertical">
-																	<div class="center-content">
-																		<i
-																			class="icon-helper icon-center animated rotateIn font-white glyph-icon icon-plus"></i>
+												<div id="mymapInfo" class="row">
+													<div class="col-lg-3 col-md-4 col-sm-6">
+														<div class="thumbnail-box-wrapper">
+															<div class="thumbnail-box thumbnail-box-inverse">
+																<a class="thumb-link" href="#" title=""
+																	data-toggle="modal" data-target="#myModal"
+																	data-backdrop="static" data-keyboard="false"
+																	style="border: 2px solid"></a>
+																<div class="thumb-content">
+																	<div class="center-vertical">
+																		<div class="center-content">
+																			<i
+																				class="icon-helper icon-center animated rotateIn font-white glyph-icon icon-plus"></i>
+																		</div>
 																	</div>
 																</div>
+																<div class="thumb-overlay bg-white"></div>
+																<img
+																	src="${ pageContext.request.contextPath }/resources/images/click.jpg"
+																	alt="">
 															</div>
-															<div class="thumb-overlay bg-white"></div>
-															<img
-																src="${ pageContext.request.contextPath }/resources/images/click.jpg"
-																alt="">
-														</div>
-														<div class="thumb-pane">
-															<h3 class="thumb-heading animated rollIn">
-																<a href="#" title="">새로 등록하기</a> <small>Create
-																	Map</small>
-															</h3>
+															<div class="thumb-pane">
+																<h3 class="thumb-heading animated rollIn">
+																	<a href="#" title="">새로 등록하기</a> <small>Create
+																		Map</small>
+																</h3>
+															</div>
 														</div>
 													</div>
-												</div>
-												<div id="mymapInfo" class="row">
 												</div>
 											</div>
 										</div>
@@ -690,36 +701,36 @@ $(document).ready(function () {
 									
 									<div class="tab-pane fade" id="tab-example-3">
 										<div class="panel-body" style="background-color: white;">
-											<div class="example-box-wrapper">		
-												<div class="col-lg-3 col-md-4 col-sm-6">
-													<div class="thumbnail-box-wrapper">
-														<div class="thumbnail-box thumbnail-box-inverse">
-															<a class="thumb-link"
-																href="${pageContext.request.contextPath}/map/plantrip.do"
-																title="" style="border: 2px solid"></a>
-															<div class="thumb-content">
-																<div class="center-vertical">
-																	<div class="center-content">
-																		<i
-																			class="icon-helper icon-center animated rotateIn font-white glyph-icon icon-plus"></i>
+											<div class="example-box-wrapper">
+												<div id="myplanInfo" class="row">		
+													<div class="col-lg-3 col-md-4 col-sm-6">
+														<div class="thumbnail-box-wrapper">
+															<div class="thumbnail-box thumbnail-box-inverse">
+																<a class="thumb-link"
+																	href="${pageContext.request.contextPath}/map/plantrip.do"
+																	title="" style="border: 2px solid"></a>
+																<div class="thumb-content">
+																	<div class="center-vertical">
+																		<div class="center-content">
+																			<i
+																				class="icon-helper icon-center animated rotateIn font-white glyph-icon icon-plus"></i>
+																		</div>
 																	</div>
 																</div>
+																<div class="thumb-overlay bg-white"></div>
+																<img
+																	src="${ pageContext.request.contextPath }/resources/images/click.jpg"
+																	alt="">
 															</div>
-															<div class="thumb-overlay bg-white"></div>
-															<img
-																src="${ pageContext.request.contextPath }/resources/images/click.jpg"
-																alt="">
-														</div>
-														<div class="thumb-pane">
-															<h3 class="thumb-heading animated rollIn">
-																<a
-																	href="${pageContext.request.contextPath}/map/plantrip.do"
-																	title="">새로 계획하기</a> <small>Create Plan</small>
-															</h3>
+															<div class="thumb-pane">
+																<h3 class="thumb-heading animated rollIn">
+																	<a
+																		href="${pageContext.request.contextPath}/map/plantrip.do"
+																		title="">새로 계획하기</a> <small>Create Plan</small>
+																</h3>
+															</div>
 														</div>
 													</div>
-												</div>
-												<div id="myplanInfo" class="row">
 												</div>
 											</div>
 										</div>

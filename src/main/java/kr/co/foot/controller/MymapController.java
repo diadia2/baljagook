@@ -290,6 +290,8 @@ public class MymapController {
 	   		mymapList = mymapService.selectMymapList(searchtext, 8 * moreCount); // 최근순
 		} else if(flag == 2){
 			mymapList = mymapService.selectMymapList2(searchtext, 8 * moreCount); //조회수순
+		} else if(flag == 3){
+			mymapList = mymapService.selectMymapList3(searchtext, 8 * moreCount); // 추천순
 		}
 	   	
 		System.out.println("mymapList.size() :" + mymapList.size());
@@ -696,7 +698,7 @@ public class MymapController {
 
 /*==================서버에 올리기 전에 사진을 저장할 filePath 꼭 바꿔주기!===============*/	
 	private static final String filePath = "/Users/mac/Documents/workspace/baljagook/src/main/webapp/resources/photo/";		
-//	private static final String filePath = "/var/lib/tomcat8/webapps/baljagook/resources/photo/profileImage/";	
+//	private static final String filePath = "/var/lib/tomcat8/webapps/baljagook/resources/photo/";	
 	
 	//모바일에서 등록한 체크포인트 사진 변경
 	@RequestMapping(value="/changeImage.do", method=RequestMethod.POST)
