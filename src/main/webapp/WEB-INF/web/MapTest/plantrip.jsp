@@ -30,9 +30,9 @@ html, body {
 	padding: 0px !important;
 }
 /* 판넬헤더 클릭 드래그 */
-/* #draggablePanelList .panel-heading {
+#draggablePanelList .panel-heading {
 	cursor: move;
-} */
+}
 /* 숫자 원 */
 .circleNum {
 	width: 20px;
@@ -261,8 +261,8 @@ html, body {
 <script
 	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD6x6lwLmHlSpovbF0nM-fPIPpjfv4D9IM&libraries=places"></script>
 <!-- 판넬 드래그 API -->
-<!-- <script type='text/javascript'
-	src="https://code.jquery.com/ui/1.10.1/jquery-ui.js"></script> -->
+<script type='text/javascript'
+	src="https://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
 <script type="text/javascript"
 	src="${pageContext.request.contextPath }/resources/assets/widgets/interactions-ui/resizable.js"></script>
 <script type="text/javascript"
@@ -298,6 +298,41 @@ $(document).ready(function(){
 	
 	$('#naviDiv').hide();
 	
+	
+	var sortIndex;	// 선택된 div index의 listLonLat 좌표값
+	      var sortNum;		// 타임라인 div index 번호
+		      /* 타임라인 판넬 드래그 */
+			jQuery(function($) {
+				var panelList = $('#draggablePanelList');
+				panelList.sortable({
+	        		start: function(event, ui) { 
+	        		      sortIndex = listLonLat[ui.item.index()];
+	        		      sortNum = ui.item.index();
+	       			},
+	       			stop: function(event, ui) { 
+	       			    if(sortNum != ui.item.index()){
+				      		   for(var i=0; i<listLonLat.length; i++){
+									if(listLonLat[i].lat == sortIndex.lat && listLonLat[i].lng == sortIndex.lng){
+									    sortNum = i;
+									}
+								}
+		      		     	    listLonLat.splice(sortNum, 1);
+		      		     	    sortNum = ui.item.index();
+		      		     		listLonLat.splice(sortNum,0,sortIndex);
+		      		     		change = false;
+		      		     	initialize();
+	       			    }
+	     			},
+					handle : '.panel-heading',
+					update : function() {
+						$('.panel', panelList).each(function(index, elem) {
+							var $listItem = $(elem), newIndex = $listItem.index();
+							//판넬 리스트 번호 관련
+							// Persist the new indices.
+						});
+					}
+				});
+			});
 });
 
 	var advlistLonLat = new Array();
@@ -340,6 +375,11 @@ $(document).ready(function(){
 	
 	
 	function initialize() {
+	    
+	    if(listLonLat.length != 0){
+			center = listLonLat[listLonLat.length-1];
+	    }
+	    
 		// 좌표 등록
 		tmap = new Tmap.Map({div:'map_div', width:'0px', height:'0px'});
 		map = new google.maps.Map(document.getElementById('map'), {
@@ -381,12 +421,20 @@ $(document).ready(function(){
 				for(var i=0; i<mymapLonLatList.length; i++){  
 				    
 					var strokeColor = "";
-					if(i%3 == 0){
-					    strokeColor = '#0000FF';
-					} else if(i%3 == 1){
-					    strokeColor = '#00FF00';
-					} else if(i%3 == 2){
-					    strokeColor = '#FF0000';
+					if(i%7 == 0){
+					    strokeColor = '#FC0004';
+					} else if(i%7 == 1){
+					    strokeColor = '#D16500';
+					} else if(i%7 == 2){
+					    strokeColor = '#E8DC00';
+					} else if(i%7 == 2){
+					    strokeColor = '#2CCC00';
+					} else if(i%7 == 2){
+					    strokeColor = '#0071B7';
+					} else if(i%7 == 2){
+					    strokeColor = '#1900BC';
+					} else if(i%7 == 2){
+					    strokeColor = '#9900C4';
 					}
 					
 					var mymapCoordinates = mymapLonLatList[i].mymapLonLat;
@@ -789,7 +837,7 @@ $(document).ready(function(){
 				$('#addinfo').append('<div class="InfoAppend"><span style="float:right;margin-right:25px;width:30px;text-align:center;position:absolute;"><img src="${pageContext.request.contextPath }/resources/images/mobile/navi_tap01.png"/></span><span style="margin-left:30px">'+routeLayer.features[i].attributes.description+'</span></div>');
 			}
 		}
-		
+		lineLocation = [];
 		for(var i=0; i<routeLayer.features.length; i++){
 			if(routeLayer.features[i].geometry.components == null){
 				var xy = tmapToGoogle(new Tmap.LonLat(routeLayer.features[i].geometry.x, routeLayer.features[i].geometry.y));
@@ -1425,12 +1473,20 @@ function resetFindRoad(){
 		    
 		    for(var i=0; i<mymapLonLatList.length; i++){    
 				var strokeColor = "";
-				if(i%3 == 0){
-				    strokeColor = '#0000FF';
-				} else if(i%3 == 1){
-				    strokeColor = '#00FF00';
-				} else if(i%3 == 2){
-				    strokeColor = '#FF0000';
+				if(i%7 == 0){
+				    strokeColor = '#FC0004';
+				} else if(i%7 == 1){
+				    strokeColor = '#D16500';
+				} else if(i%7 == 2){
+				    strokeColor = '#E8DC00';
+				} else if(i%7 == 2){
+				    strokeColor = '#2CCC00';
+				} else if(i%7 == 2){
+				    strokeColor = '#0071B7';
+				} else if(i%7 == 2){
+				    strokeColor = '#1900BC';
+				} else if(i%7 == 2){
+				    strokeColor = '#9900C4';
 				}
 				var mymapCoordinates = mymapLonLatList[i].mymapLonLat;
 				var mymapPath = new google.maps.Polyline({

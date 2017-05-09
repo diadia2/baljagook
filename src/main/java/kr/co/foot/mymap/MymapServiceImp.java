@@ -364,4 +364,12 @@ public class MymapServiceImp implements MymapService {
 		return regmapList;
 	}
 
+	@Override
+	public List<MymapVO> selectMymapList3(String searchtext, int pageSize) {
+
+		List<MymapVO> mymapList = mymapDAO.selectMymapList3(searchtext, pageSize);
+		
+		return mymapList;
+	}
+
 }

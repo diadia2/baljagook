@@ -288,18 +288,7 @@
 			});
 		}
 	}
-<<<<<<< HEAD
 
-	function myPlace(checkpointidx) {
-		window
-				.open(
-						"${ pageContext.request.contextPath }/member/favoritePlace.do?checkpointidx="
-								+ checkpointidx,
-						"FavoritePlace",
-						"top=10, width=800, height=700, toolbar=no, menubar=no, scrollbars=no, resizable=yes");
-		
-
-=======
 		
 /*-----------------------비밀번호 형식 체크------------------------*/
 	function validatePassword(inputPassword) {
@@ -373,7 +362,6 @@
 			});
 		};
 	};		
->>>>>>> a27a7161b44146761ebfaf9114de228a121d5076
 /*------------------프로필사진 변경-------------------------*/
 var timer;
 function checkFile(imageName) {

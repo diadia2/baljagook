@@ -73,6 +73,24 @@
        	order by c.viewcnt DESC  
        	LIMIT #{start}, #{pageSize}
    </select>
+   <select id="selectMymapList3" parameterType="hashmap" resultType="kr.co.foot.mymap.MymapVO">
+       select d.idx as idx, d.title as title, d.content as content, d.userid as userid, d.regdate as regdate, count(e.regmapidx) type from
+       (select a.idx as idx, a.title as title, a.content as content, a.userid as userid, a.regdate as regdate, a.type as type, c.idx as regmapidx from t_myMap a 
+       inner join t_hashtag b on a.idx = b.mymapidx
+       inner join t_regmap c on a.idx = c.mymapidx 
+       where 
+       	(a.title like CONCAT('%',#{searchtext},'%') 
+       	or 
+       	a.content like CONCAT('%',#{searchtext},'%')
+       	or 
+        b.name = CONCAT('%',#{searchtext},'%'))
+       	and c.blind=0 
+        and a.type=1 group by a.idx) d
+        left join t_like e on d.regmapidx = e.regmapidx
+        group by d.regmapidx
+        order by count(e.regmapidx) DESC
+        LIMIT #{start}, #{pageSize}
+   </select>
    
    <select id="getHashtagList" parameterType="int" resultType="kr.co.foot.hashtag.HashtagVO">
        select idx, name, mymapidx from t_hashtag where mymapidx = #{idx}

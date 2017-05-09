@@ -290,6 +290,8 @@ public class MymapController {
 	   		mymapList = mymapService.selectMymapList(searchtext, 8 * moreCount); // 최근순
 		} else if(flag == 2){
 			mymapList = mymapService.selectMymapList2(searchtext, 8 * moreCount); //조회수순
+		} else if(flag == 3){
+			mymapList = mymapService.selectMymapList3(searchtext, 8 * moreCount); // 추천순
 		}
 	   	
 		System.out.println("mymapList.size() :" + mymapList.size());

@@ -132,6 +132,7 @@ function checkSession() {
 	}
 </script>
 <script type="text/javascript">
+/* searchList 불러오기 */
 	function hover2(flag){ 
 	    $('#portfolio-grid').children().remove(); 
 		var json = {
@@ -192,6 +193,7 @@ function checkSession() {
 							<ul class="float-none">
 								<li onclick="javascript:hover2(1)" class="filter" data-filter="hover_1">최근순</li>
 								<li onclick="javascript:hover2(2)" class="filter" data-filter="hover_2">조회수순</li>
+								<li onclick="javascript:hover2(3)" class="filter" data-filter="hover_3">추천순</li>
 							</ul>
 						</div>
 					</div>
