@@ -773,7 +773,23 @@ $(document).ready(function () {
 						<script type="text/javascript"
 							src="${pageContext.request.contextPath }/resources/assets/widgets/timepicker/timepicker.js"></script>
 				
-						<!------------------------- 여행 등록 Modal ----------------------------->	
+				<script type="text/javascript">
+				/* modal datepicker connect */
+				$(function() {
+			
+						$("#myModal").on("show.bs.modal", function() {
+						$("#daterangepicker-time2").daterangepicker({
+							timePicker : !0,
+							timePickerIncrement : 30,
+							format : "YYYY-MM-DD h:mm A"
+						});
+
+						
+					});
+				});
+				
+				</script>
+							<!------------------------- 여행 등록 Modal ----------------------------->	
 						<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
 							aria-labelledby="myModalLabel" aria-hidden="true">
 							<div class="modal-dialog">
@@ -789,17 +805,17 @@ $(document).ready(function () {
 										</div>
 									
 										<div class="modal-body">
-											<input name="title" type="text" class="form-control"
+											<input name="title" id="title" type="text" class="form-control"
 												placeholder="제목"> <br /> <input name="content"
 												type="text" class="form-control" placeholder="설명"><br />
 												<div class="form-group">
 													<div class="input-prepend input-group">
 														<span class="add-on input-group-addon"><i
 															class="glyph-icon icon-calendar"></i></span> <input type="text"
-															name="daterangepickertime" id="daterangepicker-time"
-															class="form-control" value=""> <input type="text"
+															name="daterangepickertime" id="daterangepicker-time2"
+															class="form-control" value=""> <input type="hidden"
 															id="start" name="start" value="${start}"> <input
-															type="text" id="end" name="end" value="${end }">
+															type="hidden" id="end" name="end" value="${end }">
 														<script type="text/javascript">
 															/* daterangepicker-time에서 apply 누르면 실행(daterangepicker.js에 추가함) */
 															function changeDP() {
