@@ -87,7 +87,7 @@
 						<c:if test="${cmt.lvl>0 }">style="margin-left: ${cmt.lvl*30 }px;"</c:if>><div
 							class="chat-author">
 							<img width="36"
-								src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png" alt="">
+								src="${ pageContext.request.contextPath }/resources/photo/profileImage/${ cmt.imageName }" alt="">
 						</div>
 						<div class="popover right no-shadow">
 							<div class="arrow"></div>

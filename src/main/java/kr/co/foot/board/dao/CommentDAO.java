@@ -10,4 +10,5 @@ public interface CommentDAO {
 	public void modify(CommentVO commentVo);
 	public void delete(int idx);
 	public void reply(CommentVO commentVo);
+	public String getProfileImage(String userid);
 }

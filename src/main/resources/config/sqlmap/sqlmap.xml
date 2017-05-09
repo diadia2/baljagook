@@ -48,5 +48,9 @@
 		UNIX_TIMESTAMP(), #{userid}, #{regmapidx}, #{grp},
 		#{seq}+1, #{lvl}+1)
 	</insert>
+	
+	<select id="getProfileImage" parameterType="String" resultType="String">
+	    select photo from t_member where userid=#{userid}
+	</select>
 
 </mapper>

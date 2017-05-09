@@ -26,7 +26,14 @@ public class CommentController {
 	public ModelAndView mapCommentList(@RequestParam int regmapidx) {
 		List<CommentVO> cmtList = service.list(regmapidx);
 		ModelAndView mav = new ModelAndView("/comment/mapCommentList");
+		
+		for(int i=0; i<cmtList.size(); i++) {
+			String imageName = service.getProfileImage(cmtList.get(i).getUserid());
+			cmtList.get(i).setImageName(imageName);
+		}
+		
 		mav.addObject("mapCommentList", cmtList);
+		
 		return mav;
 	}
 

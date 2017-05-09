@@ -46,4 +46,10 @@ public class CommentDAOIMP implements CommentDAO{
 		sqlSessionTemplate.update("kr.co.foot.board.CommentDAO.modifyParentCmt", commentParent);
 		sqlSessionTemplate.insert("kr.co.foot.board.CommentDAO.replyComment", commentVo);
 	}
+	
+	@Override
+	public String getProfileImage(String userid) {
+		String imageName = sqlSessionTemplate.selectOne("kr.co.foot.board.CommentDAO.getProfileImage", userid);
+		return imageName;
+	}
 }
