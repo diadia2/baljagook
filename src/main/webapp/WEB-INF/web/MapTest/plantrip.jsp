@@ -378,13 +378,23 @@ $(document).ready(function(){
 			addLineMarker();
 			
 			if(mymapLonLatList.length != 0){
-				for(var i=0; i<mymapLonLatList.length; i++){    
+				for(var i=0; i<mymapLonLatList.length; i++){  
+				    
+					var strokeColor = "";
+					if(i%3 == 0){
+					    strokeColor = '#0000FF';
+					} else if(i%3 == 1){
+					    strokeColor = '#00FF00';
+					} else if(i%3 == 2){
+					    strokeColor = '#FF0000';
+					}
+					
 					var mymapCoordinates = mymapLonLatList[i].mymapLonLat;
 						var mymapPath = new google.maps.Polyline({
 							path : mymapCoordinates,
 							geodesic : true,
-							strokeColor : '#0000FF',
-							strokeOpacity : 1.0,
+							strokeColor : strokeColor,
+							strokeOpacity : 0.7,
 							strokeWeight : 3
 						});
 						mymapPath.setMap(null);
@@ -421,6 +431,7 @@ $(document).ready(function(){
 				  }  
 			}); 
 			
+			checkPointMarker = [];
 			 /////////////////////		    
 			if(mymapCheckpointList.length != 0){
 				for(var i=0; i<mymapCheckpointList.length; i++){
@@ -430,20 +441,28 @@ $(document).ready(function(){
 						checkPointMarker.push(new google.maps.Marker({
 					   	 	position: mymapCheckpointList[i].mymapCheckpoint[j],
 					   	 	map: map,
-							icon : "http://maps.google.com/mapfiles/kml/paddle/blu-circle-lv.png"
+							icon : "http://maps.google.com/mapfiles/kml/paddle/red-circle-lv.png"
 						}));
-
-					  var listener7 = google.maps.event.addListener(checkPointMarker, 'click', function(){
-						  if(infowindow != null){
+						
+					  var listener6 = google.maps.event.addListener(map, 'click', function(){
+						if(infowindow != null){
 							  infowindow.close();
 						  }
-						  infowindow = new google.maps.InfoWindow({
-							    content: gogogo
-							  }); 
-						  infowindow.open(map, this);
-					  });  
+					  });
 				    }
 				}
+				
+			    for(i=0; i<checkPointMarker.length; i++){
+				  var listener7 = google.maps.event.addListener(checkPointMarker[i], 'click', function(){
+					  if(infowindow != null){
+						  infowindow.close();
+					  }
+					  infowindow = new google.maps.InfoWindow({
+					     		content: '<input type="button" value="마커추가" onclick="javascript:addExtraMarker('+this.position.lat().toFixed(7).toString()+','+this.position.lng().toFixed(7).toString()+')">'
+						  }); 
+					  infowindow.open(map, this);
+				  });
+			    }
 			}
 			 
 			var input = document.getElementById('pac-input');
@@ -1006,6 +1025,7 @@ $(document).ready(function(){
 		zoom = map.getZoom();
 		center = new google.maps.LatLng(lat, lng);
 		map.setCenter(center);
+		console.log(listLonLat);
 		initialize();
 	}
 	
@@ -1384,8 +1404,6 @@ function resetFindRoad(){
 					}
 					mymapLonLatList.push({mymapLonLat:mymapLonLat, mymapidx:data[0][0].mymapidx});
 					mymapCheckpointList.push({mymapCheckpoint:mymapCheckpoint, mymapidx:data[0][0].mymapidx});
-					console.log(mymapLonLatList);
-					console.log(mymapCheckpointList);
 					drawFavoriteMap();
 		        }
 			});	
@@ -1406,16 +1424,24 @@ function resetFindRoad(){
 		    openADV();
 		    
 		    for(var i=0; i<mymapLonLatList.length; i++){    
+				var strokeColor = "";
+				if(i%3 == 0){
+				    strokeColor = '#0000FF';
+				} else if(i%3 == 1){
+				    strokeColor = '#00FF00';
+				} else if(i%3 == 2){
+				    strokeColor = '#FF0000';
+				}
 				var mymapCoordinates = mymapLonLatList[i].mymapLonLat;
-					var mymapPath = new google.maps.Polyline({
-						path : mymapCoordinates,
-						geodesic : true,
-						strokeColor : '#0000FF',
-						strokeOpacity : 1.0,
-						strokeWeight : 3
-					});
-					mymapPath.setMap(null);
-					mymapPath.setMap(map);
+				var mymapPath = new google.maps.Polyline({
+					path : mymapCoordinates,
+					geodesic : true,
+					strokeColor : strokeColor,
+					strokeOpacity : 0.7,
+					strokeWeight : 3
+				});
+				mymapPath.setMap(null);
+				mymapPath.setMap(map);
 			}
 		    console.log(mymapCheckpointList.length);
 			
@@ -1423,7 +1449,6 @@ function resetFindRoad(){
 		    /////////////////////
 			for(var i=0; i<mymapCheckpointList.length; i++){
 			    for(var j=0; j<mymapCheckpointList[i].mymapCheckpoint.length; j++){
-					console.log(mymapCheckpointList[i].mymapCheckpoint[j]);
 						
 					checkPointMarker.push(new google.maps.Marker({
 				   	 	position: mymapCheckpointList[i].mymapCheckpoint[j],
@@ -1437,19 +1462,21 @@ function resetFindRoad(){
 					  }
 				  });
 				  
-				  console.log(checkPointMarker);
-				  var listener7 = google.maps.event.addListener(checkPointMarker[j], 'click', function(){
-					  if(infowindow != null){
-						  infowindow.close();
-					  }
-					  infowindow = new google.maps.InfoWindow({
-						    content: 'gogogo'
-						  }); 
-					  infowindow.open(map, this);
-				  });  
+				  console.log(checkPointMarker);  
 			    }
 			}
 		    
+		    for(i=0; i<checkPointMarker.length; i++){
+			  var listener7 = google.maps.event.addListener(checkPointMarker[i], 'click', function(){
+				  if(infowindow != null){
+					  infowindow.close();
+				  }
+				  infowindow = new google.maps.InfoWindow({
+				     	 content: '<input type="button" value="마커추가" onclick="javascript:addExtraMarker('+this.position.lat().toFixed(7).toString()+','+this.position.lng().toFixed(7).toString()+')">'
+					  }); 
+				  infowindow.open(map, this);
+			  });
+		    }
 		    
 		    
 		    if(listLonLat.length != 0){
@@ -1532,8 +1559,6 @@ function resetFindRoad(){
 	var flightNum = 0;
 	var flightloadLonLat = [];
 	function loadStart(){
-	    console.log(lineLocation);
-	    console.log(lineLocationWalk);
 	    
 	    if(lineLocation.length != 0){
 		    
@@ -1830,6 +1855,7 @@ function resetFindRoad(){
 																					style="text-decoration: none;"><span
 																						style="font-size: 13pt;">지도 : ${ mymapList.title }</span></a></li>
 																			</c:forEach>
+																			----------------------------------------
 																			<c:forEach var="favoriteplaceList"
 																				items="${ favoriteplaceList }">
 																				<li><a

@@ -455,6 +455,7 @@
 								+ checkpointidx,
 						"FavoritePlace",
 						"top=10, width=800, height=700, toolbar=no, menubar=no, scrollbars=no, resizable=yes");
+		
 
 /*------------------프로필사진 변경-------------------------*/
 var timer;
