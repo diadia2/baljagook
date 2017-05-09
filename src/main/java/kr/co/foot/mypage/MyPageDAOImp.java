@@ -80,12 +80,12 @@ public class MyPageDAOImp implements MyPageDAO {
 		sst.delete("kr.co.foot.mypage.MyPageDAO.deleteReport", mymapidx);
 	}
 	
-	public void deleteFavoriteMap(int idx) {
-		sst.delete("kr.co.foot.mypage.MyPageDAO.deleteFavoriteMap", idx);
+	public void deleteFavoriteMap(FavMapDTO favMapDTO) {
+		sst.delete("kr.co.foot.mypage.MyPageDAO.deleteFavoriteMap", favMapDTO);
 	}
 	
-	public void deleteFavoritePlace(int idx) {
-		sst.delete("kr.co.foot.mypage.MyPageDAO.deleteFavoritePlace", idx);
+	public void deleteFavoritePlace(FavPlaceDTO favPlaceDTO) {
+		sst.delete("kr.co.foot.mypage.MyPageDAO.deleteFavoritePlace", favPlaceDTO);
 	}
 	
 }

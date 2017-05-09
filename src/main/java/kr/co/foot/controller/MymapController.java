@@ -696,7 +696,7 @@ public class MymapController {
 
 /*==================서버에 올리기 전에 사진을 저장할 filePath 꼭 바꿔주기!===============*/	
 	private static final String filePath = "/Users/mac/Documents/workspace/baljagook/src/main/webapp/resources/photo/";		
-//	private static final String filePath = "/var/lib/tomcat8/webapps/baljagook/resources/photo/profileImage/";	
+//	private static final String filePath = "/var/lib/tomcat8/webapps/baljagook/resources/photo/";	
 	
 	//모바일에서 등록한 체크포인트 사진 변경
 	@RequestMapping(value="/changeImage.do", method=RequestMethod.POST)
