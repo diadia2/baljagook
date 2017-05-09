@@ -9,6 +9,7 @@ public class CommentVO {
 	private int grp;
 	private int seq;
 	private int lvl;
+	private String imageName;
 
 	public int getIdx() {
 		return idx;
@@ -72,6 +73,15 @@ public class CommentVO {
 
 	public void setLvl(int lvl) {
 		this.lvl = lvl;
+	}
+	
+
+	public String getImageName() {
+		return imageName;
+	}
+
+	public void setImageName(String imageName) {
+		this.imageName = imageName;
 	}
 
 	@Override

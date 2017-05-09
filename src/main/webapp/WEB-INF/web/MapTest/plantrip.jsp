@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@include file="/WEB-INF/share2.jsp" %>
+<%@include file="/WEB-INF/share2.jsp"%>
 <!DOCTYPE html>
 <html lang="kr">
 <head>
@@ -75,6 +75,7 @@ html, body {
 #header-nav-left {
 	margin-right: 5%;
 }
+
 #searchvar {
 	display: none;
 }
@@ -1610,11 +1611,25 @@ function resetFindRoad(){
 	}
 		
 	</script>
-	
-	<script type="text/javascript">
+
+<script type="text/javascript">
 	var flightNum = 0;
 	var flightloadLonLat = [];
+<<<<<<< HEAD
 	function loadStart(){
+=======
+	
+	function loadStart() {
+		timerId = setInterval(function() {
+			loadStart2();
+		}, 100); // 1000ms(1초)가 경과하면 이 함수가 실행합니다.
+	}
+	
+	
+	function loadStart2(){
+	    console.log(lineLocation);
+	    console.log(lineLocationWalk);
+>>>>>>> 9f5cd570b680acde1ba07eaca9d7041130206c97
 	    
 	    if(lineLocation.length != 0){
 		    
@@ -1689,12 +1704,11 @@ function resetFindRoad(){
 							strokeOpacity : 1.0,
 							strokeWeight : 4
 						});
-						
 						initflightPath1.setMap(map);
 					}
-
 		    } else{
-				lineEnd(); 
+				//lineEnd(); 
+				clearInterval(timerId);
 		    }
 	    } 
 /* 	    
@@ -1937,7 +1951,8 @@ function resetFindRoad(){
 								style="float: right; position: absolute; right: 0; height: 80%"
 								id="naviDiv">
 								<div class="panel" style="height: 100%">
-									<div class="panel-body" style="height: 100%; margin-top: 10%; top: 0;">
+									<div class="panel-body"
+										style="height: 100%; margin-top: 10%; top: 0;">
 										<div class="coupon_tab_btn">
 											<span class="tab_btn tab01 active" id="tab1"> <a
 												href="javascript:findLoadAgain()"> <img
@@ -1960,14 +1975,15 @@ function resetFindRoad(){
 											</div>
 											<div id="playIcon"
 												style="background: white; left: 0; bottom: 0; position: absolute; margin-left: 30%; height: 10%;">
-												<i class="glyph-icon tooltip-button demo-icon icon-chevron-left"
+												<i
+													class="glyph-icon tooltip-button demo-icon icon-chevron-left"
 													title="뒤로가기" onclick="javacscript:loadBack()"></i> <i
 													class="glyph-icon tooltip-button demo-icon icon-repeat"
 													title="취소" onclick="javascript:lineEnd()"></i> <i
 													class="glyph-icon tooltip-button demo-icon icon-chevron-right"
 													title="앞으로가기" onclick="javascript:loadStart()"></i>
 											</div>
-										</div> 
+										</div>
 									</div>
 								</div>
 							</div>

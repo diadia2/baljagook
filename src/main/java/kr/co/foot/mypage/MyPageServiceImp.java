@@ -61,11 +61,11 @@ public class MyPageServiceImp implements MyPageService {
 		dao.deleteMyPlanCoordinates(mymapidx);
 	}
 	
-	public void deleteFavoriteMap(int idx) {
-		dao.deleteFavoriteMap(idx);
+	public void deleteFavoriteMap(FavMapDTO favMapDTO) {
+		dao.deleteFavoriteMap(favMapDTO);
 	}
 	
-	public void deleteFavoritePlace(int idx) {
-		dao.deleteFavoritePlace(idx);
+	public void deleteFavoritePlace(FavPlaceDTO favPlaceDTO) {
+		dao.deleteFavoritePlace(favPlaceDTO);
 	}
 }

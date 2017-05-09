@@ -14,6 +14,6 @@ public interface MyPageService {
 	public String getEmailByUserid(String userid);
 	public void deleteMyMap(int mymapidx);
 	public void deleteMyPlan(int mymapidx);
-	public void deleteFavoriteMap(int idx);
-	public void deleteFavoritePlace(int idx);
+	public void deleteFavoriteMap(FavMapDTO favMapDTO);
+	public void deleteFavoritePlace(FavPlaceDTO favPlaceDTO);
 }

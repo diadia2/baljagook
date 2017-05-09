@@ -285,7 +285,7 @@ $(document).ready(function(){
 	form.title.value = "${title}";
 	form.content.value = "${content}";
 	form.hashtag.value = "${hashtag}";
-	form.daterangepickertime.value = "${start}"+"~"+"${end}";
+	/* form.daterangepickertime.value = "${start}"+"~"+"${end}"; */
 	
 	$(".coupon_tab_btn span").click(function() {
 		$(".coupon_tab_btn span").each(function() {
@@ -567,9 +567,9 @@ $(document).ready(function(){
 									  infowindow.close();
 								  }								  
 								  infowindow = new google.maps.InfoWindow({									  
-									    content: '<img id="cpImage" src="${ pageContext.request.contextPath }/resources/photo/'+this.filename+'" width="200px" height="200px"/><br/>'+
+									    content: '<img id="cpImage'+this.checkpointList+'" src="${ pageContext.request.contextPath }/resources/photo/'+this.filename+'" width="200px" height="200px"/><br/>'+
 											    (this.num+1)+". "+this.title+'<br/>'+this.content+
-											    '<br/><div style="height:0px; overflow:hidden"><input id="chooseImage" type="file"/></div><input type="button" class="btn btn-border btn-alt border-red btn-link font-red" value="사진수정" onclick="uploadImage('+this.checkpointList+');"><br/><input type="button" class="btn btn-danger" value="출발설정" onClick="startCheck('+
+											    '<br/><div style="height:0px; overflow:hidden"></div><input type="button" class="btn btn-border btn-alt border-red btn-link font-red" value="사진수정" onclick="uploadImage('+this.checkpointList+');"><br/><input type="button" class="btn btn-danger" value="출발설정" onClick="startCheck('+
 									    		this.position.lat().toString()+", "+this.position.lng().toString()+')"/><input type="button" class="btn btn-danger" value="도착설정" onClick="endCheck('+
 									    		this.position.lat().toString()+", "+this.position.lng().toString()+')"/><input type="button" class="btn btn-yellow" value="위치삭제" onClick="removeSpot('+
 									    		(this.position.lat()).toFixed(7).toString()+", "+(this.position.lng()).toFixed(7).toString()+","+this.timestamp+')"/>'
@@ -653,9 +653,75 @@ $(document).ready(function(){
 			    
 			}
 		}
-	
+		
 	//모바일에서 등록한 사진 수정
 	var targetCPidx;
+	function uploadImage(checkpointidx) {
+		$('#editCPImage').modal('show');
+		targetCPidx = checkpointidx;
+		
+	}
+	var timer;	
+	function checkFile(imageName) {
+ 		$.ajax({
+  			url : '${ pageContext.request.contextPath }/resources/photo/'+imageName,
+			type: 'HEAD',
+			error : function() {
+				timer = setTimeout(function() {
+							checkFile(imageName);
+						}, 3000);
+			},
+			success : function(data) {
+				clearTimeout(timer);
+				$("#cpImage"+targetCPidx).prop("src", "${ pageContext.request.contextPath }/resources/photo/"+data);
+				mapAgain();
+				$('#editCPImage').modal('hide');
+			}
+		});
+	}
+	
+	Dropzone.autoDiscover = false;
+	
+	$(document).ready(function() {
+		$('div#dropThat').dropzone({
+			url : '${ pageContext.request.contextPath }/changeImage.do',
+			maxFilesize : 3,
+			maxFiles : 1,
+			autoProcessQueue : false,
+			init: function() {
+				
+				this.on("maxfilesexceeded", function(file) {
+					this.removeAllFiles();
+					this.addFile(file);
+				});
+				
+				this.on("sending", function(file, xhr, formData) {
+					var checkpointidx = targetCPidx;
+					console.log(targetCPidx);
+					var jsonData = JSON.stringify(checkpointidx);
+					console.log('checkpointidx :' + checkpointidx);
+					console.log('jsonData : ' +jsonData);					
+					formData.append("jsonData", jsonData);
+				});
+				
+				var myDropzone = this;
+				
+				$('#finishUpload').click(function() {
+					myDropzone.processQueue();
+				});
+				
+				this.on("success", function(file, imageName) {
+					checkFile(imageName);
+				});
+			}
+		});
+	});
+
+	
+	
+	
+	
+/* 	var targetCPidx;
 	function uploadImage(checkpointidx) {
 		$("#chooseImage").click();
 		targetCPidx = checkpointidx;
@@ -687,7 +753,7 @@ $(document).ready(function(){
 			
 		});
 		
-	})	
+	}) */	
 	
 	// 광고 마커 숨기기
 	function hideAdv(lat, lng){
@@ -1378,6 +1444,24 @@ function resetFindRoad(){
 </script>
 </head>
 <body>
+<!------------------ 체크포인트 이미지 수정 Modal -------------------->	
+	<div class="modal fade" id="editCPImage" tabindex="-1" role="dialog" aria-labelledby="editCPImageModal" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="myModalLabel">프로필 사진 등록</h4>					
+				</div>
+				<div class="modal-body">
+					<div id="dropThat" class="dropzone"></div>
+				</div>
+				<div class="modal-footer">
+					<button id="finishUpload" class="btn btn-success">올리기</button>
+				</div>
+			</div>
+		</div>
+	</div>
 	<div id="sb-site">
 		<div id="page-wrapper">
 			<div id="page-content-wrapper">

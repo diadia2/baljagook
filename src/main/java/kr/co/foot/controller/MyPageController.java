@@ -25,6 +25,8 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import kr.co.foot.member.MemberVO;
 import kr.co.foot.mypage.DeactivateDTO;
+import kr.co.foot.mypage.FavMapDTO;
+import kr.co.foot.mypage.FavPlaceDTO;
 import kr.co.foot.mypage.MyPageService;
 import kr.co.foot.mypage.PasswordDTO;
 import kr.co.foot.reglogin.LoginDTO;
@@ -164,14 +166,26 @@ public class MyPageController {
 	
 	@RequestMapping(value="/deleteFavoriteMap.do", method=RequestMethod.POST)
 	@ResponseBody
-	public void deleteFavoriteMap(@RequestParam("idx") int idx) {
-		service.deleteFavoriteMap(idx);
+	public void deleteFavoriteMap(@RequestParam("mymapidx") int mymapidx, HttpSession session) {
+		String userid = (String) session.getAttribute("user");
+		
+		FavMapDTO favMapDTO = new FavMapDTO();
+		favMapDTO.setUserid(userid);
+		favMapDTO.setMymapidx(mymapidx);
+		
+		service.deleteFavoriteMap(favMapDTO);
 	}
 	
 	@RequestMapping(value="/deleteFavoritePlace.do", method=RequestMethod.POST)
 	@ResponseBody
-	public void deleteFavoritePlace(@RequestParam("idx") int idx) {
-		service.deleteFavoritePlace(idx);
+	public void deleteFavoritePlace(@RequestParam("checkpointidx") int checkpointidx, HttpSession session) {
+		String userid = (String) session.getAttribute("user");
+		
+		FavPlaceDTO favPlaceDTO = new FavPlaceDTO();
+		favPlaceDTO.setUserid(userid);
+		favPlaceDTO.setCheckpointidx(checkpointidx);
+
+		service.deleteFavoritePlace(favPlaceDTO);
 	}	
 	
 }

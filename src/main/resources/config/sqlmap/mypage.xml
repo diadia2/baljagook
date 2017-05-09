@@ -54,10 +54,19 @@
    <delete id="deleteMyPlanCoordinates" parameterType="int">
        delete from t_regcoordinates where mymapidx = #{mymapidx}
    </delete>
-   <delete id="deleteFavoriteMap" parameterType="int">
-       delete from t_favoritemap where idx = #{idx}
+   <delete id="deleteFavoriteMap" parameterType="kr.co.foot.mypage.FavMapDTO">
+       delete a.* from t_favoritemap a
+       inner join t_regmap b on a.regmapidx=b.idx
+       where 
+       b.mymapidx=#{mymapidx}
+       and
+       a.userid=#{userid}
    </delete>
-   <delete id="deleteFavoritePlace" parameterType="int">
-       delete from t_favoriteplace where idx = #{idx}
+   <delete id="deleteFavoritePlace" parameterType="kr.co.foot.mypage.FavPlaceDTO">
+       delete from t_favoriteplace
+       where 
+       userid=#{userid}
+       and
+       checkpointidx=#{checkpointidx}
    </delete>
 </mapper>
