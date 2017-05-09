@@ -555,7 +555,7 @@ $(document).ready(function(){
 			        address = results[0].formatted_address;
 			        address = address.substring(5, address.length);
 					$('#draggablePanelList').append('<div id="addTimeInfo" class="panel panel-info" onClick="goZoomIn('+listLonLat[count].lat+", "+listLonLat[count].lng
-						+')"><div class="panel-heading"><input class="form-control" type="text" style="font-size:8pt;" value="'+address
+						+')"><div class="panel-heading"><input class="form-control addressInfo" type="text" style="font-size:8pt;" value="'+address
 						+'"/></div><div class="panel-body"><textarea class="form-control" style="overflow:hidden" placeholder="내용"/></div></div>');
 					
 /* 					$('#draggablePanelList').append('<li class="dd-item" data-id="'+n+'" onClick="goZoomIn('+checkMarker[i].position.lat()+", "+checkMarker[i].position.lng()
@@ -564,7 +564,11 @@ $(document).ready(function(){
 			}
 		})(count)
 		);
+		
 	}    
+	
+
+	
 	var checkMarker = new Array();
 	var num;
 	var infowindow;
@@ -586,7 +590,8 @@ $(document).ready(function(){
 			checkMarker.push(new google.maps.Marker({
 		    position: listLonLat[i],
 		    map: map,
-		    num :i
+		    num :i,
+		    icon : "https://chart.apis.google.com/chart?cht=it&chs=42x42&chco=FC0000%2c000000ff%2cffffff01&chl="+(i+1)+"&chx=FFFFFF,20&chf=bg,s,00000000&ext=.png"
 		
 		}));
 		  
@@ -661,6 +666,7 @@ $(document).ready(function(){
 		infowindow.close();
 	}
 	
+	var flightload = new Array();
 	// Tmap에서 자동차 길찾기 좌표 불러오기
 	function searchRoute(latlng1, latlng2) {
 		lineReset();
@@ -671,7 +677,7 @@ $(document).ready(function(){
 		});
 		
 		var lonlat1 = googleToTmap(new Tmap.LonLat(latlng1.lng, latlng1.lat));
-		var lonlat2 = googleToTmap(new Tmap.LonLat(latlng2.lng, latlng2.lat));
+		var lonlat2 = googleToTmap(new Tmap.LonLat(latlng2.lng, latlng2.lat));		
 		
 		var urlStr = "https://apis.skplanetx.com/tmap/routes?version=1&format=xml";
 		urlStr += "&startX=" + lonlat1.lon;
@@ -1156,6 +1162,7 @@ $(document).ready(function(){
 	// 대중교통 길찾기
 	function calculateAndDisplayRoute() {
 		lineReset();
+		$('#playIcon').hide();
 		directionsDisplay = new google.maps.DirectionsRenderer;
 		directionsService = new google.maps.DirectionsService;		
 		
@@ -1180,12 +1187,16 @@ $(document).ready(function(){
 	// 자가용 길찾기로 재선택 
 	function findLoadAgain(){
 		lineReset();
+		$('#playIcon').show();
 		searchRoute(startLocation, endLocation);
 	}
 	
 	// 도보 버튼 클릭시
 	function forWalk(){
 		lineReset();
+	    lineLocation = [];
+	    lineLocationWalk = [];
+	    $('#playIcon').hide();
 		searchRouteWalking(startLocation, endLocation);
 	}
 	
@@ -1516,6 +1527,175 @@ function resetFindRoad(){
 	}
 		
 	</script>
+	
+	<script type="text/javascript">
+	var flightNum = 0;
+	var flightloadLonLat = [];
+	function loadStart(){
+	    console.log(lineLocation);
+	    console.log(lineLocationWalk);
+	    
+	    if(lineLocation.length != 0){
+		    
+		    if(flightNum == 0){
+			    tmap = new Tmap.Map({div:'map_div', width:'0px', height:'0px'});
+				map = new google.maps.Map(document.getElementById('map'), {
+					zoom : zoom,
+					mapTypeId: google.maps.MapTypeId.ROADMAP,
+					center : center,
+					mapTypeControl: false
+				});
+				zoom = 14;
+				map.setZoom(zoom);
+		    }
+		    
+			if(listLonLat.length != 0){
+				var initflightPlanCoordinates = listLonLat;
+					var initflightPath = new google.maps.Polyline({
+						path : initflightPlanCoordinates,
+						geodesic : true,
+						strokeColor : '#000000',
+						strokeOpacity : 1.0,
+						strokeWeight : 2
+					});
+					initflightPath.setMap(null);
+					
+					if(checkMarker.length != 0){	// 라인 마커가 있으면
+						for (var i = 0; i < checkMarker.length; i++) {
+							checkMarker[i].setMap(null);
+						  }
+						checkMarker = [];
+						startLocation = null;
+						endLocation = null;
+					}
+					
+					initflightPath.setMap(map);
+				}	
+				addLineMarker();
+				
+		    
+		    if(flightNum < lineLocation.length-1){
+			
+				var flightlonlatlength = 1;
+				
+				if(lineLocation.length > 50 && lineLocation.length <= 100){			    
+					flightlonlatlength = lineLocation.length / 10;
+				} else if(lineLocation.length > 100 && lineLocation.length <= 200){
+				    flightlonlatlength = lineLocation.length / 20;
+				} else if(lineLocation.length > 200 && lineLocation.length <= 500){
+				    flightlonlatlength = lineLocation.length / 30;
+				} else if(lineLocation.length > 500){
+				    flightlonlatlength = lineLocation.length / 40;
+				} 
+			
+			
+				for(i=0; i<flightlonlatlength; i++){
+				    flightloadLonLat.push(lineLocation[++flightNum]);
+				    if(flightloadLonLat.length == lineLocation.length-1){
+						break;
+				    }
+				}
+			    
+			    var center = new google.maps.LatLng(lineLocation[flightNum]);
+				map.setCenter(lineLocation[flightNum]);
+			    
+				if(lineLocation.length != 0){
+					var initflightPlanCoordinates1 = flightloadLonLat;
+						var initflightPath1 = new google.maps.Polyline({
+							path : initflightPlanCoordinates1,
+							geodesic : true,
+							strokeColor : '#FF0000',
+							strokeOpacity : 1.0,
+							strokeWeight : 4
+						});
+						
+						initflightPath1.setMap(map);
+					}
+
+		    } else{
+				lineEnd(); 
+		    }
+	    } 
+/* 	    
+	    else if(lineLocationWalk.length != 0){
+		
+			if(flightNum == 0){
+			    tmap = new Tmap.Map({div:'map_div', width:'0px', height:'0px'});
+				map = new google.maps.Map(document.getElementById('map'), {
+					zoom : zoom,
+					mapTypeId: google.maps.MapTypeId.ROADMAP,
+					center : center,
+					mapTypeControl: false
+				});
+				zoom = 15;
+				map.setZoom(zoom);
+		    }
+		    
+		    if(flightNum < lineLocationWalk.length-1){
+			
+				var flightlonlatlength = 1;
+				
+				if(lineLocationWalk.length > 50 && lineLocationWalk.length <= 100){			    
+					flightlonlatlength = lineLocationWalk.length / 10;
+				} else if(lineLocationWalk.length > 100 && lineLocationWalk.length <= 200){
+				    flightlonlatlength = lineLocationWalk.length / 20;
+				} else if(lineLocationWalk.length > 200 && lineLocationWalk.length <= 500){
+				    flightlonlatlength = lineLocationWalk.length / 30;
+				} else if(lineLocationWalk.length > 500){
+				    flightlonlatlength = lineLocationWalk.length / 40;
+				} 
+			
+			
+				for(i=0; i<flightlonlatlength; i++){
+				    flightloadLonLat.push(lineLocationWalk[++flightNum]);
+				    if(flightloadLonLat.length == lineLocationWalk.length){
+						break;
+				    }
+				}
+			    
+			    var center = new google.maps.LatLng(lineLocationWalk[flightNum]);
+				map.setCenter(lineLocation[flightNum]);
+			    
+				if(lineLocationWalk.length != 0){
+					var initflightPlanCoordinates1 = flightloadLonLat;
+						var initflightPath1 = new google.maps.Polyline({
+							path : initflightPlanCoordinates1,
+							geodesic : true,
+							strokeColor : '#FF0000',
+							strokeOpacity : 1.0,
+							strokeWeight : 4
+						});
+						
+						initflightPath1.setMap(map);
+					}
+				
+		    } else{
+				lineEnd();
+		    }
+	    } */
+	}
+	
+	function lineEnd(){
+	    alert("길찾기가 끝났습니다.");
+	    flightNum=0;
+	    flightloadLonLat = [];
+	    lineLocation = [];
+	    lineLocationWalk = [];
+	    zoom = 13;
+	    map.setZoom(zoom);
+	    lineReset();
+	    closeSearch();
+	    divFlag = 0;
+	    $('#naviDiv').hide();
+	    change = false;
+	    initialize();
+	}
+	
+	function loadBack(){
+	    
+	}
+	
+	</script>
 </head>
 <body>
 	<div id="sb-site">
@@ -1675,7 +1855,7 @@ function resetFindRoad(){
 								style="float: right; position: absolute; right: 0; height: 80%"
 								id="naviDiv">
 								<div class="panel" style="height: 100%">
-									<div class="panel-body" style="height: 100%">
+									<div class="panel-body" style="height: 100%; margin-top: 10%; top: 0;">
 										<div class="coupon_tab_btn">
 											<span class="tab_btn tab01 active" id="tab1"> <a
 												href="javascript:findLoadAgain()"> <img
@@ -1693,10 +1873,19 @@ function resetFindRoad(){
 										</div>
 										<div class="example-box-wrapper" style="height: 90%;">
 											<div
-												style="width: 100%; overflow: hidden; overflow-y: auto; height: 100%;">
+												style="width: 100%; overflow: hidden; overflow-y: auto; height: 90%;">
 												<ul class="foot_depth01 clearfix" id="addinfo"></ul>
 											</div>
-										</div>
+											<div id="playIcon"
+												style="background: white; left: 0; bottom: 0; position: absolute; margin-left: 30%; height: 10%;">
+												<i class="glyph-icon tooltip-button demo-icon icon-chevron-left"
+													title="뒤로가기" onclick="javacscript:loadBack()"></i> <i
+													class="glyph-icon tooltip-button demo-icon icon-repeat"
+													title="취소" onclick="javascript:lineEnd()"></i> <i
+													class="glyph-icon tooltip-button demo-icon icon-chevron-right"
+													title="앞으로가기" onclick="javascript:loadStart()"></i>
+											</div>
+										</div> 
 									</div>
 								</div>
 							</div>

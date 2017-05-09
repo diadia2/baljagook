@@ -456,6 +456,10 @@ public class MymapController {
       model.addAttribute("checkpointVO", checkpointVO);
       model.addAttribute("photoList", photoList);
        
+      for(RegcoordinatesVO vo : regcoordinatesList){
+    	  System.out.println(vo);
+      }
+      
       for(CheckpointVO vo : checkpointVO){
     	  System.out.println(vo);
       }
