@@ -42,6 +42,12 @@
        inner join t_regmap b on a.regmapidx = b.idx
        where b.mymapidx = #{mymapidx}
    </delete>
+   <delete id="deleteReport" parameterType="int">
+       delete a.* from t_report a
+       inner join t_regmap b on a.regmapidx = b.idx
+       inner join t_myMap c on c.idx = b.mymapidx
+       where c.idx = #{mymapidx}
+   </delete>
    <delete id="deleteMyPlan" parameterType="int">
        delete from t_myMap where idx = #{mymapidx}
    </delete>

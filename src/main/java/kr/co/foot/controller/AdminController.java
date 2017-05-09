@@ -265,7 +265,6 @@ public class AdminController {
 	   
 	   for(int i=0; i < regmapidxList.size(); i++) {
 		   MymapVO reportedMymap = mymapService.selectMymapByRegmapIdx(regmapidxList.get(i));
-		   
 		   reportedMapDTOList.get(i).setTitle(reportedMymap.getTitle());
 		   reportedMapDTOList.get(i).setContent(reportedMymap.getContent());
 		   reportedMapDTOList.get(i).setUserid(reportedMymap.getUserid());
