@@ -276,7 +276,7 @@ html, body {
 					  $('.timelineinfo').eq(this.num).css({'background-color':'yellow'});
 					  infowindow = new google.maps.InfoWindow({
 						    content: (this.num+1)+". "+this.title+'<br/>'+this.content+
-						    '<br/><input type="button" "btn btn-danger" value="출발설정" onClick="startCheck('+
+						    '<br/><input type="button" class="btn btn-danger" value="출발설정" onClick="startCheck('+
 						    		this.position.lat().toString()+", "+this.position.lng().toString()+')"/><input type="button" class="btn btn-danger" value="도착설정" onClick="endCheck('+
 						    		this.position.lat().toString()+", "+this.position.lng().toString()+')"/><input type="button" class="btn btn-yellow" value="즐겨찾기등록" onClick="getFavoritePlace('+this.idx+')"/>'
 						  }); 
