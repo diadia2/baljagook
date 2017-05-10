@@ -468,47 +468,26 @@ html, body {
 		tmap.addLayer(routeLayerWalk);
 	}
 	 
-	var loadpointmarker;
-	function loadpointspot(lat,lng){
-	    
-	    if(loadpointmarker != null){
-			loadpointmarker.setMap(null);
-	    }
-	    
-	    var center = new google.maps.LatLng(lat, lng);
-	    map.setCenter(center);
-	    map.setZoom(16);
-	    loadpointmarker = new google.maps.Marker({
-	          map: map,
-	          animation: google.maps.Animation.DROP,
-	          position: center
-	        });
-	    loadpointmarker.setAnimation(google.maps.Animation.BOUNCE);
-	}
-	
-	//자동차 길찾기 좌표 포맷
+	// 자동차 길찾기 좌표 포맷
 	function getLoad(e){
 		$('#addinfo').children().remove();
 		for(var i=0; i<routeLayer.features.length; i++){
-		    var xy = tmapToGoogle(new Tmap.LonLat(routeLayer.features[i].geometry.x, routeLayer.features[i].geometry.y));
-			var x = xy.lat;
-			var y = xy.lon; 
 			if(routeLayer.features[i].attributes.turnType == "200"){
-	/*출발*/		$('#addinfo').append('<div class="InfoAppend"><mark style="background:yellow">'+((routeLayer.features[i].attributes.totalDistance)/1000).toFixed(1)+'km. 약 '+((routeLayer.features[i].attributes.totalTime)/60).toFixed(0)+'분</mark></div>');
-				$('#addinfo').append('<div class="InfoAppend" onclick="javascript:loadpointspot('+Number(x.toFixed(7).toString())+','+Number(y.toFixed(7).toString())+')"><div style="float:right;margin-right:25px;width:22px;text-align:center;position:absolute;"><img src="http://openmap2.tmap.co.kr/start.png" /></div><div style="margin-left:35px"> '+routeLayer.features[i].attributes.description+'</div></div>');
-	/*도착*/		} else if(routeLayer.features[i].attributes.turnType == "201"){
-				$('#addinfo').append('<div class="InfoAppend" onclick="javascript:loadpointspot('+Number(x.toFixed(7).toString())+','+Number(y.toFixed(7).toString())+')"><div style="float:right;margin-right:25px;width:22px;text-align:center;position:absolute;"><img src="http://openmap2.tmap.co.kr/arrival.png"/></div><div style="margin-left:35px"> '+routeLayer.features[i].attributes.description+'</div></div>');				
-	/*좌회전*/	} else if(routeLayer.features[i].attributes.turnType == "12" || routeLayer.features[i].attributes.turnType == "16" || routeLayer.features[i].attributes.turnType == "17"){
-				$('#addinfo').append('<div class="InfoAppend" onclick="javascript:loadpointspot('+Number(x.toFixed(7).toString())+','+Number(y.toFixed(7).toString())+')"><div style="float:right;margin-right:25px;width:30px;text-align:center;position:absolute;"><img src="${ pageContext.request.contextPath }/resources/images/left1.png"/></div><div style="margin-left:35px">'+routeLayer.features[i].attributes.description+'</div></div>');				
-	/*우회전*/	} else if(routeLayer.features[i].attributes.turnType == "13" || routeLayer.features[i].attributes.turnType == "18" || routeLayer.features[i].attributes.turnType == "19"){
-				$('#addinfo').append('<div class="InfoAppend" onclick="javascript:loadpointspot('+Number(x.toFixed(7).toString())+','+Number(y.toFixed(7).toString())+')"><div style="float:right;margin-right:25px;width:30px;text-align:center;position:absolute;"><img src="${ pageContext.request.contextPath }/resources/images/right1.png"/></div><div style="margin-left:35px">'+routeLayer.features[i].attributes.description+'</div></div>');				
-	/*유턴*/		} else if(routeLayer.features[i].attributes.turnType == "14"){
-				$('#addinfo').append('<div class="InfoAppend" onclick="javascript:loadpointspot('+Number(x.toFixed(7).toString())+','+Number(y.toFixed(7).toString())+')"><div style="float:right;margin-right:25px;width:30px;text-align:center;position:absolute;"><img src="${ pageContext.request.contextPath }/resources/images/uturn1.png"/></div><div style="margin-left:35px">'+routeLayer.features[i].attributes.description+'</div></div>');				
-	/*직진*/		} else if(routeLayer.features[i].attributes.turnType == "11" || routeLayer.features[i].attributes.turnType == "51"){
-				$('#addinfo').append('<div class="InfoAppend" onclick="javascript:loadpointspot('+Number(x.toFixed(7).toString())+','+Number(y.toFixed(7).toString())+')"><div style="float:right;margin-right:25px;width:30px;text-align:center;position:absolute;"><img src="${ pageContext.request.contextPath }/resources/images/go1.png"/></div><div style="margin-left:35px">'+routeLayer.features[i].attributes.description+'</div></div>');				
-	/*그외*/		} /* else {
-				$('#addinfo').append('<div class="InfoAppend"><div style="float:right;margin-right:25px;width:30px;text-align:center;position:absolute;"><img src="${pageContext.request.contextPath }/resources/images/tap1.png"/></div><div style="margin-left:35px">'+routeLayer.features[i].attributes.description+'</div></div>');
-			} */
+/*출발*/		    $('#addinfo').append('<div class="InfoAppend">'+((routeLayer.features[i].attributes.totalDistance)/1000).toFixed(1)+'km. 약 '+((routeLayer.features[i].attributes.totalTime)/60).toFixed(0)+'분</div>');
+				$('#addinfo').append('<div class="InfoAppend"><img src="http://openmap2.tmap.co.kr/start.png" /> '+routeLayer.features[i].attributes.description+'<br/></div>');
+/*도착*/		} else if(routeLayer.features[i].attributes.turnType == "201"){
+				$('#addinfo').append('<div class="InfoAppend"><img src="http://openmap2.tmap.co.kr/arrival.png"/> '+routeLayer.features[i].attributes.description+'<br/></div>');				
+/*좌회전*/	} else if(routeLayer.features[i].attributes.turnType == "12" || routeLayer.features[i].attributes.turnType == "16" || routeLayer.features[i].attributes.turnType == "17"){
+				$('#addinfo').append('<div class="InfoAppend"><img src="http://openmap2.tmap.co.kr/point.png"/>'+routeLayer.features[i].attributes.description+'<img src="${ pageContext.request.contextPath }/resources/images/left.PNG" /><br/></div>');				
+/*우회전*/	} else if(routeLayer.features[i].attributes.turnType == "13" || routeLayer.features[i].attributes.turnType == "18" || routeLayer.features[i].attributes.turnType == "19"){
+				$('#addinfo').append('<div class="InfoAppend"><img src="http://openmap2.tmap.co.kr/point.png"/>'+routeLayer.features[i].attributes.description+'<img src="${ pageContext.request.contextPath }/resources/images/right.PNG" /><br/></div>');				
+/*유턴*/		} else if(routeLayer.features[i].attributes.turnType == "14"){
+				$('#addinfo').append('<div class="InfoAppend" style="border:"1px solid"; float:left; height:60px; text-decoration: underline;"><img src="http://openmap2.tmap.co.kr/point.png"/>'+routeLayer.features[i].attributes.description+'<img src="${ pageContext.request.contextPath }/resources/images/uturn.PNG"/><br/></div>');				
+/*직진*/		} else if(routeLayer.features[i].attributes.turnType == "11" || routeLayer.features[i].attributes.turnType == "51"){
+				$('#addinfo').append('<div class="InfoAppend"><img src="http://openmap2.tmap.co.kr/point.png"/>'+routeLayer.features[i].attributes.description+'<img src="${ pageContext.request.contextPath }/resources/images/go.PNG"/<br/></div>');				
+/*그외*/		} else {
+				$('#addinfo').append('<div class="InfoAppend"><img src="http://openmap2.tmap.co.kr/point.png"/>'+routeLayer.features[i].attributes.description+'<br/></div>');
+			}
 		}
 		
 		for(var i=0; i<routeLayer.features.length; i++){
@@ -534,21 +513,21 @@ html, body {
 		$('#addinfo').children().remove();
 		for(var i=0; i<routeLayerWalk.features.length; i++){
 			if(routeLayerWalk.features[i].attributes.turnType == "200"){
-	/*출발*/		$('#addinfo').append('<div class="InfoAppend"><mark style="background:yellow">'+((routeLayerWalk.features[i].attributes.totalDistance)/1000).toFixed(1)+'km. 약 '+((routeLayerWalk.features[i].attributes.totalTime)/60).toFixed(0)+'분</mark></div>');
-				$('#addinfo').append('<div class="InfoAppend" onclick="javascript:loadpointspot('+Number(x.toFixed(7).toString())+','+Number(y.toFixed(7).toString())+')"><div style="float:right;margin-right:25px;width:22px;text-align:center;position:absolute;"><img src="http://openmap2.tmap.co.kr/start.png" /></div><div style="margin-left:35px"> '+routeLayerWalk.features[i].attributes.description+'</div></div>');
-	/*도착*/		} else if(routeLayerWalk.features[i].attributes.turnType == "201"){
-				$('#addinfo').append('<div class="InfoAppend" onclick="javascript:loadpointspot('+Number(x.toFixed(7).toString())+','+Number(y.toFixed(7).toString())+')"><div style="float:right;margin-right:25px;width:22px;text-align:center;position:absolute;"><img src="http://openmap2.tmap.co.kr/arrival.png"/></div><div style="margin-left:35px"> '+routeLayerWalk.features[i].attributes.description+'</div></div>');				
-	/*좌회전*/	} else if(routeLayerWalk.features[i].attributes.turnType == "12" || routeLayerWalk.features[i].attributes.turnType == "16" || routeLayerWalk.features[i].attributes.turnType == "17"){
-				$('#addinfo').append('<div class="InfoAppend" onclick="javascript:loadpointspot('+Number(x.toFixed(7).toString())+','+Number(y.toFixed(7).toString())+')"><div style="float:right;margin-right:25px;width:30px;text-align:center;position:absolute;"><img src="${ pageContext.request.contextPath }/resources/images/left1.png" /></div><div style="margin-left:35px">'+routeLayerWalk.features[i].attributes.description+'</div></div>');				
-	/*우회전*/	} else if(routeLayerWalk.features[i].attributes.turnType == "13" || routeLayerWalk.features[i].attributes.turnType == "18" || routeLayerWalk.features[i].attributes.turnType == "19"){
-				$('#addinfo').append('<div class="InfoAppend" onclick="javascript:loadpointspot('+Number(x.toFixed(7).toString())+','+Number(y.toFixed(7).toString())+')"><div style="float:right;margin-right:25px;width:30px;text-align:center;position:absolute;"><img src="${ pageContext.request.contextPath }/resources/images/right1.png" /></div><div style="margin-left:35px">'+routeLayerWalk.features[i].attributes.description+'</div></div>');				
-	/*유턴*/		} else if(routeLayerWalk.features[i].attributes.turnType == "14"){
-				$('#addinfo').append('<div class="InfoAppend" onclick="javascript:loadpointspot('+Number(x.toFixed(7).toString())+','+Number(y.toFixed(7).toString())+')"><div style="float:right;margin-right:25px;width:30px;text-align:center;position:absolute;"><img src="${ pageContext.request.contextPath }/resources/images/uturn1.png"/></div><div style="margin-left:35px">'+routeLayerWalk.features[i].attributes.description+'</div></div>');				
-	/*직진*/		} else if(routeLayerWalk.features[i].attributes.turnType == "11"){
-				$('#addinfo').append('<div class="InfoAppend" onclick="javascript:loadpointspot('+Number(x.toFixed(7).toString())+','+Number(y.toFixed(7).toString())+')"><div style="float:right;margin-right:25px;width:30px;text-align:center;position:absolute;"><img src="${ pageContext.request.contextPath }/resources/images/go1.png"/></div><div style="margin-left:35px">'+routeLayerWalk.features[i].attributes.description+'</div></div>');				
-	/*그외*/		}/*  else {
-				$('#addinfo').append('<div class="InfoAppend"><div style="float:right;margin-right:25px;width:30px;text-align:center;position:absolute;"><img src="${pageContext.request.contextPath }/resources/images/tap3.png"/></div><div style="margin-left:35px">'+routeLayerWalk.features[i].attributes.description+'</div></div>');
-			} */
+/*출발*/		    $('#addinfo').append('<div class="InfoAppend">'+((routeLayerWalk.features[i].attributes.totalDistance)/1000).toFixed(1)+'km. 약 '+((routeLayerWalk.features[i].attributes.totalTime)/60).toFixed(0)+'분</div>');
+				$('#addinfo').append('<div class="InfoAppend"><img src="http://openmap2.tmap.co.kr/start.png" /> '+routeLayerWalk.features[i].attributes.description+'<br/></div>');
+/*도착*/		} else if(routeLayerWalk.features[i].attributes.turnType == "201"){
+				$('#addinfo').append('<div class="InfoAppend"><img src="http://openmap2.tmap.co.kr/arrival.png"/> '+routeLayerWalk.features[i].attributes.description+'<br/></div>');				
+/*좌회전*/	} else if(routeLayerWalk.features[i].attributes.turnType == "12" || routeLayerWalk.features[i].attributes.turnType == "16" || routeLayerWalk.features[i].attributes.turnType == "17"){
+				$('#addinfo').append('<div class="InfoAppend"><img src="http://openmap2.tmap.co.kr/point.png"/>'+routeLayerWalk.features[i].attributes.description+'<img src="${ pageContext.request.contextPath }/resources/images/left.PNG" /><br/></div>');				
+/*우회전*/	} else if(routeLayerWalk.features[i].attributes.turnType == "13" || routeLayerWalk.features[i].attributes.turnType == "18" || routeLayerWalk.features[i].attributes.turnType == "19"){
+				$('#addinfo').append('<div class="InfoAppend"><img src="http://openmap2.tmap.co.kr/point.png"/>'+routeLayerWalk.features[i].attributes.description+'<img src="${ pageContext.request.contextPath }/resources/images/right.PNG" /><br/></div>');				
+/*유턴*/		} else if(routeLayerWalk.features[i].attributes.turnType == "14"){
+				$('#addinfo').append('<div class="InfoAppend" style="border:"1px solid"; float:left; height:60px; text-decoration: underline;"><img src="http://openmap2.tmap.co.kr/point.png"/>'+routeLayerWalk.features[i].attributes.description+'<img src="${ pageContext.request.contextPath }/resources/images/uturn.PNG"/><br/></div>');				
+/*직진*/		} else if(routeLayerWalk.features[i].attributes.turnType == "11"){
+				$('#addinfo').append('<div class="InfoAppend"><img src="http://openmap2.tmap.co.kr/point.png"/>'+routeLayerWalk.features[i].attributes.description+'<img src="${ pageContext.request.contextPath }/resources/images/go.PNG"/<br/></div>');				
+/*그외*/		} else {
+				$('#addinfo').append('<div class="InfoAppend"><img src="http://openmap2.tmap.co.kr/point.png"/>'+routeLayerWalk.features[i].attributes.description+'<br/></div>');
+			}
 		}
 		for(var i=0; i<routeLayerWalk.features.length; i++){
 			if(routeLayerWalk.features[i].geometry.components == null){
@@ -1065,11 +1044,11 @@ var flightMarkers = new Array();
 					data : json,
 					success : callback
 				});
-				$("#content").val("");
 			});
 		});
 		function callback(data) {
 			$("#cmt").html(data);
+			$("#cmtText").val("")
 		}
 
 </script>
@@ -1103,24 +1082,57 @@ var flightMarkers = new Array();
 										<strong>#${ hashtagList.name } </strong>
 									</c:forEach>
 								</p>
-								<c:if test="${ sdate != '-' }">
-									<p>${ sdate }~${ edate }</p>
-								</c:if>
-								<button class="btn btn-default" onclick="javascript:getFavoriteMap()" title="즐겨찾기 추가">
+								<p>${ sdate }~${ edate }</p>
+
+								<button class="btn btn-default"
+									onclick="javascript:getFavoriteMap()">
 									<i class="glyph-icon icon-star"></i>
 								</button>
-								<button class="btn btn-default" onclick="javascript:showReportForm();" title="신고하기">
+								<button class="btn btn-default" data-toggle="modal"
+									data-target="#SueModal" data-backdrop="static"
+									data-keyboard="false">
 									<i class="glyph-icon icon-exclamation-circle"></i>
 								</button>
+
+								<form id="reportMapForm"
+									action="${ pageContext.request.contextPath }/report.do"
+									method="POST">
+									<div class="modal fade" id="SueModal" tabindex="-1"
+										role="dialog" aria-labelledby="SueModalLabel"
+										aria-hidden="true">
+										<div class="modal-dialog">
+											<div class="modal-content">
+												<div class="modal-header">
+													<button type="button" class="close" data-dismiss="modal"
+														aria-hidden="true">&times;</button>
+													<h4 class="modal-title text-center">신고하기</h4>
+												</div>
+												<div class="modal-body">
+													<input type="hidden" name="reportedMapIdx"
+														value="${ mymapVO.idx }"> <input type="hidden"
+														name="reportedMapOwner" value="${ mymapVO.userid }">
+													<textarea id="reportReason" class="form-control title-text"
+														cols="10" rows="5" name="reportReason"
+														placeholder="신고 이유를 작성해주세요"></textarea>
+												</div>
+												<div class="modal-footer">
+													<button type="submit" class="btn btn-primary">신고하기</button>
+													<button type="button" class="btn btn-default"
+														data-dismiss="modal">Close</button>
+												</div>
+											</div>
+										</div>
+									</div>
+								</form>
+
 							</div>
 							<div class="example-box-wrapper" style="height: 85%">
 								<div class="content-box tabs" style="height: 100%">
 									<h3 class="content-box-header bg-default">
 										<ul>
-											<li><a href="#tabs-example-2" title="Tab 1">Time Line</a></li>
-											<c:if test="${ sdate != '-' }">
-												<li><a href="#tabs-example-1" title="Tab 2">Comment</a></li>
-											</c:if>
+											<li><a href="#tabs-example-2" title="Tab 1">Time
+													Line</a></li>
+											<li><a href="#tabs-example-1" title="Tab 2">Comment</a></li>
 										</ul>
 									</h3>
 									<div id="tabs-example-2" style="height: 100%">
