@@ -290,6 +290,8 @@ public class MymapController {
 	   		mymapList = mymapService.selectMymapList(searchtext, 8 * moreCount); // 최근순
 		} else if(flag == 2){
 			mymapList = mymapService.selectMymapList2(searchtext, 8 * moreCount); //조회수순
+		} else if(flag == 3){
+			mymapList = mymapService.selectMymapList3(searchtext, 8 * moreCount); // 추천순
 		}
 	   	
 		System.out.println("mymapList.size() :" + mymapList.size());
@@ -404,13 +406,23 @@ public class MymapController {
       MymapVO mymapVO = mymapService.selectMymap(mymapidx);
       RegmapVO regmapVO = mymapService.getRegmapList(mymapidx);
       
-      String start = regmapVO.getSdate();
-      String end = regmapVO.getEdate();
-      start += "000";
-      end += "000";
-      String sdate = sd.format(new Date(Long.valueOf(start)));
-      String edate = sd.format(new Date(Long.valueOf(end)));
-      
+      if(regmapVO != null){
+	      String start = regmapVO.getSdate();
+	      String end = regmapVO.getEdate();
+	      start += "000";
+	      end += "000";
+	      String sdate = sd.format(new Date(Long.valueOf(start)));
+	      String edate = sd.format(new Date(Long.valueOf(end)));
+	      
+	      model.addAttribute("sdate", sdate);
+	      model.addAttribute("edate", edate);
+      } else{
+    	  String edate = "-";
+    	  String sdate = "-";
+    	  
+	      model.addAttribute("sdate", sdate);
+	      model.addAttribute("edate", edate);
+      }
       List<HashtagVO> hashtagList = mymapService.getHashtagList(mymapidx);
       
       List<RegcoordinatesVO> regcoordinatesList = mymapService.getRegmapsList(mymapidx);
@@ -449,8 +461,6 @@ public class MymapController {
       model.addAttribute("isFollow", isFollow);
       model.addAttribute("mymapidx", mymapidx);
       model.addAttribute("mymapVO", mymapVO);
-      model.addAttribute("sdate", sdate);
-      model.addAttribute("edate", edate);
       model.addAttribute("hashtagList", hashtagList);
       model.addAttribute("regcoordinatesList", regcoordinatesList);
       model.addAttribute("checkpointVO", checkpointVO);

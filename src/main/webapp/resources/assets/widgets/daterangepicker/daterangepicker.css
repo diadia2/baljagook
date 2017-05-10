@@ -1,5 +1,5 @@
 .daterangepicker.dropdown-menu {
-	z-index: 3000;
+	z-index: 3000!important;
 	max-width: none
 }
 
@@ -30,7 +30,6 @@
 }
 
 .daterangepicker .calendar {
-	display: none;
 	max-width: 270px
 }
 

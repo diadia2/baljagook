@@ -1,5 +1,8 @@
 package kr.co.foot.controller;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +33,13 @@ public class CommentController {
 		for(int i=0; i<cmtList.size(); i++) {
 			String imageName = service.getProfileImage(cmtList.get(i).getUserid());
 			cmtList.get(i).setImageName(imageName);
+			
+			String timestamp = cmtList.get(i).getRegdate();
+			long timestampL = Long.parseLong(timestamp) * 1000;
+			Date dateObj = new Date(timestampL);
+			DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+			String time = df.format(dateObj);
+			cmtList.get(i).setRegdate(time);
 		}
 		
 		mav.addObject("mapCommentList", cmtList);

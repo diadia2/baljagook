@@ -59,18 +59,18 @@
 								regmapidx : $("#regmapidx").val(),
 								idx : $(this).attr("value")
 							}
-							$
-									.ajax({
-										url : "${pageContext.request.contextPath }/map/commentReply.do",
-										type : "post",
-										data : json,
-										success : callback
-									});
+							$.ajax({
+								url : "${pageContext.request.contextPath }/map/commentReply.do",
+								type : "post",
+								data : json,
+								success : callback
+							});
+							$("#content").val("");
 						});
 	});
 	function callback(data) {
 		$("#cmt").html(data);
-		$("#cmtText").val("")
+//		$("#cmtText").val("");
 	}
 	function aa(id) {
 		$("#" + id).css("border-left", "1px");

@@ -22,6 +22,7 @@ import kr.co.foot.checkpoint.CheckpointVO;
 import kr.co.foot.favoritemap.FavoritemapVO;
 import kr.co.foot.favoriteplace.FavoriteplaceVO;
 import kr.co.foot.member.MemberService;
+import kr.co.foot.member.MemberVO;
 import kr.co.foot.mymap.MymapService;
 import kr.co.foot.mymap.MymapVO;
 import kr.co.foot.mypage.MyPageService;
@@ -47,6 +48,16 @@ public class MemberController {
 		
 		List<MymapVO> mymapList = memberService.selectMymapListByuserid(userid); 
 		model.addAttribute("mymapList", mymapList);
+		
+		List<MemberVO> memberList = memberService.getMemberList(userid);
+		
+		for(int i=0; i<memberList.size(); i++){
+			if(memberList.get(i).getPhoto() == null){
+				memberList.get(i).setPhoto("defaultImage.png");
+			}
+		}
+		
+		model.addAttribute("memberList", memberList);
 		
 //		return "member/mypage3";
 		return "member/mypage2";

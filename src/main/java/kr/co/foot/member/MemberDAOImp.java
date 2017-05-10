@@ -38,5 +38,13 @@ public class MemberDAOImp implements MemberDAO {
 		
 		return favoritemapList;
 	}
+
+	@Override
+	public List<MemberVO> getMemberList(String userid) {
+
+		List<MemberVO> memberList = sqlSessionTemplate.selectList("kr.co.foot.member.MemberDAO.getMemberList",userid);
+		
+		return memberList;
+	}
 	
 }

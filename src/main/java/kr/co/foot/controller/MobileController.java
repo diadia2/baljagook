@@ -144,6 +144,7 @@ public class MobileController {
 	@RequestMapping("m/main2.do")
 	public ModelAndView moMain2(Model model, HttpServletRequest request) {
 		
+		List<MymapVO> myMapList = new ArrayList<>();
 		List<MymapVO> myPlanList = new ArrayList<>();
 		List<MymapVO> favMapList = new ArrayList<>();
 		List<FavoriteplaceVO> favPlaceList = new ArrayList<>();
@@ -154,6 +155,7 @@ public class MobileController {
 //		userid = "test@test.com";
 		if(userid != null) {
 			//�닿���
+			myMapList = memberService.selectMymapListByuserid(userid);
 			myPlanList = memberService.selectMymapListByuseridForPlan(userid);
 			
 			//利�李얠���
@@ -170,6 +172,7 @@ public class MobileController {
 		model.addAttribute("id", userid);
 		model.addAttribute("myPlanList", myPlanList);
 		model.addAttribute("favMapList", favMapList);
+		model.addAttribute("myMapList", myMapList);
 		model.addAttribute("favPlaceList", favPlaceList);
 
 		ModelAndView mav = new ModelAndView("mobile/main2");

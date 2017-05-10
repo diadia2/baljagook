@@ -37,5 +37,13 @@ public class MemberServiceImp implements MemberService {
 		
 		return favoritemapList;
 	}
+
+	@Override
+	public List<MemberVO> getMemberList(String userid) {
+
+		List<MemberVO> memberList = memberDAO.getMemberList(userid);
+		
+		return memberList;
+	}
 	
 }

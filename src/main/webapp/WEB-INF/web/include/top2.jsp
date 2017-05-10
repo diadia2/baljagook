@@ -280,7 +280,7 @@
 						
 	<div id="page-header">
 		<div id="header-nav-left">
-			<label>알림 <span id="alarm"></span> </label>&nbsp;&nbsp;
+			<label><span id="alarm"></span> </label>&nbsp;&nbsp;
 			<a class="header-btn" id="logout-btn" href="lockscreen-3.html"
 				title="Lockscreen page example"><i
 				class="glyph-icon icon-linecons-lock"></i></a>

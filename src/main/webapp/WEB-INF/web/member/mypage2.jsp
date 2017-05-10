@@ -68,7 +68,7 @@ $(document).ready(function() {
 													+ data[0][i].idx
 													+ '" title=""></a><div class="thumb-overlay"></div><img src="https://maps.googleapis.com/maps/api/staticmap?path=color:0xff0000cc|weight:3|'
 													+ lonlat
-													+ '&size=400x400&key=AIzaSyDVbk7aW8HrEqozbZcMDZDBDP77uGJGduc&style=feature:water|color:0x1C91C4cc" alt=""></div><div class="thumb-pane"><h3 class="thumb-heading animated rollIn"><a href="${ pageContext.request.contextPath }/map/detail.do?mymapidx='
+													+ '&size=400x400&key=AIzaSyDVbk7aW8HrEqozbZcMDZDBDP77uGJGduc&style=feature:water|color:0x1C91C4cc" alt=""></div><div class="thumb-pane" style="max-height:96px;"><h3 class="thumb-heading animated rollIn"><a href="${ pageContext.request.contextPath }/map/detail.do?mymapidx='
 													+ data[0][i].idx
 													+ '" title="">'
 													+ data[0][i].title
@@ -79,8 +79,8 @@ $(document).ready(function() {
 						}
 					}
 			});	
-	}
-
+	} 
+ 
 	function showMyPlan() {
 		// myplan
 		$.ajax({
@@ -115,7 +115,7 @@ $(document).ready(function() {
 														+ data[0][i].idx
 														+ '" title=""></a><div class="thumb-overlay"></div><img src="https://maps.googleapis.com/maps/api/staticmap?path=color:0xff0000cc|weight:3|'
 														+ lonlat
-														+ '&size=400x400&key=AIzaSyDVbk7aW8HrEqozbZcMDZDBDP77uGJGduc&style=feature:water|color:0x1C91C4cc" alt=""></div><div class="thumb-pane"><h3 class="thumb-heading animated rollIn"><a href="${ pageContext.request.contextPath }/map/detail.do?mymapidx='
+														+ '&size=400x400&key=AIzaSyDVbk7aW8HrEqozbZcMDZDBDP77uGJGduc&style=feature:water|color:0x1C91C4cc" alt=""></div><div class="thumb-pane" style="max-height:96px;"><h3 class="thumb-heading animated rollIn"><a href="${ pageContext.request.contextPath }/map/detail.do?mymapidx='
 														+ data[0][i].idx
 														+ '" title="">'
 														+ data[0][i].title
@@ -158,7 +158,7 @@ $(document).ready(function() {
 														+ data[0][i].idx
 														+ '" title=""></a><div class="thumb-overlay"></div><img src="https://maps.googleapis.com/maps/api/staticmap?path=color:0xff0000cc|weight:3|'
 														+ lonlat
-														+ '&size=400x400&key=AIzaSyDVbk7aW8HrEqozbZcMDZDBDP77uGJGduc&style=feature:water|color:0x1C91C4cc" alt=""></div><div class="thumb-pane"><h3 class="thumb-heading animated rollIn"><a href="${ pageContext.request.contextPath }/map/detail.do?mymapidx='
+														+ '&size=400x400&key=AIzaSyDVbk7aW8HrEqozbZcMDZDBDP77uGJGduc&style=feature:water|color:0x1C91C4cc" alt=""></div><div class="thumb-pane" style="max-height:74px;"><h3 class="thumb-heading animated rollIn"><a href="${ pageContext.request.contextPath }/map/detail.do?mymapidx='
 														+ data[0][i].idx
 														+ '" title=""><small>'
 														+ data[0][i].title
@@ -190,7 +190,7 @@ $(document).ready(function() {
 														+ lonlat
 														+ '&zoom=19&size=400x400&markers=color:red|'
 														+ lonlat
-														+ '&key=AIzaSyDVbk7aW8HrEqozbZcMDZDBDP77uGJGduc" alt=""></div><div class="thumb-pane"><h3 class="thumb-heading animated rollIn"><a href="#" title=""><small>'
+														+ '&key=AIzaSyDVbk7aW8HrEqozbZcMDZDBDP77uGJGduc" alt=""></div><div class="thumb-pane" style="max-height:74px;"><h3 class="thumb-heading animated rollIn"><a href="#" title=""><small>'
 														+ data[0][i].placename
 														+ '</small></a></h3></div></div></div>');
 												lonlat = "";
@@ -297,6 +297,7 @@ $(document).ready(function() {
 			});
 		}
 	}
+
 		
 /*-----------------------비밀번호 형식 체크------------------------*/
 	function validatePassword(inputPassword) {
@@ -476,13 +477,13 @@ $(document).ready(function () {
 							"use strict";
 							$('.textarea-autosize').autosize();
 						});
-					</script>
+					</script> 
 					<div class="row mailbox-wrapper">
 						<div class="col-md-4">
 							<div class="panel-layout">
 								<div class="panel-box">
 									<div class="panel-content image-box" style="max-height: 200px;">
-										<div class="ribbon">
+										<div class="ribbon" style="z-index:99;">
 											<div class="bg-primary">Ribbon</div>
 										</div>
 										<div class="image-content font-white">
@@ -529,42 +530,14 @@ $(document).ready(function () {
 									</div>
 								</h3>
 								<div class="content-box-wrapper text-center clearfix">
-									<div class="status-badge mrg10A">
-										<img class="img-circle" width="40"
-											src="${pageContext.request.contextPath }/resources/assets/image-resources/people/testimonial1.jpg"
-											alt="">
-										<div class="small-badge bg-red"></div>
-									</div>
-									<div class="status-badge mrg10A">
-										<img class="img-circle" width="40"
-											src="${pageContext.request.contextPath }/resources/assets/image-resources/people/testimonial2.jpg"
-											alt="">
-										<div class="small-badge bg-orange"></div>
-									</div>
-									<div class="status-badge mrg10A">
-										<img class="img-circle" width="40"
-											src="${pageContext.request.contextPath }/resources/assets/image-resources/people/testimonial3.jpg"
-											alt="">
-										<div class="small-badge bg-red"></div>
-									</div>
-									<div class="status-badge mrg10A">
-										<img class="img-circle" width="40"
-											src="${pageContext.request.contextPath }/resources/assets/image-resources/people/testimonial4.jpg"
-											alt="">
-										<div class="small-badge bg-green"></div>
-									</div>
-									<div class="status-badge mrg10A">
-										<img class="img-circle" width="40"
-											src="${pageContext.request.contextPath }/resources/assets/image-resources/people/testimonial5.jpg"
-											alt="">
-										<div class="small-badge bg-orange"></div>
-									</div>
-									<div class="status-badge mrg10A">
-										<img class="img-circle" width="40"
-											src="${pageContext.request.contextPath }/resources/assets/image-resources/people/testimonial6.jpg"
-											alt="">
-										<div class="small-badge bg-red"></div>
-									</div>
+									<c:forEach var="memberList" items="${ memberList }">
+										<div class="status-badge mrg10A">
+											<img class="img-circle" width="40"
+												src="${pageContext.request.contextPath }/resources/photo/profileImage/${memberList.photo}" title="${ memberList.userid }"
+												alt=""> 
+										<!-- <div class="small-badge bg-red"></div> -->
+										</div>
+									</c:forEach>
 								</div>
 							</div>
 						</div>
@@ -684,16 +657,16 @@ $(document).ready(function () {
 																	src="${ pageContext.request.contextPath }/resources/images/click.jpg"
 																	alt="">
 															</div>
-															<div class="thumb-pane">
+															<div class="thumb-pane" style="max-height:96px;">
 																<h3 class="thumb-heading animated rollIn">
-																	<a href="#" title="">새로 등록하기</a> <small>Create
+																	<a href="#" title="">새로등록</a> <small>Create
 																		Map</small>
 																</h3>
 															</div>
 														</div>
 													</div>
 												</div>
-											</div>
+											</div> 
 										</div>
 									</div>
 									
@@ -721,7 +694,7 @@ $(document).ready(function () {
 																	src="${ pageContext.request.contextPath }/resources/images/click.jpg"
 																	alt="">
 															</div>
-															<div class="thumb-pane">
+															<div class="thumb-pane" style="max-height:96px;">
 																<h3 class="thumb-heading animated rollIn">
 																	<a
 																		href="${pageContext.request.contextPath}/map/plantrip.do"
@@ -734,7 +707,7 @@ $(document).ready(function () {
 											</div>
 										</div>
 									</div>
-									
+									 
 									
 									<div class="tab-pane fade" id="tab-example-4">
 										<div class="col-md-6">
@@ -783,7 +756,23 @@ $(document).ready(function () {
 						<script type="text/javascript"
 							src="${pageContext.request.contextPath }/resources/assets/widgets/timepicker/timepicker.js"></script>
 				
-						<!------------------------- 여행 등록 Modal ----------------------------->	
+				<script type="text/javascript">
+				/* modal datepicker connect */
+				$(function() {
+			
+						$("#myModal").on("show.bs.modal", function() {
+						$("#daterangepicker-time2").daterangepicker({
+							timePicker : !0,
+							timePickerIncrement : 30,
+							format : "YYYY-MM-DD h:mm A"
+						});
+
+						
+					});
+				});
+				
+				</script>
+							<!------------------------- 여행 등록 Modal ----------------------------->	
 						<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
 							aria-labelledby="myModalLabel" aria-hidden="true">
 							<div class="modal-dialog">
@@ -799,17 +788,17 @@ $(document).ready(function () {
 										</div>
 									
 										<div class="modal-body">
-											<input name="title" type="text" class="form-control"
+											<input name="title" id="title" type="text" class="form-control"
 												placeholder="제목"> <br /> <input name="content"
 												type="text" class="form-control" placeholder="설명"><br />
 												<div class="form-group">
 													<div class="input-prepend input-group">
 														<span class="add-on input-group-addon"><i
 															class="glyph-icon icon-calendar"></i></span> <input type="text"
-															name="daterangepickertime" id="daterangepicker-time"
-															class="form-control" value=""> <input type="text"
+															name="daterangepickertime" id="daterangepicker-time2"
+															class="form-control" value=""> <input type="hidden"
 															id="start" name="start" value="${start}"> <input
-															type="text" id="end" name="end" value="${end }">
+															type="hidden" id="end" name="end" value="${end }">
 														<script type="text/javascript">
 															/* daterangepicker-time에서 apply 누르면 실행(daterangepicker.js에 추가함) */
 															function changeDP() {
