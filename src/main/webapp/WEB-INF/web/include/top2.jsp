@@ -72,17 +72,21 @@
 	} 
 
 /*-----------------------자동로그인 Toggle 확인------------------------*/
+var changeAutoLogin = true;
 function changeToggleButton() {
 	console.log('checking autologin');
 	console.log($('#toggleButton').is(":checked"));
 	if($('#toggleButton').is(":checked")) {
 		autoLogin = "true";
-	}	
+		changeAutoLogin = false;
+	}
 }
 	$(document).ready(function() {
  		checkAutoLoginCookie();
-//		var autoLogin="false";
 		
+		if(changeAutoLogin) {
+			autoLogin = "false";
+		}
 /*------------------------로그인------------------------*/
 		$('#loginForm').on('submit', function(e) {
 			console.log('loginForm submitted');
