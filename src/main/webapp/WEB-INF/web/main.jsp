@@ -575,11 +575,11 @@ body {
 		</div>
 
 		<!-- 인기글 4개 노출 -->
-		<div class="projects-clean">
+		<div class="projects-clean">  
 			<div class="container">
 				<div class="intro">
 					<h2 class="text-center"></h2>
-				</div>
+				</div> 
 				<div class="row projects">
 						<div class="col-lg-3 col-sm-6 item">
 						<a href="${pageContext.request.contextPath }/map/detail.do?mymapidx=${ mymapList[0].idx }">

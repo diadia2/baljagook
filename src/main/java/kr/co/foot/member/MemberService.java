@@ -10,5 +10,6 @@ public interface MemberService {
 	List<MymapVO> selectMymapListByuserid(String userid);
 	List<MymapVO> selectMymapListByuseridForPlan(String userid);
 	List<FavoriteplaceVO> selectFavoriteMapByuserid(String userid);
+	List<MemberVO> getMemberList(String userid);
 
 }
