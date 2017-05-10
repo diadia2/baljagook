@@ -1084,12 +1084,47 @@ var flightMarkers = new Array();
 								</p>
 								<p>${ sdate }~${ edate }</p>
 
-								<button class="btn btn-default" onclick="javascript:getFavoriteMap()">
+								<button class="btn btn-default"
+									onclick="javascript:getFavoriteMap()">
 									<i class="glyph-icon icon-star"></i>
 								</button>
-								<button class="btn btn-default" onclick="javascript:showReportForm();">
+								<button class="btn btn-default" data-toggle="modal"
+									data-target="#SueModal" data-backdrop="static"
+									data-keyboard="false">
 									<i class="glyph-icon icon-exclamation-circle"></i>
 								</button>
+
+								<form id="reportMapForm"
+									action="${ pageContext.request.contextPath }/report.do"
+									method="POST">
+									<div class="modal fade" id="SueModal" tabindex="-1"
+										role="dialog" aria-labelledby="SueModalLabel"
+										aria-hidden="true">
+										<div class="modal-dialog">
+											<div class="modal-content">
+												<div class="modal-header">
+													<button type="button" class="close" data-dismiss="modal"
+														aria-hidden="true">&times;</button>
+													<h4 class="modal-title text-center">신고하기</h4>
+												</div>
+												<div class="modal-body">
+													<input type="hidden" name="reportedMapIdx"
+														value="${ mymapVO.idx }"> <input type="hidden"
+														name="reportedMapOwner" value="${ mymapVO.userid }">
+													<textarea id="reportReason" class="form-control title-text"
+														cols="10" rows="5" name="reportReason"
+														placeholder="신고 이유를 작성해주세요"></textarea>
+												</div>
+												<div class="modal-footer">
+													<button type="submit" class="btn btn-primary">신고하기</button>
+													<button type="button" class="btn btn-default"
+														data-dismiss="modal">Close</button>
+												</div>
+											</div>
+										</div>
+									</div>
+								</form>
+
 							</div>
 							<div class="example-box-wrapper" style="height: 85%">
 								<div class="content-box tabs" style="height: 100%">
