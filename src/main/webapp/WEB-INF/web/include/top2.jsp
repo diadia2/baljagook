@@ -71,18 +71,17 @@
 		}
 	} 
 
-	$(document).ready(function() {
-/* 		checkAutoLoginCookie(); */
-		var autoLogin="false";
-
 /*-----------------------자동로그인 Toggle 확인------------------------*/
-		$('#toggleButton').change(function() {
-			console.log('checking autologin');
-			console.log($(this).is(":checked"));
-			if($(this).is(":checked")) {
-				autoLogin = "true";
-			}
-		});
+function changeToggleButton() {
+	console.log('checking autologin');
+	console.log($('#toggleButton').is(":checked"));
+	if($('#toggleButton').is(":checked")) {
+		autoLogin = "true";
+	}	
+}
+	$(document).ready(function() {
+ 		checkAutoLoginCookie();
+//		var autoLogin="false";
 		
 /*------------------------로그인------------------------*/
 		$('#loginForm').on('submit', function(e) {
