@@ -103,7 +103,8 @@ public class MyPageController {
 		return dataMap;
 	}
 
-	private static final String filePath = "/Users/mac/Documents/workspace/baljagook/src/main/webapp/resources/photo/profileImage/";		
+//	private static final String filePath = "/Users/mac/Documents/workspace/baljagook/src/main/webapp/resources/photo/profileImage/";	
+	private static final String filePath = "C:/Users/User/workspace/baljagook/src/main/webapp/resources/photo/profileImage/";	
 //	private static final String filePath = "/var/lib/tomcat8/webapps/baljagook/resources/photo/profileImage/";	
 	
 	//��濡����ъ� 蹂�寃�

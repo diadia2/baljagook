@@ -13,4 +13,10 @@
     <select id="selectFavoriteMapByuserid" parameterType="String" resultType="kr.co.foot.favoriteplace.FavoriteplaceVO">
         select idx, userid, checkpointidx, placename from t_favoriteplace where userid = #{userid}
     </select>
+    
+    <select id="getMemberList" parameterType="String" resultType="kr.co.foot.member.MemberVO">
+        select a.email as email, a.password as password, a.userid as userid, a.status as status, a.regdate as regdate, a.photo as photo, a.code as code, a.deactivatedate as deactivatedate
+        from t_member a 
+		inner join (select idx, followid, followedid from t_follow where followid = #{userid}) b on a.userid = b.followedid
+    </select>
 </mapper>
