@@ -168,9 +168,9 @@ html, body {
 	               content: '<a href="javascript:doImgPop('+checkMarker[i].idx+')"><img src="${ pageContext.request.contextPath }/resources/photo/'+checkMarker[i].filename
 	                +'" width="200px" height="200px" title="클릭하시면 확대하여 보실 수 있습니다." style="cursor:pointer;"/></a><br/>'+
 				    (checkMarker[i].num+1)+". "+checkMarker[i].title+'<br/>'+checkMarker[i].content+
-				    '<br/><input type="button" value="출발설정" onClick="startCheck('+
-				   	 	checkMarker[i].position.lat().toString()+", "+checkMarker[i].position.lng().toString()+')"/><input type="button" value="도착설정" onClick="endCheck('+
-				    	checkMarker[i].position.lat().toString()+", "+checkMarker[i].position.lng().toString()+')"/><input type="button" value="즐겨찾기등록" onClick="getFavoritePlace('+checkMarker[i].idx+')"/>'
+				    '<br/><input type="button" class="btn btn-danger" value="출발설정" onClick="startCheck('+
+				   	 	checkMarker[i].position.lat().toString()+", "+checkMarker[i].position.lng().toString()+')"/><input type="button" class="btn btn-danger" value="도착설정" onClick="endCheck('+
+				    	checkMarker[i].position.lat().toString()+", "+checkMarker[i].position.lng().toString()+')"/><input type="button" class="btn btn-yellow" value="즐겨찾기등록" onClick="getFavoritePlace('+checkMarker[i].idx+')"/>'
 				  });
 			  infowindow.open(map, checkMarker[i]);
 		} else {
@@ -179,9 +179,9 @@ html, body {
 		  } 
 		  infowindow = new google.maps.InfoWindow({
 				    content: (checkMarker[i].num+1)+". "+checkMarker[i].title+'<br/>'+checkMarker[i].content+
-				    '<br/><input type="button" value="출발설정" onClick="startCheck('+
-					    checkMarker[i].position.lat().toString()+", "+checkMarker[i].position.lng().toString()+')"/><input type="button" value="도착설정" onClick="endCheck('+
-					    checkMarker[i].position.lat().toString()+", "+checkMarker[i].position.lng().toString()+')"/><input type="button" value="즐겨찾기등록" onClick="getFavoritePlace('+checkMarker[i].idx+')"/>'
+				    '<br/><input type="button" class="btn btn-danger" value="출발설정" onClick="startCheck('+
+					    checkMarker[i].position.lat().toString()+", "+checkMarker[i].position.lng().toString()+')"/><input type="button" class="btn btn-danger" value="도착설정" onClick="endCheck('+
+					    checkMarker[i].position.lat().toString()+", "+checkMarker[i].position.lng().toString()+')"/><input type="button" class="btn btn-yellow" value="즐겨찾기등록" onClick="getFavoritePlace('+checkMarker[i].idx+')"/>'
 			  }); 
 		  infowindow.open(map, checkMarker[i]);
 		}
@@ -245,9 +245,9 @@ html, body {
 			               content: '<a href="javascript:doImgPop('+this.idx+')"><img src="${ pageContext.request.contextPath }/resources/photo/'+this.filename
 			                +'" width="200px" height="200px" title="클릭하시면 확대하여 보실 수 있습니다." style="cursor:pointer;"/></a><br/>'+
 						    (this.num+1)+". "+this.title+'<br/>'+this.content+
-						    '<br/><input type="button" value="출발설정" onClick="startCheck('+
-						    		this.position.lat().toString()+", "+this.position.lng().toString()+')"/><input type="button" value="도착설정" onClick="endCheck('+
-						    		this.position.lat().toString()+", "+this.position.lng().toString()+')"/><input type="button" value="즐겨찾기등록" onClick="getFavoritePlace('+this.idx+')"/>'
+						    '<br/><input type="button" class="btn btn-danger" value="출발설정" onClick="startCheck('+
+						    		this.position.lat().toString()+", "+this.position.lng().toString()+')"/><input type="button" class="btn btn-danger" value="도착설정" onClick="endCheck('+
+						    		this.position.lat().toString()+", "+this.position.lng().toString()+')"/><input type="button" class="btn btn-yellow" value="즐겨찾기등록" onClick="getFavoritePlace('+this.idx+')"/>'
 						  });
 					  infowindow.open(map, this);
 				  }); 
@@ -276,9 +276,9 @@ html, body {
 					  $('.timelineinfo').eq(this.num).css({'background-color':'yellow'});
 					  infowindow = new google.maps.InfoWindow({
 						    content: (this.num+1)+". "+this.title+'<br/>'+this.content+
-						    '<br/><input type="button" value="출발설정" onClick="startCheck('+
-						    		this.position.lat().toString()+", "+this.position.lng().toString()+')"/><input type="button" value="도착설정" onClick="endCheck('+
-						    		this.position.lat().toString()+", "+this.position.lng().toString()+')"/><input type="button" value="즐겨찾기등록" onClick="getFavoritePlace('+this.idx+')"/>'
+						    '<br/><input type="button" "btn btn-danger" value="출발설정" onClick="startCheck('+
+						    		this.position.lat().toString()+", "+this.position.lng().toString()+')"/><input type="button" class="btn btn-danger" value="도착설정" onClick="endCheck('+
+						    		this.position.lat().toString()+", "+this.position.lng().toString()+')"/><input type="button" class="btn btn-yellow" value="즐겨찾기등록" onClick="getFavoritePlace('+this.idx+')"/>'
 						  }); 
 					  infowindow.open(map, this);
 				  }); 

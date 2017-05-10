@@ -7,7 +7,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <!--[if IE]><meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'><![endif]-->
 <title>gMaps</title>
-
+<style>
+.logoImage {
+	margin-left: 3%;
+	margin-top: 2%;
+}
+</style>
 <script type="text/javascript">
 	function goSearch(){
 	    location.href = "${ pageContext.request.contextPath }/map/search.do?searchtext="+$('#searchtext').val();
@@ -307,7 +312,7 @@
 			</div>
 		</div>
 		<div id="header-nav-right" class="row">
-			<div class="col-md-4"><a class="navbar-brand" href="${pageContext.request.contextPath }/main.do">발자국로고자리</a></div>
+			<div class="col-md-4"><a class="navbar-brand" href="${pageContext.request.contextPath }/main.do"><img class="logoImage" width="40" height="40" src="${ pageContext.request.contextPath }/resources/images/baljagook_logo.png"></a></div>
 			<div class="col-md-4">
 				<div class="input-group" id="searchvar">
 					<form action="${pageContext.request.contextPath }/map/search.do" method="get">

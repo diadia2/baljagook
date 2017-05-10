@@ -498,25 +498,6 @@ $(document).ready(function () {
 											src="${pageContext.request.contextPath }/resources/assets/image-resources/blurred-bg/blurred-bg-13.jpg"
 											alt="">
 									</div>
-									<div class="panel-content pad15A bg-white radius-bottom-all-4">
-										<div class="clear profile-box">
-											<ul class="nav nav-pills nav-justified">
-												<li><a href="#" class="btn btn-sm bg-google"><span
-														class="glyph-icon icon-separator"><i
-															class="glyph-icon icon-google-plus"></i></span> <span
-														class="button-content">Google+</span></a></li>
-												<li><a href="#" class="btn btn-sm bg-facebook"><span
-														class="glyph-icon icon-separator"><i
-															class="glyph-icon icon-facebook"></i></span> <span
-														class="button-content">Facebook</span></a></li>
-												<li><a href="#" class="btn btn-sm bg-twitter"><span
-														class="glyph-icon icon-separator"><i
-															class="glyph-icon icon-twitter"></i></span> <span
-														class="button-content">Twitter</span></a></li>
-											</ul>
-										</div>
-										<div class="mrg15T mrg15B"></div>
-									</div>
 								</div>
 							</div>
 							<div class="content-box mrg15B">
@@ -603,16 +584,6 @@ $(document).ready(function () {
 														Account Settings</h3>
 													<form
 														class="form-horizontal clearfix pad15L pad15R pad20B bordered-row">
-														<div class="form-group">
-															<label class="col-sm-7 control-label">Enable
-																message:</label>
-															<div class="col-sm-3">
-																<input type="checkbox" data-on-color="danger"
-																	data-size="small" name="checkbox-example-1"
-																	class="input-switch" data-on-text="On"
-																	data-off-text="Off">
-															</div>
-														</div>
 														<div class="form-group col-sm-12 text-center">
 															<div class="fileinput-preview thumbnail"
 																data-trigger="fileinput"

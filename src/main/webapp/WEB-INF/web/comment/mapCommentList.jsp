@@ -86,7 +86,7 @@
 					<li class="float-left"
 						<c:if test="${cmt.lvl>0 }">style="margin-left: ${cmt.lvl*30 }px;"</c:if>><div
 							class="chat-author">
-							<img width="36"
+							<img width="36" height="36"
 								src="${ pageContext.request.contextPath }/resources/photo/profileImage/${ cmt.imageName }" alt="">
 						</div>
 						<div class="popover right no-shadow">

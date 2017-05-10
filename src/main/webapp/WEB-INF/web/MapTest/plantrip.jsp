@@ -605,7 +605,7 @@ $(document).ready(function(){
 			      			console.log(this);
 				  			infowindow = new google.maps.InfoWindow({
 					    		content: '<img src="${ pageContext.request.contextPath }/resources/advphoto/'+this.newname+'" width="200px" height="200px"/><br/>'+
-					    			'업체명 : '+this.name+'<br/>'+'소개 : '+this.detail+'<br/><input type="button" onclick="javascript:hideAdv('+(this.position.lat()).toFixed(7).toString()+", "+(this.position.lng()).toFixed(7).toString()+')" value=" 광고 숨기기 "/>'
+					    			'업체명 : '+this.name+'<br/>'+'소개 : '+this.detail+'<br/><input type="button" class="btn btn-yellow" onclick="javascript:hideAdv('+(this.position.lat()).toFixed(7).toString()+", "+(this.position.lng()).toFixed(7).toString()+')" value=" 광고 숨기기 "/>'
 					  }); 
 				  			infowindow.open(map, this);
 			 		}); 
@@ -679,9 +679,9 @@ $(document).ready(function(){
 			 $('#draggablePanelList').children().eq(this.num).children().eq(0).children().focus()
 			  infowindow = new google.maps.InfoWindow({
 				    content: (this.num+1)+". "+(this.position.lat()).toFixed(7).toString()+", "+(this.position.lng()).toFixed(7).toString()+
-				    '<br/><input type="button" value="출발설정" onClick="startCheck('+
-				    		this.position.lat().toString()+", "+this.position.lng().toString()+')"/><input type="button" value="도착설정" onClick="endCheck('+
-				    		this.position.lat().toString()+", "+this.position.lng().toString()+')"/><input type="button" value="위치삭제" onClick="removeSpot('+
+				    '<br/><input type="button" class="btn btn-danger" value="출발설정" onClick="startCheck('+
+				    		this.position.lat().toString()+", "+this.position.lng().toString()+')"/><input type="button" class="btn btn-danger" value="도착설정" onClick="endCheck('+
+				    		this.position.lat().toString()+", "+this.position.lng().toString()+')"/><input type="button" class="btn btn-yellow" value="위치삭제" onClick="removeSpot('+
 				    		(this.position.lat()).toFixed(7).toString()+", "+(this.position.lng()).toFixed(7).toString()+')"/>'
 				  }); 
 			  infowindow.open(map, this);
