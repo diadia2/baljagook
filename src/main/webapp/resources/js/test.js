@@ -38,11 +38,6 @@
 			streetViewControl: false
 		});
 
-		var camera = document.getElementById('camera');
-		var location = document.getElementById('location');
-		map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(camera);
-		map.controls[google.maps.ControlPosition.TOP_LEFT].push(location);
-		
 		if(listLonLat.length != 0){
 			var initflightPlanCoordinates = listLonLat;
 				var initflightPath = new google.maps.Polyline({
@@ -113,11 +108,13 @@
 			}
 			 
 			var input = document.getElementById('pac-input');
+			alert("test.js");
+			alert(input);
 			var searchBox = new google.maps.places.SearchBox(input);
 			map.addListener('bounds_changed', function() {
 				searchBox.setBounds(map.getBounds());
 			});
-			
+			 
 			var listener3 = google.maps.event.addListener(map, 'click', function(){
 				if(infowindow != null){
 					  infowindow.close();
