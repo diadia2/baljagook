@@ -115,6 +115,8 @@ public class RegLoginController {
 				token = c.getValue();
 			}
 		}
+		
+		System.out.println(loginData.getAutoLogin());
 			
 		if (token != null) {
 			String email = service.getEmailByToken(token);
