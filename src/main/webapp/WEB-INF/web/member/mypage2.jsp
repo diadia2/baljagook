@@ -758,9 +758,9 @@ $(document).ready(function () {
 														<span class="add-on input-group-addon"><i
 															class="glyph-icon icon-calendar"></i></span> <input type="text"
 															name="daterangepickertime" id="daterangepicker-time2"
-															class="form-control" value=""> <input type="text"
+															class="form-control" value=""> <input type="hidden"
 															id="start" name="start" value="${start}"> <input
-															type="text" id="end" name="end" value="${end }">
+															type="hidden" id="end" name="end" value="${end }">
 														<script type="text/javascript">
 															/* daterangepicker-time에서 apply 누르면 실행(daterangepicker.js에 추가함) */
 															function changeDP() {
