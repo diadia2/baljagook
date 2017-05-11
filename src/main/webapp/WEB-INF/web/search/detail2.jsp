@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@include file="/WEB-INF/share2.jsp"%>
+
 <!DOCTYPE html>
 <html lang="kr">
 <head>
@@ -1019,9 +1020,6 @@ var flightMarkers = new Array();
 	    map.setZoom(zoom);
 	    initialize();
 	}
-	
-	
-
 	/**
 	 * mapComment
 	 */
@@ -1131,7 +1129,6 @@ var flightMarkers = new Array();
 										</div>
 									</div>
 								</form>
-
 							</div>
 							<div class="example-box-wrapper" style="height: 83%">
 								<div class="content-box tabs" style="height: 90%">
@@ -1165,10 +1162,7 @@ var flightMarkers = new Array();
 													</div>
 												</div>
 											</c:forEach>
-
 										</div>
-
-
 									</div>
 									<div id="tabs-example-1" style="height: 100%">
 										<div

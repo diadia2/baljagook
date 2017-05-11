@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
+<html style="background-color: #fafafa !important;">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
@@ -140,69 +140,80 @@
 </script>
 </head>
 <body>
-	<div>
-		<br /> <br />
-		<header id="header_1">
-			<!-- 발자국 모양 <로고> -->
-			<div>
-				<a class="navbar-brand"
-					href="${pageContext.request.contextPath }/main.do"><img
-					class="logoImage" width="40" height="40"
-					src="${ pageContext.request.contextPath }/resources/images/baljagook_logo.png">
-					&nbsp;&nbsp;<span class="mainmsg"
-					style="font-weight: bold; font-size: 15pt; color: black;">발자국</span></a>
-			</div>
-			<br /> <br />
-			<h3>시작하기</h3>
-			<br />
-		</header>
-		<section id="container" class="register">
-			<section class="register_form">
-				<form id="registerForm">
-					<fieldset>
-						<ul>
-							<li>
-								<div class="input-field col s12">
-									<!-- <input type="text" name="email" placeholder="이메일"
+	<div class="row">
+		<div class="col s12 m10 offset-m1 l6 offset-l3">
+			<div class="card-panel grey lighten-5 z-depth-1"
+				style="background-color: white !important;">
+				<div class="row valign-wrapper">
+
+					<div class="col s12">
+						<br /> <br />
+						<header id="header_1">
+							<!-- 발자국 모양 <로고> -->
+							<div>
+								<a class="navbar-brand"
+									href="${pageContext.request.contextPath }/main.do"><img
+									class="logoImage" width="40" height="40"
+									src="${ pageContext.request.contextPath }/resources/images/baljagook_logo.png">
+									&nbsp;&nbsp;<span class="mainmsg"
+									style="font-weight: bold; font-size: 15pt; color: black;">발자국</span></a>
+							</div>
+							<br /> <br />
+							<h3>시작하기</h3>
+							<br />
+						</header>
+						<section id="container" class="register">
+							<section class="register_form">
+								<form id="registerForm">
+									<fieldset>
+										<ul>
+											<li>
+												<div class="input-field col s12">
+													<!-- <input type="text" name="email" placeholder="이메일"
 										onfocus="this.placeholder=''" onblur="this.placeholder='이메일'"> -->
-									<input id="email" type="email" name="email" class="validate">
-									<label for="email">Email</label>
+													<input id="email" type="email" name="email"
+														class="validate"> <label for="email">Email</label>
 
-								</div>
-							</li>
-							<li>
-								<div class="input-field col s12">
-									<input id="userid" type="text" class="validate" name="userid"> <label
-										for="userid">User Id</label>
-								</div>
-							</li>
+												</div>
+											</li>
+											<li>
+												<div class="input-field col s12">
+													<input id="userid" type="text" class="validate"
+														name="userid"> <label for="userid">User Id</label>
+												</div>
+											</li>
 
 
-							<li>
-								<div class="input-field col s12">
-									<input id="password" type="password" name="password"
-										class="validate"> <label for="password">Password</label>
-								</div>
-							</li>
-							<li>
-								<div class="input-field col s12">
-									<input id="confirmPassword" type="password" name="confirmPassword"
-										class="validate"> <label for="password">Confirm Password</label>
-								</div>
-							</li>
+											<li>
+												<div class="input-field col s12">
+													<input id="password" type="password" name="password"
+														class="validate"> <label for="password">Password</label>
+												</div>
+											</li>
+											<li>
+												<div class="input-field col s12">
+													<input id="confirmPassword" type="password"
+														name="confirmPassword" class="validate"> <label
+														for="password">Confirm Password</label>
+												</div>
+											</li>
 
-						</ul>
-						<div class="right-align" style="margin-right: 15%">
-							<button class="btn waves-effect waves-light blue" type="submit"
-								name="action">
-								가입하기<i class="material-icons right">send</i>
-							</button>
-						</div>
-					</fieldset>
-				</form>
-			</section>
-		</section>
-		<!-- //container End -->
+										</ul>
+										<div class="center-align">
+											<button class="btn waves-effect waves-light blue"
+												type="submit" name="action">
+												가입하기<i class="material-icons right">send</i>
+											</button>
+										</div>
+									</fieldset>
+								</form>
+							</section>
+						</section>
+						<!-- //container End -->
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </body>
 </html>

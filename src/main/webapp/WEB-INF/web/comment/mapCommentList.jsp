@@ -38,9 +38,9 @@
 				.click(
 						function() {
 							var json = {
-									idx : $(this).attr("value"),
-									regmapidx :  $("#regmapidx").val()
-								}
+								idx : $(this).attr("value"),
+								regmapidx : $("#regmapidx").val()
+							}
 							$
 									.ajax({
 										url : "${pageContext.request.contextPath }/map/commentDelete.do",
@@ -49,28 +49,30 @@
 										success : callback
 									});
 						});
-		
+
 		$(".reply")
 				.click(
 						function() {
 							var json = {
 								userid : "${sessionScope.user }",
-								content : $("#content"+$(this).attr("value")).val(),
+								content : $("#content" + $(this).attr("value"))
+										.val(),
 								regmapidx : $("#regmapidx").val(),
 								idx : $(this).attr("value")
 							}
-							$.ajax({
-								url : "${pageContext.request.contextPath }/map/commentReply.do",
-								type : "post",
-								data : json,
-								success : callback
-							});
+							$
+									.ajax({
+										url : "${pageContext.request.contextPath }/map/commentReply.do",
+										type : "post",
+										data : json,
+										success : callback
+									});
 							$("#content").val("");
 						});
 	});
 	function callback(data) {
 		$("#cmt").html(data);
-//		$("#cmtText").val("");
+		//		$("#cmtText").val("");
 	}
 	function aa(id) {
 		$("#" + id).css("border-left", "1px");
@@ -87,7 +89,8 @@
 						<c:if test="${cmt.lvl>0 }">style="margin-left: ${cmt.lvl*30 }px;"</c:if>><div
 							class="chat-author">
 							<img width="36" height="36"
-								src="${ pageContext.request.contextPath }/resources/photo/profileImage/${ cmt.imageName }" alt="">
+								src="${ pageContext.request.contextPath }/resources/photo/profileImage/${ cmt.imageName }"
+								alt="">
 						</div>
 						<div class="popover right no-shadow">
 							<div class="arrow"></div>
@@ -96,11 +99,16 @@
 									<a href="#" title="Horia Simon"><c:out
 											value="${cmt.userid }" /></a>
 									<div class="float-right">
-										<button
-											class="btn btn-sm btn-danger float-right tooltip-button del"
-											data-placement="left" title="Remove comment" value="${cmt.idx }">
-											<i class="glyph-icon icon-remove"></i>
-										</button>
+
+										<c:if test="${cmt.userid==sessionScope.user }">
+											<button
+												class="btn btn-sm btn-danger float-right tooltip-button del"
+												data-placement="left" title="Remove comment"
+												value="${cmt.idx }">
+												<i class="glyph-icon icon-remove"></i>
+											</button>
+
+										</c:if>
 									</div>
 								</h3>
 								${cmt.content }
@@ -109,9 +117,9 @@
 									<c:out value="${cmt.regdate }" />
 								</div>
 								<div class="divider"></div>
-								<div class="input-group form"><input
-										type="text" placeholder="댓 글" id="content<c:out value='${cmt.idx }' />"
-										class="form-control">
+								<div class="input-group form">
+									<input type="text" placeholder="댓 글"
+										id="content<c:out value='${cmt.idx }' />" class="form-control">
 									<div class="input-group-btn">
 										<button
 											class="btn btn-sm btn-default font-bold text-transform-upr reply"
