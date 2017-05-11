@@ -345,7 +345,7 @@ public class RegLoginController {
 		final String username = "threebaljagook@gmail.com";
 		final String password = "Baljagook!";
 		
-		String server = "http://localhost:8000";
+		String server = "http://13.124.39.180:8080";
 		
 		Properties props = new Properties();
 		props.put("mail.smtp.host", "smtp.gmail.com");

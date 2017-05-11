@@ -182,19 +182,19 @@ function changeToggleButton() {
 			var inputEmail = $('#registerForm input[name=email]').val();
 			var inputUserid = $('#registerForm input[name=userid]').val();
 			var inputPw = $('#registerForm input[name=password]').val();
-			var inputConfirmPw = $('#registerForm input[name=confirmPassword]').val();
+			var inputConfirmPw = $('#registerForm input[name=confirmPassword]').val();			
 			
-			if(!(validateEmail(inputEmail))) {
-				alert('입력하신 이메일은 형식에 맞지 않습니다.');
+ 			if(!(validateEmail(inputEmail))) {
+//				alert('입력하신 이메일은 형식에 맞지 않습니다.');
 			} else {
 				if(!(validateUserid(inputUserid))) {
-					alert('아이디 형식이 맞지 않습니다(길이: 5-10, 공백/특수문자 제외)');
+//					alert('아이디 형식이 맞지 않습니다(길이: 5-10, 공백/특수문자 제외)');
 				} else {
 					if(!(validatePassword(inputPw))) {
-						alert('비밀번호 형식이 맞지 않습니다(길이: 5-15, 특수문자(!@#$%^&*만 가능), 공백 제외)');
+//						alert('비밀번호 형식이 맞지 않습니다(길이: 5-15, 특수문자(!@#$%^&*만 가능), 공백 제외)');
 					} else {
 						if(inputPw != inputConfirmPw) {
-							alert('비밀번호가 일치하지 않습니다. 다시 입력해주세요');
+//							alert('비밀번호가 일치하지 않습니다. 다시 입력해주세요');
 						} else {
 							var newMember = {
 									'email' : $('#registerForm input[name=email]').val(),

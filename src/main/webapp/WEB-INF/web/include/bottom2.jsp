@@ -60,20 +60,20 @@
 				</div>
 				<form id="loginForm">
 					<div class="modal-body" style="padding-top: 20px;">
-						<div class="input-group col-md-6"
-							style="width: 50%; padding: 0px;">
+						<div class="input-group"
+							>
 							<span class="input-group-addon addon-inside bg-black"><i
 								class="glyph-icon icon-elusive-torso"></i></span> <input type="text"
 								name="email" class="form-control" placeholder="이메일">
 						</div>
-						<div class="input-group col-md-6"
+<!-- 						<div class="input-group col-md-6"
 							style="width: 50%; padding: 0px;">
 							<select class="form-control" name="email2"><option>@naver.com</option>
 								<option>@gmail.com</option>
 								<option>@daum.net</option>
 								<option>@nate.com</option>
 								<option>직 접 입 력</option></select>
-						</div>
+						</div> -->
 						<div class="input-group">
 							<span class="input-group-addon addon-inside bg-black"><i
 								class="glyph-icon icon-lock"></i></span> <input type="password"
@@ -150,10 +150,10 @@
 							<div class="col-sm-6">
 								<input type="password" id="ps1" name="password"
 									placeholder="Password" required class="form-control"
-									data-parsley-pattern="^(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9])(?=.*[0-9]).{5,15}$"
+									data-parsley-pattern="^[a-zA-Z-0-9]{5,10}$"
 									data-parsley-minlength-message="입력값이 너무 짧습니다."
 									data-parsley-maxlength-message="입력값이 너무 깁니다."
-									data-parsley-pattern-message="영문/숫자/특수문자 조합 5~15자 조합으로 입력해주세요."
+									data-parsley-pattern-message="특수문자는 !@#$%^&*만 가능, 5~15자 조합으로 입력해주세요."
 									data-parsley-required-message="필수 입력 항목입니다.">
 							</div>
 						</div>
