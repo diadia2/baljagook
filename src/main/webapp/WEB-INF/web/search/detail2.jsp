@@ -6,6 +6,13 @@
 <html lang="kr">
 <head>
 <style>
+@media(max-width:400px){
+	#tabs-example-2{
+		height : 90% !important;
+	}
+}
+</style>
+<style>
 /* 화면 체우기 */
 html, body {
 	height: 100%;
@@ -47,7 +54,11 @@ html, body {
 	font-style: inherit !important;
 	font-weight: bold;
 }
+#tabs-example-2{
+	height : 100%;
+}
 </style>
+
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <!--[if IE]><meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'><![endif]-->
 <title>gMaps</title>
@@ -1049,6 +1060,7 @@ var flightMarkers = new Array();
 		}
 
 </script>
+
 </head>
 <body>
 	<div id="sb-site">
@@ -1137,7 +1149,7 @@ var flightMarkers = new Array();
 											<li><a href="#tabs-example-1" title="Tab 2">Comment</a></li>
 										</ul>
 									</h3>
-									<div id="tabs-example-2" style="height: 100%">
+									<div id="tabs-example-2">
 										<div
 											class="timeline-box timeline-box-left scrollable-content scrollable-xs scrollable-nice"
 											style="height: 100%">
