@@ -176,8 +176,6 @@ i.material-icons {
  		});
  		
  		var input = document.getElementById('pac-input');
-		alert("main2");
-		alert(input);
 		var searchBox = new google.maps.places.SearchBox(input);
 		map.addListener('bounds_changed', function() {
 			searchBox.setBounds(map.getBounds());
@@ -656,7 +654,6 @@ function regCheckpoint(){
 				accuracy : checkaccuracy
 		    },
 		    success: function(data) {
-				alert(data);
 				$("#lpop").hide();
 	    }
 	});  
