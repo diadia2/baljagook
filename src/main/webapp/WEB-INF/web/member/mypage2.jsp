@@ -107,7 +107,7 @@ $(document).ready(function() {
 														+ data[0][i].idx
 														+ '" title=""></a><div class="thumb-overlay"></div><img src="https://maps.googleapis.com/maps/api/staticmap?path=color:0xff0000cc|weight:3|'
 														+ lonlat
-														+ '&size=400x400&key=AIzaSyDVbk7aW8HrEqozbZcMDZDBDP77uGJGduc&style=feature:water|color:0x1C91C4cc" alt=""></div><div class="thumb-pane" style="max-height:96px;"><h3 class="thumb-heading animated rollIn"><a href="${ pageContext.request.contextPath }/map/detail.do?mymapidx='
+														+ '&size=400x400&key=AIzaSyDVbk7aW8HrEqozbZcMDZDBDP77uGJGduc&style=feature:water|color:0x1C91C4cc" alt=""></div><div class="thumb-pane" style="max-height:96px;"><h3 class="thumb-heading animated rollIn"><a href="${ pageContext.request.contextPath }/map/detail.do?flag=2&mymapidx='
 														+ data[0][i].idx
 														+ '" title="">'
 														+ data[0][i].title
@@ -660,7 +660,7 @@ $(document).ready(function () {
 															<div class="thumb-pane" style="max-height:96px;">
 																<h3 class="thumb-heading animated rollIn">
 																	<a
-																		href="${pageContext.request.contextPath}/map/plantrip.do"
+																		href="${pageContext.request.contextPath}/map/plantrip.do?"
 																		title="">새로 계획하기</a> <small>Create Plan</small>
 																</h3>
 															</div>

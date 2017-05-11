@@ -336,9 +336,7 @@ html, body {
 	    } else if(!placename){
 			return;
 	    }
-	    
-		alert(idx);
-		alert(placename);
+
 	    $.ajax({
 		    type: 'POST' , 
 		    url: '${ pageContext.request.contextPath }/map/getFavoritePlace.do',

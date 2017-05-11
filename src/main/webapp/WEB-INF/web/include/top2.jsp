@@ -315,7 +315,7 @@ function changeToggleButton() {
 			</div>
 		</div>
 		<div id="header-nav-right" class="row">
-			<div class="col-md-4"><a class="navbar-brand" href="${pageContext.request.contextPath }/main.do"><img class="logoImage" width="40" height="40" src="${ pageContext.request.contextPath }/resources/images/baljagook_logo.png"></a></div>
+			<div class="col-md-4"><a class="navbar-brand" href="${pageContext.request.contextPath }/main.do"><img class="logoImage" width="40" height="40" src="${ pageContext.request.contextPath }/resources/images/baljagook_logo.png"> &nbsp;&nbsp;<span class="mainmsg" style="font-weight: bold; font-size: 15pt;top: 24px; position: absolute;">발자국</span></a></div>
 			<div class="col-md-4">
 				<div class="input-group" id="searchvar">
 					<form action="${pageContext.request.contextPath }/map/search.do" method="get">

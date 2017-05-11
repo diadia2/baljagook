@@ -27,7 +27,6 @@
 			.ready(
 					function() {
 						var autoLogin = "false";
-
 						/*-----------------------자동로그인 Toggle 확인------------------------*/
 						$('#agree01').change(function() {
 							console.log('checking autologin');
@@ -36,7 +35,6 @@
 								autoLogin = "true";
 							}
 						});
-
 						/*------------------------로그인------------------------*/
 						$('#loginForm')
 								.on(
@@ -56,7 +54,6 @@
 											};
 											var dataJSON = JSON
 													.stringify(loginInfo);
-
 											$
 													.ajax({
 														type : 'POST',
@@ -73,50 +70,49 @@
 															}
 														})
 													});
-
 										});
-
 					});
 </script>
-
-
-
-
 </head>
 <body>
-	<div class="side_menu_bg"></div>
-	<div class="layer_bg"></div>
-
-	<div id="wrap">
-		<header id="header_1" style="text-align: center;">
-			<img
-				src="${pageContext.request.contextPath }/resources/images/mobile/logo.png" />
-			<p>로그인 하세요</p>
+	<div><br/><br/>
+		<header id="header_1">
+			<!-- 발자국 모양 <로고> -->
+			<div>
+				<a class="navbar-brand"
+					href="${pageContext.request.contextPath }/main.do"><img
+					class="logoImage" width="40" height="40"
+					src="${ pageContext.request.contextPath }/resources/images/baljagook_logo.png">
+					&nbsp;&nbsp;<span class="mainmsg"
+					style="font-weight: bold; font-size: 15pt; color: black;">발자국</span></a>
+			</div>
+			<br/><br/>
+			<h3>로그인</h3>
+			<br/>
 		</header>
-
 		<section id="container" class="register">
 			<section class="register_form">
 				<form id="loginForm">
-
 					<fieldset>
-						<legend>회원가입 양식</legend>
 						<ul>
 							<li>
-								<h3>이메일</h3>
-								<div>
-									<input type="text" name="email" placeholder="이메일"
-										onfocus="this.placeholder=''" onblur="this.placeholder='이메일'">
+								<div class="input-field col s12">
+									<!-- <input type="text" name="email" placeholder="이메일"
+										onfocus="this.placeholder=''" onblur="this.placeholder='이메일'"> -->
+									<input id="email" type="email" name="email" class="validate">
+									<label for="email">Email</label>
+
 								</div>
 							</li>
 							<li>
-								<h3>비밀번호</h3>
-								<div>
-									<input type="password" name="password" placeholder="비밀번호"
-										onfocus="this.placeholder=''" onblur="this.placeholder='비밀번호'">
+								<div class="input-field col s12">
+									<input id="password" type="password" name="password"
+										class="validate"> <label for="password">Password</label>
+									<!-- <input type="password"
+										name="password" placeholder="비밀번호"
+										onfocus="this.placeholder=''" onblur="this.placeholder='비밀번호'"> -->
 								</div>
 							</li>
-
-
 							<li>
 								<div>
 									<label for="agree01" class="ios_check"><input
@@ -125,29 +121,22 @@
 										<span>자동로그인</span> </label>
 								</div>
 							</li>
-
-
 						</ul>
-
-
-
-						<div class="register_submit">
-							<input type="submit" value="로그인">
+						<div class="right-align" style="margin-right: 15%">
+							<button class="btn waves-effect waves-light blue" type="submit"
+								name="action">로그인</button>
 							<!-- <input type="button" type="button" value="SIGN IN Facebook" > -->
-						</div>
 
-						<div class="register_bottom">
+						</div>
+						<div class="center-align">
 							<span><a
-								href="${ pageContext.request.contextPath }/m/changePass.do">Lost
-									Password</a></span> <span><a
-								href="${pageContext.request.contextPath }/m/signup.do">회원가입</a></span>
+								href="${ pageContext.request.contextPath }/m/changePass.do">비밀번호를
+									잊으셨나요?</a></span><br /> <span><a
+								href="${pageContext.request.contextPath }/m/signup.do">회원가입하실래요?</a></span>
 						</div>
-
 					</fieldset>
 				</form>
-
 			</section>
-
 		</section>
 		<!-- //container End -->
 	</div>
