@@ -1666,19 +1666,16 @@ function resetFindRoad(){
 	var flightloadLonLat = [];
 
 	
-	function loadStart() {
-		timerId = setInterval(function() {
-			loadStart2();
-		}, 100); // 1000ms(1초)가 경과하면 이 함수가 실행합니다.
-	}
-	
-	
-	function loadStart2(){
-	    console.log(lineLocation);
-	    console.log(lineLocationWalk);
-	    
-	    if(lineLocation.length != 0){
-		    
+	function loadStart2() { 
+	    console.log(flightloadLonLat);
+	    console.log(numF);
+		numF++;
+		if(numF > flightlonlatlength){
+			clearInterval(timerId);
+			numF=0;
+			flightloadLonLat = [];
+			return;
+		}
 		    if(flightNum == 0){
 			    tmap = new Tmap.Map({div:'map_div', width:'0px', height:'0px'});
 				map = new google.maps.Map(document.getElementById('map'), {
@@ -1690,9 +1687,12 @@ function resetFindRoad(){
 				zoom = 14;
 				map.setZoom(zoom);
 		    }
+		flightloadLonLat = [];
+		flightloadLonLat.push(lineLocation[flightNum]);
+		flightloadLonLat.push(lineLocation[++flightNum]);
 		    
 			if(listLonLat.length != 0){
-				var initflightPlanCoordinates = listLonLat;
+				var initflightPlanCoordinates = flightloadLonLat;
 					var initflightPath = new google.maps.Polyline({
 						path : initflightPlanCoordinates,
 						geodesic : true,
@@ -1715,46 +1715,49 @@ function resetFindRoad(){
 				}	
 				addLineMarker();
 				
+	    var center = new google.maps.LatLng(lineLocation[flightNum]);
+		map.setCenter(lineLocation[flightNum]);
+	    
+		if(lineLocation.length != 0){
+			var initflightPlanCoordinates1 = flightloadLonLat;
+				var initflightPath1 = new google.maps.Polyline({
+					path : initflightPlanCoordinates1,
+					geodesic : true,
+					strokeColor : '#FF0000',
+					strokeOpacity : 1.0,
+					strokeWeight : 4
+				});
+				initflightPath1.setMap(map);
+			}
+
+	}
+	
+	var numF = 0;
+	var flightlonlatlength;
+	function loadStart(){
+	    console.log(lineLocation);
+	    
+	    if(lineLocation.length != 0){
+		    
+				
 		    
 		    if(flightNum < lineLocation.length-1){
 			
-				var flightlonlatlength = 1;
+				flightlonlatlength = 1;
 				
-				if(lineLocation.length > 50 && lineLocation.length <= 100){			    
+				if(lineLocation.length > 50){			    
 					flightlonlatlength = lineLocation.length / 10;
-				} else if(lineLocation.length > 100 && lineLocation.length <= 200){
-				    flightlonlatlength = lineLocation.length / 20;
-				} else if(lineLocation.length > 200 && lineLocation.length <= 500){
-				    flightlonlatlength = lineLocation.length / 30;
-				} else if(lineLocation.length > 500){
-				    flightlonlatlength = lineLocation.length / 40;
 				} 
-			
-			
-				for(i=0; i<flightlonlatlength; i++){
-				    flightloadLonLat.push(lineLocation[++flightNum]);
-				    if(flightloadLonLat.length == lineLocation.length-1){
-						break;
-				    }
-				}
-			    
-			    var center = new google.maps.LatLng(lineLocation[flightNum]);
-				map.setCenter(lineLocation[flightNum]);
-			    
-				if(lineLocation.length != 0){
-					var initflightPlanCoordinates1 = flightloadLonLat;
-						var initflightPath1 = new google.maps.Polyline({
-							path : initflightPlanCoordinates1,
-							geodesic : true,
-							strokeColor : '#FF0000',
-							strokeOpacity : 1.0,
-							strokeWeight : 4
-						});
-						initflightPath1.setMap(map);
-					}
+				console.log(flightlonlatlength);
+				timerId = setInterval(function() {
+					loadStart2();
+				}, 10); // 1000ms(1초)가 경과하면 이 함수가 실행합니다.
+				
+				
+
 		    } else{
-				//lineEnd(); 
-				clearInterval(timerId);
+				lineEnd(); 
+				//clearInterval(timerId);
 		    }
 	    } 
 /* 	    
@@ -1833,7 +1836,69 @@ function resetFindRoad(){
 	}
 	
 	function loadBack(){
-	    
+	    if(flightNum == 0){
+			lineEnd();
+			return;
+	    }
+	    tmap = new Tmap.Map({div:'map_div', width:'0px', height:'0px'});
+		map = new google.maps.Map(document.getElementById('map'), {
+			zoom : zoom,
+			mapTypeId: google.maps.MapTypeId.ROADMAP,
+			center : center,
+			mapTypeControl: false
+		});
+		zoom = 13;
+		map.setZoom(zoom);
+		console.log(flightlonlatlength);
+ 		console.log(flightNum);
+		for(i=0; i<flightlonlatlength; i++){
+		    flightNum--;
+		}
+		console.log(flightNum); 
+		
+		var flightbackLonLat = [];
+		for(i=0; i<flightNum; i++){
+		    flightbackLonLat.push(lineLocation[i]);
+		}
+		console.log(flightbackLonLat);
+		if(listLonLat.length != 0){
+			var initflightPlanCoordinates = flightbackLonLat;
+				var initflightPath = new google.maps.Polyline({
+					path : initflightPlanCoordinates,
+					geodesic : true,
+					strokeColor : '#000000',
+					strokeOpacity : 1.0,
+					strokeWeight : 2
+				});
+				initflightPath.setMap(null);
+				
+				if(checkMarker.length != 0){	// 라인 마커가 있으면
+					for (var i = 0; i < checkMarker.length; i++) {
+						checkMarker[i].setMap(null);
+					  }
+					checkMarker = [];
+					startLocation = null;
+					endLocation = null;
+				}
+				
+				initflightPath.setMap(map);
+			}	
+			addLineMarker();  
+			
+			if(lineLocation.length != 0){
+				var initflightPlanCoordinates2 = flightbackLonLat;
+					var initflightPath2 = new google.maps.Polyline({
+						path : initflightPlanCoordinates2,
+						geodesic : true,
+						strokeColor : '#FF0000',
+						strokeOpacity : 1.0,
+						strokeWeight : 4
+					});
+					initflightPath2.setMap(map);
+				}
+			
+			    var center = new google.maps.LatLng(lineLocation[flightNum]);
+				map.setCenter(lineLocation[flightNum]);
 	}
 	
 	</script>
