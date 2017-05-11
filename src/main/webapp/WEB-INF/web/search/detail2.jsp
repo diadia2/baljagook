@@ -873,7 +873,8 @@ html, body {
 	}
 	 
 	$(function() {
-		if("${isFollow}"){
+		console.log("${isFollow}");
+		if("${isFollow}"!=0){
 			$("#followBtn").attr("disabled","disabled");
 		}
 		
@@ -1092,6 +1093,12 @@ var flightMarkers = new Array();
 									<i class="glyph-icon icon-exclamation-circle"></i>
 								</button>
 
+								<button class="btn btn-default" id="followBtn"
+									onclick="toFollow('${ mymapVO.userid }')">
+									<i class="fa fa-user-plus"></i>
+								</button>
+
+
 								<form id="reportMapForm"
 									action="${ pageContext.request.contextPath }/report.do"
 									method="POST">
@@ -1124,8 +1131,8 @@ var flightMarkers = new Array();
 								</form>
 
 							</div>
-							<div class="example-box-wrapper" style="height: 85%">
-								<div class="content-box tabs" style="height: 100%">
+							<div class="example-box-wrapper" style="height: 83%">
+								<div class="content-box tabs" style="height: 90%">
 									<h3 class="content-box-header bg-default">
 										<ul>
 											<li><a href="#tabs-example-2" title="Tab 1">Time

@@ -156,12 +156,6 @@ public class PageController {
 		return mav;
 	}
 
-	@RequestMapping("/main2.do")
-	public ModelAndView main2() {
-		ModelAndView mav = new ModelAndView("/main2");
-		return mav;
-	}
-
 	@RequestMapping("/top2.do")
 	public ModelAndView top2() {
 		ModelAndView mav = new ModelAndView("/include/top2");

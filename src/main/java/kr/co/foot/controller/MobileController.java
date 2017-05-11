@@ -141,44 +141,6 @@ public class MobileController {
 		return mav;
 	}
 	
-	@RequestMapping("m/main2.do")
-	public ModelAndView moMain2(Model model, HttpServletRequest request) {
-		
-		List<MymapVO> myMapList = new ArrayList<>();
-		List<MymapVO> myPlanList = new ArrayList<>();
-		List<MymapVO> favMapList = new ArrayList<>();
-		List<FavoriteplaceVO> favPlaceList = new ArrayList<>();
-		
-		HttpSession session = request.getSession();
-		String userid = (String) session.getAttribute("user");
-		
-//		userid = "test@test.com";
-		if(userid != null) {
-			//�닿���
-			myMapList = memberService.selectMymapListByuserid(userid);
-			myPlanList = memberService.selectMymapListByuseridForPlan(userid);
-			
-			//利�李얠���
-			List<FavoritemapVO> favMapListRef = mymapService.selectRegmapidx(userid);
-			for (int i = 0; i < favMapListRef.size(); i++) {
-				MymapVO mymapVO = mymapService.selectMymapByRegmapIdx(favMapListRef.get(i).getRegmapidx());
-				favMapList.add(mymapVO);
-			}
-			
-			//利�李얠�μ��
-			favPlaceList = mymapService.selectcheckpoint(userid);
-							
-		}
-		model.addAttribute("id", userid);
-		model.addAttribute("myPlanList", myPlanList);
-		model.addAttribute("favMapList", favMapList);
-		model.addAttribute("myMapList", myMapList);
-		model.addAttribute("favPlaceList", favPlaceList);
-
-		ModelAndView mav = new ModelAndView("mobile/main2");
-		return mav;
-	}
-	
 	@RequestMapping("m/insert.do")
 	public void insertData(HttpServletRequest request, HttpSession session) throws IllegalStateException, IOException{
 		String userid = request.getParameter("userid");
