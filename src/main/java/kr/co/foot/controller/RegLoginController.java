@@ -309,7 +309,7 @@ public class RegLoginController {
 		String to = email;
 		String from = "threebaljagook@gmail.com";
 		final String username = "threebaljagook@gmail.com";
-		final String password = "Baljagook!";
+		final String password = "";
 		
 		Properties props = new Properties();
 		props.put("mail.smtp.host", "smtp.gmail.com");
@@ -343,7 +343,7 @@ public class RegLoginController {
 		String to = email;
 		String from = "threebaljagook@gmail.com";
 		final String username = "threebaljagook@gmail.com";
-		final String password = "Baljagook!";
+		final String password = "";
 		
 		String server = "http://13.124.39.180:8080";
 		
