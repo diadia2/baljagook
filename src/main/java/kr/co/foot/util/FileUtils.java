@@ -17,9 +17,9 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 @Component("fileUtils")
 public class FileUtils {
     
-   private static final String filePath = "C:/Users/User/workspace/baljagook/src/main/webapp/resources/advphoto/";
+//   private static final String filePath = "C:/Users/User/workspace/baljagook/src/main/webapp/resources/advphoto/";
 // private static final String filePath = "/Users/mac/Documents/workspace/baljagook/src/main/webapp/resources/photo/";
-// private static final String filePath = "/var/lib/tomcat8/webapps/baljagook/resources/photo/";
+   private static final String filePath = "/var/lib/tomcat8/webapps/baljagook/resources/photo/";
    public Map<String, String> saveFile(HttpServletRequest request) throws IllegalStateException, IOException{
       
       String oriFileName = null;
