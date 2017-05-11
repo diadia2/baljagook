@@ -726,11 +726,10 @@ $(document).ready(function () {
 						$("#myModal").on("show.bs.modal", function() {
 						$("#daterangepicker-time2").daterangepicker({
 							timePicker : !0,
-							timePickerIncrement : 30,
-							format : "YYYY-MM-DD h:mm A"
+							timePickerIncrement : 15,
+							format : "YYYY-MM-DD HH:mm"
 						});
 
-						
 					});
 				});
 				
@@ -780,7 +779,7 @@ $(document).ready(function () {
 																		+ time1
 																		+ date.substring(13, 16);
 																document.inputform.end.value = date
-																		.substring(22, 33)
+																		.substring(19, 33)
 																		+ time2
 																		+ date.substring(35, 38);
 															}
