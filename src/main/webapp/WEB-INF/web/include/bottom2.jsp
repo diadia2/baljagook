@@ -82,9 +82,9 @@
 						<div class="bootstrap-switch-container text-right"
 							style="margin: 10px;">
 							<span class="font-bold font-black">자동 로그인</span>&nbsp;&nbsp; <input
-								type="checkbox" id="toggleButton" data-on-color="info"
+								id="toggleButton" type="checkbox" data-on-color="info"
 								data-size="small" name="checkbox-example-2" class="input-switch"
-								checked="checked" data-on-text="On" data-off-text="Off">
+								data-on-text="On" data-off-text="Off">
 						</div>
 						<div class="text-center">
 							<button type="submit" class="btn btn-lg btn-info btn-block">로그인</button>
