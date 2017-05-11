@@ -13,6 +13,33 @@
 	margin-top: 2%;
 }
 </style>
+<style>
+@media(max-width:400px){
+	.logoImage{
+		width : 0;
+	}
+	.navbar-brand{
+		display : none;
+	}
+	#header-nav-left{
+		display : none;
+	}
+	#nav-toggle{
+		display : none;
+	} 
+	#searchvar{
+		position: relative;
+		width : 100%;
+		top:0;
+		padding-top: 0;
+	}
+	div.flag1{
+		display : none;
+		width : 0px;
+	}
+}
+   
+</style> 
 <script type="text/javascript">
 	function goSearch(){
 	    location.href = "${ pageContext.request.contextPath }/map/search.do?searchtext="+$('#searchtext').val();
@@ -315,7 +342,7 @@ function changeToggleButton() {
 			</div>
 		</div>
 		<div id="header-nav-right" class="row">
-			<div class="col-md-4"><a class="navbar-brand" href="${pageContext.request.contextPath }/main.do"><img class="logoImage" width="40" height="40" src="${ pageContext.request.contextPath }/resources/images/baljagook_logo.png"> &nbsp;&nbsp;<span class="mainmsg" style="font-weight: bold; font-size: 15pt;top: 24px; position: absolute;">발자국</span></a></div>
+			<div class="col-md-4 flag1"><a class="navbar-brand" href="${pageContext.request.contextPath }/main.do"><img class="logoImage" width="40" height="40" src="${ pageContext.request.contextPath }/resources/images/baljagook_logo.png"> &nbsp;&nbsp;<span class="mainmsg" style="font-weight: bold; font-size: 15pt;top: 24px; position: absolute;">발자국</span></a></div>
 			<div class="col-md-4">
 				<div class="input-group" id="searchvar">
 					<form action="${pageContext.request.contextPath }/map/search.do" method="get">

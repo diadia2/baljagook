@@ -134,7 +134,7 @@ i.material-icons {
 		$("#bottomDiv").hide();
 		
 		
-		Android.sessionId('${id}');
+//		Android.sessionId('${id}');
 		
 	});
 
@@ -560,11 +560,11 @@ $(document).ready(function() {
 	$('#agree01').change(function() {
         if($(this).is(":checked")) {
             var flag = $(this).is(":checked");
-            Android.showMyValue(flag);
+//            Android.showMyValue(flag);
             
         } else{
         	var flag = $(this).is(":checked");
-           Android.showMyValue(flag);
+//           Android.showMyValue(flag);
         }  
     });
 });
@@ -582,11 +582,11 @@ function takepicture(){
 		alert("로그인후 이용가능합니다.");
 		return;
     }
-   Android.takePicture();
+//   Android.takePicture();
 }
 
 function getCurPorition(){
-   Android.getCurPosition();
+//   Android.getCurPosition();
 }
 
 var curMarker;
