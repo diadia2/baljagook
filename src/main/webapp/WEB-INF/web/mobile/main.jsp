@@ -1,101 +1,79 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8" session="true"%>
+	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<style type="text/css">
+html, body {
+	height: 100%;
+	margin: 0;
+	padding: 0;
+}
+ 
+#map {
+	height: 100%;
+}
+
+nav {
+	/* 색 */
+	background-color: white !important;
+	/* 위치 */
+	margin: 20px !important;
+	margin-right: 10% !important;
+	margin-left: 10% !important;
+	width: 80% !important;
+	/* 지도위로 */
+	position: absolute;
+	z-index: 4000;
+}
+
+nav .input-field label i {
+	color: rgba(0, 0, 0, 0.7) !important;
+}
+
+.input-field input[type=search] ~ .mdi-navigation-close, .input-field input[type=search] 
+	 ~ .material-icons {
+	color: rgba(0, 0, 0, 0.7) !important;
+}
+
+i.material-icons {
+	
+}
+
+.zeroMargin {
+	margin: 0px !important;
+}
+</style>
+<title>Baljagook Main</title>
+<!-- jquery -->
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<!-- Compiled and minified CSS -->
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/css/materialize.min.css">
+<!-- Compiled and minified JavaScript -->
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/js/materialize.min.js"></script>
+<!-- icons -->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+	rel="stylesheet">
+<!-- cookie -->
+<script
+	src="${pageContext.request.contextPath}/resources/js/js.cookie.js"></script>
+<!-- google map API -->
 <script
 	src="https://apis.skplanetx.com/tmap/js?version=1&format=javascript&appKey=bac4f916-3297-3be4-93ff-e37ae88b8f42"></script>
 <script
 	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD6x6lwLmHlSpovbF0nM-fPIPpjfv4D9IM&libraries=places"></script>
+<!-- <script async defer
+	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAF05JCFoefu9jROxjM8TcHc8GIR6YDhuU
+      &callback=initMap">
+</script> -->
 
-<link href="${pageContext.request.contextPath }/resources/css/mobile/common.css"
-	rel="stylesheet" type="text/css" />
-<link href="${pageContext.request.contextPath }/resources/css/mobile/main.css"
-	rel="stylesheet" type="text/css" />
-<link href="${pageContext.request.contextPath }/resources/css/mobile/sub.css"
-	rel="stylesheet" type="text/css" />
-<link href="${pageContext.request.contextPath }/resources/css/mobile/board.css"
-	rel="stylesheet" type="text/css" />
-<link
-	href="${pageContext.request.contextPath }/resources/css/mobile/enterprise.css"
-	rel="stylesheet" type="text/css" />
-
-	<script src="//code.jquery.com/jquery-latest.min.js"></script>
-
-<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css"> -->
-<link href="${pageContext.request.contextPath }/resources/images/mobile/favicon.ico" rel="icon" type="image/x-icon">
-<script
-	src="${pageContext.request.contextPath }/resources/js/mobile/jquery-1.11.3.min.js"
-	type="text/javascript"></script>
-<script
-	src="${pageContext.request.contextPath }/resources/js/mobile/jquery-2.1.4.min.js"
-	type="text/javascript"></script>
-<script
-	src="${pageContext.request.contextPath }/resources/js/mobile/jquery.bxslider.js"></script>
-<script
-	src="${pageContext.request.contextPath }/resources/js/mobile/placeholders.js"></script>
-
-<script
-	src="${pageContext.request.contextPath }/resources/js/mobile/jquery.swipebox.js"></script>
-<link href="${pageContext.request.contextPath }/resources/js/mobile/swipebox.css"
-	rel="stylesheet" type="text/css" />
-<script src="${pageContext.request.contextPath}/resources/js/js.cookie.js"></script>	
-
-
-<!-- Add fancyBox main JS and CSS files -->
 <script type="text/javascript"
-	src="${pageContext.request.contextPath }/resources/js/mobile/fancybox/source/jquery.fancybox.js?v=2.1.5"></script>
-<link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath }/resources/js/mobile/fancybox/source/jquery.fancybox.css?v=2.1.5"
-	media="screen" />
-
-
-<script src="${pageContext.request.contextPath }/resources/js/mobile/script.js"
-	type="text/javascript"></script>
-<script src="${pageContext.request.contextPath }/resources/js/mobile/util.js"
-	type="text/javascript"></script>
-
-<!--     <script src="https://maps.google.com/maps/api/js?key=AIzaSyCAr0HeB2LSff7sqIUhi5D4H0NA0nPD7Bs&sensor=false" type="text/javascript"></script> -->
-
-
-
-    <style type="text/css">
-        
-        /* 하단 길찾기 */
-        #navDiv{
-            width:100%;height:70%;background:#fff;position:absolute;z-index:98;bottom:0px;
-            display:none;
-        }
-        #camera{
-        	float:right;
-        	bottom:0;
-        	right:0;
-        	margin-right:5%;
-        	margin-bottom:7%;
-        	position:absolute;
-        }
-        #location{
-        	float:right;
-        	bottom:0;
-        	right:0;
-        	margin-right:5%;
-        	margin-bottom:25%;
-        	position:absolute;
-        }
-    	#lpop{
-    		margin-right:20%;
-        	margin-bottom:50%;
-	    	bottom:0;
-        	right:0;
-	    	float:right;
-    		position:absolute;
-    	}
-    </style>
-  
-<script type="text/javascript" src="${pageContext.request.contextPath }/resources/js/test.js"></script>
+	src="${pageContext.request.contextPath }/resources/js/test.js"></script>
 <%-- <script type="text/javascript" src="${pageContext.request.contextPath }/resources/js/mobile/main/map.js"></script> --%>
 <script type="text/javascript">
 
@@ -113,46 +91,13 @@
 		
 		checkAutoLoginCookie();		
 		
-		$("#hidden_favMap").hide();
-		$("#hidden_favPlace").hide();
-		$("#hidden_myPlan").hide();
-		$("#lpop").hide();
 
-// 		즐겨찾기한 지도 목록 보기
-		$("#show_favMap").click(function() {			
-			$("#hidden_favMap").slideToggle('fast');
-			show_favMap();
-			$("#hidden_favPlace").slideUp('fast');
-			$("#show_favPlace").find(".menu_te").text("▼");
-			$("#hidden_myPlan").slideUp('fast');
-			$("#show_myPlan").find(".menu_te").text("▼");
-		});
-
-//		즐겨찾기한 장소 목록 보기		
-		$("#show_favPlace").click(function() {
-			$("#hidden_favPlace").slideToggle('fast');
-			show_favPlace();
-			$("#hidden_favMap").slideUp('fast');
-			$("#show_favMap").find(".menu_te").text("▼");
-			$("#hidden_myPlan").slideUp('fast');
-			$("#show_myPlan").find(".menu_te").text("▼");
-		});
-
-//		내계획 목록 보기
-		$("#show_myPlan").click(function() {			
-			$("#hidden_myPlan").slideToggle('fast');
-			show_myPlan();
-			$("#hidden_favMap").slideUp('fast');
-			$("#show_favMap").find(".menu_te").text("▼");
-			$("#hidden_favPlace").slideUp('fast');
-			$("#show_favPlace").find(".menu_te").text("▼");
-		});
 
 		$("#openNavi").click(function() {
 		    if(infowindow != null){
 				infowindow.close();
 		  	}
-			$("#navDiv").fadeIn("fast");
+		    $('#modal2').modal('open');
 			$("#header").fadeOut("fast");
 			$("#bottomDiv").hide();
 		});
@@ -161,7 +106,7 @@
 		    if(infowindow != null){
 				infowindow.close();
 	  		}
-		    $("#navDiv").fadeOut("fast");
+		    $('#modal2').modal('close');
 			$("#header").fadeIn("fast");
 			$("#bottomDiv").show();
 		});
@@ -189,37 +134,9 @@
 		$("#bottomDiv").hide();
 		
 		
-		Android.sessionId('${id}');
+		//Android.sessionId('${id}');
 		
 	});
-	
-	function show_favMap(){
-	    var hidden_favMap_text = $("#show_favMap").find(".menu_te").text();
-
-		if (hidden_favMap_text == "▼") {
-			$("#show_favMap").find(".menu_te").text("▲");
-		} else {
-			$("#show_favMap").find(".menu_te").text("▼");
-		}
-	}
-	function show_favPlace(){
-	    var show_favPlace_text = $("#show_favPlace").find(".menu_te").text();
-
-		if (show_favPlace_text == "▼") {
-			$("#show_favPlace").find(".menu_te").text("▲");
-		} else {
-			$("#show_favPlace").find(".menu_te").text("▼");
-		}
-	}
-	function show_myPlan(){
-	    var show_myPlan_text = $("#show_myPlan").find(".menu_te").text();
-
-		if (show_myPlan_text == "▼") {
-			$("#show_myPlan").find(".menu_te").text("▲");
-		} else {
-			$("#show_myPlan").find(".menu_te").text("▼");
-		}
-	}
 
 	function get_map(latitude, longitude) {
 	    tmap = new Tmap.Map({div:'map_div', width:'0px', height:'0px'});
@@ -238,12 +155,10 @@
 		var endLat = "";
 		var endLng = "";
  		var listener3 = google.maps.event.addListener(map, 'click', function(mouseEvent){
- 		    $("#navDiv").fadeOut("fast");
 		 	$("#header").fadeIn("fast"); 
 			if(infowindow != null){
 				  infowindow.close();
 			  }
-			  
 			infowindow = new google.maps.InfoWindow({
 				  content: '<a href="javascript:startSpot('+mouseEvent.latLng.lat()+','+mouseEvent.latLng.lng()
 					    +')"><img src="http://openmap2.tmap.co.kr/start.png"/></a>&nbsp;&nbsp;&nbsp;<a href="javascript:endSpot('+mouseEvent.latLng.lat()+','+mouseEvent.latLng.lng()
@@ -259,6 +174,53 @@
 			  infowindow.close();
 		  }
  		});
+ 		
+ 		var input = document.getElementById('pac-input');
+		var searchBox = new google.maps.places.SearchBox(input);
+		map.addListener('bounds_changed', function() {
+			searchBox.setBounds(map.getBounds());
+		});
+		var markers = [];
+		searchBox.addListener('places_changed', function() {
+			var places = searchBox.getPlaces();
+
+			if (places.length == 0) {
+				return;
+			}
+
+			// Clear out the old markers.
+			markers.forEach(function(marker) {
+				marker.setMap(null);
+			});
+			markers = [];
+
+			// For each place, get the icon, name and location.
+			var bounds = new google.maps.LatLngBounds();
+			places.forEach(function(place) {
+				var icon = {
+					url : "https://developers.skplanetx.com/upload/tmap/marker/pin_b_m_1.png",
+					size : new google.maps.Size(71, 71),
+					origin : new google.maps.Point(0, 0),
+					anchor : new google.maps.Point(17, 34)
+				};
+
+				// Create a marker for each place.
+				markers.push(new google.maps.Marker({
+					map : map,
+					icon : icon,
+					title : place.name,
+					position : place.geometry.location
+				}));
+				
+				if (place.geometry.viewport) {
+					// Only geocodes have viewport.
+					bounds.union(place.geometry.viewport);
+				} else {
+					bounds.extend(place.geometry.location);
+				}
+			});
+			map.fitBounds(bounds);
+		});
 	}
 
 	window.onload=function(){
@@ -313,7 +275,7 @@
 	     startMarker.setMap(null); 
 	 	 endMarker.setMap(null);
 	 	 $("#bottomDiv").hide();
-	 	 $("#navDiv").fadeOut("fast");
+	 	 $('#modal2').modal('close');
 	 	 $("#header").fadeIn("fast");
 	 	 if(infowindow != null){
 			  infowindow.close();
@@ -508,11 +470,12 @@
 					startLocation = null;
 					endLocation = null;
 				}
-				
-				initflightPath.setMap(map);
 			}
 		    addLineMarker();
-		    
+		 // 주소로 검색해서 마커 표시
+		 initflightPath.setMap(map);
+		 
+			
 		}		
 </script>
 
@@ -597,11 +560,11 @@ $(document).ready(function() {
 	$('#agree01').change(function() {
         if($(this).is(":checked")) {
             var flag = $(this).is(":checked");
-            Android.showMyValue(flag);
+            //Android.showMyValue(flag);
             
         } else{
         	var flag = $(this).is(":checked");
-            Android.showMyValue(flag);
+           //Android.showMyValue(flag);
         }  
     });
 });
@@ -619,11 +582,11 @@ function takepicture(){
 		alert("로그인후 이용가능합니다.");
 		return;
     }
-    Android.takePicture();
+   //Android.takePicture();
 }
 
 function getCurPorition(){
-    Android.getCurPosition();
+   //Android.getCurPosition();
 }
 
 var curMarker;
@@ -662,6 +625,20 @@ function returnCurPosition(lat, lon, accuracy){
 			}
 	});	
 }
+function regCheck(){
+	if(confirm("체크 포인트로 저장하시겠습니까?")){
+		/* 			    var setTitle = prompt("제목을 입력하세요");
+					    var setContent = prompt("내용을 입력하세요"); */
+					    document.lpopform.title.value="";
+						document.lpopform.content.value="";
+					    $('#modal1').modal('open');
+					    checkLat = this.position.lat().toFixed(7);
+					    checkLon = this.position.lng().toFixed(7);
+					    checkaccuracy = this.accuracy;  
+					}
+}
+
+
 
 function regCheckpoint(){
     
@@ -677,7 +654,6 @@ function regCheckpoint(){
 				accuracy : checkaccuracy
 		    },
 		    success: function(data) {
-				alert(data);
 				$("#lpop").hide();
 	    }
 	});  
@@ -716,7 +692,7 @@ function regCheckpoint(){
 			}
 		});
 		if(startLocation != null && endLocation != null){
-		    $("#navDiv").fadeIn("fast");
+			 $('#modal2').modal('open');
 			$("#header").fadeOut("fast");
 		    if($('#tab1').css("background-color") == 'rgb(85, 164, 37)'){
 				searchRoute(startLocation, endLocation);
@@ -749,7 +725,7 @@ function regCheckpoint(){
 			}
 		});
 		if(startLocation != null && endLocation != null){
-		    $("#navDiv").fadeIn("fast");
+			 $('#modal2').modal('open');
 			$("#header").fadeOut("fast");
 			if($('#tab1').css("background-color") == 'rgb(85, 164, 37)'){
 				searchRoute(startLocation, endLocation);
@@ -1009,246 +985,207 @@ function checkAutoLoginCookie() {
 </script>
 <script>
 	function goSearch() {
-		location.href="${ pageContext.request.contextPath }/m/search.do";
+		location.href = "${ pageContext.request.contextPath }/map/search.do?searchtext="+$('#searchtext').val();
 	}
 	function showLoginForm() {
 		location.href="${ pageContext.request.contextPath }/m/login.do";
 	}
-	$(document).ready(function() {
-		$("#noUser_show_favMap").click(function() {			
-			showLoginForm();
-		});
-		$("#noUser_show_favPlace").click(function() {			
-			showLoginForm();
-		});
-		$("#noUser_show_myPlan").click(function() {			
-			showLoginForm();
-		});		
-	});	
+</script>
+
+<!--  -->
+<script type="text/javascript">
+	var map;
+
+	$(function() {
+		$(".button-collapse").sideNav();
+	});
+
+	$(function() {
+		$('.collapsible').collapsible();
+	});
+
+	$(function() {
+		// the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
+		$('.modal').modal();
+	});
+	 $(function() {
+		    $('input#checktitle, textarea#checkcontent').characterCounter();
+		  });
 </script>
 </head>
 <body>
-		<div class="side_menu_bg"></div>
-		<div class="layer_bg"></div>
-	<div id="wrap" style="height: 100%;">
-
-		<header id="header" class="clearfix">
-				<a href="#!" class="gnb_menu"> <span class="left"></span> <span
-					class="center"></span> <span class="right"></span>
-				</a>			
-			<h2 class="page_tit">
-				<a href="${ pageContext.request.contextPath }/m/main.do"><img src="${ pageContext.request.contextPath }/resources/images/mobile/logo.png" alt="로고"
-					class="logo" style="height: 60px;" /></a>
-			</h2>
-
-
-
-		</header>
-		<!--header_end-->
-
-		<aside id="side_menu">
-
-			<!-- 로그인 안되었을 때 -->
-			<c:if test="${ empty sessionScope.user }">
-				<div class="user_info">
-					<div class="user_img" id="user_img">
-						<a href="${pageContext.request.contextPath }/m/login.do"> <img src="${pageContext.request.contextPath }/resources/images/mobile/user_no_img.png"
-							alt="유저이미지" />
-						</a>
-					</div>
-					<div class="user_txt" style="vertical-align: middle;">
-						<a href="${pageContext.request.contextPath }/m/login.do"><strong class="login_txt01">로그인을
-								해주세요.</strong></a>
-	
-					</div>
+	<nav>
+		<div class="nav-wrapper">
+			<form name="inputform">
+				<div class="input-field">
+					<input id="pac-input" type="search" placeholder="Search Box"
+						required> <label class="label-icon" for="search"><a
+						href="#" data-activates="mobile-demo" class="button-collapse"><i
+							class="material-icons">menu</i></a></label> <i class="material-icons">search</i>
 				</div>
-			</c:if>
-			
-			<!-- 로그인 되어있을 때 -->
-			<c:if test="${ not empty sessionScope.user }">
-				<div class="user_info">
-					<div class="user_img" id="user_img">
-            			<label>ID : ${ sessionScope.user } </label>
-            			<br/>
-            			<a href="${ pageContext.request.contextPath }/m/logout.do">로그아웃</a>
-					</div>
-				</div>
-			</c:if>
-
-
-			<!-- 로그인 안되었을 때 -->
-			<!--
-		<div class="user_info">
-			<div class="user_img" id="user_img">
-				<a href="./login.html">
-					<img src="${pageContext.request.contextPath }/resources/images/mobile/user_img.png" alt="유저이미지" />
-				</a>
-			</div>
-            <div class="user_txt" style="vertical-align:middle;">
-                        <a href="./login.html"><strong class="login_txt01"><span>홍순일</span>님 환영합니다</strong></a>
-        
-            </div>
+			</form>
 		</div>
-        -->
+	</nav>
 
+	<ul id="mobile-demo" class="side-nav collapsible"
+		data-collapsible="accordion" style="width: 80%; z-index: 9999;">
+		<li><div class="userView">
+				<div class="background">
+					<!-- <img src="https://chart.apis.google.com/chart?cht=it&chs=42x42&chco=FC0000%2c000000ff%2cffffff01&chl=101&chx=FFFFFF,20&chf=bg,s,00000000&ext=.png">-->
+				</div>
 
-			<nav id="gnb">
-				<ul class="depth01 clearfix">
-
-				
-					<li><a href="#!"> <img src="${pageContext.request.contextPath }/resources/images/mobile/icon_menu1.png"
-							alt="즐겨찾기" /> <span>즐겨찾기</span>
-					</a> <img class="menu_rg" src="${pageContext.request.contextPath }/resources/images/mobile/icon_menu4.png" alt="검색"
-						onclick=
-							<c:if test='${ empty sessionScope.user }'>  "showLoginForm();" </c:if>
-							<c:if test='${ not empty sessionScope.user }'>  "goSearch();" </c:if>
-							/></li>
-
-					<!-- 즐겨찾기한 지도 목록 보기 -->
-					<li id=
-							<c:if test='${ empty sessionScope.user }'>  "noUser_show_favMap" </c:if>
-							<c:if test='${ not empty sessionScope.user }'>  "show_favMap" </c:if>
-							>					
-
-					<a href="#!"> <img
-							src="${pageContext.request.contextPath }/resources/images/mobile/icon_menu2.png" alt="즐찾지도" /> <span>Map</span>
-					</a> <span class="menu_te">▼</span></li>
-					<li id="hidden_favMap">
-						<div id="favMapList" style="width: 100%; max-height: 200px; overflow: hidden; overflow-y: auto;">
-							<ul class="sub_depth01 clearfix">
-								<c:forEach items="${ favMapList }" var="favMap">
-									<li onclick="displayFavMap(${ favMap.idx });"><a><span style="text-align: left">⊙  ${ favMap.title }</span></a></li>
-								</c:forEach> 
-							</ul>
-						</div>
-					</li>
-
-					<!-- 즐겨찾기한 장소 목록 보기 -->
-					<li id=
-							<c:if test='${ empty sessionScope.user }'>  "noUser_show_favPlace" </c:if>
-							<c:if test='${ not empty sessionScope.user }'>  "show_favPlace" </c:if>
-					>
-					<a href="#!"> <img
-							src="${pageContext.request.contextPath }/resources/images/mobile/icon_menu3.png" alt="즐찾장소" /> <span>Place</span>
-					</a> <span class="menu_te">▼</span></li>
-					<li id="hidden_favPlace">
-						<div id="favPlaceList"
-							style="width: 100%; max-height: 200px; overflow: hidden; overflow-y: auto;">
-							<ul class="sub_depth01 clearfix">
-								<c:forEach items="${ favPlaceList }" var="favPlace">
-									<li onclick="displayFavPlace(${ favPlace.checkpointidx });"><a><span style="text-align: left">⊙  ${ favPlace.placename }</span></a></li>
-								</c:forEach>
-							</ul>
-						</div>
-					</li>
-
-					<!-- 내 여행계획 보기 -->
-					<li id=
-							<c:if test='${ empty sessionScope.user }'>  "noUser_show_myPlan" </c:if>
-							<c:if test='${ not empty sessionScope.user }'>  "show_myPlan" </c:if>
-					>
-					<a href="#!"> <img src="${pageContext.request.contextPath }/resources/images/mobile/icon_menu1.png" alt="내계획" /> <span>My Plan</span>
-					</a> <span class="menu_te">▼</span></li>
-					<li id="hidden_myPlan">
-						<div id="myPlanList"
-							style="width: 100%; max-height: 200px; overflow: hidden; overflow-y: auto;">
-							<ul class="sub_depth01 clearfix">
-								<c:forEach items="${ myPlanList }" var="myPlan">
-									<li onclick="displayMyPlan(${ myPlan.idx });"><a><span style="text-align: left">⊙  ${ myPlan.title }</span></a></li>
-								</c:forEach>
-							</ul>
-						</div>
-					</li>
-
-
-
-
-
-				</ul>
-				<c:if test="${ not empty sessionScope.user }">
-					<div class="register_btn">
-						<label for="agree01" class="ios_check"><input
-							type="checkbox" id="agree01" class="ios-switch green  bigswitch"><span><span></span></span>
-							<span class="t_xt">실시간 기록</span> </label>
-					</div>
+				<!-- 로그인 안되었을 때 -->
+				<c:if test="${ empty sessionScope.user }">
+					<a href="${pageContext.request.contextPath }/m/login.do"><img
+						class="circle" style="border: solid; background-color: #e1e1e1;"
+						src="${pageContext.request.contextPath }/resources/images/mobile/user_no_img.png"></a>
+					<a href="#!name"><span class="name" style="color: black;">로그인
+							해주세요</span></a>
 				</c:if>
+				<!-- 로그인 되어있을 때 -->
+				<c:if test="${ not empty sessionScope.user }">
+					<a href="#!user"><img class="circle"
+						style="border: solid; background-color: #e1e1e1;"
+						src="${pageContext.request.contextPath}/resources/photo/profileImage/defaultImage.png"></a>
+					<a href="#!name"><span class="name" style="color: black;">${ sessionScope.user }</span></a>
+					<a href="${ pageContext.request.contextPath }/m/logout.do">로그아웃</a>
+				</c:if>
+			</div></li>
+		<li><div class="divider"></div></li>
+		<li>
+			<form action="${pageContext.request.contextPath }/map/search.do"
+				method="get">
+				<input type="text" class="form-control" placeholder="Map Search"
+					id="searchtext" style="margin-top: 13px; margin-bottom: 2px;"
+					onKeyPress="if (event.keyCode==13){ goSearch();event.returnValue=false}">
+			</form>
+		</li>
+		<li><div class="divider"></div></li>
+		<li>
+			<div class="collapsible-header">
+				<i class="material-icons">view_quilt</i>My Map
+			</div>
+			<div class="collapsible-body">
+				<c:forEach items="${ myMapList }" var="myMap">
+					<a onclick="displayMyPlan(${ myMap.idx });"><span
+						style="text-align: left">⊙ ${ myMap.title }</span></a>
+					<br />
+				</c:forEach>
+			</div>
+		</li>
+		<li><div class="divider zeroMargin"></div></li>
+		<li>
+			<div class="collapsible-header">
+				<i class="material-icons">today</i>My Plan
+			</div>
+			<div class="collapsible-body">
+				<c:forEach items="${ myPlanList }" var="myPlan">
+					<a onclick="displayMyPlan(${ myPlan.idx });"><span
+						style="text-align: left">⊙ ${ myPlan.title }</span></a>
+					<br />
+				</c:forEach>
+			</div>
+		</li>
+		<li><div class="divider zeroMargin"></div></li>
+		<li>
+			<div class="collapsible-header">
+				<i class="material-icons">star</i>Favorites
+			</div>
+			<div class="collapsible-body">
+				<c:forEach items="${ favMapList }" var="favMap">
+					<a onclick="displayFavMap(${ favMap.idx });"><span
+						style="text-align: left">⊙ ${ favMap.title }</span></a>
+					<br />
+				</c:forEach>
+			</div>
+		</li>
+		<li><div class="divider zeroMargin"></div></li>
+		<li>
+			<div class="collapsible-header">
+				<i class="material-icons">location_on</i>Place
+			</div>
+			<div class="collapsible-body">
+				<c:forEach items="${ favPlaceList }" var="favPlace">
+					<a onclick="displayFavPlace(${ favPlace.checkpointidx });"><span
+						style="text-align: left">⊙ ${ favPlace.placename }</span></a>
+					<br />
+				</c:forEach>
+			</div>
+		</li>
+		<li><div class="divider zeroMargin"></div></li>
 
-			</nav>
-			<a href="#!" class="btn_slide_close"><img
-				src="${pageContext.request.contextPath }/resources/images/mobile/btn_slide_close.png" alt="메뉴 닫기" /></a>
-		</aside>
+		<!-- Switch -->
+		<c:if test="${ not empty sessionScope.user }">
+			<div>
+				실시간 기록
+				<li class="switch"><label> Off <input type="checkbox"
+						id="agree01"> <span class="lever"></span> On
+				</label></li>
+			</div>
+		</c:if>
+	</ul>
 
+	<div id="map"></div>
+	<div id="map_div"></div>
 
-		<div style="" id="navDiv">
-			<div id="closeNavi" class="btnNavi"
-				style="width: 100%; height: 10px; font-weight: bold; background-color: white; padding-top: 3px;">
-				<div style="width: 100%; display: inline-block; text-align: center">▼
+	<div class="fixed-action-btn horizontal click-to-toggle">
+		<a class="btn-floating btn-large white"
+			href="javascript:getCurPorition()"> <i class="material-icons"
+			style="color: #0480da;">my_location</i>
+		</a>
+		<ul>
+			<li><a class="btn-floating blue" href="javascript:regCheck()"><i
+					class="material-icons">done</i></a></li>
+			<li><a class="btn-floating gray" href="javascript:takepicture()"><i
+					class="material-icons">perm_camera_mic</i></a></li>
+		</ul>
+	</div>
+
+	<!-- Modal Structure1 -->
+	<div id="modal1" class="modal" style="z-index: 9999">
+		<form name="lpopform">
+			<div class="modal-content">
+				<div class="row">
+					<div class="input-field">
+						<input name="title" id="checktitle" type="text" data-length="20">
+						<label for="input_text">여행제목</label>
+					</div>
+					<div class="row">
+						<div class="input-field">
+							<textarea name="content" id="checkcontent"
+								class="materialize-textarea" data-length="120"></textarea>
+							<label for="textarea1">여행내용</label>
+						</div>
+					</div>
 				</div>
 			</div>
-			<div class="coupon_tab_btn">
-				<span class="tab_btn tab01 active" id="tab1"> <a href="javascript:findLoadAgain()">
-					<img src="${pageContext.request.contextPath }/resources/images/mobile/navi_tap01.png"/>자가용</a>
-				</span> 
-				<span class="tab_btn tab02" id="tab2"> <a href="javascript:calculateAndDisplayRoute()">
-					<img src="${pageContext.request.contextPath }/resources/images/mobile/navi_tap02.png"/>대중교통</a>
-				</span> 
-				<span class="tab_btn tab03" id="tab3"> <a href="javascript:forWalk()">
-					<img src="${pageContext.request.contextPath }/resources/images/mobile/navi_tap03.png"/>도보</a>
-				</span>
-
-
+			<div class="modal-footer">
+				<a href="#!" onclick="javascript:regCheckpoint()"
+					class="modal-action modal-close waves-effect waves-green btn-flat">등록하기</a>
+				<a href="#!"
+					class="modal-action modal-close waves-effect waves-green btn-flat">취소</a>
 			</div>
 
-			<div style="width: 100%; overflow: hidden; overflow-y: auto; height: 83%;">
-
-				<ul class="foot_depth01 clearfix" id="addinfo"></ul>
-
-			</div>
-
-
-		</div>
-
-
-
-
-		<section id="container" style="height: 89%; padding: 0;">
-			<div id="map" style="width: 100%; height: 100%; position:absolute;"></div>
-				<div id=location><a href="javascript:getCurPorition()"><img src="${pageContext.request.contextPath }/resources/images/location.png"/></a></div>
-				<div id=camera><a href="javascript:takepicture()"><img src="${pageContext.request.contextPath }/resources/images/camera.png"/></a></div>
-
-
-
-
-			<div id="bottomDiv" class="btnNavi"
-				style="width: 100%; height: 20px; bottom: 0px; font-size: 20px; font-weight: bold; display: block; position: fixed; background-color: white; opacity: 0.8;">
-
-				<div style="width: 100%; display: inline-block; text-align: center" id="openNavi">▲</div>
-			</div>
-
-
-
-			<!-- footer -->
-
-
-		</section>
-		<!-- //container End -->
-
-
-
+		</form>
 	</div>
-	<!--wrap_end-->
-	<div id="map_div"></div>
-	
-	<form name="lpopform">
-	<div class="lpop" id="lpop" style="background: white; border: 1px solid">
-		<div class="btnx" style="text-align: right">×&nbsp;&nbsp;</div>
-			<input type="text" name="title" id="checktitle" placeholder="여행제목" /><br/>
-			<textarea rows="7" cols="24" name="content" id="checkcontent" placeholder="여행내용"></textarea><br/>
-			<div style="text-align: right;">
-				<input type="reset" value="다시쓰기"/>
-				<input type="button" id="reg" onclick="javascript:regCheckpoint()" value="등록하기"/>
-			</div>
+
+	<!-- Modal Structure2 -->
+	<div id="modal2" class="modal bottom-sheet">
+		<div class="modal-content row">
+			<br /> <a class="waves-effect waves-light col-sm-4"
+				href="javascript:findLoadAgain()"><img
+				src="${pageContext.request.contextPath }/resources/images/mobile/navi_tap01.png" /></a>
+			<a class="waves-effect waves-light col-sm-4"
+				href="javascript:calculateAndDisplayRoute()"><img
+				src="${pageContext.request.contextPath }/resources/images/mobile/navi_tap02.png" /></a>
+			<a class="waves-effect waves-light col-sm-4"
+				href="javascript:forWalk()"><img
+				src="${pageContext.request.contextPath }/resources/images/mobile/navi_tap03.png" /></a>
 		</div>
-	</form>
+		<div class="modal-footer"
+			style="width: 100%; overflow: hidden; overflow-y: auto; height: 83%;">
+			<ul class="foot_depth01 clearfix" id="addinfo"></ul>
+		</div>
+	</div>
 </body>
 </html>
