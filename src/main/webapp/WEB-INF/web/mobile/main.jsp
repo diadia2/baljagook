@@ -11,7 +11,7 @@ html, body {
 	margin: 0;
 	padding: 0;
 }
- 
+
 #map {
 	height: 100%;
 }
@@ -1055,9 +1055,11 @@ function checkAutoLoginCookie() {
 		<li>
 			<form action="${pageContext.request.contextPath }/map/search.do"
 				method="get">
-				<input type="text" class="form-control" placeholder="Map Search"
+				<input type="text" class="form-control" placeholder="          Map Search"
 					id="searchtext" style="margin-top: 13px; margin-bottom: 2px;"
-					onKeyPress="if (event.keyCode==13){ goSearch();event.returnValue=false}">
+					onKeyPress="if (event.keyCode==13){ goSearch();event.returnValue=false}"><i
+					class="material-icons"
+					style="position: absolute; right: 13px; top: 136px; font-size: 42px;">search</i>
 			</form>
 		</li>
 		<li><div class="divider"></div></li>
