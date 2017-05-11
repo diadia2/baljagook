@@ -726,11 +726,10 @@ $(document).ready(function () {
 						$("#myModal").on("show.bs.modal", function() {
 						$("#daterangepicker-time2").daterangepicker({
 							timePicker : !0,
-							timePickerIncrement : 30,
-							format : "YYYY-MM-DD h:mm A"
+							timePickerIncrement : 15,
+							format : "YYYY-MM-DD HH:mm"
 						});
 
-						
 					});
 				});
 				
@@ -759,9 +758,9 @@ $(document).ready(function () {
 														<span class="add-on input-group-addon"><i
 															class="glyph-icon icon-calendar"></i></span> <input type="text"
 															name="daterangepickertime" id="daterangepicker-time2"
-															class="form-control" value=""> <input type="hidden"
+															class="form-control" value=""> <input type="text"
 															id="start" name="start" value="${start}"> <input
-															type="hidden" id="end" name="end" value="${end }">
+															type="text" id="end" name="end" value="${end }">
 														<script type="text/javascript">
 															/* daterangepicker-time에서 apply 누르면 실행(daterangepicker.js에 추가함) */
 															function changeDP() {
@@ -780,7 +779,7 @@ $(document).ready(function () {
 																		+ time1
 																		+ date.substring(13, 16);
 																document.inputform.end.value = date
-																		.substring(22, 33)
+																		.substring(19, 33)
 																		+ time2
 																		+ date.substring(35, 38);
 															}
