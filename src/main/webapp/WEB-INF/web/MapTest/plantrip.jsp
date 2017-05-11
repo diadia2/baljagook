@@ -701,6 +701,8 @@ $(document).ready(function(){
 		}
 		advlistLonLat.splice(index,1);
 		change = false;
+		lineReset();
+		closeSearch();
 		initialize();
 	}
 	
@@ -782,6 +784,7 @@ $(document).ready(function(){
 			startMarkers[i].setMap(null); 
 		for(var i=0; i<endMarkers.length; i++)		// 도착 마커 리셋
 			endMarkers[i].setMap(null); */
+ 		
 	}
 	 
 	// Tmap에서 도보로 길찾기 좌표 불러오기 
@@ -1244,6 +1247,7 @@ $(document).ready(function(){
 	// 길찾기 종료.
 	function closeSearch(){
 		$('#addinfo').children().remove();			// 길찾기 정보 리셋
+		$("#naviDiv").hide("fast");
 		for(var i=0; i<flightPaths.length; i++)		// 자동차 라인 리셋
 			  flightPaths[i].setMap(null);
 		if(directionsDisplay!=null)					// 교통수단 라인 리셋
@@ -1357,7 +1361,7 @@ $(document).ready(function(){
 		for(var i=0; i<checkMarker.length; i++){
 			rightTitle += $('.panel-heading').eq(i).children().val();
 			rightTitle += "/";
-			rightContent += $('.panel-body').eq(i).children().val();
+			rightContent += $('.panel-body').eq(i+1).children().val();
 			rightContent += "/";
 		}
 		$('#map_div').append("<input type='hidden' value='"+rightTitle+"' name='paneltitle'/>");
@@ -1662,37 +1666,22 @@ function resetFindRoad(){
 	</script>
 
 <script type="text/javascript">
-	var flightNum = 0;
+	var flightNum = 0;				// 현재 lineLocation n번째 index
 	var flightloadLonLat = [];
 
 	
 	function loadStart2() { 
 	    console.log(flightloadLonLat);
 	    console.log(numF);
+	    $('#playIcon').hide();
 		numF++;
-		if(numF > flightlonlatlength){
+		if(numF > flightlonlatlength || flightNum == lineLocation.length-1){
 			clearInterval(timerId);
+			$('#playIcon').show();
 			numF=0;
 			flightloadLonLat = [];
-			return;
-		}
-		    if(flightNum == 0){
-			    tmap = new Tmap.Map({div:'map_div', width:'0px', height:'0px'});
-				map = new google.maps.Map(document.getElementById('map'), {
-					zoom : zoom,
-					mapTypeId: google.maps.MapTypeId.ROADMAP,
-					center : center,
-					mapTypeControl: false
-				});
-				zoom = 14;
-				map.setZoom(zoom);
-		    }
-		flightloadLonLat = [];
-		flightloadLonLat.push(lineLocation[flightNum]);
-		flightloadLonLat.push(lineLocation[++flightNum]);
-		    
 			if(listLonLat.length != 0){
-				var initflightPlanCoordinates = flightloadLonLat;
+				var initflightPlanCoordinates = listLonLat;
 					var initflightPath = new google.maps.Polyline({
 						path : initflightPlanCoordinates,
 						geodesic : true,
@@ -1714,6 +1703,22 @@ function resetFindRoad(){
 					initflightPath.setMap(map);
 				}	
 				addLineMarker();
+			return;
+		}
+		    if(flightNum == 0){
+			    tmap = new Tmap.Map({div:'map_div', width:'0px', height:'0px'});
+				map = new google.maps.Map(document.getElementById('map'), {
+					zoom : zoom,
+					mapTypeId: google.maps.MapTypeId.ROADMAP,
+					center : center,
+					mapTypeControl: false
+				});
+				zoom = 14;
+				map.setZoom(zoom);
+		    }
+		flightloadLonLat = [];
+		flightloadLonLat.push(lineLocation[flightNum]);
+		flightloadLonLat.push(lineLocation[++flightNum]);	
 				
 	    var center = new google.maps.LatLng(lineLocation[flightNum]);
 		map.setCenter(lineLocation[flightNum]);
@@ -1728,8 +1733,40 @@ function resetFindRoad(){
 					strokeWeight : 4
 				});
 				initflightPath1.setMap(map);
-			}
+				
+				
+		     if(startMarker != null){
+			     startMarker.setMap(null); 		 
+		     }
+		     if(endMarker != null){
+		 	 	endMarker.setMap(null);
+		     }
+	     
+			loatstartandend(lineLocation[0], lineLocation[lineLocation.length-1]);
+			
+		}
 
+	}
+	
+	
+	var loadstartmark;
+	var loadendmark;
+	function loatstartandend(location1, location2){
+	    
+	    loadstartmark = [];
+	    loadstartmark = new google.maps.Marker({
+			position : location1,
+			icon : 'http://openmap2.tmap.co.kr/start.png',
+			map : map
+		});
+	    
+	    loadendmark = [];
+	    loadendmark = new google.maps.Marker({
+			position : location2,
+			icon : 'http://openmap2.tmap.co.kr/arrival.png',
+			map : map
+		});
+	    
 	}
 	
 	var numF = 0;
@@ -1757,66 +1794,8 @@ function resetFindRoad(){
 
 		    } else{
 				lineEnd(); 
-				//clearInterval(timerId);
 		    }
 	    } 
-/* 	    
-	    else if(lineLocationWalk.length != 0){
-		
-			if(flightNum == 0){
-			    tmap = new Tmap.Map({div:'map_div', width:'0px', height:'0px'});
-				map = new google.maps.Map(document.getElementById('map'), {
-					zoom : zoom,
-					mapTypeId: google.maps.MapTypeId.ROADMAP,
-					center : center,
-					mapTypeControl: false
-				});
-				zoom = 15;
-				map.setZoom(zoom);
-		    }
-		    
-		    if(flightNum < lineLocationWalk.length-1){
-			
-				var flightlonlatlength = 1;
-				
-				if(lineLocationWalk.length > 50 && lineLocationWalk.length <= 100){			    
-					flightlonlatlength = lineLocationWalk.length / 10;
-				} else if(lineLocationWalk.length > 100 && lineLocationWalk.length <= 200){
-				    flightlonlatlength = lineLocationWalk.length / 20;
-				} else if(lineLocationWalk.length > 200 && lineLocationWalk.length <= 500){
-				    flightlonlatlength = lineLocationWalk.length / 30;
-				} else if(lineLocationWalk.length > 500){
-				    flightlonlatlength = lineLocationWalk.length / 40;
-				} 
-			
-			
-				for(i=0; i<flightlonlatlength; i++){
-				    flightloadLonLat.push(lineLocationWalk[++flightNum]);
-				    if(flightloadLonLat.length == lineLocationWalk.length){
-						break;
-				    }
-				}
-			    
-			    var center = new google.maps.LatLng(lineLocationWalk[flightNum]);
-				map.setCenter(lineLocation[flightNum]);
-			    
-				if(lineLocationWalk.length != 0){
-					var initflightPlanCoordinates1 = flightloadLonLat;
-						var initflightPath1 = new google.maps.Polyline({
-							path : initflightPlanCoordinates1,
-							geodesic : true,
-							strokeColor : '#FF0000',
-							strokeOpacity : 1.0,
-							strokeWeight : 4
-						});
-						
-						initflightPath1.setMap(map);
-					}
-				
-		    } else{
-				lineEnd();
-		    }
-	    } */
 	}
 	
 	function lineEnd(){
@@ -1836,7 +1815,7 @@ function resetFindRoad(){
 	}
 	
 	function loadBack(){
-	    if(flightNum == 0){
+	    if(flightNum <= 0){
 			lineEnd();
 			return;
 	    }
@@ -1862,7 +1841,7 @@ function resetFindRoad(){
 		}
 		console.log(flightbackLonLat);
 		if(listLonLat.length != 0){
-			var initflightPlanCoordinates = flightbackLonLat;
+			var initflightPlanCoordinates = listLonLat;
 				var initflightPath = new google.maps.Polyline({
 					path : initflightPlanCoordinates,
 					geodesic : true,
@@ -1899,6 +1878,15 @@ function resetFindRoad(){
 			
 			    var center = new google.maps.LatLng(lineLocation[flightNum]);
 				map.setCenter(lineLocation[flightNum]);
+				
+			     if(startMarker != null){
+				     startMarker.setMap(null); 		 
+			     }
+			     if(endMarker != null){
+			 	 	endMarker.setMap(null);
+			     }
+		     
+				loatstartandend(lineLocation[0], lineLocation[lineLocation.length-1]);
 	}
 	
 	</script>

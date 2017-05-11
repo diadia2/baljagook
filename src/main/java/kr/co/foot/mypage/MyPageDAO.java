@@ -16,6 +16,8 @@ public interface MyPageDAO {
 	public void deleteRegMap(int mymapidx);
 	public void deleteHashTag(int mymapidx);
 	public void deleteRegCoordinates(int mymapidx);
+	public void regMapDeleteFavoriteMap(int mymapidx);
+	public void regMapDeleteFavoritePlace(int mymapidx);
 	public void deleteMyPlan(int mymapidx);
 	public void deleteMyPlanCoordinates(int mymapidx);
 	public void deleteLike(int mymapidx);

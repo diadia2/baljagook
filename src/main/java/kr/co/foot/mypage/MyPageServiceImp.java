@@ -48,12 +48,14 @@ public class MyPageServiceImp implements MyPageService {
 	}
 	
 	public void deleteMyMap(int mymapidx) {
+		dao.deleteReport(mymapidx);
+		dao.regMapDeleteFavoriteMap(mymapidx);
+		dao.regMapDeleteFavoritePlace(mymapidx);		
 		dao.deleteMyMap(mymapidx);
 		dao.deleteRegMap(mymapidx);
 		dao.deleteHashTag(mymapidx);
 		dao.deleteRegCoordinates(mymapidx);
 		dao.deleteLike(mymapidx);
-		dao.deleteReport(mymapidx);
 	}
 	
 	public void deleteMyPlan(int mymapidx) {

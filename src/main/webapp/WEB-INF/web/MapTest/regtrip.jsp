@@ -1445,9 +1445,7 @@ $(document).ready(function(){
 	    $('#map_div').append("<input type='hidden' value='"+photoCheckPointIdx+"' name='photoCheckPointIdx'/>");
 	    $('#map_div').append("<input type='hidden' value='"+photoOriName+"' name='photoOriName'/>");
 	    $('#map_div').append("<input type='hidden' value='"+photoNewName+"' name='photoNewName'/>");
-	    
-	    alert(rightTitle);
-	    alert(rightContent);
+
 	    console.log(checkMarker);
 	    console.log(photoList);
 	    document.inputform.submit(); 
