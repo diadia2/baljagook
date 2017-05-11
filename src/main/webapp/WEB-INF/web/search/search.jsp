@@ -4,6 +4,14 @@
 <!DOCTYPE html>
 <html lang="kr">
 <head>
+<style type="text/css">
+
+@media(max-width:400px){
+	#page-content{
+		margin: 0px;
+	}
+}
+</style>
 <style>
 .thumb-pane {
 	background-color: white;
@@ -176,7 +184,7 @@ function checkSession() {
 		<div id="page-wrapper">
 			<div id="page-content-wrapper">
 				<jsp:include page="/top2.do" /> 
-				<div id="page-content" style="margin: 0px;">
+				<div id="page-content">
 					<link rel="stylesheet" type="text/css"
 						href="${pageContext.request.contextPath }/resources/assets/frontend-elements/portfolio-navigation.css">
 					<script type="text/javascript"
