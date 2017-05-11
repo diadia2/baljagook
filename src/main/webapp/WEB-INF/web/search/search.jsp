@@ -176,7 +176,7 @@ function checkSession() {
 		<div id="page-wrapper">
 			<div id="page-content-wrapper">
 				<jsp:include page="/top2.do" /> 
-				<div id="page-content">
+				<div id="page-content" style="margin: 0px;">
 					<link rel="stylesheet" type="text/css"
 						href="${pageContext.request.contextPath }/resources/assets/frontend-elements/portfolio-navigation.css">
 					<script type="text/javascript"
