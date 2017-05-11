@@ -403,6 +403,11 @@ public class MymapController {
       int mymapidx = Integer.parseInt(request.getParameter("mymapidx"));
       SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd HH:mm");
       
+      String strflag = request.getParameter("flag");
+      int flag = 1;
+      if(strflag != null){
+    	  flag = Integer.parseInt(strflag);
+      }
       MymapVO mymapVO = mymapService.selectMymap(mymapidx);
       RegmapVO regmapVO = mymapService.getRegmapList(mymapidx);
       
@@ -425,8 +430,16 @@ public class MymapController {
       }
       List<HashtagVO> hashtagList = mymapService.getHashtagList(mymapidx);
       
-      List<RegcoordinatesVO> regcoordinatesList = mymapService.getRegmapsList(mymapidx);
+      List<RegcoordinatesVO> regcoordinatesList1 = mymapService.getRegmapsList(mymapidx);
+      List<RegcoordinatesVO> regcoordinatesList = new ArrayList<RegcoordinatesVO>();
       
+      if(flag == 2){
+	      for(int i=regcoordinatesList1.size()-1; i>=0; i--){
+	    	  regcoordinatesList.add(regcoordinatesList1.get(i));
+	      }
+      } else{
+    	  regcoordinatesList = regcoordinatesList1;
+      }
       List<CheckpointVO> checkpointVO = new ArrayList<CheckpointVO>();
       for(int i=0; i<regcoordinatesList.size(); i++){
          CheckpointVO cpVO = mymapService.selectCheckPoint(regcoordinatesList.get(i).getIdx());

@@ -188,7 +188,7 @@ public class MemberController {
 		
 		List<FavoritemapVO> favoritemapList = mymapService.selectRegmapidx(userid);
 		List<MymapVO> mymapList = new ArrayList<MymapVO>();
-	      
+
 	    for(int i=0; i<favoritemapList.size(); i++){
 	        MymapVO mymapVO = mymapService.selectMymapByRegmapIdx(favoritemapList.get(i).getRegmapidx());
 	        mymapList.add(mymapVO);
@@ -204,8 +204,9 @@ public class MemberController {
 		    DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 		    String time = df.format(dateObj);
 		    mymapList.get(i).setRegdate(time);
+
 		}
-	    	
+		
 		Object[] object = {mymapList, map};
 		
 		return object;

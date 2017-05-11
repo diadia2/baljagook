@@ -35,17 +35,17 @@ $(document).ready(function() {
 });
 
 	function showMyMap() {
+		for(var i=0; i<$('#mymapInfo').children().length; i++) {
+			if(i != 0) {
+				$('#mymapInfo').children().eq(i).remove();
+			}
+		}
 		// mymap
 		$.ajax({
 			type : 'POST',
 			url : '${ pageContext.request.contextPath }/member/getMymapList.do',
 			dataType : 'json',
 			success : function(data) {
-						for(var i=0; i<$('#mymapInfo').children().length; i++) {
-							if(i != 0) {
-								$('#mymapInfo').children().eq(i).remove();
-							}
-						}
 						console.log(data);
 						console.log(data[0].length);
 						//console.log(data[0][0].content); // mymap 0번째의 내용
@@ -111,11 +111,11 @@ $(document).ready(function() {
 									}
 								}
 								$('#myplanInfo').append(
-														'<div class="col-lg-3 col-md-4 col-sm-6"><div class="thumbnail-box-wrapper"><div class="thumbnail-box"><button onclick="deleteMyPlan('+data[0][i].idx+')" class="btn btn-sm btn-danger tooltip-button del icon-tr xbutton" title="삭제" value=""><i class="glyph-icon icon-remove"></i></button><a class="thumb-link" href="${ pageContext.request.contextPath }/map/detail.do?mymapidx='
+														'<div class="col-lg-3 col-md-4 col-sm-6"><div class="thumbnail-box-wrapper"><div class="thumbnail-box"><button onclick="deleteMyPlan('+data[0][i].idx+')" class="btn btn-sm btn-danger tooltip-button del icon-tr xbutton" title="삭제" value=""><i class="glyph-icon icon-remove"></i></button><a class="thumb-link" href="${ pageContext.request.contextPath }/map/detail.do?flag=2&mymapidx='
 														+ data[0][i].idx
 														+ '" title=""></a><div class="thumb-overlay"></div><img src="https://maps.googleapis.com/maps/api/staticmap?path=color:0xff0000cc|weight:3|'
 														+ lonlat
-														+ '&size=400x400&key=AIzaSyDVbk7aW8HrEqozbZcMDZDBDP77uGJGduc&style=feature:water|color:0x1C91C4cc" alt=""></div><div class="thumb-pane" style="max-height:96px;"><h3 class="thumb-heading animated rollIn"><a href="${ pageContext.request.contextPath }/map/detail.do?mymapidx='
+														+ '&size=400x400&key=AIzaSyDVbk7aW8HrEqozbZcMDZDBDP77uGJGduc&style=feature:water|color:0x1C91C4cc" alt=""></div><div class="thumb-pane" style="max-height:96px;"><h3 class="thumb-heading animated rollIn"><a href="${ pageContext.request.contextPath }/map/detail.do?flag=2&mymapidx='
 														+ data[0][i].idx
 														+ '" title="">'
 														+ data[0][i].title
@@ -668,7 +668,7 @@ $(document).ready(function () {
 															<div class="thumb-pane" style="max-height:96px;">
 																<h3 class="thumb-heading animated rollIn">
 																	<a
-																		href="${pageContext.request.contextPath}/map/plantrip.do"
+																		href="${pageContext.request.contextPath}/map/plantrip.do?"
 																		title="">새로 계획하기</a> <small>Create Plan</small>
 																</h3>
 															</div>
