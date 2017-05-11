@@ -76,8 +76,9 @@
 </head>
 <body>
 	<div class="row">
-		<div class="col s12 m10 offset-m1 l6 offset-l3"> 
-			<div class="card-panel grey lighten-5 z-depth-1" style="background-color: white !important;">
+		<div class="col s12 m10 offset-m1 l6 offset-l3">
+			<div class="card-panel grey lighten-5 z-depth-1"
+				style="background-color: white !important;">
 				<div class="row valign-wrapper">
 
 					<div class="col s12">
@@ -98,33 +99,35 @@
 						</header>
 						<section id="container" class="register">
 							<section class="register_form">
-								<form id="" action="/j_spring_security_check">
+								<form id="loginForm">
 									<fieldset>
 										<ul>
 											<li>
 												<div class="input-field col s12">
 													<!-- <input type="text" name="email" placeholder="이메일"
 										onfocus="this.placeholder=''" onblur="this.placeholder='이메일'"> -->
-													<input id="email" type="email" name="j_username"
+													<input id="email" type="email" name="email"
 														class="validate"> <label for="email">Email</label>
 
 												</div>
 											</li>
 											<li>
 												<div class="input-field col s12">
-													<input id="password" type="password" name="j_password"
+													<input id="password" type="password" name="password"
 														class="validate"> <label for="password">Password</label>
 													<!-- <input type="password"
 										name="password" placeholder="비밀번호"
 										onfocus="this.placeholder=''" onblur="this.placeholder='비밀번호'"> -->
 												</div>
 											</li>
-											<li>
-												<div>
-													<label for="agree01" class="ios_check"><input
-														type="checkbox" id="agree01"
-														class="ios-switch green  bigswitch"><span><span></span></span>
-														<span>자동로그인</span> </label>
+											<li>											
+												<!-- Switch -->
+											<div class="input-field col s12">
+													<div class="switch">
+													<label style="top: -12px;"> Off <input type="checkbox" id="agree01" name="agree01">
+														<span class="lever"></span> On
+													</label>
+												</div><label for="agree01">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;자동로그인</label>
 												</div>
 											</li>
 										</ul>
