@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8" session="true"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
-<html>
+<html style="background-color: #fafafa !important;">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
@@ -75,70 +75,80 @@
 </script>
 </head>
 <body>
-	<div><br/><br/>
-		<header id="header_1">
-			<!-- 발자국 모양 <로고> -->
-			<div>
-				<a class="navbar-brand"
-					href="${pageContext.request.contextPath }/main.do"><img
-					class="logoImage" width="40" height="40"
-					src="${ pageContext.request.contextPath }/resources/images/baljagook_logo.png">
-					&nbsp;&nbsp;<span class="mainmsg"
-					style="font-weight: bold; font-size: 15pt; color: black;">발자국</span></a>
-			</div>
-			<br/><br/>
-			<h3>로그인</h3>
-			<br/>
-		</header>
-		<section id="container" class="register">
-			<section class="register_form">
-				<form id="loginForm">
-					<fieldset>
-						<ul>
-							<li>
-								<div class="input-field col s12">
-									<!-- <input type="text" name="email" placeholder="이메일"
-										onfocus="this.placeholder=''" onblur="this.placeholder='이메일'"> -->
-									<input id="email" type="email" name="email" class="validate">
-									<label for="email">Email</label>
+	<div class="row">
+		<div class="col s12 m10 offset-m1 l6 offset-l3"> 
+			<div class="card-panel grey lighten-5 z-depth-1" style="background-color: white !important;">
+				<div class="row valign-wrapper">
 
-								</div>
-							</li>
-							<li>
-								<div class="input-field col s12">
-									<input id="password" type="password" name="password"
-										class="validate"> <label for="password">Password</label>
-									<!-- <input type="password"
+					<div class="col s12">
+						<br /> <br />
+						<header id="header_1">
+							<!-- 발자국 모양 <로고> -->
+							<div>
+								<a class="navbar-brand"
+									href="${pageContext.request.contextPath }/main.do"><img
+									class="logoImage" width="40" height="40"
+									src="${ pageContext.request.contextPath }/resources/images/baljagook_logo.png">
+									&nbsp;&nbsp;<span class="mainmsg"
+									style="font-weight: bold; font-size: 15pt; color: black;">발자국</span></a>
+							</div>
+							<br /> <br />
+							<h3>로그인</h3>
+							<br />
+						</header>
+						<section id="container" class="register">
+							<section class="register_form">
+								<form id="" action="/j_spring_security_check">
+									<fieldset>
+										<ul>
+											<li>
+												<div class="input-field col s12">
+													<!-- <input type="text" name="email" placeholder="이메일"
+										onfocus="this.placeholder=''" onblur="this.placeholder='이메일'"> -->
+													<input id="email" type="email" name="j_username"
+														class="validate"> <label for="email">Email</label>
+
+												</div>
+											</li>
+											<li>
+												<div class="input-field col s12">
+													<input id="password" type="password" name="j_password"
+														class="validate"> <label for="password">Password</label>
+													<!-- <input type="password"
 										name="password" placeholder="비밀번호"
 										onfocus="this.placeholder=''" onblur="this.placeholder='비밀번호'"> -->
-								</div>
-							</li>
-							<li>
-								<div>
-									<label for="agree01" class="ios_check"><input
-										type="checkbox" id="agree01"
-										class="ios-switch green  bigswitch"><span><span></span></span>
-										<span>자동로그인</span> </label>
-								</div>
-							</li>
-						</ul>
-						<div class="right-align" style="margin-right: 15%">
-							<button class="btn waves-effect waves-light blue" type="submit"
-								name="action">로그인</button>
-							<!-- <input type="button" type="button" value="SIGN IN Facebook" > -->
+												</div>
+											</li>
+											<li>
+												<div>
+													<label for="agree01" class="ios_check"><input
+														type="checkbox" id="agree01"
+														class="ios-switch green  bigswitch"><span><span></span></span>
+														<span>자동로그인</span> </label>
+												</div>
+											</li>
+										</ul>
+										<div class="right-align" style="margin-right: 15%">
+											<button class="btn waves-effect waves-light blue"
+												type="submit" name="action">로그인</button>
+											<!-- <input type="button" type="button" value="SIGN IN Facebook" > -->
 
-						</div>
-						<div class="center-align">
-							<span><a
-								href="${ pageContext.request.contextPath }/m/changePass.do">비밀번호를
-									잊으셨나요?</a></span><br /> <span><a
-								href="${pageContext.request.contextPath }/m/signup.do">회원가입하실래요?</a></span>
-						</div>
-					</fieldset>
-				</form>
-			</section>
-		</section>
-		<!-- //container End -->
+										</div>
+										<div class="center-align">
+											<span><a
+												href="${ pageContext.request.contextPath }/m/changePass.do">비밀번호를
+													잊으셨나요?</a></span><br /> <span><a
+												href="${pageContext.request.contextPath }/m/signup.do">회원가입하실래요?</a></span>
+										</div>
+									</fieldset>
+								</form>
+							</section>
+						</section>
+						<!-- //container End -->
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </body>
 </html>
