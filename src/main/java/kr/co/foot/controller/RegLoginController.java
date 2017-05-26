@@ -346,6 +346,7 @@ public class RegLoginController {
 		final String password = "";
 		
 		String server = "http://13.124.39.180:8080";
+//		String server = "localhost:8000";
 		
 		Properties props = new Properties();
 		props.put("mail.smtp.host", "smtp.gmail.com");
@@ -367,7 +368,9 @@ public class RegLoginController {
 		message.setContent(
 				"<h1>발자국에 가입해주셔서 감사합니다. 아래 링크를 클릭하시면 인증절차가 마무리됩니다.</h1>"
 				+"<br/>"
-				+server+contextPath+"/confirm.do?code="+code,
+				+"<a href="+"http://"+server+contextPath+"/confirm.do?code="+code+">"
+				+server+contextPath+"/confirm.do?code="+code
+				+"</a>",
 				"text/html; charset=UTF-8");
 		Transport.send(message);
 		

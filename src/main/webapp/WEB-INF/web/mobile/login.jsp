@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8" session="true"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
-<html style="background-color: #fafafa !important;">
+<html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
@@ -75,13 +75,7 @@
 </script>
 </head>
 <body>
-	<div class="row">
-		<div class="col s12 m10 offset-m1 l6 offset-l3">
-			<div class="card-panel grey lighten-5 z-depth-1"
-				style="background-color: white !important;">
-				<div class="row valign-wrapper">
-
-					<div class="col s12">
+					<div>
 						<br /> <br />
 						<header id="header_1">
 							<!-- 발자국 모양 <로고> -->
@@ -149,9 +143,5 @@
 						</section>
 						<!-- //container End -->
 					</div>
-				</div>
-			</div>
-		</div>
-	</div>
 </body>
 </html>

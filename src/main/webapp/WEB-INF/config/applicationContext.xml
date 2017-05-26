@@ -9,9 +9,9 @@
 		destroy-method="close">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
 		<property name="url"
-			value="jdbc:mysql://mymapdbinstance.c6gg5v7u9cdw.ap-northeast-2.rds.amazonaws.com/baljagook" />
-		<property name="username" value="lbj" />
-		<property name="password" value="mymapmymap" />
+			value="jdbc:mysql://baljagook.c6gg5v7u9cdw.ap-northeast-2.rds.amazonaws.com/baljagook" />
+		<property name="username" value="" />
+		<property name="password" value="" />
 	</bean>
 
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
